@@ -17,8 +17,8 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v2
         with:
-          distribution: adopt
-          java-version: 1.8
+          distribution: temurin
+          java-version: 17
 
       - name: Run Build APK
         uses: vgaidarji/android-github-actions-build@v1.0.1
