@@ -22,9 +22,6 @@ jobs:
 
       - name: Run Build APK
         uses: sparkfabrik/android-build-action@v1.0.0
-        with:
-          project-path: android
-          output-path: my-app.apk
 
       - name: Save APK
         uses: actions/upload-artifact@v2
