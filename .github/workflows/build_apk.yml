@@ -1,0 +1,31 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+
+  Build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 1.8
+
+      - name: Run Build APK
+        uses: vgaidarji/android-github-actions-build@v1.0.1
+        with:
+          args: "./gradlew assembleDebug"
+
+      - name: Save APK
+        uses: action/upload-artifact@v1
+        with:
+          name: apk
+          path: app/build/app-debug.apk
