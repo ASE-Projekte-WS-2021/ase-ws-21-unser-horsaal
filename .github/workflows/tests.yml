@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: temurin
-          java-version: 14
+          java-version: 11
 
       - name: Run Tests
         run: "./gradlew test"
@@ -38,7 +38,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: temurin
-          java-version: 14
+          java-version: 11
 
       - name: Run Android Lint
         uses: dvdandroid/action-android-lint@master
