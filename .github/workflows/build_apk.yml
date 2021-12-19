@@ -1,5 +1,5 @@
 #build release: https://developer.android.com/studio/build/building-cmdline#sign_cmdline
-name: Build APK
+name: Build Debug APK
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 jobs:
 
   Build:
-    name: Build APK
+    name: Build Debug APK
     runs-on: ubuntu-latest
 
     steps:
@@ -27,5 +27,5 @@ jobs:
       - name: Save APK
         uses: actions/upload-artifact@v2
         with:
-          name: app-apk
+          name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
