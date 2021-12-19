@@ -21,9 +21,10 @@ jobs:
           java-version: 17
 
       - name: Run Build APK
-        uses: vgaidarji/android-github-actions-build@v1.0.1
+        uses: sparkfabrik/android-build-action@v1.0.0
         with:
-          args: "./gradlew assembleDebug"
+          project-path: android
+          output-path: my-app.apk
 
       - name: Save APK
         uses: actions/upload-artifact@v2
