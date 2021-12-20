@@ -30,20 +30,20 @@ jobs:
           name: debug-apk
           path: app
 
-  Release:
-    name: Release Debug APK
-    needs: Build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download APK
-        uses: actions/download-artifact@v2
-        with:
-          name: debug-apk
-          path: app
-
-      - name: Release Debug APK
-        uses: kyze8439690/action-release-releaseapk@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          APP_FOLDER: app
+#  Release:
+#    name: Release Debug APK
+#    needs: Build
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Download APK
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: debug-apk
+#          path: app
+#
+#      - name: Release Debug APK
+#        uses: kyze8439690/action-release-releaseapk@master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+#          APP_FOLDER: app

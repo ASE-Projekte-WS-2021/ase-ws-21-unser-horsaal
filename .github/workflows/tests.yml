@@ -40,9 +40,17 @@ jobs:
           distribution: temurin
           java-version: 11
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run Gradle build
+        run: ./gradlew assembleDebug
+
       - name: Run Android Lint
         uses: dvdandroid/action-android-lint@master
         with:
-          lint_xml_file: app/build/lint-reports/lint-results.xml
+          github_token: ${{ secrets.TOKEN_GITHUB }}
+          lint_xml_file: app/build/reports/lint-results-debug.xml
+
 
 
