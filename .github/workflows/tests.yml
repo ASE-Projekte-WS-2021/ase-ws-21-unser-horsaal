@@ -47,7 +47,7 @@ jobs:
         with:
           api-level: 30
           emulator-build: 6110076
-          script: ./gradlew connectedAndroidTest
+          script: ./gradlew connectedCheck
 
   Tests:
     name: Run Tests
