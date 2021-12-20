@@ -46,8 +46,8 @@ jobs:
       - name: Run Gradle build
         run: ./gradlew assembleDebug
 
-      - name: Run Android Lint
-        uses: dvdandroid/action-android-lint@master
-        with:
-          github_token: ${{ secrets.TOKEN_GITHUB }}
-          lint_xml_file: app/build/reports/output_checkstyle.xml
+      - run: ./gradlew lint
+      - uses: yutailang0119/action-android-lint@v1
+       with:
+        report-path: build/reports/*.xml
+        continue-on-error: false
