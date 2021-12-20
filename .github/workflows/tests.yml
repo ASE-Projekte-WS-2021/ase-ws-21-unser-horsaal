@@ -40,7 +40,7 @@ jobs:
           java-version: 11
 
       - name: Run UI Tests
-        uses: vgaidarji/android-github-actions-emulator@v1.0.1
+        uses: faruktoptas/android-github-actions-emulator@latest
 
       - name: Report Test Results
         uses: asadmansr/android-test-report-action@v1.2.0
