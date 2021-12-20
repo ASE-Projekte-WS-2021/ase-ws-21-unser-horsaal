@@ -42,16 +42,7 @@ jobs:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
-      - name: Create Release APK
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_name: Release ${{ github.ref }}
-
       - name: Upload Release APK
-        id: upload_release_asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
