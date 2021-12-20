@@ -50,4 +50,3 @@ jobs:
       - uses: yutailang0119/action-android-lint@v1
         with:
           xml_path: build/reports/*.xml
-
