@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app
 
   Release:
     name: Release Debug APK
@@ -40,14 +40,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app
 
-      - name: Upload Release APK
-        uses: actions/upload-release-asset@v1
+      - name: Release Debug APK
+        uses: ShaunLWM/action-release-debugapk@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/debug/app-debug.apk
-          asset_name: app-debug.apk
-          asset_content_type: application/zip
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          APP_FOLDER: app
+          RELEASE_TITLE: debug-apk
