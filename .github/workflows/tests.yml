@@ -27,7 +27,7 @@ jobs:
 
   UITest:
     name: Run UI Tests
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
