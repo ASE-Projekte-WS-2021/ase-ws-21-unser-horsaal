@@ -2,7 +2,7 @@ name: TestAndLint
 
 on:
   pull_request:
-    branches: [dev, main]
+    branches: [dev, master]
 
 jobs:
 
@@ -46,11 +46,8 @@ jobs:
       - name: Run Gradle build
         run: ./gradlew assembleDebug
 
-      - name: Run Android Lint
-        uses: dvdandroid/action-android-lint@master
+      - run: ./gradlew lint
+      - uses: yutailang0119/action-android-lint@v1
         with:
-          github_token: ${{ secrets.TOKEN_GITHUB }}
-          lint_xml_file: app/build/reports/lint-results-debug.xml
-
-
-
+          report-path: build/reports/*.xml
+          continue-on-error: false
