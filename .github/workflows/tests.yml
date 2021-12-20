@@ -25,9 +25,33 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+  UITest:
+    name: Run UI Tests
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Run Gradle build
+        run: ./gradlew assembleDebug
+
+      - name: Run UI Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          emulator-build: 6110076
+          script: ./gradlew connectedAndroidTest
+
   Tests:
     name: Run Tests
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -41,13 +65,6 @@ jobs:
 
       - name: Run Tests
         run: ./gradlew test
-
-      - name: Run UI Tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 30
-          emulator-build: 6110076
-          script: ./gradlew connectedAndroidTest
 
       - name: Report Test Results
         uses: asadmansr/android-test-report-action@v1.2.0
