@@ -39,15 +39,11 @@ jobs:
           distribution: temurin
           java-version: 11
 
-      - name: Run Gradle build
-        run: ./gradlew assembleDebug
-
       - name: Run UI Tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          emulator-build: 6110076
-          script: ./gradlew connectedCheck
+        uses: vgaidarji/android-github-actions-emulator@v1.0.1
+
+      - name: Report Test Results
+        uses: asadmansr/android-test-report-action@v1.2.0
 
   Tests:
     name: Run Tests
