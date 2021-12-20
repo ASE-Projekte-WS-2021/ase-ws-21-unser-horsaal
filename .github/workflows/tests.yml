@@ -21,7 +21,7 @@ jobs:
           java-version: 11
 
       - name: Run Tests
-        run: "./gradlew test"
+        run: ./gradlew test
 
       - name: Report Test Results
         uses: asadmansr/android-test-report-action@v1.2.0
