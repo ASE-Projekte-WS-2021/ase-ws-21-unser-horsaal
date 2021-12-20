@@ -48,12 +48,5 @@ jobs:
 
       - run: ./gradlew lint
       - uses: yutailang0119/action-android-lint@v1
-<<<<<<< HEAD
         with:
-          report-path: build/reports/*.xml
-          continue-on-error: false
-
-=======
-       with:
-         xml_path: build/reports/*.xml
->>>>>>> a55840b (changed variabled for linting)
+          xml_path: build/reports/*.xml
