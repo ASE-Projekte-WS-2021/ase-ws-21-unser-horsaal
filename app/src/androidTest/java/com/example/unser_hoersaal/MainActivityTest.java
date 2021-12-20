@@ -1,19 +1,16 @@
 package com.example.unser_hoersaal;
+import static org.junit.Assert.assertNotNull;
 
-import static org.junit.Assert.*;
+public class MainActivityTest extends MainActivity {
 
-import org.junit.Test;
+    private MainActivity mTestActivity;
 
-public class MainActivityTest {
-
-    @Test
-    public void onCreate() throws Exception{
+    public MainActivityTest() {
+        mTestActivity = new MainActivity();
+        testPreconditions();
 
     }
+    public void testPreconditions() {
+        assertNotNull("mTestActivity is null", mTestActivity);
+    }
 }
-
-//what package does android tests
-//what package does unit tests
-//how to run theses tests (separately)
-//where can i find how to make android tests
-//emulator tests?
