@@ -40,7 +40,10 @@ jobs:
           java-version: 11
 
       - name: Run UI Tests
-        uses: faruktoptas/android-github-actions-emulator@latest
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedCheck
 
       - name: Report Test Results
         uses: asadmansr/android-test-report-action@v1.2.0
