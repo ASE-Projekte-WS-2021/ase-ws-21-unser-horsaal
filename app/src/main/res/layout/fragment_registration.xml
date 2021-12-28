@@ -35,6 +35,8 @@
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/white"
             android:hint="@string/registration_fragment_username_hint"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registrationFragmentTitleTextView">
@@ -55,6 +57,8 @@
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/white"
             android:hint="@string/registration_fragment_password_hint"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registrationFragmentUserNameEditField">
@@ -75,6 +79,8 @@
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/white"
             android:hint="@string/registration_fragment_password_hint"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registrationFragmentPasswordEditField">
@@ -99,6 +105,7 @@
             app:layout_constraintTop_toBottomOf="@+id/registrationFragmentRepeatPasswordEditField" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/registrationFragmentRegistrationButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
