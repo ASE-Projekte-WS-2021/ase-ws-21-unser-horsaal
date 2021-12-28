@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">unser_hoersaal</string>
+
+    <!-- strings for login and registration activity -->
+    <string name="login">Einloggen</string>
+    <string name="registration">Registrieren</string>
+    <string name="emailHint">Email eingeben</string>
+    <string name="passwordHint">Passwort eingeben</string>
+    <string name="passwordHint2">Passwort wiederholen</string>
+    <string name="registrationButton">Registrieren</string>
+    <string name="backToLoginButtonText">Zurück</string>
+    <string name="userNameHint">Nutzernamen eingeben</string>
+    <string name="registr_email_title">Email registrieren:</string>
+    <string name="registr_password_title">Passwort bestimmen (mind. 6 Zeichen):</string>
+    <string name="registr_username_title">Nuternamen bestimmen:</string>
 </resources>

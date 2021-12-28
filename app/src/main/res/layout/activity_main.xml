@@ -1,25 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- https://www.vogella.com/tutorials/AndroidTestingEspresso/article.html [20.12.2021] -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical"
 
-    <EditText
-        android:id="@+id/inputField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/changeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button" android:onClick="onClick"/>
+    <!-- login screen -->
+    <!-- The following template was used and greatly extended: "Simplified Coding" https://www.youtube.com/watch?v=tJVBXCNtUuk [DATE: 16.08.2019] -->
 
-    <Button
-        android:id="@+id/switchActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Text" android:onClick="onClick"/>
-</LinearLayout>
+    <LinearLayout
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/loginMail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/emailHint"
+            android:inputType="textEmailAddress"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@android:color/background_dark"
+            android:backgroundTint="@android:color/background_dark"
+            />
+
+        <EditText
+            android:id="@+id/loginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/passwordHint"
+            android:inputType="textPassword"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:backgroundTint="@android:color/background_dark"
+            />
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="@string/login"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:background="@android:color/holo_blue_light"
+            />
+
+        <Button
+            android:id="@+id/registration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registration"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:background="@android:color/holo_blue_light"
+            />
+
+    </LinearLayout>
+</RelativeLayout>
