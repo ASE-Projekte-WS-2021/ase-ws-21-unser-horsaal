@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+// source: https://firebase.google.com/docs/auth/android
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button login, registration;

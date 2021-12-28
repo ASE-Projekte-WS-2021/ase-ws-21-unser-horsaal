@@ -19,8 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-//registration
-//following template was used and extended: "Simplified Coding" https://www.youtube.com/watch?v=0NFwF7L-YA8 [DATE: 15.08.2019]
+// source: source: https://firebase.google.com/docs/auth/android
 
 public class RegistrationScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
