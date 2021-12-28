@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">unser_hoersaal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_fragment_forgot_password">Passwort vergessen</string>
+    <string name="login_fragment_login_button_string">Einloggen</string>
+    <string name="login_fragment_checkbox_string">Eingeloggt bleiben</string>
+    <string name="login_fragment_password_hint">Passwort</string>
+    <string name="login_fragment_user_name_hint">Benutzername</string>
+    <string name="login_fragment_registration_string">Registrieren</string>
+    <string name="login_fragment_no_account">Noch kein Account?</string>
+    <string name="login_fragment_title_string">Login</string>
+    <string name="registration_fragment_password_hint">Passwort</string>
+    <string name="registration_fragment_username_hint">Benutzername</string>
+    <string name="registration_fragment_title">Account erstellen</string>
+    <string name="registration_fragment_checkbox_string">Eingeloggt bleiben</string>
+    <string name="registration_fragment_registrate_button_string">Registrieren</string>
+    <string name="enter_course_string">Kurs beitreten</string>
+    <string name="enter_course_caption">Bestehendem Kurs beitreten, um Fragen zu stellen, Antworten zu senden, etc.</string>
+    <string name="create_course_string">Kurs erstellen</string>
+    <string name="create_course_caption">Kurs, dem andere Nutzer über einen generierten Code beitreten können, erstellen</string>
+    <string name="enter_course_fragment_edit_text">Kursnummer eingeben</string>
+    <string name="enter_course_fragment_button_string">Beitreten</string>
+    <string name="create_course_fragment_caption_string">Hier können Sie ganz einfach einen Kurs erstellen, dem über die generierte Nummer beigetreten werden kann</string>
+    <string name="create_course_generate_number">Nummer generieren</string>
+    <string name="create_course_create_button">Erstellen</string>
+    <string name="create_course_fragment_title_hint">Kurstitel</string>
+    <string name="current_course_edit_text_hint">Frage eingeben</string>
 </resources>
