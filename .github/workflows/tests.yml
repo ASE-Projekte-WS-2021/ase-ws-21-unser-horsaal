@@ -24,7 +24,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Gradle build
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace --warning-mode all
 
       - run: ./gradlew lint
       - uses: yutailang0119/action-android-lint@v1
@@ -47,7 +47,7 @@ jobs:
           java-version: 11
 
       - name: Run Tests
-        run: ./gradlew test
+        run: ./gradlew test --stacktrace --warning-mode all
 
       - name: Report Test Results
         uses: asadmansr/android-test-report-action@v1.2.0
