@@ -88,7 +88,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_login_24"
+                    android:src="@drawable/ic_baseline_create_24"
                     app:tint="@color/blue"/>
 
                 <TextView
