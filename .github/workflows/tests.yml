@@ -1,4 +1,4 @@
-name: TestAndLint
+name: Tests
 
 on:
   pull_request:
@@ -6,47 +6,8 @@ on:
 
 jobs:
 
-  Checksytyle:
-    name: Run Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Setup JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: temurin
-          java-version: 11
-
-      - name: Run java checkstyle
-        uses: nikitasavinov/checkstyle-action@0.4.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-  Tests:
-    name: Run Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Setup JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: temurin
-          java-version: 11
-
-      - name: Run Tests
-        run: ./gradlew test
-
-      - name: Report Test Results
-        uses: asadmansr/android-test-report-action@v1.2.0
-
   Linting:
-    name: Run Lint
+    name: Run Linting
     runs-on: ubuntu-latest
 
     steps:
@@ -63,9 +24,50 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Gradle build
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace --warning-mode all
 
       - run: ./gradlew lint
       - uses: yutailang0119/action-android-lint@v1
         with:
           xml_path: build/reports/*.xml
+
+  Tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: Linting
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Run Tests
+        run: ./gradlew test --stacktrace --warning-mode all
+
+      - name: Report Test Results
+        uses: asadmansr/android-test-report-action@v1.2.0
+
+  Checksytyle:
+    name: Run Checkstyle
+    runs-on: ubuntu-latest
+    needs: Tests
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Run java checkstyle
+        uses: nikitasavinov/checkstyle-action@0.4.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
