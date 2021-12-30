@@ -1,10 +1,9 @@
-package com.example.unser_hoersaal.views;
+package views;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -12,15 +11,20 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.unser_hoersaal.R;
 
-public class EnterOrCreateCourseFragment extends Fragment {
+public class CreateCourseFragment extends Fragment {
 
-    CardView enterCourseCardView;
-    CardView createCourseCardView;
+    EditText courseTitelEditText;
+    TextView generatedNumberTextView;
+    Button generateNumberButton;
+    Button createCourseButton;
 
-    public EnterOrCreateCourseFragment() {
+    public CreateCourseFragment() {
         // Required empty public constructor
     }
 
@@ -33,7 +37,7 @@ public class EnterOrCreateCourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_enter_or_create_course, container, false);
+        return inflater.inflate(R.layout.fragment_create_course, container, false);
     }
 
     @Override
@@ -44,14 +48,17 @@ public class EnterOrCreateCourseFragment extends Fragment {
     }
 
     private void initUI(View view){
-        enterCourseCardView = view.findViewById(R.id.enterCourseCardView);
-        createCourseCardView = view.findViewById(R.id.createCourseCardView);
+        courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
+        generatedNumberTextView = view.findViewById(R.id.createCourseFragmentNumberTextView);
+        generateNumberButton = view.findViewById(R.id.createCourseFragmentGenerateNumberButton);
+        createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
     }
 
     //setup Navigation to corresponding fragments
     private void setupNavigation(View view){
         NavController navController = Navigation.findNavController(view);
-        enterCourseCardView.setOnClickListener(v -> navController.navigate(R.id.action_enterOrCreateCourseFragment_to_enterCourseFragment));
-        createCourseCardView.setOnClickListener(v -> navController.navigate(R.id.action_enterOrCreateCourseFragment_to_createCourseFragment));
+
+        //todo add logic to login
+        createCourseButton.setOnClickListener(v -> navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment));
     }
 }

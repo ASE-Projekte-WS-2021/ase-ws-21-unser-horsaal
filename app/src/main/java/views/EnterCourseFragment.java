@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.views;
+package views;
 
 import android.os.Bundle;
 
@@ -12,20 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.unser_hoersaal.R;
 
-public class RegistrationFragment extends Fragment {
+public class EnterCourseFragment extends Fragment {
 
-    EditText userNameEditText;
-    EditText passwordEditText;
-    EditText repeatPassowordEditText;
-    CheckBox checkBox;
-    Button registrationButton;
+    EditText enterCourseEditText;
+    Button enterCourseButton;
 
-    public RegistrationFragment() {
+    public EnterCourseFragment() {
         // Required empty public constructor
     }
 
@@ -38,7 +34,7 @@ public class RegistrationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_registration, container, false);
+        return inflater.inflate(R.layout.fragment_enter_course, container, false);
     }
 
     @Override
@@ -49,18 +45,15 @@ public class RegistrationFragment extends Fragment {
     }
 
     private void initUI(View view){
-        userNameEditText = view.findViewById(R.id.registrationFragmentUserNameEditText);
-        passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
-        repeatPassowordEditText = view.findViewById(R.id.registrationFragmentRepeatPasswordEditText);
-        checkBox = view.findViewById(R.id.registrationFragmentCheckBox);
-        registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
+        enterCourseEditText = view.findViewById(R.id.enterCourseFragmentCourseNumberEditText);
+        enterCourseButton = view.findViewById(R.id.enterCourseFragmentEnterButton);
     }
 
     //setup Navigation to corresponding fragments
     private void setupNavigation(View view){
         NavController navController = Navigation.findNavController(view);
 
-        //todo add logic to registration
-        registrationButton.setOnClickListener(v -> navController.navigate(R.id.action_registrationFragment_to_enterOrCreateCourseFragment));
+        //todo add logic to entering course
+        enterCourseButton.setOnClickListener(v -> navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment));
     }
 }

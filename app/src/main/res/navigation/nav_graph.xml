@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.unser_hoersaal.views.LoginFragment"
+        android:name="views.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.unser_hoersaal.views.RegistrationFragment"
+        android:name="views.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/enterOrCreateCourseFragment"
-        android:name="com.example.unser_hoersaal.views.EnterOrCreateCourseFragment"
+        android:name="views.EnterOrCreateCourseFragment"
         android:label="fragment_enter_or_create_course"
         tools:layout="@layout/fragment_enter_or_create_course" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/enterCourseFragment"
-        android:name="com.example.unser_hoersaal.views.EnterCourseFragment"
+        android:name="views.EnterCourseFragment"
         android:label="fragment_enter_course"
         tools:layout="@layout/fragment_enter_course" >
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/createCourseFragment"
-        android:name="com.example.unser_hoersaal.views.CreateCourseFragment"
+        android:name="views.CreateCourseFragment"
         android:label="fragment_create_course"
         tools:layout="@layout/fragment_create_course" >
         <action
@@ -58,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/currentCourseFragment"
-        android:name="com.example.unser_hoersaal.views.CurrentCourseFragment"
+        android:name="views.CurrentCourseFragment"
         android:label="fragment_current_course"
         tools:layout="@layout/fragment_current_course" />
 </navigation>

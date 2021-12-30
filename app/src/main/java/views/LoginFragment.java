@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.views;
+package views;
 
 import android.os.Bundle;
 
@@ -12,32 +12,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.TextView;
+
 
 import com.example.unser_hoersaal.R;
 
-public class CreateCourseFragment extends Fragment {
 
-    EditText courseTitelEditText;
-    TextView generatedNumberTextView;
-    Button generateNumberButton;
-    Button createCourseButton;
+public class LoginFragment extends Fragment {
 
-    public CreateCourseFragment() {
+    TextView registrationTextView;
+    TextView forgotPasswordTextView;
+    CheckBox keepLoggedInCheckBox;
+    Button loginButton;
+
+
+    public LoginFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_course, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
@@ -48,10 +53,10 @@ public class CreateCourseFragment extends Fragment {
     }
 
     private void initUI(View view){
-        courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
-        generatedNumberTextView = view.findViewById(R.id.createCourseFragmentNumberTextView);
-        generateNumberButton = view.findViewById(R.id.createCourseFragmentGenerateNumberButton);
-        createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
+        registrationTextView = view.findViewById(R.id.loginFragmentRegistrationTextView);
+        forgotPasswordTextView = view.findViewById(R.id.loginFragmentForgotPasswortTextView);
+        keepLoggedInCheckBox = view.findViewById(R.id.loginFragmentCheckBox);
+        loginButton = view.findViewById(R.id.loginFragmentLoginButton);
     }
 
     //setup Navigation to corresponding fragments
@@ -59,6 +64,7 @@ public class CreateCourseFragment extends Fragment {
         NavController navController = Navigation.findNavController(view);
 
         //todo add logic to login
-        createCourseButton.setOnClickListener(v -> navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment));
+        registrationTextView.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_registrationFragment));
+        loginButton.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment));
     }
 }
