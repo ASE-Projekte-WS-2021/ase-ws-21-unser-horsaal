@@ -6,12 +6,12 @@
     <string name="login_fragment_login_button_string">Einloggen</string>
     <string name="login_fragment_checkbox_string">Eingeloggt bleiben</string>
     <string name="login_fragment_password_hint">Passwort</string>
-    <string name="login_fragment_user_name_hint">Benutzername</string>
+    <string name="login_fragment_user_email_hint">Email</string>
     <string name="login_fragment_registration_string">Registrieren</string>
     <string name="login_fragment_no_account">Noch kein Account?</string>
     <string name="login_fragment_title_string">Login</string>
     <string name="registration_fragment_password_hint">Passwort</string>
-    <string name="registration_fragment_username_hint">Benutzername</string>
+    <string name="registration_fragment_user_email_hint">Email</string>
     <string name="registration_fragment_title">Account erstellen</string>
     <string name="registration_fragment_checkbox_string">Eingeloggt bleiben</string>
     <string name="registration_fragment_registrate_button_string">Registrieren</string>

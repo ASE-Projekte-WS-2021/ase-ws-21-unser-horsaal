@@ -28,13 +28,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/registrationFragmentUserNameEditField"
+            android:id="@+id/registrationFragmentUserEmailEditField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/white"
-            android:hint="@string/registration_fragment_username_hint"
+            android:hint="@string/registration_fragment_user_email_hint"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@+id/registrationFragmentTitleTextView">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/registrationFragmentUserNameEditText"
+                android:id="@+id/registrationFragmentUserEmailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners" />
@@ -61,7 +61,7 @@
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registrationFragmentUserNameEditField">
+            app:layout_constraintTop_toBottomOf="@+id/registrationFragmentUserEmailEditField">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/registrationFragmentPasswordEditText"

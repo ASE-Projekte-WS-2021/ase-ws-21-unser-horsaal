@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_registrationFragment_to_enterOrCreateCourseFragment"
             app:destination="@id/enterOrCreateCourseFragment" />
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/enterOrCreateCourseFragment"

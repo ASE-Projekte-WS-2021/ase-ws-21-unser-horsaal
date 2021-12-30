@@ -12,8 +12,6 @@ import com.example.unser_hoersaal.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText editText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
