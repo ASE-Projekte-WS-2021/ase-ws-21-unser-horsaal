@@ -59,33 +59,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_login, container, false);
-
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-
-        userEmailEditView = view.findViewById(R.id.loginFragmentUserEmailEditText);
-        userPasswordEditView = view.findViewById(R.id.loginFragmentPasswordEditText);
-        registrationTextView = view.findViewById(R.id.loginFragmentRegistrationTextView);
-        forgotPasswordTextView = view.findViewById(R.id.loginFragmentForgotPasswortTextView);
-        keepLoggedInCheckBox = view.findViewById(R.id.loginFragmentCheckBox);
-        loginButton = view.findViewById(R.id.loginFragmentLoginButton);
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = userEmailEditView.getText().toString();
-                String password = userPasswordEditView.getText().toString();
-                if (email.length() > 0 && password.length() > 0) {
-                    loginRegisterViewModel.login(email, password);
-                } else {
-                    Toast.makeText(getContext(), "Email Address and Password Must Be Entered", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        setupNavigation(view);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
@@ -110,7 +84,20 @@ public class LoginFragment extends Fragment {
 
         //todo add logic to login
         registrationTextView.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_registrationFragment));
-        loginButton.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment));
+        //loginButton.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment));
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = userEmailEditView.getText().toString();
+                String password = userPasswordEditView.getText().toString();
+                if (email.length() > 0 && password.length() > 0) {
+                    loginRegisterViewModel.login(email, password);
+                    navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment);
+                } else {
+                    Toast.makeText(getContext(), "Email Address and Password Must Be Entered", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }

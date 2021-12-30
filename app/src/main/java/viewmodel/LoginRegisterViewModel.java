@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseUser;
 import model.AuthAppRepository;
 
+//source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/blob/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/view/LoginRegisterFragment.java [30.12.2021]
+
 public class LoginRegisterViewModel extends AndroidViewModel {
     private AuthAppRepository authAppRepository;
     private MutableLiveData<FirebaseUser> userLiveData;

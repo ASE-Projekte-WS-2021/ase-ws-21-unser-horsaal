@@ -25,7 +25,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.unser_hoersaal.R;
 
-// https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/blob/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/view/LoginRegisterFragment.java [30.12.2021]
 
 public class RegistrationFragment extends Fragment {
 
@@ -62,33 +61,7 @@ public class RegistrationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       // return inflater.inflate(R.layout.fragment_registration, container, false);
-
-        View view = inflater.inflate(R.layout.fragment_registration, container, false);
-
-
-        userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
-        passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
-        repeatPasswordEditText = view.findViewById(R.id.registrationFragmentRepeatPasswordEditText);
-        checkBox = view.findViewById(R.id.registrationFragmentCheckBox);
-        registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
-
-        registrationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = userEmailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                if (email.length() > 0 && password.length() > 0) {
-                    loginRegisterViewModel.register(email, password);
-                } else {
-                    Toast.makeText(getContext(), "Email Address and Password Must Be Entered", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        setupNavigation(view);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_registration, container, false);
     }
 
 
@@ -113,7 +86,20 @@ public class RegistrationFragment extends Fragment {
         NavController navController = Navigation.findNavController(view);
 
         //todo add logic to registration
-        registrationButton.setOnClickListener(v -> navController.navigate(R.id.action_registrationFragment_to_loginFragment));
+        //registrationButton.setOnClickListener(v -> navController.navigate(R.id.action_registrationFragment_to_loginFragment));
+        registrationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = userEmailEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+                if (email.length() > 0 && password.length() > 0) {
+                    loginRegisterViewModel.register(email, password);
+                    navController.navigate(R.id.action_registrationFragment_to_loginFragment);
+                } else {
+                    Toast.makeText(getContext(), "Email Address and Password Must Be Entered", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }
