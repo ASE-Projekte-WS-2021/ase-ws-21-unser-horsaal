@@ -17,6 +17,9 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseUser;
 import viewmodel.LoginRegisterViewModel;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -62,7 +65,7 @@ public class RegistrationFragment extends Fragment {
        // return inflater.inflate(R.layout.fragment_registration, container, false);
 
         View view = inflater.inflate(R.layout.fragment_registration, container, false);
-        NavController navController = Navigation.findNavController(view);
+
 
         userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
         passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
@@ -83,19 +86,19 @@ public class RegistrationFragment extends Fragment {
             }
         });
 
-        navController.navigate(R.id.action_registrationFragment_to_loginFragment);
+        setupNavigation(view);
 
         return view;
     }
 
-    /*
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //initUI(view);
-        //setupNavigation(view);
+        initUI(view);
+        setupNavigation(view);
     }
-/*
+
     private void initUI(View view){
         userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
         passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
@@ -112,5 +115,5 @@ public class RegistrationFragment extends Fragment {
         //todo add logic to registration
         registrationButton.setOnClickListener(v -> navController.navigate(R.id.action_registrationFragment_to_loginFragment));
     }
-    */
+
 }

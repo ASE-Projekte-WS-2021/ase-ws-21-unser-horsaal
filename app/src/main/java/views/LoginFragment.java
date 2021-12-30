@@ -62,7 +62,6 @@ public class LoginFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_login, container, false);
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        NavController navController = Navigation.findNavController(view);
 
         userEmailEditView = view.findViewById(R.id.loginFragmentUserEmailEditText);
         userPasswordEditView = view.findViewById(R.id.loginFragmentPasswordEditText);
@@ -84,11 +83,11 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment);
+        setupNavigation(view);
 
         return view;
     }
-/*
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -97,6 +96,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void initUI(View view){
+        userEmailEditView = view.findViewById(R.id.loginFragmentUserEmailEditText);
+        userPasswordEditView = view.findViewById(R.id.loginFragmentPasswordEditText);
         registrationTextView = view.findViewById(R.id.loginFragmentRegistrationTextView);
         forgotPasswordTextView = view.findViewById(R.id.loginFragmentForgotPasswortTextView);
         keepLoggedInCheckBox = view.findViewById(R.id.loginFragmentCheckBox);
@@ -112,5 +113,4 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment));
     }
 
- */
 }
