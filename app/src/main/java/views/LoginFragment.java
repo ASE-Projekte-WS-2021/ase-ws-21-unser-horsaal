@@ -14,6 +14,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseUser;
+import viewmodel.LoggedInViewModel;
+import viewmodel.LoginRegisterViewModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.unser_hoersaal.R;
@@ -25,6 +36,8 @@ public class LoginFragment extends Fragment {
     TextView forgotPasswordTextView;
     CheckBox keepLoggedInCheckBox;
     Button loginButton;
+
+    private LoggedInViewModel loggedInViewModel;
 
 
     public LoginFragment() {
