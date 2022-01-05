@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -43,7 +44,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        loginRegisterViewModel = new ViewModelProvider(this).get(LoginRegisterViewModel.class);
         super.onCreate(savedInstanceState);
 
     }
@@ -85,6 +86,7 @@ public class LoginFragment extends Fragment {
                 String password = userPasswordEditView.getText().toString();
                 if (email.length() > 0 && password.length() > 0) {
                     loginRegisterViewModel.login(email, password);
+                    //TODO: onsuccess
                     navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment);
                 } else {
                     Toast.makeText(getContext(), "Email Address and Password Must Be Entered", Toast.LENGTH_SHORT).show();
