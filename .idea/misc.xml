@@ -3,9 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.19882246376811594" />
-        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_login.xml" value="0.19882246376811594" />
-        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_registration.xml" value="0.19882246376811594" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.2554347826086957" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_registration.xml" value="0.2554347826086957" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_second.xml" value="0.24094202898550723" />
@@ -15,6 +12,8 @@
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_second.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/layout/simple_question_item.xml" value="0.19635416666666666" />
       </map>
     </option>
   </component>

@@ -1,4 +1,4 @@
-package views;
+package com.example.unser_hoersaal.views;
 
 import android.os.Bundle;
 
@@ -17,18 +17,11 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
-import viewmodel.LoggedInViewModel;
-import viewmodel.LoginRegisterViewModel;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.unser_hoersaal.R;
+import com.example.unser_hoersaal.viewmodel.LoggedInViewModel;
+import com.example.unser_hoersaal.viewmodel.LoginRegisterViewModel;
 
 
 public class LoginFragment extends Fragment {
