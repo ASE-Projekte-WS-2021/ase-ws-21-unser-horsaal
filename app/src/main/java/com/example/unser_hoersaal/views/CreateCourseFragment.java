@@ -30,7 +30,7 @@ public class CreateCourseFragment extends Fragment {
     Button generateNumberButton;
     Button createCourseButton;
 
-    private CreateCourseViewModel createCourseModelView;
+    private CreateCourseViewModel createCourseViewModel;
     private FirebaseAuth firebaseAuth;
 
     public CreateCourseFragment() {
@@ -41,7 +41,7 @@ public class CreateCourseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
-        createCourseModelView = new ViewModelProvider(this).get(CreateCourseViewModel.class);
+        createCourseViewModel = new ViewModelProvider(this).get(CreateCourseViewModel.class);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CreateCourseFragment extends Fragment {
                 String courseCreatedAt = String.valueOf(System.currentTimeMillis());
 
                 if (courseTitle.length() > 6) {
-                    String courseId = createCourseModelView.createCourse(courseTitle, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
+                    String courseId = createCourseViewModel.createCourse(courseTitle, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
                     //TODO: transfer courseId?!
                     navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
                 } else {
