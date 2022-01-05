@@ -1,4 +1,4 @@
-package viewmodel;
+package com.example.unser_hoersaal.viewmodel;
 
 import android.app.Application;
 
@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.unser_hoersaal.model.AuthAppRepository;
 import com.google.firebase.auth.FirebaseUser;
-import model.AuthAppRepository;
 
 //source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/blob/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/view/LoginRegisterFragment.java [30.12.2021]
 

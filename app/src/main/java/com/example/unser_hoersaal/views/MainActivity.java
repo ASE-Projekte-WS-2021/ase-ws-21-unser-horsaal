@@ -1,11 +1,10 @@
-package views;
+package com.example.unser_hoersaal.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import com.example.unser_hoersaal.R;
-
 
 public class MainActivity extends AppCompatActivity {
 
