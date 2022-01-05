@@ -17,12 +17,11 @@
             android:id="@+id/loginFragmentLogoCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
             app:cardCornerRadius="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/loginFragmentTitleTextView">
 
             <ImageView
                 android:id="@+id/loginFragmentLogoImageView"
@@ -36,43 +35,54 @@
             android:id="@+id/loginFragmentTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/login_fragment_title_string"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/white"
             android:textSize="34sp"
-            android:text="@string/login_fragment_title_string"
-            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginFragmentLogoCard"/>
+            app:layout_constraintTop_toBottomOf="@+id/loginFragmentLogoCard"
+            app:layout_constraintBottom_toTopOf="@id/loginFragmentConstraintLayoutNoAccRegistration"/>
 
-        <TextView
-            android:id="@+id/loginFragmentNoAccountTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="start"
-            android:text="@string/login_fragment_no_account"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginFragmentTitleTextView"/>
-
-        <TextView
-            android:id="@+id/loginFragmentRegistrationTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="end"
-            android:text="@string/login_fragment_registration_string"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginFragmentTitleTextView" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loginFragmentUserNameTextField"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loginFragmentConstraintLayoutNoAccRegistration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loginFragmentTitleTextView"
+            app:layout_constraintBottom_toTopOf="@id/loginFragmentUserEmailTextField">
+
+            <TextView
+                android:id="@+id/loginFragmentNoAccountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_fragment_no_account"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/loginFragmentRegistrationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_fragment_registration_string"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginFragmentUserEmailTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/white"
             android:hint="@string/login_fragment_user_email_hint"
@@ -80,7 +90,8 @@
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginFragmentRegistrationTextView">
+            app:layout_constraintTop_toBottomOf="@+id/loginFragmentConstraintLayoutNoAccRegistration"
+            app:layout_constraintBottom_toTopOf="@id/loginFragmentPasswordTextField">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginFragmentUserEmailEditText"
@@ -94,7 +105,7 @@
             android:id="@+id/loginFragmentPasswordTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/white"
             android:hint="@string/login_fragment_password_hint"
@@ -102,7 +113,8 @@
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginFragmentUserNameTextField">
+            app:layout_constraintTop_toBottomOf="@+id/loginFragmentUserEmailTextField"
+            app:layout_constraintBottom_toTopOf="@id/loginFragmentConstraintLayoutKeepLoggedInForgotPassword">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginFragmentPasswordEditText"
@@ -112,38 +124,49 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/loginFragmentCheckBox"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loginFragmentConstraintLayoutKeepLoggedInForgotPassword"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/login_fragment_checkbox_string"
-            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/loginFragmentPasswordTextField"
+            app:layout_constraintBottom_toTopOf="@id/loginFragmentLoginButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginFragmentPasswordTextField" />
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/loginFragmentForgotPasswortTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="@string/login_fragment_forgot_password"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginFragmentPasswordTextField" />
+            <CheckBox
+                android:id="@+id/loginFragmentCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_fragment_checkbox_string"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/loginFragmentForgotPasswortTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_fragment_forgot_password"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/loginFragmentLoginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/login_fragment_login_button_string"
             android:background="@drawable/rounded_corners"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginFragmentCheckBox"
+            android:text="@string/login_fragment_login_button_string"
             app:icon="@drawable/ic_baseline_login_24"
-            app:iconGravity="textStart"/>
+            app:iconGravity="textStart"
+            app:layout_constraintTop_toBottomOf="@id/loginFragmentConstraintLayoutKeepLoggedInForgotPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
