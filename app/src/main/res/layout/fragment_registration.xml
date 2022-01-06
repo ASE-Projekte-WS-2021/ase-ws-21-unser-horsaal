@@ -47,7 +47,8 @@
                 android:id="@+id/registrationFragmentUserEmailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners" />
+                android:background="@drawable/rounded_corners"
+                android:singleLine="true"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,7 +71,8 @@
                 android:id="@+id/registrationFragmentPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners" />
+                android:background="@drawable/rounded_corners"
+                android:singleLine="true"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +95,8 @@
                 android:id="@+id/registrationFragmentRepeatPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners" />
+                android:background="@drawable/rounded_corners"
+                android:singleLine="true"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
