@@ -7,69 +7,66 @@
     tools:context="views.EnterCourseFragment"
     android:background="@drawable/app_background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="32dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/enterCourseFragmentTitle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:text="@string/enter_course_string"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@color/white"
-            android:textSize="34sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="32dp"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="64dp"
-            android:src="@drawable/ic_baseline_login_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enterCourseFragmentTitle"
-            app:tint="@color/white" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/enterCourseFragmentCourseNumberEditField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="@color/white"
-            android:hint="@string/enter_course_fragment_edit_text"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/enterCourseFragmentCourseNumberEditText"
+            <TextView
+                android:id="@+id/enterCourseFragmentTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:text="@string/enter_course_string"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/white"
+                android:textSize="34sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/ic_baseline_login_24"
+                app:tint="@color/white"
+                android:layout_gravity="center"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/enterCourseFragmentCourseNumberEditField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 android:background="@drawable/rounded_corners"
-                android:singleLine="true"/>
+                android:backgroundTint="@color/white"
+                android:hint="@string/enter_course_fragment_edit_text"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/enterCourseFragmentCourseNumberEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corners"
+                    android:singleLine="true"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/enterCourseFragmentEnterButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/rounded_corners"
-            android:text="@string/enter_course_fragment_button_string"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enterCourseFragmentCourseNumberEditField" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/enterCourseFragmentEnterButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/rounded_corners"
+                android:text="@string/enter_course_fragment_button_string" />
+
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>
