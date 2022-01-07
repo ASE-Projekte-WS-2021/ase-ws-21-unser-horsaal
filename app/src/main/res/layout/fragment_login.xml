@@ -115,14 +115,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/loginFragmentUserEmailTextField"
-            app:layout_constraintBottom_toTopOf="@id/loginFragmentConstraintLayoutKeepLoggedInForgotPassword">
+            app:layout_constraintBottom_toTopOf="@id/loginFragmentConstraintLayoutKeepLoggedInForgotPassword"
+            app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginFragmentPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

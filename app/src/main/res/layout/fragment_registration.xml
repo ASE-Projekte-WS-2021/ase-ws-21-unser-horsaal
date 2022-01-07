@@ -65,14 +65,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registrationFragmentUserEmailEditField"
-            app:layout_constraintBottom_toTopOf="@id/registrationFragmentRepeatPasswordEditField">
+            app:layout_constraintBottom_toTopOf="@id/registrationFragmentRepeatPasswordEditField"
+            app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/registrationFragmentPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:inputType="textPassword"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,14 +91,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registrationFragmentPasswordEditField"
-            app:layout_constraintBottom_toTopOf="@id/registrationFragmentCheckBox">
+            app:layout_constraintBottom_toTopOf="@id/registrationFragmentCheckBox"
+            app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/registrationFragmentRepeatPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
