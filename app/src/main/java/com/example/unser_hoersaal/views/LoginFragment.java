@@ -1,10 +1,11 @@
-package views;
+package com.example.unser_hoersaal.views;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -17,18 +18,11 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
-import viewmodel.LoggedInViewModel;
-import viewmodel.LoginRegisterViewModel;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.unser_hoersaal.R;
+import com.example.unser_hoersaal.viewmodel.LoggedInViewModel;
+import com.example.unser_hoersaal.viewmodel.LoginRegisterViewModel;
 
 
 public class LoginFragment extends Fragment {
@@ -50,7 +44,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        loginRegisterViewModel = new ViewModelProvider(this).get(LoginRegisterViewModel.class);
         super.onCreate(savedInstanceState);
 
     }
@@ -92,6 +86,7 @@ public class LoginFragment extends Fragment {
                 String password = userPasswordEditView.getText().toString();
                 if (email.length() > 0 && password.length() > 0) {
                     loginRegisterViewModel.login(email, password);
+                    //TODO: onsuccess
                     navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment);
                 } else {
                     Toast.makeText(getContext(), "Email Address and Password Must Be Entered", Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package views;
+package com.example.unser_hoersaal.views;
 
 import android.os.Bundle;
 
@@ -14,8 +14,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.unser_hoersaal.viewmodel.LoginRegisterViewModel;
 import com.google.firebase.auth.FirebaseUser;
-import viewmodel.LoginRegisterViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
