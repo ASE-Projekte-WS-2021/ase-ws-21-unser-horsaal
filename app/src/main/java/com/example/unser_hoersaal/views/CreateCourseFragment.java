@@ -21,6 +21,8 @@ import com.example.unser_hoersaal.R;
 import com.example.unser_hoersaal.viewmodel.CreateCourseViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CreateCourseFragment extends Fragment {
@@ -79,6 +81,8 @@ public class CreateCourseFragment extends Fragment {
                 String courseCreatedById = firebaseAuth.getCurrentUser().getUid();
                 String courseCreatedBy = firebaseAuth.getCurrentUser().getEmail(); //TODO: replace by user name or leave out and use dummy names
                 String courseCreatedAt = String.valueOf(System.currentTimeMillis());
+
+
 
                 if (courseTitle.length() > 6) {
                     String courseId = createCourseViewModel.createCourse(courseTitle, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);

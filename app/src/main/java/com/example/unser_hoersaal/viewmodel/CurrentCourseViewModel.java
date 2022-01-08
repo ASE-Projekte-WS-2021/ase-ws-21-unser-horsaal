@@ -15,4 +15,8 @@ public class CurrentCourseViewModel extends AndroidViewModel {
         super(application);
     }
 
+    public void sendMessage(String message){
+
+    }
+
 }

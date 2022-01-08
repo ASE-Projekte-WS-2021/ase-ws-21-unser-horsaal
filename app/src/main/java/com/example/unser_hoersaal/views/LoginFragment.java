@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,13 @@ import android.widget.Toast;
 import com.example.unser_hoersaal.R;
 import com.example.unser_hoersaal.viewmodel.LoggedInViewModel;
 import com.example.unser_hoersaal.viewmodel.LoginRegisterViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginFragment extends Fragment {
@@ -33,6 +41,7 @@ public class LoginFragment extends Fragment {
     TextView forgotPasswordTextView;
     CheckBox keepLoggedInCheckBox;
     Button loginButton;
+    String firebaseResult;
 
     private LoggedInViewModel loggedInViewModel;
     private LoginRegisterViewModel loginRegisterViewModel;
@@ -46,7 +55,30 @@ public class LoginFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         loginRegisterViewModel = new ViewModelProvider(this).get(LoginRegisterViewModel.class);
         super.onCreate(savedInstanceState);
+        DatabaseReference firebaseRef = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/");
 
+        //firebaseRef.child("Courses").push().setValue("null");
+
+        firebaseRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    String.valueOf(task.getResult().getValue());
+                    saveDate(String.valueOf(task.getResult().getValue()));
+                }
+            }
+        });
+
+    }
+
+    public void saveDate(String data){
+        String string1 = data;
+        System.out.println(data);
     }
 
     @Override

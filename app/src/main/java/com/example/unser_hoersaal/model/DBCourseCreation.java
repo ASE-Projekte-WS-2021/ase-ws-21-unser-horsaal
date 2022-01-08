@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class DBCourseCreation {
     private Application application;
     private FirebaseDatabase firebaseDB;
@@ -19,7 +21,7 @@ public class DBCourseCreation {
 
     public DBCourseCreation(Application application) {
         this.application = application;
-        this.firebaseDB = FirebaseDatabase.getInstance();
+        this.firebaseDB = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/");
         this.databaseReference = firebaseDB.getReference();
     }
 
@@ -27,9 +29,11 @@ public class DBCourseCreation {
         String courseId = this.databaseReference.getRoot().push().getKey();
         CourseModel courseModel = new CourseModel(courseName, courseId, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
 
-        this.databaseReference.child(courseId).setValue(courseModel);
+        this.databaseReference.child("Courses").child(courseId).setValue(courseModel);
 
         return courseId;
     }
+
+
 
 }
