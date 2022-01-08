@@ -1,27 +1,25 @@
 package com.example.unser_hoersaal.viewmodel;
 
-import android.app.Application;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import com.example.unser_hoersaal.model.DBCourseCreation;
 
-import java.util.List;
-import java.util.UUID;
 
-
-public class CreateCourseViewModel extends AndroidViewModel {
+public class CreateCourseViewModel extends ViewModel {
     private DBCourseCreation databaseCourseCreation;
+    private final MutableLiveData<String> courseId = new MutableLiveData<String>();
     public String currentCourseID;
 
-    public CreateCourseViewModel(@NonNull Application application) {
-        super(application);
-
-        databaseCourseCreation = new DBCourseCreation(application);
+    public CreateCourseViewModel() {
+        databaseCourseCreation = new DBCourseCreation();
     }
 
-    public String createCourse(String courseName, String courseDescription, String courseCreatedById, String courseCreatedBy, String courseCreatedAt) {
-        currentCourseID = databaseCourseCreation.createNewCourse(courseName, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
-        return currentCourseID;
+    public void createCourse(String courseName, String courseDescription, String courseCreatedById, String courseCreatedBy, String courseCreatedAt) {
+        databaseCourseCreation.createNewCourse(courseName, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
+    }
+
+    public String getCourseId(){
+        return databaseCourseCreation.getCourseId();
     }
 }

@@ -42,8 +42,6 @@ public class CreateCourseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseAuth = FirebaseAuth.getInstance();
-        createCourseViewModel = new ViewModelProvider(this).get(CreateCourseViewModel.class);
     }
 
     @Override
@@ -56,6 +54,8 @@ public class CreateCourseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        firebaseAuth = FirebaseAuth.getInstance();
+        createCourseViewModel = new ViewModelProvider(requireActivity()).get(CreateCourseViewModel.class);
         initUI(view);
         setupNavigation(view);
     }
@@ -85,7 +85,7 @@ public class CreateCourseFragment extends Fragment {
 
 
                 if (courseTitle.length() > 6) {
-                    String courseId = createCourseViewModel.createCourse(courseTitle, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
+                    createCourseViewModel.createCourse(courseTitle, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
                     //TODO: transfer courseId?!
                     navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
                 } else {

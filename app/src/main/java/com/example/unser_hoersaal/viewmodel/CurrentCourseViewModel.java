@@ -1,22 +1,30 @@
 package com.example.unser_hoersaal.viewmodel;
 
-import android.app.Application;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import com.example.unser_hoersaal.model.DBCourseCreation;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import com.example.unser_hoersaal.model.DBCurrentCourse;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class CurrentCourseViewModel extends AndroidViewModel {
+public class CurrentCourseViewModel extends ViewModel {
+    private DBCurrentCourse databaseCurrentCourse;
+    String courseId;
 
-    public CurrentCourseViewModel(@NonNull Application application) {
-        super(application);
+    public CurrentCourseViewModel(String courseId) {
+        this.courseId = courseId;
+        databaseCurrentCourse = new DBCurrentCourse(courseId);
+
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String messageText){
+        databaseCurrentCourse.sendMessage(messageText);
+    }
 
+    public MutableLiveData<ArrayList> getMessages(){
+        return databaseCurrentCourse.getMessages();
     }
 
 }
