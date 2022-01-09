@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class DBCurrentCourse {
     private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
     private ArrayList<Message> messagesList = new ArrayList<Message>();
     String courseId;
+
 
 
     public DBCurrentCourse(String courseId) {
@@ -58,7 +60,5 @@ public class DBCurrentCourse {
     public MutableLiveData<ArrayList> getMessages(){
         return messages;
     }
-
-
 
 }

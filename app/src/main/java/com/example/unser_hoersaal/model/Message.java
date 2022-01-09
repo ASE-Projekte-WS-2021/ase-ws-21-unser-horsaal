@@ -14,6 +14,7 @@ public class Message {
     public Message(String messageText, Long time) {
         this.messageText = messageText;
         this.time = time;
+
     }
 
     public Long getTime() {

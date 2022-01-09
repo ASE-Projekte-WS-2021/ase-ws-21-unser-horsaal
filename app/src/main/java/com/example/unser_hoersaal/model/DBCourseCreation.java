@@ -37,6 +37,8 @@ public class DBCourseCreation {
         return courseId;
     }
 
+    public void setCourseId(String courseId){ this.courseId = courseId; }
+
 
 
 

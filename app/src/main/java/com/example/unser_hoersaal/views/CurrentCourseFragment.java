@@ -19,17 +19,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.unser_hoersaal.R;
-import com.example.unser_hoersaal.model.CourseModel;
 import com.example.unser_hoersaal.model.Message;
 import com.example.unser_hoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unser_hoersaal.viewmodel.CurrentCourseVMFactory;
 import com.example.unser_hoersaal.viewmodel.CurrentCourseViewModel;
-import com.example.unser_hoersaal.viewmodel.LoginRegisterViewModel;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +82,7 @@ public class CurrentCourseFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 currentCourseViewModel.sendMessage(questionEditText.getText().toString());
+                questionEditText.getText().clear();
             }
         });
     }
