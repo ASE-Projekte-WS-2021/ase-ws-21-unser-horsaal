@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.views;
+package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
 
@@ -14,7 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.unser_hoersaal.viewmodel.LoginRegisterViewModel;
+import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.unser_hoersaal.R;
+import com.example.unserhoersaal.R;
 
 
 public class RegistrationFragment extends Fragment {

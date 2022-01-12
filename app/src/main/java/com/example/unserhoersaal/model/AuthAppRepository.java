@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.model;
+package com.example.unserhoersaal.model;
 
 import android.app.Application;
 import android.widget.Toast;

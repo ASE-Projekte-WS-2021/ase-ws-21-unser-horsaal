@@ -1,9 +1,7 @@
-package com.example.unser_hoersaal.model;
+package com.example.unserhoersaal.model;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 @IgnoreExtraProperties

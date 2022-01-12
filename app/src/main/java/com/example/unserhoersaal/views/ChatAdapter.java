@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.views;
+package com.example.unserhoersaal.views;
 
 
 
@@ -9,11 +9,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.unser_hoersaal.R;
-import com.example.unser_hoersaal.model.Message;
+import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.Message;
 
 import java.util.Date;
-import java.util.List;
 import java.text.SimpleDateFormat;
 
 

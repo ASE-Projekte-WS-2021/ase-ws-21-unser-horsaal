@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.views;
+package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
 
@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.unser_hoersaal.R;
-import com.example.unser_hoersaal.viewmodel.CreateCourseViewModel;
-import com.example.unser_hoersaal.viewmodel.EnterCourseViewModel;
+import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
 public class EnterCourseFragment extends Fragment {
 

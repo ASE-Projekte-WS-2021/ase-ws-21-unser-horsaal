@@ -1,6 +1,4 @@
-package com.example.unser_hoersaal.model;
-
-import java.util.List;
+package com.example.unserhoersaal.model;
 
 public class Message {
     public String messageText;

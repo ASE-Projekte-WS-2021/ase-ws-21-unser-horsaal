@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.views;
+package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
 
@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.unser_hoersaal.R;
+import com.example.unserhoersaal.R;
 
 public class EnterOrCreateCourseFragment extends Fragment {
 

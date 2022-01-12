@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.views;
+package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
 
@@ -10,23 +10,20 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.unser_hoersaal.R;
-import com.example.unser_hoersaal.model.Message;
-import com.example.unser_hoersaal.viewmodel.CreateCourseViewModel;
-import com.example.unser_hoersaal.viewmodel.CurrentCourseVMFactory;
-import com.example.unser_hoersaal.viewmodel.CurrentCourseViewModel;
+import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.Message;
+import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseVMFactory;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CurrentCourseFragment extends Fragment {
 

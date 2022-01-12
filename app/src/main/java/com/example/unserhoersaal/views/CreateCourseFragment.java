@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.views;
+package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
 
@@ -17,13 +17,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.unser_hoersaal.R;
-import com.example.unser_hoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class CreateCourseFragment extends Fragment {
 
@@ -78,14 +74,12 @@ public class CreateCourseFragment extends Fragment {
             public void onClick(View view) {
                 String courseTitle = courseTitelEditText.getText().toString();
                 String courseDescription = "";
-                String courseCreatedById = firebaseAuth.getCurrentUser().getUid();
-                String courseCreatedBy = firebaseAuth.getCurrentUser().getEmail(); //TODO: replace by user name or leave out and use dummy names
-                String courseCreatedAt = String.valueOf(System.currentTimeMillis());
+
 
 
 
                 if (courseTitle.length() > 6) {
-                    createCourseViewModel.createCourse(courseTitle, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
+                    createCourseViewModel.createCourse(courseTitle, courseDescription);
                     navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
                 } else {
                     Toast.makeText(getContext(), "The course name should be 6 characters or longer.", Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package com.example.unser_hoersaal.viewmodel;
+package com.example.unserhoersaal.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
