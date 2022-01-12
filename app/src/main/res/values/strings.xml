@@ -27,5 +27,6 @@
     <string name="create_course_create_button">Erstellen</string>
     <string name="create_course_fragment_title_hint">Kurstitel</string>
     <string name="current_course_edit_text_hint">Frage eingeben</string>
+    <string name="current_course_textview_enter_number">Beitrittsnummer: </string>
     <string name="login_fragment_user_name_hint">Email</string>
 </resources>
