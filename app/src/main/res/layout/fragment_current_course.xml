@@ -23,6 +23,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/currentCourseFragmentLinearLayoutEnterNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentTitleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_course_textview_enter_number"
+                android:gravity="center|end"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="123456789"
+                android:gravity="center|start"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chatRecyclerView"
             android:layout_width="match_parent"
@@ -30,7 +55,7 @@
             app:layout_constraintBottom_toTopOf="@+id/currentCourseFragmentQuestionEditField"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/currentCourseFragmentTitleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/currentCourseFragmentLinearLayoutEnterNumber"
             tools:listitem="@layout/simple_question_item"/>
 
         <com.google.android.material.textfield.TextInputLayout
