@@ -28,8 +28,6 @@ import java.util.UUID;
 public class CreateCourseFragment extends Fragment {
 
     EditText courseTitelEditText;
-    TextView generatedNumberTextView;
-    Button generateNumberButton;
     Button createCourseButton;
 
     private CreateCourseViewModel createCourseViewModel;
@@ -62,8 +60,6 @@ public class CreateCourseFragment extends Fragment {
 
     private void initUI(View view){
         courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
-        generatedNumberTextView = view.findViewById(R.id.createCourseFragmentNumberTextView);
-        generateNumberButton = view.findViewById(R.id.createCourseFragmentGenerateNumberButton);
         createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
     }
 
