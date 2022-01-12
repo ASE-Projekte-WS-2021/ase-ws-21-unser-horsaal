@@ -21,6 +21,8 @@ import com.example.unser_hoersaal.R;
 import com.example.unser_hoersaal.viewmodel.CreateCourseViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CreateCourseFragment extends Fragment {
@@ -28,7 +30,7 @@ public class CreateCourseFragment extends Fragment {
     EditText courseTitelEditText;
     Button createCourseButton;
 
-    private CreateCourseViewModel createCourseModelView;
+    private CreateCourseViewModel createCourseViewModel;
     private FirebaseAuth firebaseAuth;
 
     public CreateCourseFragment() {
@@ -38,8 +40,6 @@ public class CreateCourseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseAuth = FirebaseAuth.getInstance();
-        createCourseModelView = new ViewModelProvider(this).get(CreateCourseViewModel.class);
     }
 
     @Override
@@ -52,6 +52,8 @@ public class CreateCourseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        firebaseAuth = FirebaseAuth.getInstance();
+        createCourseViewModel = new ViewModelProvider(requireActivity()).get(CreateCourseViewModel.class);
         initUI(view);
         setupNavigation(view);
     }
@@ -76,9 +78,10 @@ public class CreateCourseFragment extends Fragment {
                 String courseCreatedBy = firebaseAuth.getCurrentUser().getEmail(); //TODO: replace by user name or leave out and use dummy names
                 String courseCreatedAt = String.valueOf(System.currentTimeMillis());
 
+
+
                 if (courseTitle.length() > 6) {
-                    String courseId = createCourseModelView.createCourse(courseTitle, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
-                    //TODO: transfer courseId?!
+                    createCourseViewModel.createCourse(courseTitle, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
                     navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
                 } else {
                     Toast.makeText(getContext(), "The course name should be 6 characters or longer.", Toast.LENGTH_SHORT).show();

@@ -3,6 +3,8 @@ package com.example.unser_hoersaal.model;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @IgnoreExtraProperties
 public class CourseModel {
@@ -13,7 +15,7 @@ public class CourseModel {
     public String courseCreatedById;
     public String courseCreatedBy;
     public String courseCreatedAt;
-    public Array courseThreads;
+    public List<String> courseMessages;
 
     public CourseModel() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -26,6 +28,8 @@ public class CourseModel {
         this.courseCreatedById = courseCreatedById;
         this.courseCreatedBy = courseCreatedBy;
         this.courseCreatedAt = courseCreatedAt;
+        //this.courseMessages = new ArrayList<>();
+
     }
 
 }
