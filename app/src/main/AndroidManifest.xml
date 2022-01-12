@@ -8,16 +8,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Unser_hoersaal">
+        android:theme="@style/Theme.unserhoersaal">
         <activity
-<<<<<<< HEAD
             android:name="com.example.unserhoersaal.views.MainActivity"
             android:exported="true">
-=======
-            android:name=".views.MainActivity"
-            android:exported="true"
             android:windowSoftInputMode="adjustResize">
->>>>>>> 24b9900830097876c81a9c88b95bf89c443bf212
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
