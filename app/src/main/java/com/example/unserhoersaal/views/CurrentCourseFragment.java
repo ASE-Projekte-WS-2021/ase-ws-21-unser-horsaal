@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.Message;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
-import com.example.unserhoersaal.viewmodel.CurrentCourseVMFactory;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModelFactory;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.ArrayList;
 
@@ -58,7 +58,7 @@ public class CurrentCourseFragment extends Fragment {
     String courseId = createCourseViewModel.getCourseId();
 
     this.currentCourseViewModel = new ViewModelProvider(requireActivity(),
-            new CurrentCourseVMFactory(courseId)).get(CurrentCourseViewModel.class);
+            new CurrentCourseViewModelFactory(courseId)).get(CurrentCourseViewModel.class);
 
     initUi(view);
     pluginListeners();
