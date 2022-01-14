@@ -21,21 +21,29 @@ public class DatabaseCourseCreation {
     this.firebaseAuth = FirebaseAuth.getInstance();
   }
 
-  /****/
+  /**Method creates an course.**/
 
   public void createNewCourse(String courseName, String courseDescription) {
     String courseCreatedById = firebaseAuth.getCurrentUser().getUid();
-    String courseCreatedBy = firebaseAuth.getCurrentUser().getEmail(); //TODO: replace by user name or leave out and use dummy names
+    String courseCreatedBy = firebaseAuth.getCurrentUser().getEmail();
+    //TODO: replace by user name or leave out and use dummy names
     String courseCreatedAt = String.valueOf(System.currentTimeMillis());
     courseId = this.databaseReference.getRoot().push().getKey();
-    CourseModel courseModel = new CourseModel(courseName, courseId, courseDescription, courseCreatedById, courseCreatedBy, courseCreatedAt);
+    CourseModel courseModel = new CourseModel(courseName, courseId, courseDescription,
+            courseCreatedById, courseCreatedBy, courseCreatedAt);
     this.databaseReference.child("Courses").child(courseId).setValue(courseModel);
   }
 
-  public String getCourseId(){
+  /**Gives back courseId.**/
+
+  public String getCourseId() {
     return courseId;
   }
 
-  public void setCourseId(String courseId){ this.courseId = courseId; }
+  /**Method sets courseId.**/
+
+  public void setCourseId(String courseId) {
+    this.courseId = courseId;
+  }
 
 }
