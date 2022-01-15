@@ -113,7 +113,7 @@ public class LoginFragment extends Fragment {
             if (email.length() > 0 && password.length() > 0) {
               loginRegisterViewModel.login(email, password);
               //TODO: onsuccess
-              navController.navigate(R.id.action_loginFragment_to_enterOrCreateCourseFragment);
+              navController.navigate(R.id.action_loginFragment_to_coursesFragment);
             } else {
               String emptyInputMessage = "Email Address and Password Must Be Entered";
               Toast.makeText(getContext(), emptyInputMessage, Toast.LENGTH_SHORT).show();

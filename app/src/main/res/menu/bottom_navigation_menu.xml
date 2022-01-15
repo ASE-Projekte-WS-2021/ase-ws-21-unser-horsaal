@@ -13,7 +13,7 @@
         android:title="@string/bottom_navigation_menu_courses_string"
         />
     <item
-        android:id="@+id/profileFragment"
+        android:id="@+id/profileFragment2"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="@string/bottom_navigation_menu_profile_string"
