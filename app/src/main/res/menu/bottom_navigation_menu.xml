@@ -7,13 +7,13 @@
         android:title="@string/bottom_navigation_menu_create_string"
         />
     <item
-        android:id="@+id/courseOverviewFragment"
+        android:id="@+id/coursesFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_library_books_24"
         android:title="@string/bottom_navigation_menu_courses_string"
         />
     <item
-        android:id="@+id/profileFragment2"
+        android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="@string/bottom_navigation_menu_profile_string"

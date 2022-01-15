@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -39,10 +41,17 @@ public class CoursesFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     initUi(view);
+    setupNavigation(view);
   }
 
   private void initUi(View view) {
     courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
     enterNewCourseButton = view.findViewById(R.id.coursesFragmentEnterNewCourseButton);
+  }
+
+  private void setupNavigation(View view) {
+    NavController navController = Navigation.findNavController(view);
+    enterNewCourseButton.setOnClickListener(v -> navController.navigate(
+            R.id.action_coursesFragment_to_enterCourseFragment));
   }
 }
