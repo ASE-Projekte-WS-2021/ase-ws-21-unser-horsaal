@@ -36,4 +36,7 @@
     <string name="profile_fragment_example_password">1234abcDEF</string>
     <string name="profile_fragment_edit_profile_button_string">Profil bearbeiten</string>
     <string name="profile_fragment_logout_button_string">Ausloggen</string>
+    <string name="bottom_navigation_menu_profile_string">Profil</string>
+    <string name="bottom_navigation_menu_courses_string">Kurse</string>
+    <string name="bottom_navigation_menu_create_string">Erstellen</string>
 </resources>
