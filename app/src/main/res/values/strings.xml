@@ -39,4 +39,6 @@
     <string name="bottom_navigation_menu_profile_string">Profil</string>
     <string name="bottom_navigation_menu_courses_string">Kurse</string>
     <string name="bottom_navigation_menu_create_string">Erstellen</string>
+    <string name="courses_fragment_title_string">Bereits beigetretene Kurse</string>
+    <string name="courses_fragment_enter_new_course_button_string">Neuem Kurs beitreten</string>
 </resources>
