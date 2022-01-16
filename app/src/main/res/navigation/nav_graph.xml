@@ -36,7 +36,9 @@
         tools:layout="@layout/fragment_enter_course" >
         <action
             android:id="@+id/action_enterCourseFragment_to_currentCourseFragment"
-            app:destination="@id/currentCourseFragment" />
+            app:destination="@id/currentCourseFragment"
+            app:popUpTo="@id/enterCourseFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/createCourseFragment"
@@ -45,7 +47,8 @@
         tools:layout="@layout/fragment_create_course" >
         <action
             android:id="@+id/action_createCourseFragment_to_currentCourseFragment"
-            app:destination="@id/currentCourseFragment" />
+            app:destination="@id/currentCourseFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/currentCourseFragment"
