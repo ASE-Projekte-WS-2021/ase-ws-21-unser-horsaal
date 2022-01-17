@@ -5,14 +5,14 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-/** Utility class for keyboard-events*/
+/** Utility class for keyboard-events.*/
 public class KeyboardUtil {
 
   /** method for hiding soft-keyboard
    * source: https://stackoverflow.com/questions/26911469/hide-keyboard-when-navigating-from-
    * a-fragment-to-another */
   public static void hideKeyboard(Activity activity) {
-    if (activity != null){
+    if (activity != null) {
       InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
               Context.INPUT_METHOD_SERVICE);
 
