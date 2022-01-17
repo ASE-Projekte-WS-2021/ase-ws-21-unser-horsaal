@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
@@ -65,6 +66,7 @@ public class EnterCourseFragment extends Fragment {
             public void onClick(View view) {
                 createCourseViewModel.setCourseId(enterCourseEditText.getText().toString());
                 navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+                KeyboardUtil.hideKeyboard(getActivity());
             }
         });
         //enterCourseButton.setOnClickListener(v -> navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment));

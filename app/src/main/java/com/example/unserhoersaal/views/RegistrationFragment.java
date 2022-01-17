@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -48,6 +49,7 @@ public class RegistrationFragment extends Fragment {
         if (firebaseUser != null) {
           var backToLogin = R.id.action_registrationFragment_to_loginFragment;
           Navigation.findNavController(getView()).navigate(backToLogin);
+          KeyboardUtil.hideKeyboard(getActivity());
         }
       }
     });
@@ -90,6 +92,7 @@ public class RegistrationFragment extends Fragment {
         if (email.length() > 0 && password.length() > 0) {
           loginRegisterViewModel.register(email, password);
           navController.navigate(R.id.action_registrationFragment_to_loginFragment);
+          KeyboardUtil.hideKeyboard(getActivity());
         } else {
           String emptyInputMessage = "Email Address and Password Must Be Entered";
           Toast.makeText(getContext(), emptyInputMessage, Toast.LENGTH_SHORT).show();

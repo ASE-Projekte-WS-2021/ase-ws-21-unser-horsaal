@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -77,6 +78,7 @@ public class CreateCourseFragment extends Fragment {
                 if (courseTitle.length() > 6) {
                     createCourseViewModel.createCourse(courseTitle, courseDescription);
                     navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
+                    KeyboardUtil.hideKeyboard(getActivity());
                 } else {
                     Toast.makeText(getContext(), "The course name should be 6 characters or longer.", Toast.LENGTH_SHORT).show();
                 }

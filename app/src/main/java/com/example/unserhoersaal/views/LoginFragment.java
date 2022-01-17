@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
 import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -114,6 +115,7 @@ public class LoginFragment extends Fragment {
               loginRegisterViewModel.login(email, password);
               //TODO: onsuccess
               navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+              KeyboardUtil.hideKeyboard(getActivity());
             } else {
               String emptyInputMessage = "Email Address and Password Must Be Entered";
               Toast.makeText(getContext(), emptyInputMessage, Toast.LENGTH_SHORT).show();

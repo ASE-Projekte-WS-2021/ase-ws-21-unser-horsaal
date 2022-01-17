@@ -12,6 +12,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 
 /** Courses. */
 public class CoursesFragment extends Fragment {
@@ -50,5 +51,6 @@ public class CoursesFragment extends Fragment {
     NavController navController = Navigation.findNavController(view);
     enterNewCourseButton.setOnClickListener(v -> navController.navigate(
             R.id.action_coursesFragment_to_enterCourseFragment));
+    KeyboardUtil.hideKeyboard(getActivity());
   }
 }
