@@ -23,7 +23,8 @@
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/coursesFragmentRecyclerView"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/coursesFragmentRecyclerView"
@@ -31,11 +32,23 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/coursesFragmentEnterNewCourseButton"
+            app:layout_constraintBottom_toTopOf="@+id/coursesFragmentCreateNewCourseButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/coursesFragmentTitleTextView"
             tools:listitem="@layout/simple_course_item"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/coursesFragmentCreateNewCourseButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/courses_fragment_create_new_course_button_string"
+            app:layout_constraintBottom_toTopOf="@id/coursesFragmentEnterNewCourseButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coursesFragmentRecyclerView"
+            app:cornerRadius="32dp"
+            app:icon="@drawable/ic_baseline_add_circle_24"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/coursesFragmentEnterNewCourseButton"
@@ -45,8 +58,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coursesFragmentCreateNewCourseButton"
             app:cornerRadius="32dp"
             app:icon="@drawable/ic_baseline_login_24"/>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

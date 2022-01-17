@@ -18,6 +18,7 @@ import com.example.unserhoersaal.utils.KeyboardUtil;
 public class CoursesFragment extends Fragment {
   private RecyclerView courseListRecycler;
   private Button enterNewCourseButton;
+  private Button createNewCourseButton;
 
   public CoursesFragment() {
     // Required empty public constructor
@@ -45,12 +46,16 @@ public class CoursesFragment extends Fragment {
   private void initUi(View view) {
     courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
     enterNewCourseButton = view.findViewById(R.id.coursesFragmentEnterNewCourseButton);
+    createNewCourseButton = view.findViewById(R.id.coursesFragmentCreateNewCourseButton);
   }
 
   private void setupNavigation(View view) {
     NavController navController = Navigation.findNavController(view);
     enterNewCourseButton.setOnClickListener(v -> navController.navigate(
             R.id.action_coursesFragment_to_enterCourseFragment));
+    createNewCourseButton.setOnClickListener(v -> navController.navigate(
+            R.id.action_coursesFragment_to_createCourseFragment)
+    );
     KeyboardUtil.hideKeyboard(getActivity());
   }
 }

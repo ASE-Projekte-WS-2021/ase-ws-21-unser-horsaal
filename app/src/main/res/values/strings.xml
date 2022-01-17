@@ -41,4 +41,7 @@
     <string name="bottom_navigation_menu_create_string">Erstellen</string>
     <string name="courses_fragment_title_string">Bereits beigetretene Kurse</string>
     <string name="courses_fragment_enter_new_course_button_string">Neuem Kurs beitreten</string>
+    <string name="courses_fragment_create_new_course_button_string">Neuen Kurs erstellen</string>
+    <string name="placeholder_fragment_string">Hier wird gerade an einem neuen Feature gearbeitet</string>
+    <string name="bottom_navigation_menu_placeholder_string">Platzhalter</string>
 </resources>

@@ -48,7 +48,8 @@
         <action
             android:id="@+id/action_createCourseFragment_to_currentCourseFragment"
             app:destination="@id/currentCourseFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/createCourseFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/currentCourseFragment"
@@ -74,5 +75,13 @@
         <action
             android:id="@+id/action_coursesFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_coursesFragment_to_placeholderFragment"
+            app:destination="@id/placeholderFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/placeholderFragment"
+        android:name="com.example.unserhoersaal.views.PlaceholderFragment"
+        android:label="fragment_placeholder"
+        tools:layout="@layout/fragment_placeholder" />
 </navigation>
