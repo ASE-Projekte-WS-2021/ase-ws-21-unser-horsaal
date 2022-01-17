@@ -56,7 +56,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners"
                     android:singleLine="true"
-                    android:text="@string/profile_fragment_example_email" />
+                    android:text="@string/profile_fragment_example_email"
+                    android:focusable="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
