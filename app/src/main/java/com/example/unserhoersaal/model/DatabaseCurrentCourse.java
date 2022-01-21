@@ -21,11 +21,26 @@ public class DatabaseCurrentCourse {
     private String courseId;
 
 
-    public DatabaseCurrentCourse(String courseId) {
+    public DatabaseCurrentCourse() {
         this.firebaseDB = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app");
         this.databaseReference = firebaseDB.getReference();
-        this.courseId = courseId;
+    }
 
+    public void sendMessage(String messageText) {
+        Long time = System.currentTimeMillis();
+        Message message = new Message(messageText, time);
+        databaseReference.child("Courses").child(courseId).child("Messages").push().setValue(message);
+    }
+
+    public MutableLiveData<ArrayList> getMessages() {
+        return messages;
+    }
+
+    public void setCourseId(String courseId){
+        this.courseId = courseId;
+    }
+
+    public void setupListeners() {
         ValueEventListener messageListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -43,16 +58,6 @@ public class DatabaseCurrentCourse {
             }
         };
         databaseReference.child("Courses").child(courseId).child("Messages").addValueEventListener(messageListener);
-    }
-
-    public void sendMessage(String messageText) {
-        Long time = System.currentTimeMillis();
-        Message message = new Message(messageText, time);
-        databaseReference.child("Courses").child(courseId).child("Messages").push().setValue(message);
-    }
-
-    public MutableLiveData<ArrayList> getMessages() {
-        return messages;
     }
 
 }

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.Message;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
-import com.example.unserhoersaal.viewmodel.CurrentCourseVMFactory;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.ArrayList;
 
@@ -52,8 +51,9 @@ public class CurrentCourseFragment extends Fragment {
     CreateCourseViewModel createCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CreateCourseViewModel.class);
     courseId = createCourseViewModel.getCourseId();
-    currentCourseViewModel = new ViewModelProvider(requireActivity(),
-            new CurrentCourseVMFactory(courseId)).get(CurrentCourseViewModel.class);
+    currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
+    currentCourseViewModel.setupCurrentCourseViewModel(courseId);
     currentCourseViewModel.getMessages().observe(getViewLifecycleOwner(), messages -> {
       updateUi(view, messages);
     });
@@ -91,6 +91,7 @@ public class CurrentCourseFragment extends Fragment {
       recyclerView.setLayoutManager(layoutManager);
       recyclerView.setItemAnimator(new DefaultItemAnimator());
       recyclerView.setAdapter(chatAdapter);
+      recyclerView.scrollToPosition(messages.size() - 1);
     }
   }
 }

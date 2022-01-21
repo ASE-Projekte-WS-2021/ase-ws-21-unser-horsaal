@@ -10,11 +10,10 @@ import java.util.ArrayList;
 
 public class CurrentCourseViewModel extends ViewModel {
     private DatabaseCurrentCourse databaseCurrentCourse;
-    String courseId;
 
-    public CurrentCourseViewModel(String courseId) {
-        this.courseId = courseId;
-        databaseCurrentCourse = new DatabaseCurrentCourse(courseId);
+
+    public CurrentCourseViewModel() {
+        databaseCurrentCourse = new DatabaseCurrentCourse();
 
     }
 
@@ -24,6 +23,12 @@ public class CurrentCourseViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList> getMessages(){
         return databaseCurrentCourse.getMessages();
+    }
+
+    public void setupCurrentCourseViewModel(String courseId)
+    {
+        databaseCurrentCourse.setCourseId(courseId);
+        databaseCurrentCourse.setupListeners();
     }
 
 }

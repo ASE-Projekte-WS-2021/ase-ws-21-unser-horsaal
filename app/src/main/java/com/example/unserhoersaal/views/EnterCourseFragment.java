@@ -68,7 +68,5 @@ public class EnterCourseFragment extends Fragment {
         KeyboardUtil.hideKeyboard(getActivity());
       }
     });
-    //enterCourseButton.setOnClickListener(v -> navController.navigate(
-    // R.id.action_enterCourseFragment_to_currentCourseFragment));
   }
 }
