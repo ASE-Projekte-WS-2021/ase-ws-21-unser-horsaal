@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.DatabaseEnterCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
@@ -64,7 +67,16 @@ public class EnterCourseFragment extends Fragment {
       @Override
       public void onClick(View view) {
         createCourseViewModel.setCourseId(enterCourseEditText.getText().toString());
-        navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+        enterCourseViewModel.saveUserCourses(enterCourseEditText.getText().toString())
+                .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
+                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.TRUE) {
+                    navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+                  }
+                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.FALSE){
+                    Toast.makeText(getActivity(), "Incorrect key",
+                            Toast.LENGTH_LONG).show();
+                  }
+        });
         KeyboardUtil.hideKeyboard(getActivity());
       }
     });

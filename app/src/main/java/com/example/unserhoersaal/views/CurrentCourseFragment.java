@@ -27,7 +27,7 @@ public class CurrentCourseFragment extends Fragment {
   CurrentCourseViewModel currentCourseViewModel;
   String courseId;
   RecyclerView recyclerView;
-  Message[] testArray = {};
+  Message[] emptyArray = {};
 
   public CurrentCourseFragment() {
     // Required empty public constructor
@@ -57,7 +57,6 @@ public class CurrentCourseFragment extends Fragment {
     currentCourseViewModel.getMessages().observe(getViewLifecycleOwner(), messages -> {
       updateUi(view, messages);
     });
-
     initUi(view);
   }
 
@@ -66,7 +65,7 @@ public class CurrentCourseFragment extends Fragment {
     sendQuestionButton = view.findViewById(R.id.currentCourseFragmentSendQuestionButton);
 
     recyclerView = view.findViewById(R.id.chatRecyclerView);
-    ChatAdapter chatAdapter = new ChatAdapter(testArray);
+    ChatAdapter chatAdapter = new ChatAdapter(emptyArray);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setItemAnimator(new DefaultItemAnimator());

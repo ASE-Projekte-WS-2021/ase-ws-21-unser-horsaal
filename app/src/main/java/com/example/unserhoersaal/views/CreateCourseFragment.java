@@ -14,8 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.DatabaseEnterCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 /** Fragment for course creation. */
@@ -23,6 +25,7 @@ public class CreateCourseFragment extends Fragment {
 
   EditText courseTitelEditText;
   Button createCourseButton;
+  EnterCourseViewModel enterCourseViewModel;
 
   private CreateCourseViewModel createCourseViewModel;
   private FirebaseAuth firebaseAuth;
@@ -49,6 +52,8 @@ public class CreateCourseFragment extends Fragment {
     firebaseAuth = FirebaseAuth.getInstance();
     createCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CreateCourseViewModel.class);
+    enterCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(EnterCourseViewModel.class);
     initUi(view);
     setupNavigation(view);
   }
@@ -71,12 +76,14 @@ public class CreateCourseFragment extends Fragment {
         String courseTitle = courseTitelEditText.getText().toString();
         String courseDescription = "";
 
-
-
-
         if (courseTitle.length() > 6) {
           createCourseViewModel.createCourse(courseTitle, courseDescription);
-          navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
+          enterCourseViewModel.saveUserCourses(createCourseViewModel.getCourseId())
+                  .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
+                    if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.TRUE) {
+                      navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
+                    }
+          });
           KeyboardUtil.hideKeyboard(getActivity());
         } else {
           Toast.makeText(getContext(), "The course name should be 6 characters or longer.",
