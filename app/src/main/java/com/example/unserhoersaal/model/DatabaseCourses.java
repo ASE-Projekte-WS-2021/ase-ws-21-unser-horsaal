@@ -18,9 +18,8 @@ import java.util.HashMap;
 public class DatabaseCourses {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
-    private final MutableLiveData<HashMap> userCourses = new MutableLiveData<HashMap>();
-    private HashMap<String, String> coursesHashMap = new HashMap<String, String>();
-    private ArrayList<String> courseIdList = new ArrayList<String>();
+    private final MutableLiveData<ArrayList<UserCourse>> userCourses = new MutableLiveData<ArrayList<UserCourse>>();
+    private ArrayList<UserCourse> userCoursesList = new ArrayList<UserCourse>();
     private FirebaseAuth firebaseAuth;
 
 
@@ -35,11 +34,11 @@ public class DatabaseCourses {
         ValueEventListener userCoursesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                courseIdList.clear();
+                userCoursesList.clear();
                 for (DataSnapshot userCourse : dataSnapshot.getChildren()) {
-                    coursesHashMap.put(userCourse.getKey(), userCourse.getValue(String.class));
+                    userCoursesList.add(new UserCourse(userCourse.getKey(), userCourse.getValue(String.class)));
                 }
-                userCourses.setValue(coursesHashMap);
+                userCourses.setValue(userCoursesList);
             }
 
             @Override
@@ -51,7 +50,7 @@ public class DatabaseCourses {
         databaseReference.child("User").child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(userCoursesListener);
     }
 
-    public MutableLiveData<HashMap> getUserCourses() {
+    public MutableLiveData<ArrayList<UserCourse>> getUserCourses() {
         return userCourses;
     }
 }

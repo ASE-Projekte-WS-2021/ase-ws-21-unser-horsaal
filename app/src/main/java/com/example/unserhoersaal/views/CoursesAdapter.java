@@ -1,11 +1,5 @@
 package com.example.unserhoersaal.views;
 
-
-
-import static android.content.Context.CLIPBOARD_SERVICE;
-
-import android.content.ClipboardManager;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,41 +7,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.Message;
+import com.example.unserhoersaal.model.UserCourse;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /** Coursesadapter. */
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
 
-    private HashMap<String, String> localDataSet;
-    private ArrayList<String> names = new ArrayList<String>();
-    private ArrayList<String> keys = new ArrayList<String>();
-    public static final SimpleDateFormat RECENT_FORMAT = new SimpleDateFormat("HH:mm");
-    public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");
+    private ArrayList<UserCourse> localDataSet;
+    private OnNoteListener onNoteListener;
+
 
     /** Viewholder. */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView courseNameTextView;
         private final TextView keyTextView;
         private final ImageView shareImageView;
+        OnNoteListener onNoteListener;
 
         /** Constructor. */
-        public ViewHolder(View view) {
+        public ViewHolder(View view, OnNoteListener onNoteListener) {
             super(view);
-
+            this.onNoteListener = onNoteListener;
             courseNameTextView = (TextView) view.findViewById(R.id.courseItemTitle);
             keyTextView = (TextView) view.findViewById(R.id.courseItemEnterNumber);
             shareImageView = (ImageView) view.findViewById(R.id.courseItemShareImageView);
 
-            shareImageView.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-
-                }
-            });
+            view.setOnClickListener(this);
         }
 
         public TextView getCourseNameTextView() {
@@ -57,15 +44,17 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         public TextView getKeyTextView() {
             return keyTextView;
         }
+
+        @Override
+        public void onClick(View v) {
+            onNoteListener.onNoteClick(getAdapterPosition());
+        }
     }
 
 
-    public CoursesAdapter(HashMap<String, String> dataSet) {
+    public CoursesAdapter(ArrayList<UserCourse> dataSet, OnNoteListener onNoteListener) {
         localDataSet = dataSet;
-        for (Map.Entry<String, String> entry : localDataSet.entrySet()) {
-            keys.add(entry.getKey());
-            names.add(entry.getValue());
-        }
+        this.onNoteListener = onNoteListener;
     }
 
     @Override
@@ -73,7 +62,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.simple_course_item, viewGroup, false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, onNoteListener);
     }
 
     @Override
@@ -82,14 +71,18 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         if (viewHolder.getKeyTextView() != null && viewHolder.getCourseNameTextView() != null) {
             System.out.println(viewHolder.getCourseNameTextView());
             System.out.println(viewHolder.getKeyTextView());
-            viewHolder.getCourseNameTextView().setText(names.get(position));
-            viewHolder.getKeyTextView().setText(keys.get(position));
+            viewHolder.getCourseNameTextView().setText(localDataSet.get(position).name);
+            viewHolder.getKeyTextView().setText(localDataSet.get(position).key);
         }
     }
 
     @Override
     public int getItemCount() {
         return localDataSet.size();
+    }
+
+    public interface OnNoteListener{
+        void onNoteClick(int position);
     }
 
 }

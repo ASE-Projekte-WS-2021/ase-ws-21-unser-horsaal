@@ -17,23 +17,23 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.Message;
+import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
-import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /** Courses. */
-public class CoursesFragment extends Fragment {
+public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteListener {
   private RecyclerView courseListRecycler;
   private Button enterNewCourseButton;
   private Button createNewCourseButton;
   private TextView titelTextView;
   private CoursesViewModel coursesViewModel;
+  private CreateCourseViewModel createCourseViewModel;
+  private ArrayList<UserCourse> userCourses;
+  private NavController navController;
 
   public CoursesFragment() {
     // Required empty public constructor
@@ -56,8 +56,11 @@ public class CoursesFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
+    createCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CreateCourseViewModel.class);
     coursesViewModel.getUserCourses().observe(getViewLifecycleOwner(), userCourses -> {
-      updateUi(view, userCourses);
+      this.userCourses = userCourses;
+      updateUi(view);
     });
     initUi(view);
     setupNavigation(view);
@@ -69,7 +72,7 @@ public class CoursesFragment extends Fragment {
     titelTextView = view.findViewById(R.id.coursesFragmentTitleTextView);
 
     courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
-    CoursesAdapter coursesAdapter = new CoursesAdapter(coursesViewModel.getEmptyCourses());
+    CoursesAdapter coursesAdapter = new CoursesAdapter(coursesViewModel.getEmptyCourses(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     courseListRecycler.setLayoutManager(layoutManager);
     courseListRecycler.setItemAnimator(new DefaultItemAnimator());
@@ -79,7 +82,7 @@ public class CoursesFragment extends Fragment {
   }
 
   private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
+    navController = Navigation.findNavController(view);
     enterNewCourseButton.setOnClickListener(v -> navController.navigate(
             R.id.action_coursesFragment_to_enterCourseFragment));
     createNewCourseButton.setOnClickListener(v -> navController.navigate(
@@ -89,19 +92,26 @@ public class CoursesFragment extends Fragment {
     KeyboardUtil.hideKeyboard(getActivity());
   }
 
-  private void updateUi(View view, HashMap userCourses) {
+  private void updateUi(View view) {
     if (userCourses.size() == 0){
       titelTextView.setText("Du bist noch keinen Kursen beigetreten");
     }else {
       titelTextView.setText("Bereits beigetretene Kurse");
     }
     if (userCourses != null) {
-      CoursesAdapter coursesAdapter = new CoursesAdapter(userCourses);
+      CoursesAdapter coursesAdapter = new CoursesAdapter(this.userCourses, this);
       RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
       courseListRecycler.setLayoutManager(layoutManager);
       courseListRecycler.setItemAnimator(new DefaultItemAnimator());
       courseListRecycler.setAdapter(coursesAdapter);
-      courseListRecycler.scrollToPosition(userCourses.size() - 1);
+      courseListRecycler.scrollToPosition(this.userCourses.size() - 1);
     }
+  }
+
+  @Override
+  public void onNoteClick(int position) {
+    createCourseViewModel.setCourseId(userCourses.get(position).key);
+    navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
+
   }
 }
