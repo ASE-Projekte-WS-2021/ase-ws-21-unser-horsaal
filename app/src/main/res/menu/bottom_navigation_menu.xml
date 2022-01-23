@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/placeholderFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_construction_24"
+        android:title="@string/bottom_navigation_menu_placeholder_string"
+        />
+    <item
+        android:id="@+id/coursesFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_library_books_24"
+        android:title="@string/bottom_navigation_menu_courses_string"
+        />
+    <item
+        android:id="@+id/profileFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="@string/bottom_navigation_menu_profile_string"
+        />
+
+</menu>

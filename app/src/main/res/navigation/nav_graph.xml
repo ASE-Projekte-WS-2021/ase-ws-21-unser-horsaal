@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.unserhoersaal.views.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_coursesFragment"
+            app:destination="@id/coursesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.unserhoersaal.views.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registrationFragment_to_coursesFragment"
+            app:destination="@id/coursesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/enterCourseFragment"
+        android:name="com.example.unserhoersaal.views.EnterCourseFragment"
+        android:label="fragment_enter_course"
+        tools:layout="@layout/fragment_enter_course" >
+        <action
+            android:id="@+id/action_enterCourseFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment"
+            app:popUpTo="@id/enterCourseFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/createCourseFragment"
+        android:name="com.example.unserhoersaal.views.CreateCourseFragment"
+        android:label="fragment_create_course"
+        tools:layout="@layout/fragment_create_course" >
+        <action
+            android:id="@+id/action_createCourseFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment"
+            app:popUpTo="@id/createCourseFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentCourseFragment"
+        android:name="com.example.unserhoersaal.views.CurrentCourseFragment"
+        android:label="fragment_current_course"
+        tools:layout="@layout/fragment_current_course" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.unserhoersaal.views.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/coursesFragment"
+        android:name="com.example.unserhoersaal.views.CoursesFragment"
+        android:label="fragment_courses"
+        tools:layout="@layout/fragment_courses">
+        <action
+            android:id="@+id/action_coursesFragment_to_createCourseFragment"
+            app:destination="@id/createCourseFragment" />
+        <action
+            android:id="@+id/action_coursesFragment_to_enterCourseFragment"
+            app:destination="@id/enterCourseFragment" />
+        <action
+            android:id="@+id/action_coursesFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_coursesFragment_to_placeholderFragment"
+            app:destination="@id/placeholderFragment" />
+        <action
+            android:id="@+id/action_coursesFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeholderFragment"
+        android:name="com.example.unserhoersaal.views.PlaceholderFragment"
+        android:label="fragment_placeholder"
+        tools:layout="@layout/fragment_placeholder" />
+</navigation>
