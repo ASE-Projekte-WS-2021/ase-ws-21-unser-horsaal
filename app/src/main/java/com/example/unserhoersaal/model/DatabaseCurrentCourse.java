@@ -17,7 +17,7 @@ public class DatabaseCurrentCourse {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
-    private ArrayList<Message> messagesList = new ArrayList<Message>();
+    private ArrayList<DatabaseCourses.Message> messagesList = new ArrayList<DatabaseCourses.Message>();
     private String courseId;
 
 
@@ -28,7 +28,7 @@ public class DatabaseCurrentCourse {
 
     public void sendMessage(String messageText) {
         Long time = System.currentTimeMillis();
-        Message message = new Message(messageText, time);
+        DatabaseCourses.Message message = new DatabaseCourses.Message(messageText, time);
         databaseReference.child("Courses").child(courseId).child("Messages").push().setValue(message);
     }
 
@@ -46,7 +46,7 @@ public class DatabaseCurrentCourse {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 messagesList.clear();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    messagesList.add(messageSnapshot.getValue(Message.class));
+                    messagesList.add(messageSnapshot.getValue(DatabaseCourses.Message.class));
                 }
                 messages.setValue(messagesList);
             }

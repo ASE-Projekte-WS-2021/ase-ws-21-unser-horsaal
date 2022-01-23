@@ -70,7 +70,9 @@ public class EnterCourseFragment extends Fragment {
         enterCourseViewModel.saveUserCourses(enterCourseEditText.getText().toString())
                 .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
                   if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.TRUE) {
-                    navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+                    if (navController.getCurrentDestination().getId() == R.id.enterCourseFragment){
+                      navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+                    }
                   }
                   if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.FALSE){
                     Toast.makeText(getActivity(), "Incorrect key",
