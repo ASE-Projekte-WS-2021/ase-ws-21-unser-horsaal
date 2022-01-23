@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,6 +26,7 @@ public class CurrentCourseFragment extends Fragment {
 
   EditText questionEditText;
   Button sendQuestionButton;
+  TextView courseKeyTextView;
   CurrentCourseViewModel currentCourseViewModel;
   String courseId;
   RecyclerView recyclerView;
@@ -57,13 +60,14 @@ public class CurrentCourseFragment extends Fragment {
     currentCourseViewModel.getMessages().observe(getViewLifecycleOwner(), messages -> {
       updateUi(view, messages);
     });
-    initUi(view);
+    initUi(view, courseId);
   }
 
-  private void initUi(View view) {
+  private void initUi(View view, String courseId) {
     questionEditText = view.findViewById(R.id.currentCourseFragmentQuestionEditText);
     sendQuestionButton = view.findViewById(R.id.currentCourseFragmentSendQuestionButton);
-
+    courseKeyTextView = view.findViewById(R.id.courseKeyTextView);
+    courseKeyTextView.setText(courseId);
     recyclerView = view.findViewById(R.id.chatRecyclerView);
     ChatAdapter chatAdapter = new ChatAdapter(emptyArray);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());

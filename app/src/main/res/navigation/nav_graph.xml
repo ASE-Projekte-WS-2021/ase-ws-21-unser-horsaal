@@ -82,6 +82,9 @@
         <action
             android:id="@+id/action_coursesFragment_to_placeholderFragment"
             app:destination="@id/placeholderFragment" />
+        <action
+            android:id="@+id/action_coursesFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeholderFragment"
