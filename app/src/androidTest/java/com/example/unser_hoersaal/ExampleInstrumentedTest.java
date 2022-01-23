@@ -1,4 +1,4 @@
-package com.example.unserhoersaal;
+package com.example.unser_hoersaal;
 
 import android.content.Context;
 
