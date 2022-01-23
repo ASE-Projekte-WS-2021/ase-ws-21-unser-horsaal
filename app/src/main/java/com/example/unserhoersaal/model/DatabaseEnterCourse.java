@@ -7,12 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ public class DatabaseEnterCourse {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
-    private ArrayList<Message> messagesList = new ArrayList<Message>();
+    private ArrayList<DatabaseCourses.Message> messagesList = new ArrayList<DatabaseCourses.Message>();
     private FirebaseAuth firebaseAuth;
     private final MutableLiveData<ThreeState> courseIdIsCorrect = new MutableLiveData<ThreeState>();
     public enum ThreeState {

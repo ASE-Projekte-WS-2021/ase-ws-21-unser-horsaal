@@ -80,7 +80,7 @@ public class CreateCourseFragment extends Fragment {
           createCourseViewModel.createCourse(courseTitle, courseDescription);
           enterCourseViewModel.saveUserCourses(createCourseViewModel.getCourseId())
                   .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                    if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.TRUE) {
+                    if (navController.getCurrentDestination().getId() == R.id.createCourseFragment){
                       navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
                     }
           });

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.Message;
+import com.example.unserhoersaal.model.DatabaseCourses;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class CurrentCourseFragment extends Fragment {
   CurrentCourseViewModel currentCourseViewModel;
   String courseId;
   RecyclerView recyclerView;
-  Message[] emptyArray = {};
+  DatabaseCourses.Message[] emptyArray = {};
 
   public CurrentCourseFragment() {
     // Required empty public constructor
@@ -87,7 +87,7 @@ public class CurrentCourseFragment extends Fragment {
 
   private void updateUi(View view, ArrayList messages) {
     if (messages != null) {
-      Message[] messagesArray = new Message[messages.size()];
+      DatabaseCourses.Message[] messagesArray = new DatabaseCourses.Message[messages.size()];
       messages.toArray(messagesArray);
       ChatAdapter chatAdapter = new ChatAdapter(messagesArray);
       RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
