@@ -28,6 +28,10 @@ public class LoggedInViewModel extends AndroidViewModel {
     authAppRepository.logOut();
   }
 
+  public FirebaseUser getCurrentUser() {
+    return authAppRepository.getCurrentUser();
+  }
+
   public MutableLiveData<FirebaseUser> getUserLiveData() {
     return userLiveData;
   }

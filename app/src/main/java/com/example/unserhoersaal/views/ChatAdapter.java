@@ -8,26 +8,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.Message;
+import com.example.unserhoersaal.model.DatabaseCourses;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**Class ChatAdapter.**/
-
+/** Chatadapter. */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
-  private Message[] localDataSet;
+  private DatabaseCourses.Message[] localDataSet;
   public static final SimpleDateFormat RECENT_FORMAT = new SimpleDateFormat("HH:mm");
   public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");
 
-  /**Class ViewHolder.**/
-
+  /** Viewholder. */
   public static class ViewHolder extends RecyclerView.ViewHolder {
     private final TextView message;
     private final TextView date;
 
-    /**Constructor ViewHolder.**/
-
+    /** Constructor. */
     public ViewHolder(View view) {
       super(view);
 
@@ -45,7 +42,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   }
 
 
-  public ChatAdapter(Message[] dataSet) {
+  public ChatAdapter(DatabaseCourses.Message[] dataSet) {
     localDataSet = dataSet;
   }
 

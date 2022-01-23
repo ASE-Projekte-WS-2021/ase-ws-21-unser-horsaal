@@ -37,7 +37,7 @@ public class EnterOrCreateCourseFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     initUi(view);
-    setupNavigation(view);
+    //setupNavigation(view);
   }
 
   private void initUi(View view) {
@@ -45,6 +45,7 @@ public class EnterOrCreateCourseFragment extends Fragment {
     createCourseCardView = view.findViewById(R.id.createCourseCardView);
   }
 
+  /*
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
     NavController navController = Navigation.findNavController(view);
@@ -55,4 +56,6 @@ public class EnterOrCreateCourseFragment extends Fragment {
               navController.navigate(R.id.action_enterOrCreateCourseFragment_to_createCourseFragment
               ));
   }
+
+   */
 }

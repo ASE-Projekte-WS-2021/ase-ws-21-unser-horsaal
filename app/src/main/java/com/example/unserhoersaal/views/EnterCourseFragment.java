@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,20 +15,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.DatabaseEnterCourse;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
-/** Class Description. */
+/** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
-  private EditText enterCourseEditText;
-  private Button enterCourseButton;
-  //TODO: this instance variable could be converted to
-  // a local variable although we need it later as a instance variable
-  private EnterCourseViewModel enterCourseViewModel;
-  private CreateCourseViewModel createCourseViewModel;
+  EditText enterCourseEditText;
+  Button enterCourseButton;
+  EnterCourseViewModel enterCourseViewModel;
+  CreateCourseViewModel createCourseViewModel;
 
-  /** Constructor Description. */
   public EnterCourseFragment() {
     // Required empty public constructor
   }
@@ -47,31 +48,40 @@ public class EnterCourseFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    this.enterCourseViewModel = new ViewModelProvider(
-            requireActivity()).get(EnterCourseViewModel.class);
-    this.createCourseViewModel = new ViewModelProvider(
-            requireActivity()).get(CreateCourseViewModel.class);
-
+    enterCourseViewModel = new ViewModelProvider(requireActivity()).get(EnterCourseViewModel.class);
+    createCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CreateCourseViewModel.class);
     initUi(view);
     setupNavigation(view);
   }
 
   private void initUi(View view) {
-    this.enterCourseEditText = view.findViewById(R.id.enterCourseFragmentCourseNumberEditText);
-    this.enterCourseButton = view.findViewById(R.id.enterCourseFragmentEnterButton);
+    enterCourseEditText = view.findViewById(R.id.enterCourseFragmentCourseNumberEditText);
+    enterCourseButton = view.findViewById(R.id.enterCourseFragmentEnterButton);
   }
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
     NavController navController = Navigation.findNavController(view);
-    //TODO: add logic to entering course
-    this.enterCourseButton.setOnClickListener(v -> {
-      createCourseViewModel.setCourseId(enterCourseEditText.getText().toString());
-      navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+    //todo add logic to entering course
+    enterCourseButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        createCourseViewModel.setCourseId(enterCourseEditText.getText().toString());
+        enterCourseViewModel.saveUserCourses(enterCourseEditText.getText().toString())
+                .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
+                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.TRUE) {
+                    if (navController.getCurrentDestination().getId() == R.id.enterCourseFragment){
+                      navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+                    }
+                  }
+                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.FALSE){
+                    Toast.makeText(getActivity(), "Incorrect key",
+                            Toast.LENGTH_LONG).show();
+                  }
+        });
+        KeyboardUtil.hideKeyboard(getActivity());
+      }
     });
-
-    this.enterCourseButton.setOnClickListener(v ->
-            navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment));
   }
-
 }
