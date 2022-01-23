@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.AuthAppRepository;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
 import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
@@ -39,6 +40,7 @@ public class LoginFragment extends Fragment {
   CheckBox keepLoggedInCheckBox;
   Button loginButton;
   String firebaseResult;
+  NavController navController;
 
   private LoggedInViewModel loggedInViewModel;
   private LoginRegisterViewModel loginRegisterViewModel;
@@ -50,6 +52,7 @@ public class LoginFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     loginRegisterViewModel = new ViewModelProvider(this).get(LoginRegisterViewModel.class);
+    loggedInViewModel = new ViewModelProvider(this).get(LoggedInViewModel.class);
     super.onCreate(savedInstanceState);
     DatabaseReference firebaseRef = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -88,6 +91,7 @@ public class LoginFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     initUi(view);
     setupNavigation(view);
+    checkIfLogged();
   }
 
   private void initUi(View view) {
@@ -101,7 +105,7 @@ public class LoginFragment extends Fragment {
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
+    navController = Navigation.findNavController(view);
 
     //todo add logic to login
     int toRegistrationFragment = R.id.action_loginFragment_to_registrationFragment;
@@ -113,15 +117,27 @@ public class LoginFragment extends Fragment {
             String password = userPasswordEditView.getText().toString();
             if (email.length() > 0 && password.length() > 0) {
               loginRegisterViewModel.login(email, password);
-              //TODO: onsuccess
-              navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-              KeyboardUtil.hideKeyboard(getActivity());
+              if (loggedInViewModel.getCurrentUser() != null) {
+                  navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+                  KeyboardUtil.hideKeyboard(getActivity());
+              }
+              else {
+                  String wrongInputMessage = "Email Address or Password is wrong";
+                  Toast.makeText(getContext(), wrongInputMessage, Toast.LENGTH_SHORT).show();
+              }
             } else {
               String emptyInputMessage = "Email Address and Password Must Be Entered";
               Toast.makeText(getContext(), emptyInputMessage, Toast.LENGTH_SHORT).show();
             }
         }
     });
+  }
+
+  private void checkIfLogged() {
+      if (loggedInViewModel.getCurrentUser() != null) {
+          navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+          KeyboardUtil.hideKeyboard(getActivity());
+      }
   }
 
 }

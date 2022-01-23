@@ -66,6 +66,10 @@ public class AuthAppRepository {
         loggedOutLiveData.postValue(true);
     }
 
+    public FirebaseUser getCurrentUser() {
+        return firebaseAuth.getCurrentUser();
+    }
+
     public MutableLiveData<FirebaseUser> getUserLiveData() {
         return userLiveData;
     }
