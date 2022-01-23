@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.unserhoersaal.model.AuthAppRepository;
+import com.example.unserhoersaal.views.LoginFragment;
 import com.google.firebase.auth.FirebaseUser;
 
 //source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/blob/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/view/LoginRegisterFragment.java [30.12.2021]
@@ -21,8 +22,8 @@ public class LoginRegisterViewModel extends AndroidViewModel {
         userLiveData = authAppRepository.getUserLiveData();
     }
 
-    public void login(String email, String password) {
-        authAppRepository.login(email, password);
+    public void login(String email, String password, LoginFragment listener) {
+        authAppRepository.login(email, password, listener);
     }
 
     public void register(String email, String password) {

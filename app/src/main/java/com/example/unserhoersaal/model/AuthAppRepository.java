@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.unserhoersaal.views.LoginFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,30 +34,26 @@ public class AuthAppRepository {
         }
     }
 
-    public void login(String email, String password) {
+    public void login(String email, String password, LoginFragment listener) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            userLiveData.postValue(firebaseAuth.getCurrentUser());
-                        } else {
-                            Toast.makeText(application.getApplicationContext(), "Login Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(application.getMainExecutor(), task -> {
+                    if (task.isSuccessful()) {
+                        userLiveData.postValue(firebaseAuth.getCurrentUser());
+                        listener.loginResult(true);
+                    } else {
+                        //Toast.makeText(application.getApplicationContext(), "Login Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        listener.loginResult(false);
                     }
                 });
     }
 
     public void register(String email, String password) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            userLiveData.postValue(firebaseAuth.getCurrentUser());
-                        } else {
-                            Toast.makeText(application.getApplicationContext(), "Registration Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(application.getMainExecutor(), task -> {
+                    if (task.isSuccessful()) {
+                        userLiveData.postValue(firebaseAuth.getCurrentUser());
+                    } else {
+                        Toast.makeText(application.getApplicationContext(), "Registration Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.interfaces.LoginInterface;
 import com.example.unserhoersaal.model.AuthAppRepository;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
@@ -31,7 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
  * initiates the UI of the login area, the login function
  * and the navigation to the course page.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements LoginInterface {
 
   EditText userEmailEditView;
   EditText userPasswordEditView;
@@ -116,15 +117,7 @@ public class LoginFragment extends Fragment {
             String email = userEmailEditView.getText().toString();
             String password = userPasswordEditView.getText().toString();
             if (email.length() > 0 && password.length() > 0) {
-              loginRegisterViewModel.login(email, password);
-              if (loggedInViewModel.getCurrentUser() != null) {
-                  navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-                  KeyboardUtil.hideKeyboard(getActivity());
-              }
-              else {
-                  String wrongInputMessage = "Email Address or Password is wrong";
-                  Toast.makeText(getContext(), wrongInputMessage, Toast.LENGTH_SHORT).show();
-              }
+              loginRegisterViewModel.login(email, password, LoginFragment.this);
             } else {
               String emptyInputMessage = "Email Address and Password Must Be Entered";
               Toast.makeText(getContext(), emptyInputMessage, Toast.LENGTH_SHORT).show();
@@ -140,4 +133,15 @@ public class LoginFragment extends Fragment {
       }
   }
 
+  @Override
+  public void loginResult(Boolean result) {
+    if (result) {
+      navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+      KeyboardUtil.hideKeyboard(getActivity());
+    }
+    else {
+      String wrongInputMessage = "Email Address or Password is wrong!";
+      Toast.makeText(getContext(), wrongInputMessage, Toast.LENGTH_SHORT).show();
+    }
+  }
 }
