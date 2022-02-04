@@ -38,7 +38,6 @@ public class LoginFragment extends Fragment implements LoginInterface {
   EditText userPasswordEditView;
   TextView registrationTextView;
   TextView forgotPasswordTextView;
-  CheckBox keepLoggedInCheckBox;
   Button loginButton;
   String firebaseResult;
   NavController navController;

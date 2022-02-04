@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class RegistrationFragment extends Fragment {
   EditText repeatPasswordEditText;
   CheckBox checkBox;
   Button registrationButton;
+  TextView loginTextView;
 
   private LoginRegisterViewModel loginRegisterViewModel;
 
@@ -74,14 +76,18 @@ public class RegistrationFragment extends Fragment {
     userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
     passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
     repeatPasswordEditText = view.findViewById(R.id.registrationFragmentRepeatPasswordEditText);
-    checkBox = view.findViewById(R.id.registrationFragmentCheckBox);
     registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
+    loginTextView = view.findViewById(R.id.registrationFragmentLoginTextView);
   }
 
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
     NavController navController = Navigation.findNavController(view);
+
+    loginTextView.setOnClickListener(v -> {
+      navController.navigate(R.id.action_registrationFragment_to_loginFragment);
+    });
 
     // todo add logic to registration
     registrationButton.setOnClickListener(new View.OnClickListener() {
