@@ -82,7 +82,6 @@ public class LoginFragment extends Fragment {
     this.userPasswordEditView = view.findViewById(R.id.loginFragmentPasswordEditText);
     this.registrationTextView = view.findViewById(R.id.loginFragmentRegistrationTextView);
     this.forgotPasswordTextView = view.findViewById(R.id.loginFragmentForgotPasswortTextView);
-    this.keepLoggedInCheckBox = view.findViewById(R.id.loginFragmentCheckBox);
     this.loginButton = view.findViewById(R.id.loginFragmentLoginButton);
   }
 

@@ -24,24 +24,5 @@ public class MainActivity extends AppCompatActivity {
     if (getSupportActionBar() != null) {
       getSupportActionBar().hide();
     }
-    setupBottomNavigationMenu();
   }
-
-  private void setupBottomNavigationMenu() {
-    NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-            .findFragmentById(R.id.nav_host_fragment);
-    NavController navController = navHostFragment.getNavController();
-    BottomNavigationView bottomNavigationView =
-            findViewById(R.id.activity_main_bottom_navigation_view);
-    NavigationUI.setupWithNavController(bottomNavigationView, navController);
-    navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-      if (destination.getId() == R.id.loginFragment
-              || destination.getId() == R.id.registrationFragment) {
-        bottomNavigationView.setVisibility(View.GONE);
-      } else {
-        bottomNavigationView.setVisibility(View.VISIBLE);
-      }
-    });
-  }
-
 }
