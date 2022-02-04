@@ -12,4 +12,11 @@
         <item name="boxStrokeColor">@color/app_blue</item>
         <item name="hintTextColor">@color/app_blue</item>
     </style>
+
+    <style name="loginRegistrationTitle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">44sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
