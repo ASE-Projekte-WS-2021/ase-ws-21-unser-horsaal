@@ -100,7 +100,6 @@ public class LoginFragment extends Fragment implements LoginInterface {
     userPasswordEditView = view.findViewById(R.id.loginFragmentPasswordEditText);
     registrationTextView = view.findViewById(R.id.loginFragmentRegistrationTextView);
     forgotPasswordTextView = view.findViewById(R.id.loginFragmentForgotPasswortTextView);
-    keepLoggedInCheckBox = view.findViewById(R.id.loginFragmentCheckBox);
     loginButton = view.findViewById(R.id.loginFragmentLoginButton);
   }
 
