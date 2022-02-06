@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/coursesToolbarSearch"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="@string/toolbar_search_string"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/coursesToolbarFilter"
+        android:title="@string/toolbar_filter_string"
+        android:icon="@drawable/ic_baseline_filter_list_24"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/coursesToolbarProfile"
+        android:title="@string/toolbar_profile_string" />
+    <item
+        android:id="@+id/coursesToolbarLogout"
+        android:title="@string/toolbar_logout_string" />
+</menu>
