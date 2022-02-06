@@ -23,7 +23,6 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView courseNameTextView;
         private final TextView keyTextView;
-        private final ImageView shareImageView;
         OnNoteListener onNoteListener;
 
         /** Constructor. */
@@ -32,7 +31,6 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
             this.onNoteListener = onNoteListener;
             courseNameTextView = (TextView) view.findViewById(R.id.courseItemTitle);
             keyTextView = (TextView) view.findViewById(R.id.courseItemEnterNumber);
-            shareImageView = (ImageView) view.findViewById(R.id.courseItemShareImageView);
 
             view.setOnClickListener(this);
         }
