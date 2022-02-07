@@ -18,14 +18,19 @@ import com.example.unserhoersaal.model.DatabaseEnterCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 /** Fragment for course creation. */
 public class CreateCourseFragment extends Fragment {
 
   EditText courseTitelEditText;
+  EditText courseDescriptionEditText;
+  EditText courseInstitutionEditText;
   Button createCourseButton;
   EnterCourseViewModel enterCourseViewModel;
+  MaterialToolbar toolbar;
+  NavController navController;
   private CreateCourseViewModel createCourseViewModel;
   private FirebaseAuth firebaseAuth;
 
@@ -55,16 +60,20 @@ public class CreateCourseFragment extends Fragment {
             .get(EnterCourseViewModel.class);
     initUi(view);
     setupNavigation(view);
+    setupToolbar();
   }
 
   private void initUi(View view) {
     courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
+    courseDescriptionEditText = view.findViewById(R.id.createCourseFragmentCourseDescriptionEditText);
+    courseInstitutionEditText = view.findViewById(R.id.createCourseFragmentCourseInstitutionEditText);
     createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
+    toolbar = view.findViewById(R.id.createCourseToolbar);
   }
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
+    navController = Navigation.findNavController(view);
 
     //todo add logic to login
     //createCourseButton.setOnClickListener(v ->
@@ -89,6 +98,13 @@ public class CreateCourseFragment extends Fragment {
                   Toast.LENGTH_SHORT).show();
         }
       }
+    });
+  }
+
+  private void setupToolbar(){
+    toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    toolbar.setNavigationOnClickListener(v -> {
+      navController.navigate(R.id.action_createCourseFragment_to_coursesFragment);
     });
   }
 }

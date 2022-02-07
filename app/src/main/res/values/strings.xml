@@ -68,4 +68,6 @@
     <string name="enter_course_fragment_course_institution">Institution</string>
     <string name="enter_course_fragment_course_description">Dieser Kurs richtet sich an Masterstudierende der Medieninformatik an der Universität Regensburg. Es werden Inhalte aus dem Software-Engineering vermittelt.</string>
     <string name="enter_course_fragment_enter_button_string">Beitreten</string>
+    <string name="create_course_fragment_course_description">Kursbeschreibung</string>
+    <string name="create_course_fragment_course_institution">Institution</string>
 </resources>
