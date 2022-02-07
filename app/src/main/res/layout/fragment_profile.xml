@@ -6,114 +6,167 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.ProfileFragment"
     android:orientation="vertical"
-    android:background="@drawable/app_background">
+    android:background="@color/app_background">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/profileFragmentToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/app_blue"
+        app:titleTextColor="@color/white"
+        app:title="Profil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="16dp">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profileFragmentImageConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="32dp"
+        android:background="@color/app_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentToolbar">
+
+        <ImageView
+            android:id="@+id/profileFragmentProfileImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_baseline_account_circle_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/profileFragmentNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_fragment_name_string"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileFragmentImageConstraintLayout"/>
+
+    <TextView
+        android:id="@+id/profileFragmentUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/profile_fragment_name_string"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentImageConstraintLayout" />
+
+    <TextView
+        android:id="@+id/profileFragmentInstitutionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/profile_fragment_institution_string"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileFragmentNameTextView" />
+
+    <TextView
+        android:id="@+id/profileFragmentInstitution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Universität Regensburg"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentInstitutionTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentInstitutionTextView" />
+
+        <TextView
+            android:id="@+id/profileFragmentEmailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="32dp"
+            android:text="@string/profile_fragment_email_title"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@id/profileFragmentInstitutionTextView"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/profileFragmentUserEmailTextField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:layout_marginEnd="32dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentEmailTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentEmailTitle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/profileFragmentUserEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="16dp">
+            android:focusable="false"
+            android:singleLine="true"
+            android:text="@string/profile_fragment_example_email"
+            android:gravity="center_vertical"
+            android:paddingBottom="16dp"/>
 
-            <TextView
-                android:id="@+id/profileFragmentTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/profile_fragment_title_string"
-                android:textAlignment="center"
-                android:textSize="32sp"
-                android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/profileFragmentEmailTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/profile_fragment_email_title"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/profileFragmentPasswordTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp"
+        android:text="@string/profile_fragment_password_title"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentEmailTitle"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/profileFragmentUserEmailTextField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/profileFragmentExamplePasswordTextField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:layout_marginEnd="32dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentUserEmailTextField">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/profileFragmentUserEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
-                    android:singleLine="true"
-                    android:text="@string/profile_fragment_example_email"
-                    android:focusable="false"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/profileFragmentExamplePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:text="@string/profile_fragment_example_email" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/profileFragmentPasswordTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/profile_fragment_password_title"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/profileFragmentExamplePasswordTextField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:endIconMode="password_toggle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/profileFragmentExamplePassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
-                    android:singleLine="true"
-                    android:text="@string/profile_fragment_example_email"
-                    android:inputType="textPassword"
-                    android:focusable="false"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/profileFragmentEditProfileButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/profile_fragment_edit_profile_button_string"
-                app:icon="@drawable/ic_baseline_create_24"
-                app:iconGravity="textStart"
-                android:layout_marginTop="32dp"
-                app:cornerRadius="16dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/profileFragmentLogoutButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/profile_fragment_logout_button_string"
-                app:icon="@drawable/ic_baseline_logout_24"
-                app:iconGravity="textStart"
-                android:layout_marginTop="16dp"
-                app:cornerRadius="16dp"/>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/profileFragmentFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_create_24"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white"
+        style="@style/fabStyle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
