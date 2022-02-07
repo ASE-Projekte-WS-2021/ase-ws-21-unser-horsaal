@@ -70,4 +70,10 @@
     <string name="enter_course_fragment_enter_button_string">Beitreten</string>
     <string name="create_course_fragment_course_description">Kursbeschreibung</string>
     <string name="create_course_fragment_course_institution">Institution</string>
+    <string name="thread_item_likes_string">Likes</string>
+    <string name="thread_item_replies_string">Antworten</string>
+    <string name="thread_item_example_question">Dies ist eine beispielhafte Frage</string>
+    <string name="thread_item_example_question_description">Dies ist eine beispielhafte, ausformulierte Fragestellung für ein Thread-Item. Sie ist idealerweise in der Zeichenanzahl begrenzt, da das Item sonst zu lange wird. Noch mehr Text um zu sehen wie sich das Textfeld dann verhält. Bricht es von selbst ab? Oder funktioniert danach wieder irgendetwas nicht mehr richtig?</string>
+    <string name="thread_item_example_date">17:54</string>
+    <string name="thread_item_example_author">Susanne Baum</string>
 </resources>
