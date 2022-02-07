@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 /** Fragment for course creation. */
 public class CreateCourseFragment extends Fragment {
 
+  private static final String TAG = "CreateCourseFragment";
+
   private EditText courseTitelEditText;
   private Button createCourseButton;
   private EnterCourseViewModel enterCourseViewModel;

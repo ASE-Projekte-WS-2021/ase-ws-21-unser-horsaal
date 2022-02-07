@@ -10,6 +10,8 @@ import com.example.unserhoersaal.repository.EnterCourseRepository;
 
 public class EnterCourseViewModel extends ViewModel {
 
+    private static final String TAG = "EnterCourseViewModel";
+
     private EnterCourseRepository enterCourseRepository;
 
     public EnterCourseViewModel() {

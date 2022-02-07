@@ -12,6 +12,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 /** Class description. */
 public class LoggedInViewModel extends AndroidViewModel {
+
+  private static final String TAG = "LoggedInViewModel";
+
   private AuthAppRepository authAppRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
   private MutableLiveData<Boolean> loggedOutLiveData;

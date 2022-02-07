@@ -20,6 +20,8 @@ import java.util.List;
 
 public class CurrentCourseRepository {
 
+  private static final String TAG = "CurrentCourseRepo";
+
   private static CurrentCourseRepository instance;
   private ArrayList<Message> messagesList = new ArrayList<Message>();
   private MutableLiveData<List<Message>> messages = new MutableLiveData<>();

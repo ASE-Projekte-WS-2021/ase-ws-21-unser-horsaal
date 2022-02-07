@@ -12,6 +12,9 @@ import java.util.List;
 
 
 public class CoursesViewModel extends ViewModel {
+
+    private static final String TAG = "CoursesViewModel";
+
     private CoursesRepository coursesRepository;
     private MutableLiveData<List<UserCourse>> mUserCourses;
 

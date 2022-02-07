@@ -23,6 +23,8 @@ import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
+  private static final String TAG = "EnterCourseFragment";
+
   private EditText enterCourseEditText;
   private Button enterCourseButton;
   private EnterCourseViewModel enterCourseViewModel;

@@ -13,6 +13,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 /** Class Description. */
 public class LoginRegisterViewModel extends AndroidViewModel {
+
+  private static final String TAG = "LoginRegisterViewModel";
+
   private final AuthAppRepository authAppRepository;
   private final MutableLiveData<FirebaseUser> userLiveData;
 

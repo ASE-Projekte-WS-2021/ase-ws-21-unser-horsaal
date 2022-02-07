@@ -11,6 +11,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 /** Class Description. */
 public class AuthAppRepository {
+
+  private static final String TAG = "AuthAppRepo";
+
   private final Application application;
   private final FirebaseAuth firebaseAuth;
   private final MutableLiveData<FirebaseUser> userLiveData;

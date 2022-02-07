@@ -17,6 +17,8 @@ import java.util.List;
 /** Coursesadapter. */
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
 
+    private static final String TAG = "CoursesAdapter";
+
     private List<UserCourse> localDataSet = new ArrayList<>();
     private OnNoteListener onNoteListener;
 

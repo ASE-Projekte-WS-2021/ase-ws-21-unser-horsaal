@@ -9,6 +9,9 @@ import com.google.firebase.database.FirebaseDatabase;
 /**Class creates a course and saves it in Firebase.**/
 
 public class CourseCreationRepository {
+
+  private static final String TAG = "CourseCreationRepo";
+
   private FirebaseDatabase firebaseDatabase;
   private DatabaseReference databaseReference;
   private String courseId;

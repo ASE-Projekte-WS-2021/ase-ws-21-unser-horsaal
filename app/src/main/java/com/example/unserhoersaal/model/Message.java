@@ -3,6 +3,9 @@ package com.example.unserhoersaal.model;
 /**Class represent the message model.**/
 
 public class Message {
+
+  private static final String TAG = "Message";
+
   public String messageText;
   public Long time;
 

@@ -30,6 +30,9 @@ import java.util.List;
 
 /** Courses. */
 public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteListener {
+
+  private static final String TAG = "CoursesFragment";
+
   private RecyclerView courseListRecycler;
   private Button enterNewCourseButton;
   private Button createNewCourseButton;

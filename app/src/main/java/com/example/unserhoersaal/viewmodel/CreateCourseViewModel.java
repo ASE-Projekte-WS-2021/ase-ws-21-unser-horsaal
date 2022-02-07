@@ -7,6 +7,9 @@ import com.example.unserhoersaal.repository.CourseCreationRepository;
 /**Class transfers data from CourseCreationRepository to CreateCourseFragment and viceversa.**/
 
 public class CreateCourseViewModel extends ViewModel {
+
+  private static final String TAG = "CreateCourseViewModel";
+
   private CourseCreationRepository courseCreationRepository;
   private final MutableLiveData<String> courseId = new MutableLiveData<String>();
 

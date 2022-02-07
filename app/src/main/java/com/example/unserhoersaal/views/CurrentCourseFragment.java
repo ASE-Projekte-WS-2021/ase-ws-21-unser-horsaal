@@ -28,6 +28,8 @@ import java.util.List;
 /** Fragment for current course.*/
 public class CurrentCourseFragment extends Fragment {
 
+  private static final String TAG = "CurrentCourseFragment";
+
   private EditText questionEditText;
   private Button sendQuestionButton;
   private TextView courseKeyTextView;

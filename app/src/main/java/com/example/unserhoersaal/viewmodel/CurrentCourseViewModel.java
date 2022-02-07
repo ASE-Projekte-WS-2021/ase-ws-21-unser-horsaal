@@ -13,6 +13,9 @@ import java.util.List;
 
 
 public class CurrentCourseViewModel extends ViewModel {
+
+  private static final String TAG = "CurrentCourseViewModel";
+
   private CurrentCourseRepository currentCourseRepository;
   private MutableLiveData<List<Message>> mMessages;
   private String courseID;

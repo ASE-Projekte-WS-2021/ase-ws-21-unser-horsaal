@@ -33,6 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class LoginFragment extends Fragment implements LoginInterface {
 
+  private static final String TAG = "LoginFragment";
+
   EditText userEmailEditView;
   EditText userPasswordEditView;
   TextView registrationTextView;

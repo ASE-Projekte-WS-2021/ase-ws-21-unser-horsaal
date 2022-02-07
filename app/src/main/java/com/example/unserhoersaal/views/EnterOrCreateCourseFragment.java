@@ -14,6 +14,9 @@ import com.example.unserhoersaal.R;
 
 /** Class description.*/
 public class EnterOrCreateCourseFragment extends Fragment {
+
+  private static final String TAG = "EnterOrCreateFragment";
+
   CardView enterCourseCardView;
   CardView createCourseCardView;
 

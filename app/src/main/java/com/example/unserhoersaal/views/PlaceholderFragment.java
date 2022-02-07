@@ -12,6 +12,8 @@ import com.example.unserhoersaal.R;
 /** Placeholder for future feature.*/
 public class PlaceholderFragment extends Fragment {
 
+  private static final String TAG = "PlaceholderFragment";
+
   public PlaceholderFragment() {
     // Required empty public constructor
   }

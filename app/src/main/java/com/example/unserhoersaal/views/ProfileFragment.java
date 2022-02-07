@@ -21,6 +21,9 @@ import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
 
 /** Profile page. */
 public class ProfileFragment extends Fragment {
+
+  private static final String TAG = "ProfileFragment";
+
   private EditText userEmailEditText;
   private EditText userPasswordEditText;
   private Button editProfileButton;

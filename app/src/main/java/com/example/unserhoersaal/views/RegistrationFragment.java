@@ -25,6 +25,9 @@ import com.google.firebase.auth.FirebaseUser;
  * and the navigation to the course page.
  */
 public class RegistrationFragment extends Fragment {
+
+  private static final String TAG = "RegistrationFragment";
+
   EditText userEmailEditText;
   EditText passwordEditText;
   EditText repeatPasswordEditText;

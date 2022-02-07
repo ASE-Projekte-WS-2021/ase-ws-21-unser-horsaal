@@ -1,6 +1,9 @@
 package com.example.unserhoersaal.model;
 
 public class UserCourse {
+
+    private static final String TAG = "UserCourse";
+
     public String key;
     public String name;
 

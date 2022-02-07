@@ -18,6 +18,8 @@ import java.util.List;
 /** Chatadapter. */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
+  private static final String TAG = "ChatAdapter";
+
   private List<Message> localDataSet = new ArrayList<>();
   public static final SimpleDateFormat RECENT_FORMAT = new SimpleDateFormat("HH:mm");
   public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");

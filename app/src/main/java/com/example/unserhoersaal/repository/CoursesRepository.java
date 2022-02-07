@@ -21,6 +21,8 @@ import java.util.List;
 
 public class CoursesRepository {
 
+    private static final String TAG = "CoursesRepo";
+
     private static CoursesRepository instance;
     private ArrayList<UserCourse> userCoursesList = new ArrayList<UserCourse>();
     private MutableLiveData<List<UserCourse>> courses = new MutableLiveData<>();

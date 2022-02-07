@@ -17,6 +17,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class EnterCourseRepository {
+
+    private static final String TAG = "EnterCourseRepo";
+
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
