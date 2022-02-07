@@ -11,6 +11,7 @@
     <color name="grey">#FFCFCFCF</color>
     <color name="app_background">#E2E2E2</color>
     <color name="app_blue">#1E98D7</color>
-    <color name="green">#00FF0A</color>
+    <color name="light_green">#00FF09</color>
+    <color name="green">#008805</color>
     <color name="orange">#FFBA00</color>
 </resources>
