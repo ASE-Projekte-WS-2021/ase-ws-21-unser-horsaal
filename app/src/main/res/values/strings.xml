@@ -21,7 +21,7 @@
     <string name="create_course_string">Kurs erstellen</string>
     <string name="create_course_caption">Kurs, dem andere Nutzer über einen generierten Code beitreten können, erstellen</string>
     <string name="enter_course_fragment_edit_text">Kursnummer eingeben</string>
-    <string name="enter_course_fragment_button_string">Beitreten</string>
+    <string name="enter_course_fragment_button_string">Kurs suchen</string>
     <string name="create_course_fragment_caption_string">Hier können Sie ganz einfach einen Kurs erstellen, dem über die generierte Nummer beigetreten werden kann</string>
     <string name="create_course_generate_number">Nummer generieren</string>
     <string name="create_course_create_button">Erstellen</string>
@@ -61,4 +61,11 @@
     <string name="edit_profile_fragment_current_password">Aktuelles Passwort</string>
     <string name="edit_profile_fragment_new_password">Neues Passwort</string>
     <string name="edit_profile_toolbar_save">Speichern</string>
+    <string name="enter_course_fragment_or_string">Oder</string>
+    <string name="enter_course_fragment_enter_via_qr_code">Via Qr-Code beitreten</string>
+    <string name="enter_course_fragment_course_titel">Kurstitel</string>
+    <string name="enter_course_fragment_course_creator">Kursersteller</string>
+    <string name="enter_course_fragment_course_institution">Institution</string>
+    <string name="enter_course_fragment_course_description">Dieser Kurs richtet sich an Masterstudierende der Medieninformatik an der Universität Regensburg. Es werden Inhalte aus dem Software-Engineering vermittelt.</string>
+    <string name="enter_course_fragment_enter_button_string">Beitreten</string>
 </resources>
