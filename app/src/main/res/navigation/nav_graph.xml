@@ -103,6 +103,9 @@
         <action
             android:id="@+id/action_coursesFragment_to_currentCourseFragment"
             app:destination="@id/currentCourseFragment" />
+        <action
+            android:id="@+id/action_coursesFragment_to_courseHistoryFragment"
+            app:destination="@id/courseHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -113,6 +116,17 @@
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment"
             app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseHistoryFragment"
+        android:name="com.example.unserhoersaal.views.CourseHistoryFragment"
+        android:label="fragment_course_history"
+        tools:layout="@layout/fragment_course_history" >
+        <action
+            android:id="@+id/action_courseHistoryFragment_to_coursesFragment"
+            app:destination="@id/coursesFragment"
+            app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>
