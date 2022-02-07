@@ -97,7 +97,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/threadItemDate"
+        android:id="@+id/threadItemTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/thread_item_example_date"

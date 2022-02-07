@@ -76,4 +76,9 @@
     <string name="thread_item_example_question_description">Dies ist eine beispielhafte, ausformulierte Fragestellung für ein Thread-Item. Sie ist idealerweise in der Zeichenanzahl begrenzt, da das Item sonst zu lange wird. Noch mehr Text um zu sehen wie sich das Textfeld dann verhält. Bricht es von selbst ab? Oder funktioniert danach wieder irgendetwas nicht mehr richtig?</string>
     <string name="thread_item_example_date">17:54</string>
     <string name="thread_item_example_author">Susanne Baum</string>
+    <string name="answer_item_example_time">18:45</string>
+    <string name="answer_item_example_author">David Peng</string>
+    <string name="answer_item_example_answer">Dies ist eine beispielhafte Antwort, die zeigen soll, wie sich das Textfeld bei einer längeren Antwort verhält. Funktioniert der Zeilenumbruch richtig, schaut alles geordnet aus und so weiter und so fort.</string>
+    <string name="answer_item_like_example">35</string>
+    <string name="answer_item_dislike_example">2</string>
 </resources>
