@@ -7,15 +7,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserCourse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /** Coursesadapter. */
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
 
-    private ArrayList<UserCourse> localDataSet;
+    private List<UserCourse> localDataSet = new ArrayList<>();
     private OnNoteListener onNoteListener;
 
 
@@ -52,7 +54,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
     }
 
 
-    public CoursesAdapter(ArrayList<UserCourse> dataSet, OnNoteListener onNoteListener) {
+    public CoursesAdapter(List<UserCourse> dataSet, OnNoteListener onNoteListener) {
         localDataSet = dataSet;
         this.onNoteListener = onNoteListener;
     }

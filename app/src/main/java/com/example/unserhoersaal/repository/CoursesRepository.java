@@ -2,55 +2,68 @@ package com.example.unserhoersaal.repository;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserCourse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class CoursesRepository {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList<UserCourse>> userCourses = new MutableLiveData<ArrayList<UserCourse>>();
-    private ArrayList<UserCourse> userCoursesList = new ArrayList<UserCourse>();
     private FirebaseAuth firebaseAuth;
 
+    private static CoursesRepository instance;
+    private ArrayList<UserCourse> userCoursesList = new ArrayList<UserCourse>();
+    MutableLiveData<List<UserCourse>> courses = new MutableLiveData<>();
 
-    public CoursesRepository() {
-        this.firebaseDB = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app");
-        this.databaseReference = firebaseDB.getReference();
-        this.firebaseAuth = FirebaseAuth.getInstance();
-        setupUserCoursesListener();
+    public static CoursesRepository getInstance(){
+        if(instance == null){
+            instance = new CoursesRepository();
+        }
+        return instance;
     }
 
-    public void setupUserCoursesListener() {
-        ValueEventListener userCoursesListener = new ValueEventListener() {
+    public MutableLiveData<List<UserCourse>> getUserCourses(){
+        if(userCoursesList.size() == 0) {
+            setUserCourses();
+        }
+
+        courses.setValue(userCoursesList);
+        return courses;
+    }
+
+    public void setUserCourses(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        Query query = reference.child("User").child(auth.getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userCoursesList.clear();
-                for (DataSnapshot userCourse : dataSnapshot.getChildren()) {
-                    userCoursesList.add(new UserCourse(userCourse.getKey(), userCourse.getValue(String.class)));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    userCoursesList.add(new UserCourse(snapshot.getKey(), snapshot.getValue(String.class)));
                 }
-                userCourses.setValue(userCoursesList);
+                courses.postValue(userCoursesList);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        databaseReference.child("User").child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(userCoursesListener);
-    }
+            public void onCancelled(@NonNull DatabaseError error) {
 
-    public MutableLiveData<ArrayList<UserCourse>> getUserCourses() {
-        return userCourses;
+            }
+        });
     }
 }
