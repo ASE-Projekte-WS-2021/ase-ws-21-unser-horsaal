@@ -20,10 +20,6 @@ import java.util.List;
 
 
 public class CoursesRepository {
-    private FirebaseDatabase firebaseDB;
-    private DatabaseReference databaseReference;
-    private final MutableLiveData<ArrayList<UserCourse>> userCourses = new MutableLiveData<ArrayList<UserCourse>>();
-    private FirebaseAuth firebaseAuth;
 
     private static CoursesRepository instance;
     private ArrayList<UserCourse> userCoursesList = new ArrayList<UserCourse>();
