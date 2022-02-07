@@ -3,21 +3,21 @@ package com.example.unserhoersaal.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.DatabaseCourseCreation;
-import com.example.unserhoersaal.model.DatabaseEnterCourse;
+
+import com.example.unserhoersaal.repository.EnterCourseRepository;
 
 /**Class EnterCourseViewModel.**/
 
 public class EnterCourseViewModel extends ViewModel {
 
-    private DatabaseEnterCourse databaseEnterCourse;
+    private EnterCourseRepository enterCourseRepository;
 
     public EnterCourseViewModel() {
-        databaseEnterCourse = new DatabaseEnterCourse();
+        enterCourseRepository = new EnterCourseRepository();
     }
 
-    public MutableLiveData<DatabaseEnterCourse.ThreeState> saveUserCourses(String courseId){
-        return databaseEnterCourse.saveUserCourses(courseId);
+    public MutableLiveData<EnterCourseRepository.ThreeState> saveUserCourses(String courseId){
+        return enterCourseRepository.saveUserCourses(courseId);
     }
 
 }

@@ -2,28 +2,28 @@ package com.example.unserhoersaal.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.DatabaseCourseCreation;
+import com.example.unserhoersaal.repository.CourseCreationRepository;
 
-/**Class transfers data from DatabaseCourseCreation to CreateCourseFragment and viceversa.**/
+/**Class transfers data from CourseCreationRepository to CreateCourseFragment and viceversa.**/
 
 public class CreateCourseViewModel extends ViewModel {
-  private DatabaseCourseCreation databaseCourseCreation;
+  private CourseCreationRepository courseCreationRepository;
   private final MutableLiveData<String> courseId = new MutableLiveData<String>();
 
 
   public CreateCourseViewModel() {
-    databaseCourseCreation = new DatabaseCourseCreation();
+    courseCreationRepository = new CourseCreationRepository();
   }
 
   public void createCourse(String courseName, String courseDescription) {
-    databaseCourseCreation.createNewCourse(courseName, courseDescription);
+    courseCreationRepository.createNewCourse(courseName, courseDescription);
   }
 
   public String getCourseId() {
-    return databaseCourseCreation.getCourseId();
+    return courseCreationRepository.getCourseId();
   }
 
   public void setCourseId(String courseId) {
-    databaseCourseCreation.setCourseId(courseId);
+    courseCreationRepository.setCourseId(courseId);
   }
 }

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;

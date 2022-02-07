@@ -1,13 +1,14 @@
-package com.example.unserhoersaal.model;
+package com.example.unserhoersaal.repository;
 
 
 
+import com.example.unserhoersaal.model.CourseModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 /**Class creates a course and saves it in Firebase.**/
 
-public class DatabaseCourseCreation {
+public class CourseCreationRepository {
   private FirebaseDatabase firebaseDatabase;
   private DatabaseReference databaseReference;
   private String courseId;
@@ -15,7 +16,7 @@ public class DatabaseCourseCreation {
 
   /**Method gets an instance of Firebase.**/
 
-  public DatabaseCourseCreation() {
+  public CourseCreationRepository() {
     this.firebaseDatabase = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app");
     this.databaseReference = firebaseDatabase.getReference();
     this.firebaseAuth = FirebaseAuth.getInstance();

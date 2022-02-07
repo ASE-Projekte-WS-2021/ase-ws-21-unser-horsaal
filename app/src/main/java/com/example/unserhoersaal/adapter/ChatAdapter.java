@@ -1,4 +1,4 @@
-package com.example.unserhoersaal.views;
+package com.example.unserhoersaal.adapter;
 
 
 
@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.DatabaseCourses;
+import com.example.unserhoersaal.repository.CoursesRepository;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /** Chatadapter. */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
-  private DatabaseCourses.Message[] localDataSet;
+  private CoursesRepository.Message[] localDataSet;
   public static final SimpleDateFormat RECENT_FORMAT = new SimpleDateFormat("HH:mm");
   public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");
 
@@ -42,7 +42,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   }
 
 
-  public ChatAdapter(DatabaseCourses.Message[] dataSet) {
+  public ChatAdapter(CoursesRepository.Message[] dataSet) {
     localDataSet = dataSet;
   }
 

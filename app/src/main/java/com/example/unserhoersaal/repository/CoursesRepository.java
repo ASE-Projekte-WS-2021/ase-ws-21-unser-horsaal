@@ -1,9 +1,10 @@
-package com.example.unserhoersaal.model;
+package com.example.unserhoersaal.repository;
 
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.unserhoersaal.model.UserCourse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class DatabaseCourses {
+public class CoursesRepository {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList<UserCourse>> userCourses = new MutableLiveData<ArrayList<UserCourse>>();
@@ -22,7 +23,7 @@ public class DatabaseCourses {
     private FirebaseAuth firebaseAuth;
 
 
-    public DatabaseCourses() {
+    public CoursesRepository() {
         this.firebaseDB = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app");
         this.databaseReference = firebaseDB.getReference();
         this.firebaseAuth = FirebaseAuth.getInstance();

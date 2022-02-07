@@ -18,7 +18,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.interfaces.LoginInterface;
-import com.example.unserhoersaal.model.AuthAppRepository;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
 import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;

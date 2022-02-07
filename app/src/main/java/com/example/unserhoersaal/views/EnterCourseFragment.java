@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.DatabaseEnterCourse;
+import com.example.unserhoersaal.repository.EnterCourseRepository;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
@@ -70,12 +70,12 @@ public class EnterCourseFragment extends Fragment {
         createCourseViewModel.setCourseId(enterCourseEditText.getText().toString());
         enterCourseViewModel.saveUserCourses(enterCourseEditText.getText().toString())
                 .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.TRUE) {
+                  if (courseIdIsCorrect == EnterCourseRepository.ThreeState.TRUE) {
                     if (navController.getCurrentDestination().getId() == R.id.enterCourseFragment){
                       navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
                     }
                   }
-                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.FALSE){
+                  if (courseIdIsCorrect == EnterCourseRepository.ThreeState.FALSE){
                     Toast.makeText(getActivity(), "Incorrect key",
                             Toast.LENGTH_LONG).show();
                   }

@@ -3,32 +3,32 @@ package com.example.unserhoersaal.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.DatabaseCurrentCourse;
+import com.example.unserhoersaal.repository.CurrentCourseRepository;
 
 import java.util.ArrayList;
 
 
 public class CurrentCourseViewModel extends ViewModel {
-  private DatabaseCurrentCourse databaseCurrentCourse;
+  private CurrentCourseRepository currentCourseRepository;
 
 
   public CurrentCourseViewModel() {
-    databaseCurrentCourse = new DatabaseCurrentCourse();
+    currentCourseRepository = new CurrentCourseRepository();
 
   }
 
   public void sendMessage(String messageText){
-    databaseCurrentCourse.sendMessage(messageText);
+    currentCourseRepository.sendMessage(messageText);
   }
 
   public MutableLiveData<ArrayList> getMessages(){
-    return databaseCurrentCourse.getMessages();
+    return currentCourseRepository.getMessages();
   }
 
   public void setupCurrentCourseViewModel(String courseId)
   {
-    databaseCurrentCourse.setCourseId(courseId);
-    databaseCurrentCourse.setupListeners();
+    currentCourseRepository.setCourseId(courseId);
+    currentCourseRepository.setupListeners();
   }
 
 }

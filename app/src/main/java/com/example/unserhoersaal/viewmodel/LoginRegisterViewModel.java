@@ -4,7 +4,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import com.example.unserhoersaal.model.AuthAppRepository;
+import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.views.LoginFragment;
 import com.google.firebase.auth.FirebaseUser;
 

@@ -1,4 +1,4 @@
-package com.example.unserhoersaal.views;
+package com.example.unserhoersaal.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.UserCourse;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 
 

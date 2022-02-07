@@ -1,8 +1,9 @@
-package com.example.unserhoersaal.model;
+package com.example.unserhoersaal.repository;
 
 
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,23 +13,23 @@ import java.util.ArrayList;
 
 /**Class communicates with Firebase for getting current course data.**/
 
-public class DatabaseCurrentCourse {
+public class CurrentCourseRepository {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
-    private ArrayList<DatabaseCourses.Message> messagesList = new ArrayList<DatabaseCourses.Message>();
+    private ArrayList<CoursesRepository.Message> messagesList = new ArrayList<CoursesRepository.Message>();
     private String courseId;
 
   /**Class constructor.**/
 
-    public DatabaseCurrentCourse() {
+    public CurrentCourseRepository() {
         this.firebaseDB = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app");
         this.databaseReference = firebaseDB.getReference();
     }
 
     public void sendMessage(String messageText) {
         Long time = System.currentTimeMillis();
-        DatabaseCourses.Message message = new DatabaseCourses.Message(messageText, time);
+        CoursesRepository.Message message = new CoursesRepository.Message(messageText, time);
         databaseReference.child("Courses").child(courseId).child("Messages").push().setValue(message);
     }
 
@@ -46,7 +47,7 @@ public class DatabaseCurrentCourse {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 messagesList.clear();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    messagesList.add(messageSnapshot.getValue(DatabaseCourses.Message.class));
+                    messagesList.add(messageSnapshot.getValue(CoursesRepository.Message.class));
                 }
                 messages.setValue(messagesList);
             }

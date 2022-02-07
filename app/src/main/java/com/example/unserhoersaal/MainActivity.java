@@ -1,4 +1,4 @@
-package com.example.unserhoersaal.views;
+package com.example.unserhoersaal;
 
 import android.os.Bundle;
 import android.view.View;

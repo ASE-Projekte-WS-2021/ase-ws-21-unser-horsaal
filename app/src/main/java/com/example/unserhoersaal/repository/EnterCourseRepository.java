@@ -1,4 +1,4 @@
-package com.example.unserhoersaal.model;
+package com.example.unserhoersaal.repository;
 
 
 import android.util.Log;
@@ -15,11 +15,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class DatabaseEnterCourse {
+public class EnterCourseRepository {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
-    private ArrayList<DatabaseCourses.Message> messagesList = new ArrayList<DatabaseCourses.Message>();
+    private ArrayList<CoursesRepository.Message> messagesList = new ArrayList<CoursesRepository.Message>();
     private FirebaseAuth firebaseAuth;
     private final MutableLiveData<ThreeState> courseIdIsCorrect = new MutableLiveData<ThreeState>();
     public enum ThreeState {
@@ -30,7 +30,7 @@ public class DatabaseEnterCourse {
     //private String courseId;
 
 
-    public DatabaseEnterCourse() {
+    public EnterCourseRepository() {
         this.firebaseDB = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app");
         this.databaseReference = firebaseDB.getReference();
         this.firebaseAuth = FirebaseAuth.getInstance();
