@@ -22,11 +22,10 @@ import com.google.firebase.auth.FirebaseAuth;
 /** Fragment for course creation. */
 public class CreateCourseFragment extends Fragment {
 
-  EditText courseTitelEditText;
-  Button createCourseButton;
-  EnterCourseViewModel enterCourseViewModel;
+  private EditText courseTitelEditText;
+  private Button createCourseButton;
+  private EnterCourseViewModel enterCourseViewModel;
   private CreateCourseViewModel createCourseViewModel;
-  private FirebaseAuth firebaseAuth;
 
   public CreateCourseFragment() {
     // Required empty public constructor
@@ -35,6 +34,10 @@ public class CreateCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    createCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CreateCourseViewModel.class);
+    enterCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(EnterCourseViewModel.class);
   }
 
   @Override
@@ -47,11 +50,6 @@ public class CreateCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    firebaseAuth = FirebaseAuth.getInstance();
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
-    enterCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(EnterCourseViewModel.class);
     initUi(view);
     setupNavigation(view);
   }

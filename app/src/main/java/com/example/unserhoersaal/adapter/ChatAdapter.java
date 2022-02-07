@@ -11,12 +11,14 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.Message;
 import com.example.unserhoersaal.repository.CoursesRepository;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /** Chatadapter. */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
-  private Message[] localDataSet;
+  private List<Message> localDataSet = new ArrayList<>();
   public static final SimpleDateFormat RECENT_FORMAT = new SimpleDateFormat("HH:mm");
   public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");
 
@@ -43,7 +45,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   }
 
 
-  public ChatAdapter(Message[] dataSet) {
+  public ChatAdapter(List<Message> dataSet) {
     localDataSet = dataSet;
   }
 
@@ -58,13 +60,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
-    viewHolder.getMessage().setText(localDataSet[position].getMessageText());
-    viewHolder.getDate().setText(calculateDate(localDataSet[position].getTime()));
+    viewHolder.getMessage().setText(localDataSet.get(position).getMessageText());
+    viewHolder.getDate().setText(calculateDate(localDataSet.get(position).getTime()));
   }
 
   @Override
   public int getItemCount() {
-    return localDataSet.length;
+    return localDataSet.size();
   }
 
   private String calculateDate(Long timeInMillis) {

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,17 +23,20 @@ import com.example.unserhoersaal.repository.CoursesRepository;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.ArrayList;
+import java.util.List;
 
 /** Fragment for current course.*/
 public class CurrentCourseFragment extends Fragment {
 
-  EditText questionEditText;
-  Button sendQuestionButton;
-  TextView courseKeyTextView;
-  CurrentCourseViewModel currentCourseViewModel;
-  String courseId;
-  RecyclerView recyclerView;
-  Message[] emptyArray = {};
+  private EditText questionEditText;
+  private Button sendQuestionButton;
+  private TextView courseKeyTextView;
+  private CurrentCourseViewModel currentCourseViewModel;
+  private CreateCourseViewModel createCourseViewModel;
+  private String courseId;
+  private RecyclerView recyclerView;
+  private Message[] emptyArray = {};
+  private ChatAdapter chatAdapter;
 
   public CurrentCourseFragment() {
     // Required empty public constructor
@@ -41,6 +45,10 @@ public class CurrentCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    createCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CreateCourseViewModel.class);
+    currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -53,16 +61,18 @@ public class CurrentCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    CreateCourseViewModel createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
     courseId = createCourseViewModel.getCourseId();
-    currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
     currentCourseViewModel.setupCurrentCourseViewModel(courseId);
-    currentCourseViewModel.getMessages().observe(getViewLifecycleOwner(), messages -> {
-      updateUi(view, messages);
+
+    currentCourseViewModel.init();
+    currentCourseViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<List>() {
+      @Override
+      public void onChanged(List list) {
+        chatAdapter.notifyDataSetChanged();
+      }
     });
     initUi(view, courseId);
+    initRecyclerView();
   }
 
   private void initUi(View view, String courseId) {
@@ -71,12 +81,6 @@ public class CurrentCourseFragment extends Fragment {
     courseKeyTextView = view.findViewById(R.id.courseKeyTextView);
     courseKeyTextView.setText(courseId);
     recyclerView = view.findViewById(R.id.chatRecyclerView);
-    ChatAdapter chatAdapter = new ChatAdapter(emptyArray);
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    recyclerView.setLayoutManager(layoutManager);
-    recyclerView.setItemAnimator(new DefaultItemAnimator());
-    recyclerView.setAdapter(chatAdapter);
-
 
     sendQuestionButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -87,16 +91,11 @@ public class CurrentCourseFragment extends Fragment {
     });
   }
 
-  private void updateUi(View view, ArrayList messages) {
-    if (messages != null) {
-      Message[] messagesArray = new Message[messages.size()];
-      messages.toArray(messagesArray);
-      ChatAdapter chatAdapter = new ChatAdapter(messagesArray);
-      RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-      recyclerView.setLayoutManager(layoutManager);
-      recyclerView.setItemAnimator(new DefaultItemAnimator());
-      recyclerView.setAdapter(chatAdapter);
-      recyclerView.scrollToPosition(messages.size() - 1);
-    }
+  private void initRecyclerView(){
+    chatAdapter = new ChatAdapter(currentCourseViewModel.getMessages().getValue());
+    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+    recyclerView.setLayoutManager(layoutManager);
+    recyclerView.setItemAnimator(new DefaultItemAnimator());
+    recyclerView.setAdapter(chatAdapter);
   }
 }

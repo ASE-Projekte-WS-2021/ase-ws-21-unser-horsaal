@@ -74,7 +74,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     });
 
     initUi(view);
-    initAdapter();
+    initRecyclerView();
     setupNavigation(view);
   }
 
@@ -86,7 +86,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     titelTextView.setText("Meine Kurse");
   }
 
-  private void initAdapter(){
+  private void initRecyclerView(){
     coursesAdapter = new CoursesAdapter(coursesViewModel.getUserCourses().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     courseListRecycler.setLayoutManager(layoutManager);

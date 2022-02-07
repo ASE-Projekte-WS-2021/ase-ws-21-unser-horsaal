@@ -23,7 +23,7 @@ public class CoursesRepository {
 
     private static CoursesRepository instance;
     private ArrayList<UserCourse> userCoursesList = new ArrayList<UserCourse>();
-    MutableLiveData<List<UserCourse>> courses = new MutableLiveData<>();
+    private MutableLiveData<List<UserCourse>> courses = new MutableLiveData<>();
 
     public static CoursesRepository getInstance(){
         if(instance == null){
@@ -34,19 +34,19 @@ public class CoursesRepository {
 
     public MutableLiveData<List<UserCourse>> getUserCourses(){
         if(userCoursesList.size() == 0) {
-            setUserCourses();
+            loadUserCourses();
         }
 
         courses.setValue(userCoursesList);
         return courses;
     }
 
-    public void setUserCourses(){
+    public void loadUserCourses(){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         Query query = reference.child("User").child(auth.getCurrentUser().getUid());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userCoursesList.clear();

@@ -23,10 +23,10 @@ import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
-  EditText enterCourseEditText;
-  Button enterCourseButton;
-  EnterCourseViewModel enterCourseViewModel;
-  CreateCourseViewModel createCourseViewModel;
+  private EditText enterCourseEditText;
+  private Button enterCourseButton;
+  private EnterCourseViewModel enterCourseViewModel;
+  private CreateCourseViewModel createCourseViewModel;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -35,6 +35,9 @@ public class EnterCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    enterCourseViewModel = new ViewModelProvider(requireActivity()).get(EnterCourseViewModel.class);
+    createCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CreateCourseViewModel.class);
   }
 
   @Override
@@ -48,9 +51,6 @@ public class EnterCourseFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    enterCourseViewModel = new ViewModelProvider(requireActivity()).get(EnterCourseViewModel.class);
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
     initUi(view);
     setupNavigation(view);
   }
@@ -63,7 +63,7 @@ public class EnterCourseFragment extends Fragment {
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
     NavController navController = Navigation.findNavController(view);
-    //todo add logic to entering course
+    //todo add logic to entering course business logic in view model
     enterCourseButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
