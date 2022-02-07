@@ -51,8 +51,8 @@ public class LoginFragment extends Fragment implements LoginInterface {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    loginRegisterViewModel = new ViewModelProvider(this).get(LoginRegisterViewModel.class);
-    loggedInViewModel = new ViewModelProvider(this).get(LoggedInViewModel.class);
+    loginRegisterViewModel = new ViewModelProvider(requireActivity()).get(LoginRegisterViewModel.class);
+    loggedInViewModel = new ViewModelProvider(requireActivity()).get(LoggedInViewModel.class);
     super.onCreate(savedInstanceState);
     DatabaseReference firebaseRef = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/");

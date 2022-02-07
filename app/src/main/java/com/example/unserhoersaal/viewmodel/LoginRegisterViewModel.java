@@ -3,6 +3,7 @@ package com.example.unserhoersaal.viewmodel;
 import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.views.LoginFragment;
@@ -30,7 +31,7 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     this.authAppRepository.register(email, password);
   }
 
-  public MutableLiveData<FirebaseUser> getUserLiveData() {
+  public LiveData<FirebaseUser> getUserLiveData() {
     return this.userLiveData;
   }
 }

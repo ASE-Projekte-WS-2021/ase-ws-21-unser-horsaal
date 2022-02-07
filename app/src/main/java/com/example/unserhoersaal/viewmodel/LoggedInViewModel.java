@@ -3,6 +3,7 @@ package com.example.unserhoersaal.viewmodel;
 import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,11 +33,11 @@ public class LoggedInViewModel extends AndroidViewModel {
     return authAppRepository.getCurrentUser();
   }
 
-  public MutableLiveData<FirebaseUser> getUserLiveData() {
+  public LiveData<FirebaseUser> getUserLiveData() {
     return userLiveData;
   }
 
-  public MutableLiveData<Boolean> getLoggedOutLiveData() {
+  public LiveData<Boolean> getLoggedOutLiveData() {
     return loggedOutLiveData;
   }
 }
