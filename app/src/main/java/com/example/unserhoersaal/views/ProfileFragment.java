@@ -2,6 +2,8 @@ package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -18,13 +21,15 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
+import com.google.android.material.appbar.MaterialToolbar;
 
 /** Profile page. */
 public class ProfileFragment extends Fragment {
   private EditText userEmailEditText;
   private EditText userPasswordEditText;
-  private Button editProfileButton;
-  private Button logoutButton;
+  private MaterialToolbar toolbar;
+  private NavController navController;
+  private MenuItem logout;
 
   private LoggedInViewModel loggedInViewModel;
 
@@ -50,24 +55,31 @@ public class ProfileFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     initUi(view);
-    initLogoutButton(view);
+    initToolbar();
   }
 
   private void initUi(View view) {
     userEmailEditText = view.findViewById(R.id.profileFragmentUserEmail);
     userPasswordEditText = view.findViewById(R.id.profileFragmentExamplePassword);
-    editProfileButton = view.findViewById(R.id.profileFragmentEditProfileButton);
-    logoutButton = view.findViewById(R.id.profileFragmentLogoutButton);
+    toolbar = view.findViewById(R.id.profileFragmentToolbar);
+    navController = Navigation.findNavController(view);
+    logout = view.findViewById(R.id.profileFragmentToolbarLogout);
   }
 
-  public void initLogoutButton(View view) {
-    NavController navController = Navigation.findNavController(view);
-
-    logoutButton.setOnClickListener(new View.OnClickListener() {
+  private void initToolbar(){
+    toolbar.inflateMenu(R.menu.profile_fragment_toolbar);
+    toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    toolbar.setNavigationOnClickListener(v -> {
+      navController.navigate(R.id.action_profileFragment_to_coursesFragment);
+    });
+    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
       @Override
-      public void onClick(View view) {
-        loggedInViewModel.logOut();
-        navController.navigate(R.id.action_profileFragment_to_loginFragment);
+      public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.profileFragmentToolbarLogout) {
+          loggedInViewModel.logOut();
+          navController.navigate(R.id.action_profileFragment_to_loginFragment);
+        }
+        return false;
       }
     });
   }

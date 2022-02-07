@@ -53,4 +53,7 @@
     <string name="toolbar_filter_string">Filter</string>
     <string name="toolbar_profile_string">Profil</string>
     <string name="toolbar_logout_string">Logout</string>
+    <string name="profile_fragment_institution_string">Institut</string>
+    <string name="profile_fragment_name_string">Name</string>
+    <string name="profile_fragment_toolbar_logout_string">Ausloggen</string>
 </resources>

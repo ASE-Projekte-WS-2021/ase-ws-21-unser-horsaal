@@ -25,7 +25,7 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_or_create_course.xml" value="0.13405797101449277" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_login.xml" value="0.176" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_placeholder.xml" value="0.140625" />
-        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_profile.xml" value="0.16799999999999998" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_registration.xml" value="0.2" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_course_item.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_question_item.xml" value="0.10885416666666667" />
@@ -33,6 +33,8 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.13489583333333333" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/menu/courses_fragment_toolbar.xml" value="0.25" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/menu/courses_menu.xml" value="0.25" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/menu/profile_fragment_toolbar.xml" value="0.25" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/menu/simple_back_button_and_title_toolbar.xml" value="0.25" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.2554347826086957" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_registration.xml" value="0.2554347826086957" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_second.xml" value="0.24094202898550723" />
