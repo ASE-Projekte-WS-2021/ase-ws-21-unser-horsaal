@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -93,7 +92,7 @@ public class CurrentCourseFragment extends Fragment {
     });
   }
 
-  private void initRecyclerView(){
+  private void initRecyclerView() {
     chatAdapter = new ChatAdapter(currentCourseViewModel.getMessages().getValue());
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(layoutManager);

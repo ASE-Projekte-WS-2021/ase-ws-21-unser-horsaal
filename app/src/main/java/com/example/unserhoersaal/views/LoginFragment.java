@@ -53,7 +53,8 @@ public class LoginFragment extends Fragment implements LoginInterface {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    loginRegisterViewModel = new ViewModelProvider(requireActivity()).get(LoginRegisterViewModel.class);
+    loginRegisterViewModel = new ViewModelProvider(requireActivity())
+            .get(LoginRegisterViewModel.class);
     loggedInViewModel = new ViewModelProvider(requireActivity()).get(LoggedInViewModel.class);
     super.onCreate(savedInstanceState);
     DatabaseReference firebaseRef = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
@@ -128,10 +129,10 @@ public class LoginFragment extends Fragment implements LoginInterface {
   }
 
   private void checkIfLogged() {
-      if (loggedInViewModel.getCurrentUser() != null) {
-          navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-          KeyboardUtil.hideKeyboard(getActivity());
-      }
+    if (loggedInViewModel.getCurrentUser() != null) {
+      navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+      KeyboardUtil.hideKeyboard(getActivity());
+    }
   }
 
   @Override
@@ -139,8 +140,7 @@ public class LoginFragment extends Fragment implements LoginInterface {
     if (result) {
       navController.navigate(R.id.action_loginFragment_to_coursesFragment);
       KeyboardUtil.hideKeyboard(getActivity());
-    }
-    else {
+    } else {
       String wrongInputMessage = "Email Address or Password is wrong!";
       Toast.makeText(getContext(), wrongInputMessage, Toast.LENGTH_SHORT).show();
     }

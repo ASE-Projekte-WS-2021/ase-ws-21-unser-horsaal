@@ -78,10 +78,12 @@ public class CreateCourseFragment extends Fragment {
           createCourseViewModel.createCourse(courseTitle, courseDescription);
           enterCourseViewModel.saveUserCourses(createCourseViewModel.getCourseId())
                   .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                    if (navController.getCurrentDestination().getId() == R.id.createCourseFragment){
-                      navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
+                    if (navController.getCurrentDestination().getId()
+                            == R.id.createCourseFragment) {
+                      navController
+                              .navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
                     }
-          });
+                  });
           KeyboardUtil.hideKeyboard(getActivity());
         } else {
           Toast.makeText(getContext(), "The course name should be 6 characters or longer.",

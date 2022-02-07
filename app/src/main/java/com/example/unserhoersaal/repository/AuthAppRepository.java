@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 // source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/tree/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/model [30.12.2021]
 
-/** Class Description. */
+/** This class maanages the data base access for the user identification. */
 public class AuthAppRepository {
 
   private static final String TAG = "AuthAppRepo";
@@ -32,42 +32,45 @@ public class AuthAppRepository {
     }
   }
 
-    public void login(String email, String password, LoginFragment listener) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(application.getMainExecutor(), task -> {
-                    if (task.isSuccessful()) {
-                        userLiveData.postValue(firebaseAuth.getCurrentUser());
-                        listener.loginResult(true);
-                    } else {
-                        //Toast.makeText(application.getApplicationContext(), "Login Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        listener.loginResult(false);
-                    }
-                });
-    }
+  /** This method is logging in the user. */
+  public void login(String email, String password, LoginFragment listener) {
+    firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(application.getMainExecutor(), task -> {
+              if (task.isSuccessful()) {
+                userLiveData.postValue(firebaseAuth.getCurrentUser());
+                listener.loginResult(true);
+              } else {
+                listener.loginResult(false);
+              }
+            });
+  }
 
-    public void register(String email, String password) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(application.getMainExecutor(), task -> {
-                    if (task.isSuccessful()) {
-                        userLiveData.postValue(firebaseAuth.getCurrentUser());
-                    } else {
-                        Toast.makeText(application.getApplicationContext(), "Registration Failure: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+  /** This method registers a new user. */
+  public void register(String email, String password) {
+    firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(application.getMainExecutor(), task -> {
+              if (task.isSuccessful()) {
+                userLiveData.postValue(firebaseAuth.getCurrentUser());
+              } else {
+                Toast.makeText(application.getApplicationContext(),
+                        "Registration Failure: " + task.getException().getMessage(),
+                        Toast.LENGTH_SHORT).show();
+              }
+            });
+  }
 
   public void logOut() {
     this.firebaseAuth.signOut();
     this.loggedOutLiveData.postValue(true);
   }
 
-    public FirebaseUser getCurrentUser() {
-        return firebaseAuth.getCurrentUser();
-    }
+  public FirebaseUser getCurrentUser() {
+    return firebaseAuth.getCurrentUser();
+  }
 
-    public MutableLiveData<FirebaseUser> getUserLiveData() {
-        return userLiveData;
-    }
+  public MutableLiveData<FirebaseUser> getUserLiveData() {
+    return userLiveData;
+  }
 
   public MutableLiveData<Boolean> getLoggedOutLiveData() {
     return this.loggedOutLiveData;

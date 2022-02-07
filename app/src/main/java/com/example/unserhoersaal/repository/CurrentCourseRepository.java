@@ -2,10 +2,8 @@ package com.example.unserhoersaal.repository;
 
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.unserhoersaal.model.Message;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,15 +25,17 @@ public class CurrentCourseRepository {
   private MutableLiveData<List<Message>> messages = new MutableLiveData<>();
   private String courseId;
 
-  public static CurrentCourseRepository getInstance(){
-    if(instance == null){
+  /** Generates a unique instance of CurrentCourseRepository. */
+  public static CurrentCourseRepository getInstance() {
+    if (instance == null) {
       instance = new CurrentCourseRepository();
     }
     return instance;
   }
 
-  public MutableLiveData<List<Message>> getMessages(){
-    if(messagesList.size() == 0) {
+  /** This method provides all messages of a course. */
+  public MutableLiveData<List<Message>> getMessages() {
+    if (messagesList.size() == 0) {
       loadMessages();
     }
 
@@ -43,7 +43,8 @@ public class CurrentCourseRepository {
     return messages;
   }
 
-  public void loadMessages(){
+  /** Loading all messages from the database. */
+  public void loadMessages() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
     Query query = reference.child("Courses").child(courseId).child("Messages");
@@ -52,7 +53,7 @@ public class CurrentCourseRepository {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         Log.d("Message", "onDataChange: ");
         messagesList.clear();
-        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           messagesList.add(snapshot.getValue(Message.class));
         }
         messages.postValue(messagesList);
@@ -65,6 +66,7 @@ public class CurrentCourseRepository {
     });
   }
 
+  /** This method saves a message in the data base. */
   public void sendMessage(String messageText) {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     Long time = System.currentTimeMillis();
@@ -72,7 +74,7 @@ public class CurrentCourseRepository {
     databaseReference.child("Courses").child(courseId).child("Messages").push().setValue(message);
   }
 
-  public void setCourseId(String courseId){
+  public void setCourseId(String courseId) {
     this.courseId = courseId;
   }
 }

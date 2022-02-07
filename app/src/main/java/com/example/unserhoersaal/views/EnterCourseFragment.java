@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -73,15 +72,16 @@ public class EnterCourseFragment extends Fragment {
         enterCourseViewModel.saveUserCourses(enterCourseEditText.getText().toString())
                 .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
                   if (courseIdIsCorrect == EnterCourseRepository.ThreeState.TRUE) {
-                    if (navController.getCurrentDestination().getId() == R.id.enterCourseFragment){
-                      navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+                    if (navController.getCurrentDestination().getId() == R.id.enterCourseFragment) {
+                      navController
+                              .navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
                     }
                   }
-                  if (courseIdIsCorrect == EnterCourseRepository.ThreeState.FALSE){
+                  if (courseIdIsCorrect == EnterCourseRepository.ThreeState.FALSE) {
                     Toast.makeText(getActivity(), "Incorrect key",
                             Toast.LENGTH_LONG).show();
                   }
-        });
+                });
         KeyboardUtil.hideKeyboard(getActivity());
       }
     });

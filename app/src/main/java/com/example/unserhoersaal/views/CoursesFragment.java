@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,13 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
-import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /** Courses. */
@@ -68,13 +64,14 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     super.onViewCreated(view, savedInstanceState);
 
     coursesViewModel.init();
-    coursesViewModel.getUserCourses().observe(getViewLifecycleOwner(), new Observer<List<UserCourse>>() {
-      @Override
-      public void onChanged(@Nullable List<UserCourse> userCourses) {
-        courses = userCourses;
-        coursesAdapter.notifyDataSetChanged();
-      }
-    });
+    coursesViewModel.getUserCourses()
+            .observe(getViewLifecycleOwner(), new Observer<List<UserCourse>>() {
+              @Override
+              public void onChanged(@Nullable List<UserCourse> userCourses) {
+                courses = userCourses;
+                coursesAdapter.notifyDataSetChanged();
+              }
+            });
 
     initUi(view);
     initRecyclerView();
@@ -89,7 +86,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     titelTextView.setText("Meine Kurse");
   }
 
-  private void initRecyclerView(){
+  private void initRecyclerView() {
     coursesAdapter = new CoursesAdapter(coursesViewModel.getUserCourses().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     courseListRecycler.setLayoutManager(layoutManager);

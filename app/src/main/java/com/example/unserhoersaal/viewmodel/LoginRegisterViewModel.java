@@ -26,9 +26,9 @@ public class LoginRegisterViewModel extends AndroidViewModel {
     this.userLiveData = this.authAppRepository.getUserLiveData();
   }
 
-    public void login(String email, String password, LoginFragment listener) {
-        authAppRepository.login(email, password, listener);
-    }
+  public void login(String email, String password, LoginFragment listener) {
+    authAppRepository.login(email, password, listener);
+  }
 
   public void register(String email, String password) {
     this.authAppRepository.register(email, password);
