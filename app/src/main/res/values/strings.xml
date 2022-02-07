@@ -56,4 +56,9 @@
     <string name="profile_fragment_institution_string">Institut</string>
     <string name="profile_fragment_name_string">Name</string>
     <string name="profile_fragment_toolbar_logout_string">Ausloggen</string>
+    <string name="edit_profile_fragment_user_name">Nutzername</string>
+    <string name="edit_profile_fragment_institution">Institution</string>
+    <string name="edit_profile_fragment_current_password">Aktuelles Passwort</string>
+    <string name="edit_profile_fragment_new_password">Neues Passwort</string>
+    <string name="edit_profile_toolbar_save">Speichern</string>
 </resources>
