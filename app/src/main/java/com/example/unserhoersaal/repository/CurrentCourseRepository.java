@@ -4,6 +4,7 @@ package com.example.unserhoersaal.repository;
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.unserhoersaal.model.Message;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,7 +18,7 @@ public class CurrentCourseRepository {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
-    private ArrayList<CoursesRepository.Message> messagesList = new ArrayList<CoursesRepository.Message>();
+    private ArrayList<Message> messagesList = new ArrayList<Message>();
     private String courseId;
 
   /**Class constructor.**/
@@ -29,7 +30,7 @@ public class CurrentCourseRepository {
 
     public void sendMessage(String messageText) {
         Long time = System.currentTimeMillis();
-        CoursesRepository.Message message = new CoursesRepository.Message(messageText, time);
+        Message message = new Message(messageText, time);
         databaseReference.child("Courses").child(courseId).child("Messages").push().setValue(message);
     }
 
@@ -47,7 +48,7 @@ public class CurrentCourseRepository {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 messagesList.clear();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    messagesList.add(messageSnapshot.getValue(CoursesRepository.Message.class));
+                    messagesList.add(messageSnapshot.getValue(Message.class));
                 }
                 messages.setValue(messagesList);
             }

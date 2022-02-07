@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.unserhoersaal.model.Message;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +20,7 @@ public class EnterCourseRepository {
     private FirebaseDatabase firebaseDB;
     private DatabaseReference databaseReference;
     private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
-    private ArrayList<CoursesRepository.Message> messagesList = new ArrayList<CoursesRepository.Message>();
+    private ArrayList<Message> messagesList = new ArrayList<Message>();
     private FirebaseAuth firebaseAuth;
     private final MutableLiveData<ThreeState> courseIdIsCorrect = new MutableLiveData<ThreeState>();
     public enum ThreeState {

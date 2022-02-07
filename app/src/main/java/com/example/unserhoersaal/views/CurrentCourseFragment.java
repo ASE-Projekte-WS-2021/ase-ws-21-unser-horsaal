@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
+import com.example.unserhoersaal.model.Message;
 import com.example.unserhoersaal.repository.CoursesRepository;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
@@ -31,7 +32,7 @@ public class CurrentCourseFragment extends Fragment {
   CurrentCourseViewModel currentCourseViewModel;
   String courseId;
   RecyclerView recyclerView;
-  CoursesRepository.Message[] emptyArray = {};
+  Message[] emptyArray = {};
 
   public CurrentCourseFragment() {
     // Required empty public constructor
@@ -88,7 +89,7 @@ public class CurrentCourseFragment extends Fragment {
 
   private void updateUi(View view, ArrayList messages) {
     if (messages != null) {
-      CoursesRepository.Message[] messagesArray = new CoursesRepository.Message[messages.size()];
+      Message[] messagesArray = new Message[messages.size()];
       messages.toArray(messagesArray);
       ChatAdapter chatAdapter = new ChatAdapter(messagesArray);
       RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
