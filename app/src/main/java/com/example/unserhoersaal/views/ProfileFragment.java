@@ -22,6 +22,7 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /** Profile page. */
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
   private NavController navController;
   private MenuItem logout;
   private FloatingActionButton fab;
+  private MaterialButton deleteAccountButton;
 
   private LoggedInViewModel loggedInViewModel;
 
@@ -66,6 +68,7 @@ public class ProfileFragment extends Fragment {
     toolbar = view.findViewById(R.id.profileFragmentToolbar);
     navController = Navigation.findNavController(view);
     logout = view.findViewById(R.id.profileFragmentToolbarLogout);
+    deleteAccountButton = view.findViewById(R.id.profileFragmentDeleteAccountButton);
     fab = view.findViewById(R.id.profileFragmentFab);
     fab.setOnClickListener(v -> {
       navController.navigate(R.id.action_profileFragment_to_editProfileFragment);

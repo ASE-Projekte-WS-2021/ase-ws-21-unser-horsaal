@@ -89,4 +89,5 @@
     <string name="course_description_course_example_title">Kurstitel</string>
     <string name="course_description_unsubscribe_from_course">Von Kurs abmelden</string>
     <string name="participant_list_item_example_name">Beispielname1234</string>
+    <string name="profile_fragment_delete_account">Account unwiderruflich löschen</string>
 </resources>
