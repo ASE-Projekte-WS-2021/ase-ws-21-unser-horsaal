@@ -14,6 +14,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="wideRedButton" parent="TextAppearance.MaterialComponents.Button">
+        <item name="cornerRadius">4dp</item>
+        <item name="backgroundTint">@color/red</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="textInputField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="cornerRadius">4dp</item>
         <item name="boxStrokeColor">@color/app_blue</item>
