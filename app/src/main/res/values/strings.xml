@@ -81,4 +81,11 @@
     <string name="answer_item_example_answer">Dies ist eine beispielhafte Antwort, die zeigen soll, wie sich das Textfeld bei einer längeren Antwort verhält. Funktioniert der Zeilenumbruch richtig, schaut alles geordnet aus und so weiter und so fort.</string>
     <string name="answer_item_like_example">35</string>
     <string name="answer_item_dislike_example">2</string>
+    <string name="course_description_fragment_creator">Ersteller:in</string>
+    <string name="course_description_fragment_description_textview">Beschreibung</string>
+    <string name="course_description_example_institution">Universität Regensburg</string>
+    <string name="course_description_fragment_example_description">Dieser Kurs richtet sich an Master-Studierende der</string>
+    <string name="course_description_fragment_participants_textview">Teilnehmer:innen</string>
+    <string name="course_description_course_example_title">Kurstitel</string>
+    <string name="course_description_unsubscribe_from_course">Von Kurs abmelden</string>
 </resources>
