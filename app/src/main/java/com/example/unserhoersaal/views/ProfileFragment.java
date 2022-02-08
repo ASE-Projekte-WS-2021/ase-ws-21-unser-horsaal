@@ -1,6 +1,9 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,8 +32,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /** Profile page. */
 public class ProfileFragment extends Fragment {
-  private EditText userEmailEditText;
-  private EditText userPasswordEditText;
+  private TextView userEmail;
+  private EditText userPassword;
+  private ImageView togglePasswordIcon;
+  private boolean passwordMask;
   private MaterialToolbar toolbar;
   private NavController navController;
   private MenuItem logout;
@@ -60,11 +67,13 @@ public class ProfileFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     initUi(view);
     initToolbar();
+    passwordMask = true;
   }
 
   private void initUi(View view) {
-    userEmailEditText = view.findViewById(R.id.profileFragmentUserEmail);
-    userPasswordEditText = view.findViewById(R.id.profileFragmentExamplePassword);
+    userEmail = view.findViewById(R.id.profileFragmentUserEmail);
+    userPassword = view.findViewById(R.id.profileFragmentPassword);
+    togglePasswordIcon = view.findViewById(R.id.profileFragmentTogglePasswordIcon);
     toolbar = view.findViewById(R.id.profileFragmentToolbar);
     navController = Navigation.findNavController(view);
     logout = view.findViewById(R.id.profileFragmentToolbarLogout);
@@ -72,6 +81,9 @@ public class ProfileFragment extends Fragment {
     fab = view.findViewById(R.id.profileFragmentFab);
     fab.setOnClickListener(v -> {
       navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
+    });
+    togglePasswordIcon.setOnClickListener(v -> {
+      togglePassword();
     });
   }
 
@@ -91,5 +103,17 @@ public class ProfileFragment extends Fragment {
         return false;
       }
     });
+  }
+
+  private void togglePassword(){
+    if (passwordMask){
+      userPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+      togglePasswordIcon.setColorFilter(getResources().getColor(R.color.app_blue));
+      passwordMask = false;
+    }else {
+      userPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+      togglePasswordIcon.setColorFilter(getResources().getColor(R.color.grey));
+      passwordMask = true;
+    }
   }
 }

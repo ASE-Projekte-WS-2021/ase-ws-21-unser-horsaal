@@ -23,7 +23,7 @@
         android:id="@+id/profileFragmentImageConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="32dp"
+        android:padding="16dp"
         android:background="@color/app_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,8 +31,10 @@
 
         <ImageView
             android:id="@+id/profileFragmentProfileImage"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
             android:src="@drawable/ic_baseline_account_circle_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +62,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/profile_fragment_name_string"
         android:layout_marginEnd="32dp"
+        android:textAlignment="viewEnd"
         app:layout_constraintBottom_toBottomOf="@+id/profileFragmentNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileFragmentImageConstraintLayout" />
@@ -80,50 +83,38 @@
         android:id="@+id/profileFragmentInstitution"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Universität Regensburg"
+        android:text="@string/profile_fragment_example_institution"
         android:layout_marginEnd="32dp"
+        android:textAlignment="viewEnd"
         app:layout_constraintBottom_toBottomOf="@+id/profileFragmentInstitutionTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/profileFragmentInstitutionTextView" />
 
-        <TextView
-            android:id="@+id/profileFragmentEmailTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginStart="32dp"
-            android:text="@string/profile_fragment_email_title"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            app:layout_constraintTop_toBottomOf="@id/profileFragmentInstitutionTextView"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/profileFragmentUserEmailTextField"
+    <TextView
+        android:id="@+id/profileFragmentEmailTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:layout_marginEnd="32dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentEmailTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/profileFragmentEmailTitle">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/profileFragmentUserEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:singleLine="true"
-            android:text="@string/profile_fragment_example_email"
-            android:gravity="center_vertical"
-            android:paddingBottom="16dp"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp"
+        android:text="@string/profile_fragment_email_title"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentInstitutionTextView"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/profileFragmentPasswordTitle"
+        android:id="@+id/profileFragmentUserEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_fragment_example_email"
+        android:layout_marginEnd="32dp"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentEmailTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentEmailTitle" />
+
+    <TextView
+        android:id="@+id/profileFragmentPasswordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -134,28 +125,30 @@
         app:layout_constraintTop_toBottomOf="@id/profileFragmentEmailTitle"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/profileFragmentExamplePasswordTextField"
+    <EditText
+        android:id="@+id/profileFragmentPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:text="@string/profile_fragment_example_password"
         android:layout_marginEnd="32dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:endIconMode="password_toggle"
+        android:textAlignment="viewEnd"
+        android:inputType="textPassword"
+        android:focusable="false"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentPasswordTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileFragmentUserEmailTextField">
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentPasswordTextView" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/profileFragmentExamplePassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:text="@string/profile_fragment_example_email" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+    <ImageView
+        android:id="@+id/profileFragmentTogglePasswordIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_remove_red_eye_24"
+        android:layout_marginEnd="16dp"
+        app:tint="@color/grey"
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentPassword"
+        app:layout_constraintEnd_toStartOf="@+id/profileFragmentPassword"
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentPassword" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/profileFragmentDeleteAccountButton"
@@ -166,7 +159,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileFragmentPasswordTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/profileFragmentPasswordTextView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/profileFragmentFab"
