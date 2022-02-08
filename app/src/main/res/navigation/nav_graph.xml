@@ -128,10 +128,19 @@
             app:destination="@id/coursesFragment"
             app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_courseHistoryFragment_to_courseDescriptionFragment"
+            app:destination="@id/courseDescriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/courseDescriptionFragment"
         android:name="com.example.unserhoersaal.views.CourseDescriptionFragment"
         android:label="fragment_course_description"
-        tools:layout="@layout/fragment_course_description" />
+        tools:layout="@layout/fragment_course_description" >
+        <action
+            android:id="@+id/action_courseDescriptionFragment_to_courseHistoryFragment"
+            app:destination="@id/courseHistoryFragment"
+            app:popUpTo="@id/courseHistoryFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
