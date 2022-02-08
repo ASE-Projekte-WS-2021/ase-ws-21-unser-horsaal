@@ -73,7 +73,7 @@ public class CourseDescriptionFragment extends Fragment {
   private void initToolbar(){
     toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     toolbar.setNavigationOnClickListener(v -> {
-      //Navigation back to course-history
+      navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment);
     });
   }
 
