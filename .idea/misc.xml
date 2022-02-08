@@ -26,6 +26,7 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/enter_course_detail_screen.xml" value="0.20606884057971014" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description.xml" value="0.2" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_history.xml" value="0.20606884057971014" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_participants.xml" value="0.20606884057971014" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_courses.xml" value="0.2" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course.xml" value="0.12158054711246201" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_current_course.xml" value="0.13405797101449277" />
@@ -36,6 +37,7 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_placeholder.xml" value="0.140625" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_registration.xml" value="0.2" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/participant_list_item.xml" value="0.20606884057971014" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_course_item.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_course_meeting.xml" value="0.20606884057971014" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_question_item.xml" value="0.10885416666666667" />
