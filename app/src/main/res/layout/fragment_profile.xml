@@ -157,6 +157,17 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/profileFragmentDeleteAccountButton"
+        style="@style/wideRedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_fragment_delete_account"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileFragmentPasswordTitle" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/profileFragmentFab"
         android:layout_width="wrap_content"
