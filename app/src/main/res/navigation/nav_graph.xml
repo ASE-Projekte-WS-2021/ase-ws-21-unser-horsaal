@@ -142,5 +142,19 @@
             app:destination="@id/courseHistoryFragment"
             app:popUpTo="@id/courseHistoryFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_courseDescriptionFragment_to_courseParticipantsFragment"
+            app:destination="@id/courseParticipantsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseParticipantsFragment"
+        android:name="com.example.unserhoersaal.views.CourseParticipantsFragment"
+        android:label="fragment_course_participants"
+        tools:layout="@layout/fragment_course_participants" >
+        <action
+            android:id="@+id/action_courseParticipantsFragment_to_courseDescriptionFragment"
+            app:destination="@id/courseDescriptionFragment"
+            app:popUpTo="@id/courseDescriptionFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
