@@ -59,17 +59,6 @@ public class RegistrationFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    loginRegisterViewModel.getUserLiveData()
-            .observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
-              @Override
-              public void onChanged(FirebaseUser firebaseUser) {
-                if (firebaseUser != null) {
-                  var backToLogin = R.id.action_registrationFragment_to_loginFragment;
-                  Navigation.findNavController(getView()).navigate(backToLogin);
-                  KeyboardUtil.hideKeyboard(getActivity());
-                }
-              }
-            });
     initUi(view);
     setupNavigation(view);
   }

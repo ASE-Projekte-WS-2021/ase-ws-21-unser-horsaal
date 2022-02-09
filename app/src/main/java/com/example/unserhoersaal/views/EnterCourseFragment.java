@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +14,26 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.repository.EnterCourseRepository;
+import com.example.unserhoersaal.interfaces.EnterCourseInterface;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
+import com.google.firebase.installations.Utils;
 
 /** Fragment for entering a course.*/
-public class EnterCourseFragment extends Fragment {
+public class EnterCourseFragment extends Fragment implements EnterCourseInterface {
 
   private static final String TAG = "EnterCourseFragment";
 
   private EditText enterCourseEditText;
   private Button enterCourseButton;
   private EnterCourseViewModel enterCourseViewModel;
-  private CreateCourseViewModel createCourseViewModel;
+  private CurrentCourseViewModel currentCourseViewModel;
+  private NavController navController;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -37,8 +43,8 @@ public class EnterCourseFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     enterCourseViewModel = new ViewModelProvider(requireActivity()).get(EnterCourseViewModel.class);
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
+    currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -63,27 +69,23 @@ public class EnterCourseFragment extends Fragment {
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
-    //todo add logic to entering course business logic in view model
-    enterCourseButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        createCourseViewModel.setCourseId(enterCourseEditText.getText().toString());
-        enterCourseViewModel.saveUserCourses(enterCourseEditText.getText().toString())
-                .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                  if (courseIdIsCorrect == EnterCourseRepository.ThreeState.TRUE) {
-                    if (navController.getCurrentDestination().getId() == R.id.enterCourseFragment) {
-                      navController
-                              .navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
-                    }
-                  }
-                  if (courseIdIsCorrect == EnterCourseRepository.ThreeState.FALSE) {
-                    Toast.makeText(getActivity(), "Incorrect key",
-                            Toast.LENGTH_LONG).show();
-                  }
-                });
-        KeyboardUtil.hideKeyboard(getActivity());
-      }
-    });
+    navController = Navigation.findNavController(view);
+    enterCourseButton.setOnClickListener(v -> enterCode());
   }
+
+  //todo add interface
+  public void enterCode(){
+    String id = enterCourseEditText.getText().toString();
+    if(id.length() > 0) {
+      enterCourseViewModel.checkCode(id, EnterCourseFragment.this);
+    }
+  }
+
+  @Override
+  public void openNewCourse(String id){
+    KeyboardUtil.hideKeyboard(getActivity());
+    currentCourseViewModel.setCourseId(id);
+    navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+  }
+
 }

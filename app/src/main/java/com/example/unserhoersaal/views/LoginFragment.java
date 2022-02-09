@@ -41,7 +41,6 @@ public class LoginFragment extends Fragment implements LoginInterface {
   TextView forgotPasswordTextView;
   CheckBox keepLoggedInCheckBox;
   Button loginButton;
-  String firebaseResult;
   NavController navController;
 
   private LoggedInViewModel loggedInViewModel;
@@ -53,33 +52,11 @@ public class LoginFragment extends Fragment implements LoginInterface {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
     loginRegisterViewModel = new ViewModelProvider(requireActivity())
             .get(LoginRegisterViewModel.class);
     loggedInViewModel = new ViewModelProvider(requireActivity()).get(LoggedInViewModel.class);
-    super.onCreate(savedInstanceState);
-    DatabaseReference firebaseRef = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/");
 
-    //firebaseRef.child("Courses").push().setValue("null");
-
-    firebaseRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-      @Override
-    public void onComplete(@NonNull Task<DataSnapshot> task) {
-        if (!task.isSuccessful()) {
-            Log.e("firebase", "Error getting data", task.getException());
-        } else {
-            Log.d("firebase", String.valueOf(task.getResult().getValue()));
-            String.valueOf(task.getResult().getValue());
-            saveDate(String.valueOf(task.getResult().getValue()));
-        }
-      }
-    });
-
-  }
-
-  public void saveDate(String data) {
-    String string1 = data;
-    System.out.println(data);
   }
 
   @Override
@@ -110,7 +87,6 @@ public class LoginFragment extends Fragment implements LoginInterface {
   private void setupNavigation(View view) {
     navController = Navigation.findNavController(view);
 
-    //todo add logic to login
     int toRegistrationFragment = R.id.action_loginFragment_to_registrationFragment;
     registrationTextView.setOnClickListener(v -> navController.navigate(toRegistrationFragment));
     loginButton.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +95,7 @@ public class LoginFragment extends Fragment implements LoginInterface {
             String email = userEmailEditView.getText().toString();
             String password = userPasswordEditView.getText().toString();
             if (email.length() > 0 && password.length() > 0) {
+              //todo find better way instead of LoginFragment.this + interface
               loginRegisterViewModel.login(email, password, LoginFragment.this);
             } else {
               String emptyInputMessage = "Email Address and Password Must Be Entered";
