@@ -23,10 +23,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
+import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
+import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
 
 /** Profile page. */
 public class ProfileFragment extends Fragment {
@@ -35,14 +39,13 @@ public class ProfileFragment extends Fragment {
 
   private TextView userEmail;
   private EditText userPassword;
-  private Button editProfileButton;
   private ImageView togglePasswordIcon;
   private boolean passwordMask;
+  private MaterialToolbar toolbar;
   private NavController navController;
   private MenuItem logout;
   private FloatingActionButton fab;
   private MaterialButton deleteAccountButton;
-  private MaterialToolbar toolbar;
 
   private LoginRegisterViewModel loginRegisterViewModel;
 
@@ -52,7 +55,6 @@ public class ProfileFragment extends Fragment {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-
     super.onCreate(savedInstanceState);
   }
 
@@ -90,9 +92,8 @@ public class ProfileFragment extends Fragment {
 
   private void initUi(View view) {
     this.userEmail = view.findViewById(R.id.profileFragmentUserEmail);
-    this.userPassword = view.findViewById(R.id.profileFragmentExamplePassword);
+    this.userPassword = view.findViewById(R.id.profileFragmentPassword);
     this.togglePasswordIcon = view.findViewById(R.id.profileFragmentTogglePasswordIcon);
-    this.editProfileButton = view.findViewById(R.id.profileFragmentEditProfileButton);
     this.toolbar = view.findViewById(R.id.profileFragmentToolbar);
     this.navController = Navigation.findNavController(view);
     this.logout = view.findViewById(R.id.profileFragmentToolbarLogout);
@@ -106,14 +107,20 @@ public class ProfileFragment extends Fragment {
     });
   }
 
-  /** This method initializes the logout button. */
-  public void initLogout(View view) {
-    this.navController = Navigation.findNavController(view);
-
-    this.logout.setOnClickListener(new View.OnClickListener() {
+  private void initToolbar(){
+    this.toolbar.inflateMenu(R.menu.profile_fragment_toolbar);
+    this.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.toolbar.setNavigationOnClickListener(v -> {
+      this.navController.navigate(R.id.action_profileFragment_to_coursesFragment);
+    });
+    this.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
       @Override
-      public void onClick(View view) {
-        loginRegisterViewModel.logOut();
+      public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.profileFragmentToolbarLogout) {
+          loginRegisterViewModel.logOut();
+          //navController.navigate(R.id.action_profileFragment_to_loginFragment);
+        }
+        return false;
       }
     });
   }
@@ -123,7 +130,7 @@ public class ProfileFragment extends Fragment {
       this.userPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
       this.togglePasswordIcon.setColorFilter(getResources().getColor(R.color.app_blue));
       this.passwordMask = false;
-    }else {
+    } else {
       this.userPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
       this.togglePasswordIcon.setColorFilter(getResources().getColor(R.color.grey));
       this.passwordMask = true;

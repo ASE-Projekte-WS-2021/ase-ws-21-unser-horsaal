@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,8 @@ import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 /** Fragment for course creation. */
 public class CreateCourseFragment extends Fragment {
@@ -26,13 +29,15 @@ public class CreateCourseFragment extends Fragment {
   private static final String TAG = "CreateCourseFragment";
 
   private EditText courseTitelEditText;
+  private EditText courseDescriptionEditText;
+  private EditText courseInstitutionEditText;
   private Button createCourseButton;
-
-  private NavController navController;
-
   private EnterCourseViewModel enterCourseViewModel;
+  private MaterialToolbar toolbar;
+  private NavController navController;
   private CreateCourseViewModel createCourseViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
+  private FirebaseAuth firebaseAuth;
 
   public CreateCourseFragment() {
     // Required empty public constructor
@@ -56,6 +61,7 @@ public class CreateCourseFragment extends Fragment {
     this.initViewModel();
     this.initUi(view);
     this.setupNavigation(view);
+    this.setupToolbar();
   }
 
   private void initViewModel() {
@@ -70,16 +76,19 @@ public class CreateCourseFragment extends Fragment {
     this.currentCourseViewModel.init();
     this.createCourseViewModel
             .getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>() {
-              @Override
-              public void onChanged(UserCourse course) {
-                courseCreated(course);
-              }
-            });
+      @Override
+      public void onChanged(UserCourse course) {
+        courseCreated(course);
+      }
+    });
   }
 
   private void initUi(View view) {
     this.courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
+    this.courseDescriptionEditText = view.findViewById(R.id.createCourseFragmentCourseDescriptionEditText);
+    this.courseInstitutionEditText = view.findViewById(R.id.createCourseFragmentCourseInstitutionEditText);
     this.createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
+    this.toolbar = view.findViewById(R.id.createCourseToolbar);
   }
 
   //setup Navigation to corresponding fragments
@@ -97,6 +106,13 @@ public class CreateCourseFragment extends Fragment {
       this.createCourseViewModel.createCourse(courseTitle, courseDescription);
       KeyboardUtil.hideKeyboard(getActivity());
     }
+  }
+
+  private void setupToolbar() {
+    this.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.toolbar.setNavigationOnClickListener(v -> {
+      this.navController.navigate(R.id.action_createCourseFragment_to_coursesFragment);
+    });
   }
 
   /** Signs the creator in the course. */

@@ -1,24 +1,20 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /** Fragment for Editing a profile.*/
 public class EditProfileFragment extends Fragment {
@@ -55,7 +51,7 @@ public class EditProfileFragment extends Fragment {
     setupToolbar();
   }
 
-  private void initUi(View view){
+  private void initUi(View view) {
     toolbar = view.findViewById(R.id.editProfileFragmentToolbar);
     profileImage = view.findViewById(R.id.editProfileFragmentProfileImage);
     username = view.findViewById(R.id.editProfileFragmentUserName);
@@ -66,7 +62,7 @@ public class EditProfileFragment extends Fragment {
     navController = Navigation.findNavController(view);
   }
 
-  private void setupToolbar(){
+  private void setupToolbar() {
     toolbar.inflateMenu(R.menu.edit_profile_fragment_toolbar);
     toolbar.setNavigationIcon(R.drawable.ic_baseline_close_24);
     toolbar.setNavigationOnClickListener(v -> {

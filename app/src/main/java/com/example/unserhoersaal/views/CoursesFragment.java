@@ -3,12 +3,16 @@ package com.example.unserhoersaal.views;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,8 +27,10 @@ import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
-import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
-import java.util.List;
+import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.util.ArrayList;
 
 /** Courses. */
 public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteListener {
@@ -32,17 +38,20 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   private static final String TAG = "CoursesFragment";
 
   private RecyclerView courseListRecycler;
-  private Button enterNewCourseButton;
-  private Button createNewCourseButton;
   private TextView titelTextView;
-
-  private CoursesAdapter coursesAdapter;
-
-  private NavController navController;
-
   private CoursesViewModel coursesViewModel;
+  private CreateCourseViewModel createCourseViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
-
+  private ArrayList<UserCourse> userCourses;
+  private CoursesAdapter coursesAdapter;
+  private NavController navController;
+  private FloatingActionButton fab;
+  private FloatingActionButton fabEnterCourse;
+  private FloatingActionButton fabCreateCourse;
+  private LinearLayout enterCourseLinearLayout;
+  private LinearLayout createCourseLinearLayout;
+  private Boolean isFabOpen;
+  private MaterialToolbar toolbar;
 
   public CoursesFragment() {
     // Required empty public constructor
@@ -65,8 +74,9 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     super.onViewCreated(view, savedInstanceState);
     this.initViewModel();
     this.initUi(view);
-    this.initRecyclerView();
     this.setupNavigation(view);
+    this.setupToolbar();
+    this.setupFabs();
   }
 
   private void initViewModel() {
@@ -87,28 +97,28 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   }
 
   private void initUi(View view) {
-    this.enterNewCourseButton = view.findViewById(R.id.coursesFragmentEnterNewCourseButton);
-    this.createNewCourseButton = view.findViewById(R.id.coursesFragmentCreateNewCourseButton);
     this.titelTextView = view.findViewById(R.id.coursesFragmentTitleTextView);
-    this.courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
-    this.titelTextView.setText(Config.COURSES_TITLE);
-  }
+    this.fab = view.findViewById(R.id.coursesFragmentFab);
+    this.fabEnterCourse = view.findViewById(R.id.coursesFragmentFabEnterCourse);
+    this.fabCreateCourse = view.findViewById(R.id.coursesFragmentFabCreateCourse);
+    this.enterCourseLinearLayout = view.findViewById(R.id.coursesFragmentEnterCourseFabLayout);
+    this.createCourseLinearLayout = view.findViewById(R.id.coursesFragmentCreateCourseFabLayout);
+    this.toolbar = (MaterialToolbar) view.findViewById(R.id.coursesFragmentToolbar);
 
-  private void initRecyclerView() {
-    this.coursesAdapter =
-            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue(), this);
+    this.courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
+    this.coursesAdapter = new CoursesAdapter(this.coursesViewModel.getEmptyCourses(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     this.courseListRecycler.setLayoutManager(layoutManager);
     this.courseListRecycler.setItemAnimator(new DefaultItemAnimator());
     this.courseListRecycler.setAdapter(this.coursesAdapter);
+    this.titelTextView.setText("Du bist noch keinen Kursen beigetreten");
   }
 
   private void setupNavigation(View view) {
     this.navController = Navigation.findNavController(view);
-
-    this.enterNewCourseButton.setOnClickListener(v -> this.navController.navigate(
+    this.fabEnterCourse.setOnClickListener(v -> this.navController.navigate(
             R.id.action_coursesFragment_to_enterCourseFragment));
-    this.createNewCourseButton.setOnClickListener(v -> this.navController.navigate(
+    this.fabCreateCourse.setOnClickListener(v -> this.navController.navigate(
             R.id.action_coursesFragment_to_createCourseFragment)
     );
 
@@ -120,5 +130,49 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     String id = this.coursesViewModel.getUserCourses().getValue().get(position).getKey();
     this.currentCourseViewModel.setCourseId(id);
     this.navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
+  }
+
+  private void setupToolbar() {
+    this.toolbar.inflateMenu(R.menu.courses_fragment_toolbar);
+    Menu menu = toolbar.getMenu();
+    this.toolbar.setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
+    this.toolbar.setNavigationOnClickListener(v -> {
+      this.navController.navigate(R.id.action_coursesFragment_to_profileFragment);
+    });
+  }
+
+  /** Source: https://mobikul.com/expandable-floating-action-button-fab-menu
+   * /#:~:text=A%20Floating%20Action%20Button(fab,common%20actions%20within%20an%20app.*/
+
+  private void setupFabs() {
+    this.isFabOpen = false;
+    this.fab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (!isFabOpen) {
+          showFabMenu();
+        } else {
+          closeFabMenu();
+        }
+      }
+    });
+  }
+
+  private void showFabMenu() {
+    this.isFabOpen = true;
+    this.createCourseLinearLayout.setVisibility(View.VISIBLE);
+    this.enterCourseLinearLayout.setVisibility(View.VISIBLE);
+    this.enterCourseLinearLayout.animate().translationY(-getResources()
+            .getDimension(R.dimen.standard_55));
+    this.createCourseLinearLayout.animate().translationY(-getResources()
+            .getDimension(R.dimen.standard_105));
+  }
+
+  private void closeFabMenu() {
+    this.isFabOpen = false;
+    this.enterCourseLinearLayout.animate().translationY(0);
+    this.createCourseLinearLayout.animate().translationY(0);
+    this.createCourseLinearLayout.setVisibility(View.INVISIBLE);
+    this.enterCourseLinearLayout.setVisibility(View.INVISIBLE);
   }
 }
