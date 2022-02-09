@@ -5,13 +5,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -26,7 +23,6 @@ import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 
 /** Courses. */
@@ -88,7 +84,8 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     toolbar = (MaterialToolbar) view.findViewById(R.id.coursesFragmentToolbar);
 
     courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
-    CoursesAdapter coursesAdapter = new CoursesAdapter(coursesViewModel.getEmptyCourses(), this);
+    CoursesAdapter coursesAdapter = new CoursesAdapter(coursesViewModel.getEmptyCourses(),
+            this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     courseListRecycler.setLayoutManager(layoutManager);
     courseListRecycler.setItemAnimator(new DefaultItemAnimator());
@@ -109,10 +106,10 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   }
 
   private void updateUi(View view) {
-    if (userCourses.size() == 0){
+    if (userCourses.size() == 0) {
       titelTextView.setText("Du bist noch keinen Kursen beigetreten");
       titelTextView.setVisibility(View.VISIBLE);
-    }else {
+    } else {
       titelTextView.setText("Bereits beigetretene Kurse");
       titelTextView.setVisibility(View.INVISIBLE);
     }
@@ -133,7 +130,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
 
   }
 
-  private void setupToolbar(){
+  private void setupToolbar() {
     toolbar.inflateMenu(R.menu.courses_fragment_toolbar);
     Menu menu = toolbar.getMenu();
     toolbar.setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
@@ -145,29 +142,31 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   /** Source: https://mobikul.com/expandable-floating-action-button-fab-menu
    * /#:~:text=A%20Floating%20Action%20Button(fab,common%20actions%20within%20an%20app.*/
 
-  private void setupFabs(){
+  private void setupFabs() {
     isFabOpen = false;
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(!isFabOpen){
+        if (!isFabOpen) {
           showFabMenu();
-        }else{
+        } else {
           closeFabMenu();
         }
       }
     });
   }
 
-  private void showFabMenu(){
+  private void showFabMenu() {
     isFabOpen = true;
     createCourseLinearLayout.setVisibility(View.VISIBLE);
     enterCourseLinearLayout.setVisibility(View.VISIBLE);
-    enterCourseLinearLayout.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-    createCourseLinearLayout.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+    enterCourseLinearLayout.animate().translationY(-getResources()
+            .getDimension(R.dimen.standard_55));
+    createCourseLinearLayout.animate().translationY(-getResources()
+            .getDimension(R.dimen.standard_105));
   }
 
-  private void closeFabMenu(){
+  private void closeFabMenu() {
     isFabOpen = false;
     enterCourseLinearLayout.animate().translationY(0);
     createCourseLinearLayout.animate().translationY(0);

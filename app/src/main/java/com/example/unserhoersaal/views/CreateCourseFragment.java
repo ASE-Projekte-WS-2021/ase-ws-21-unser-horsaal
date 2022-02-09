@@ -65,8 +65,10 @@ public class CreateCourseFragment extends Fragment {
 
   private void initUi(View view) {
     courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
-    courseDescriptionEditText = view.findViewById(R.id.createCourseFragmentCourseDescriptionEditText);
-    courseInstitutionEditText = view.findViewById(R.id.createCourseFragmentCourseInstitutionEditText);
+    courseDescriptionEditText = view
+            .findViewById(R.id.createCourseFragmentCourseDescriptionEditText);
+    courseInstitutionEditText = view
+            .findViewById(R.id.createCourseFragmentCourseInstitutionEditText);
     createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
     toolbar = view.findViewById(R.id.createCourseToolbar);
   }
@@ -88,10 +90,12 @@ public class CreateCourseFragment extends Fragment {
           createCourseViewModel.createCourse(courseTitle, courseDescription);
           enterCourseViewModel.saveUserCourses(createCourseViewModel.getCourseId())
                   .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                    if (navController.getCurrentDestination().getId() == R.id.createCourseFragment){
-                      navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
+                    if (navController.getCurrentDestination().getId()
+                            == R.id.createCourseFragment) {
+                      navController
+                              .navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
                     }
-          });
+                  });
           KeyboardUtil.hideKeyboard(getActivity());
         } else {
           Toast.makeText(getContext(), "The course name should be 6 characters or longer.",
@@ -101,7 +105,7 @@ public class CreateCourseFragment extends Fragment {
     });
   }
 
-  private void setupToolbar(){
+  private void setupToolbar() {
     toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     toolbar.setNavigationOnClickListener(v -> {
       navController.navigate(R.id.action_createCourseFragment_to_coursesFragment);
