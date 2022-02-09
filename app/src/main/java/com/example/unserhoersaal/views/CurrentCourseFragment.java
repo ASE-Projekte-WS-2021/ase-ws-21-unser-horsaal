@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
 import com.example.unserhoersaal.model.Message;
-import com.example.unserhoersaal.repository.CoursesRepository;
-import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Fragment for current course.*/
@@ -33,7 +31,6 @@ public class CurrentCourseFragment extends Fragment {
   private Button sendQuestionButton;
   private TextView courseKeyTextView;
   private CurrentCourseViewModel currentCourseViewModel;
-  private CreateCourseViewModel createCourseViewModel;
   private String courseId;
   private RecyclerView recyclerView;
   private Message[] emptyArray = {};
@@ -46,8 +43,6 @@ public class CurrentCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
     currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
   }
@@ -62,12 +57,11 @@ public class CurrentCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    //courseId = createCourseViewModel.getCourseId();
-    //currentCourseViewModel.setCourseId(courseId);
 
     currentCourseViewModel.init();
-    currentCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id ->{
+    currentCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id -> {
       this.courseId = id;
+      courseKeyTextView.setText(courseId);
     });
     currentCourseViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<List>() {
       @Override
@@ -83,7 +77,6 @@ public class CurrentCourseFragment extends Fragment {
     questionEditText = view.findViewById(R.id.currentCourseFragmentQuestionEditText);
     sendQuestionButton = view.findViewById(R.id.currentCourseFragmentSendQuestionButton);
     courseKeyTextView = view.findViewById(R.id.courseKeyTextView);
-    courseKeyTextView.setText(courseId);
     recyclerView = view.findViewById(R.id.chatRecyclerView);
 
     sendQuestionButton.setOnClickListener(new View.OnClickListener() {
