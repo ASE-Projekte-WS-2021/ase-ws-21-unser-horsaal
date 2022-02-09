@@ -62,10 +62,13 @@ public class CurrentCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    courseId = createCourseViewModel.getCourseId();
-    currentCourseViewModel.setupCurrentCourseViewModel(courseId);
+    //courseId = createCourseViewModel.getCourseId();
+    //currentCourseViewModel.setCourseId(courseId);
 
     currentCourseViewModel.init();
+    currentCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id ->{
+      this.courseId = id;
+    });
     currentCourseViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<List>() {
       @Override
       public void onChanged(List list) {

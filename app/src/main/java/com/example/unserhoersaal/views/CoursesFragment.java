@@ -22,6 +22,8 @@ import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+
 import java.util.List;
 
 /** Courses. */
@@ -34,7 +36,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   private Button createNewCourseButton;
   private TextView titelTextView;
   private CoursesViewModel coursesViewModel;
-  private CreateCourseViewModel createCourseViewModel;
+  private CurrentCourseViewModel currentCourseViewModel;
   private List<UserCourse> courses;
   private NavController navController;
   private CoursesAdapter coursesAdapter;
@@ -48,8 +50,8 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     super.onCreate(savedInstanceState);
     coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
+    currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -107,7 +109,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
 
   @Override
   public void onNoteClick(int position) {
-    createCourseViewModel.setCourseId(courses.get(position).key);
+    currentCourseViewModel.setCourseId(courses.get(position).key);
     navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
   }
 }

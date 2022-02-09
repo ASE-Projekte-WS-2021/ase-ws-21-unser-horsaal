@@ -15,7 +15,7 @@ public class CurrentCourseViewModel extends ViewModel {
 
   private CurrentCourseRepository currentCourseRepository;
   private MutableLiveData<List<Message>> messages;
-  private String courseid;
+  private final MutableLiveData<String> courseid = new MutableLiveData<String>();
 
   /** This method initializes the database access. */
   public void init() {
@@ -23,7 +23,7 @@ public class CurrentCourseViewModel extends ViewModel {
       return;
     }
     currentCourseRepository = CurrentCourseRepository.getInstance();
-    currentCourseRepository.setCourseId(this.courseid);
+    currentCourseRepository.setCourseId(this.courseid.getValue());
     messages = currentCourseRepository.getMessages();
   }
 
@@ -35,8 +35,11 @@ public class CurrentCourseViewModel extends ViewModel {
     return messages;
   }
 
-  public void setupCurrentCourseViewModel(String courseId) {
-    this.courseid = courseId;
+  public void setCourseId(String courseId) {
+    this.courseid.setValue(courseId);
   }
 
+  public LiveData<String> getCourseId() {
+    return this.courseid;
+  }
 }
