@@ -157,4 +157,9 @@
             app:popUpTo="@id/courseDescriptionFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/courseMeetingFragment"
+        android:name="com.example.unserhoersaal.views.CourseMeetingFragment"
+        android:label="fragment_course_meeting"
+        tools:layout="@layout/fragment_course_meeting" />
 </navigation>

@@ -91,4 +91,7 @@
     <string name="participant_list_item_example_name">Beispielname1234</string>
     <string name="profile_fragment_delete_account">Account unwiderruflich löschen</string>
     <string name="profile_fragment_example_institution">Universität Regensburg</string>
+    <string name="course_meeting_fragment_contributions_example">2</string>
+    <string name="course_meeting_fragment_contributions_string">Beiträge</string>
+    <string name="course_meeting_general_thread_heading"><![CDATA[Ankündigungen & Allgemeines]]></string>
 </resources>
