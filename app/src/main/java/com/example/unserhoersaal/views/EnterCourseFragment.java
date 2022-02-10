@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -95,5 +96,10 @@ public class EnterCourseFragment extends Fragment {
     toolbar.setNavigationOnClickListener(v -> {
       navController.navigate(R.id.action_enterCourseFragment_to_coursesFragment);
     });
+  }
+
+  private void showDialog() {
+    EnterCourseDialogFragment dialogFragment = new EnterCourseDialogFragment();
+    dialogFragment.show(getActivity().getSupportFragmentManager(), "enter dialog");
   }
 }

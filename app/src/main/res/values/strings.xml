@@ -98,4 +98,5 @@
     <string name="create_thread_title">Frage stellen</string>
     <string name="create_thread_screen_question_title_hing">Frage-Titel</string>
     <string name="create_thread_screen_question_text_hint">Frage-Text</string>
+    <string name="enter_course_dialog_decline">Abbrechen</string>
 </resources>
