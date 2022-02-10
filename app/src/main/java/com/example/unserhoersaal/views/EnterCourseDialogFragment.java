@@ -6,15 +6,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.example.unserhoersaal.R;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
-
-import org.w3c.dom.Text;
 
 /** Dialog that contains Course-Information and option to enter the course. Source:
  * https://stackoverflow.com/questions/25887373/calling-dialogfragment-from-fragment-not-
@@ -54,6 +50,7 @@ public class EnterCourseDialogFragment extends DialogFragment {
     courseDescription = view.findViewById(R.id.enterCourseDialogCourseDescription);
   }
 
+  /**Comment.*/
   public void setContent(String title, String creator, String institution, String description) {
     courseTitel.setText(title);
     courseCreator.setText(creator);
