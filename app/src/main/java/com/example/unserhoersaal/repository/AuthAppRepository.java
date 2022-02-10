@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.repository;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.views.LoginFragment;
@@ -14,33 +15,34 @@ public class AuthAppRepository {
 
   private static final String TAG = "AuthAppRepo";
 
-  private final Application application;
-  private final FirebaseAuth firebaseAuth;
-  private final MutableLiveData<FirebaseUser> userLiveData;
-  private final MutableLiveData<Boolean> loggedOutLiveData;
+
+  private static AuthAppRepository instance;
+  private FirebaseAuth firebaseAuth;
+  private FirebaseUser user = null;
+  private MutableLiveData<FirebaseUser> userLiveData = new MutableLiveData<>();
+
+  public static AuthAppRepository getInstance(){
+    if (instance == null){
+      instance = new AuthAppRepository();
+    }
+    return instance;
+  }
 
   /** Constructor Description. */
-  public AuthAppRepository(Application application) {
-    this.application = application;
+  public AuthAppRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
-    this.userLiveData = new MutableLiveData<>();
-    this.loggedOutLiveData = new MutableLiveData<>();
 
     if (firebaseAuth.getCurrentUser() != null) {
       this.userLiveData.postValue(firebaseAuth.getCurrentUser());
-      this.loggedOutLiveData.postValue(false);
     }
   }
 
   /** This method is logging in the user. */
-  public void login(String email, String password, LoginFragment listener) {
+  public void login(String email, String password) {
     firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(application.getMainExecutor(), task -> {
+            .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 userLiveData.postValue(firebaseAuth.getCurrentUser());
-                listener.loginResult(true);
-              } else {
-                listener.loginResult(false);
               }
             });
   }
@@ -48,31 +50,25 @@ public class AuthAppRepository {
   /** This method registers a new user. */
   public void register(String email, String password) {
     firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(application.getMainExecutor(), task -> {
+            .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 userLiveData.postValue(firebaseAuth.getCurrentUser());
-              } else {
-                Toast.makeText(application.getApplicationContext(),
-                        "Registration Failure: " + task.getException().getMessage(),
-                        Toast.LENGTH_SHORT).show();
               }
             });
   }
 
   public void logOut() {
     this.firebaseAuth.signOut();
-    this.loggedOutLiveData.postValue(true);
-  }
-
-  public FirebaseUser getCurrentUser() {
-    return firebaseAuth.getCurrentUser();
+    Log.d(TAG, "logOut: " + firebaseAuth.getCurrentUser());
+    this.userLiveData.postValue(firebaseAuth.getCurrentUser());
   }
 
   public MutableLiveData<FirebaseUser> getUserLiveData() {
+    if (user == null){
+      user = firebaseAuth.getCurrentUser();
+    }
+    userLiveData.setValue(user);
     return userLiveData;
   }
 
-  public MutableLiveData<Boolean> getLoggedOutLiveData() {
-    return this.loggedOutLiveData;
-  }
 }

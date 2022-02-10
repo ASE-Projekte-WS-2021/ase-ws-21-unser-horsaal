@@ -34,6 +34,7 @@ public class RegistrationFragment extends Fragment {
   CheckBox checkBox;
   Button registrationButton;
 
+  private NavController navController;
   private LoginRegisterViewModel loginRegisterViewModel;
 
   public RegistrationFragment() {
@@ -59,6 +60,15 @@ public class RegistrationFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    loginRegisterViewModel.init();
+    loginRegisterViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
+      @Override
+      public void onChanged(FirebaseUser firebaseUser) {
+        if (firebaseUser != null) {
+          navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
+        }
+      }
+    });
     initUi(view);
     setupNavigation(view);
   }
@@ -74,7 +84,7 @@ public class RegistrationFragment extends Fragment {
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
+    navController = Navigation.findNavController(view);
 
     // todo add logic to registration
     registrationButton.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +94,6 @@ public class RegistrationFragment extends Fragment {
         String password = passwordEditText.getText().toString();
         if (email.length() > 0 && password.length() > 0) {
           loginRegisterViewModel.register(email, password);
-          navController.navigate(R.id.action_registrationFragment_to_loginFragment);
           KeyboardUtil.hideKeyboard(getActivity());
         } else {
           String emptyInputMessage = "Email Address and Password Must Be Entered";
