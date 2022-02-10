@@ -99,4 +99,9 @@
     <string name="create_thread_screen_question_title_hing">Frage-Titel</string>
     <string name="create_thread_screen_question_text_hint">Frage-Text</string>
     <string name="enter_course_dialog_decline">Abbrechen</string>
+    <string name="course_history_create_meeting_title">Termin erstellen</string>
+    <string name="course_history_fragment_create_meeting_title_hint">Termin-Titel</string>
+    <string name="course_history_fragment_create_meeting_date_hint">Datum</string>
+    <string name="course_history_create_meeting_create_button">Erstellen</string>
+    <string name="course_history_fragment_create_meeting_time_hint">Startzeit</string>
 </resources>
