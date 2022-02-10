@@ -15,14 +15,21 @@ public class CreateCourseViewModel extends ViewModel {
   private static final String TAG = "CreateCourseViewModel";
 
   private CreateCourseRepository createCourseRepository;
-  private MutableLiveData<String> courseId = new MutableLiveData<String>();
+  /*private MutableLiveData<String> courseId = new MutableLiveData<String>();*/
   private MutableLiveData<UserCourse> userCourse;
 
-
-  public CreateCourseViewModel() {
-    createCourseRepository = new CreateCourseRepository();
+  public void init(){
+    if (userCourse != null){
+      return;
+    }
+    createCourseRepository = CreateCourseRepository.getInstance();
     userCourse = createCourseRepository.getUserCourse();
   }
+
+  /*public CreateCourseViewModel() {
+    createCourseRepository = new CreateCourseRepository();
+    userCourse = createCourseRepository.getUserCourse();
+  }*/
 
   public void createCourse(String courseName, String courseDescription) {
     createCourseRepository.createNewCourse(courseName, courseDescription);
@@ -32,11 +39,11 @@ public class CreateCourseViewModel extends ViewModel {
     return userCourse;
   }
 
-  public String getCourseId() {
+  /*public String getCourseId() {
     return createCourseRepository.getCourseId();
-  }
+  }*/
 
-  public void setCourseId(String courseId) {
+  /*public void setCourseId(String courseId) {
     createCourseRepository.setCourseId(courseId);
-  }
+  }*/
 }

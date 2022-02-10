@@ -64,7 +64,6 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-
     coursesViewModel.init();
     coursesViewModel.getUserCourses()
             .observe(getViewLifecycleOwner(), new Observer<List<UserCourse>>() {

@@ -54,6 +54,8 @@ public class EnterCourseFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
+    enterCourseViewModel.init();
+
     enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), new Observer<String>() {
       @Override
       public void onChanged(String id) {

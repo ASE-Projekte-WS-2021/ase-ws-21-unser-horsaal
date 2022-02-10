@@ -58,6 +58,8 @@ public class CreateCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    createCourseViewModel.init();
+    enterCourseViewModel.init();
     createCourseViewModel.getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>(){
       @Override
       public void onChanged(UserCourse course) {

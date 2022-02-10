@@ -22,23 +22,32 @@ public class EnterCourseRepository {
 
   private static final String TAG = "EnterCourseRepo";
 
-  private FirebaseDatabase firebaseDb;
+  //private FirebaseDatabase firebaseDb;
   private DatabaseReference databaseReference;
-  private MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
-  private ArrayList<Message> messagesList = new ArrayList<Message>();
+  //private MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
+  //private ArrayList<Message> messagesList = new ArrayList<Message>();
   private FirebaseAuth firebaseAuth;
-  private MutableLiveData<Config.ThreeState> courseIdIsCorrect = new MutableLiveData<Config.ThreeState>();
+  //private MutableLiveData<Config.ThreeState> courseIdIsCorrect = new MutableLiveData<Config.ThreeState>();
   private MutableLiveData<String> courseId = new MutableLiveData<>();
+
+  private static EnterCourseRepository instance;
+
+  public static EnterCourseRepository getInstance() {
+    if (instance == null) {
+      instance = new EnterCourseRepository();
+    }
+    return instance;
+  }
 
 
   //private String courseId;
 
   /** Constructor. */
   public EnterCourseRepository() {
-    this.firebaseDb = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app");
-    this.databaseReference = firebaseDb.getReference();
+    //this.firebaseDb = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app");
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.firebaseAuth = FirebaseAuth.getInstance();
-    courseIdIsCorrect.setValue(Config.ThreeState.TRALSE);
+    //courseIdIsCorrect.setValue(Config.ThreeState.TRALSE);
   }
 
   public MutableLiveData<String> getCourseId() {

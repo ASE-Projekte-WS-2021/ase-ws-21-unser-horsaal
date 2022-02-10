@@ -18,10 +18,18 @@ public class EnterCourseViewModel extends ViewModel {
   private EnterCourseRepository enterCourseRepository;
   private MutableLiveData<String> courseId;
 
-  public EnterCourseViewModel() {
-    enterCourseRepository = new EnterCourseRepository();
+  public void init() {
+    if (courseId != null) {
+      return;
+    }
+    enterCourseRepository = EnterCourseRepository.getInstance();
     courseId = enterCourseRepository.getCourseId();
   }
+
+  /*public EnterCourseViewModel() {
+    enterCourseRepository = new EnterCourseRepository();
+    courseId = enterCourseRepository.getCourseId();
+  }*/
 
   public void checkCode(String id){
     enterCourseRepository.checkCode(id);
