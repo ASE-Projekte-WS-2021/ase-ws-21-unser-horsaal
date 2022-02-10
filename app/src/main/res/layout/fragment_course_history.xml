@@ -28,15 +28,119 @@
         app:layout_constraintTop_toBottomOf="@+id/courseHistoryFragmentToolbar"
         tools:listitem="@layout/simple_course_meeting"/>
 
+    <ScrollView
+        android:id="@+id/courseHistoryFragmentCreateMeetingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/courseHistoryFragmentFab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@color/white"
+            android:elevation="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/courseHistoryFragmentCreateMeetingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/course_history_create_meeting_title"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/courseHistoryFragmentCreateMeetingTitleInputField"
+                style="@style/textInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/course_history_fragment_create_meeting_title_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/courseHistoryFragmentCreateMeetingTitleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/courseHistoryFragmentCreateMeetingDateInputField"
+                style="@style/textInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/course_history_fragment_create_meeting_date_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/courseHistoryFragmentCreateMeetingDateEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/courseHistoryFragmentCreateMeetingTimeInputField"
+                style="@style/textInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/course_history_fragment_create_meeting_time_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/courseHistoryFragmentCreateMeetingTimeEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="time"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/courseHistoryFragmentCreateMeetingCreateButton"
+                style="@style/wideOrangeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/course_history_create_meeting_create_button" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/courseHistoryFragmentFab"
         style="@style/fabStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_add_24"
         android:layout_marginBottom="32dp"
-        android:layout_marginEnd="32dp"
-        app:tint="@color/white"
+        android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>
