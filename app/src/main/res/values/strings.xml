@@ -94,4 +94,8 @@
     <string name="course_meeting_fragment_contributions_example">2</string>
     <string name="course_meeting_fragment_contributions_string">Beiträge</string>
     <string name="course_meeting_general_thread_heading"><![CDATA[Ankündigungen & Allgemeines]]></string>
+    <string name="create_thread_send_message">Frage Senden</string>
+    <string name="create_thread_title">Frage stellen</string>
+    <string name="create_thread_screen_question_title_hing">Frage-Titel</string>
+    <string name="create_thread_screen_question_text_hint">Frage-Text</string>
 </resources>
