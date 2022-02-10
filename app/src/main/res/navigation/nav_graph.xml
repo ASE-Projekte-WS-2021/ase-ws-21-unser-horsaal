@@ -85,6 +85,9 @@
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_profileFragment_to_courseMeetingFragment"
+            app:destination="@id/courseMeetingFragment" />
     </fragment>
     <fragment
         android:id="@+id/coursesFragment"
