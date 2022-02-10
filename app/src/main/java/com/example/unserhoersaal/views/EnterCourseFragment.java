@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
@@ -78,15 +76,16 @@ public class EnterCourseFragment extends Fragment {
     enterCourseButton.setOnClickListener(v -> enterCode());
   }
 
-  //todo add interface
-  public void enterCode(){
+  /** Enters the code and checks if it is correct. */
+  public void enterCode() {
     String id = enterCourseEditText.getText().toString();
-    if(id.length() > 0) {
+    if (id.length() > 0) {
       enterCourseViewModel.checkCode(id);
     }
   }
 
-  public void openNewCourse(String id){
+  /** Creates a new course if the code is correct. */
+  public void openNewCourse(String id) {
     KeyboardUtil.hideKeyboard(getActivity());
     currentCourseViewModel.setCourseId(id);
     navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);

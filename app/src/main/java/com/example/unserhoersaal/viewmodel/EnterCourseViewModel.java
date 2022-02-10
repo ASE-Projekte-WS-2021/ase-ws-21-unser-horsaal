@@ -4,10 +4,7 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.repository.EnterCourseRepository;
-import com.example.unserhoersaal.views.EnterCourseFragment;
 
 /**Class EnterCourseViewModel.**/
 
@@ -18,6 +15,7 @@ public class EnterCourseViewModel extends ViewModel {
   private EnterCourseRepository enterCourseRepository;
   private MutableLiveData<String> courseId;
 
+  /** Initialize the EnterCourseViewModel. */
   public void init() {
     if (courseId != null) {
       return;
@@ -26,12 +24,7 @@ public class EnterCourseViewModel extends ViewModel {
     courseId = enterCourseRepository.getCourseId();
   }
 
-  /*public EnterCourseViewModel() {
-    enterCourseRepository = new EnterCourseRepository();
-    courseId = enterCourseRepository.getCourseId();
-  }*/
-
-  public void checkCode(String id){
+  public void checkCode(String id) {
     enterCourseRepository.checkCode(id);
   }
 
@@ -42,9 +35,5 @@ public class EnterCourseViewModel extends ViewModel {
   public void addUserToCourse(String id, String title) {
     enterCourseRepository.saveCourseInUser(id, title);
   }
-
-  /*public LiveData<Config.ThreeState> saveUserCourses(String courseId) {
-    return enterCourseRepository.saveUserCourses(courseId);
-  }*/
 
 }

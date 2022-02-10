@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.Message;
-import com.example.unserhoersaal.repository.CoursesRepository;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

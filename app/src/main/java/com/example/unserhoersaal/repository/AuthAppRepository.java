@@ -1,10 +1,6 @@
 package com.example.unserhoersaal.repository;
 
-import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
 import androidx.lifecycle.MutableLiveData;
-import com.example.unserhoersaal.views.LoginFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -15,14 +11,14 @@ public class AuthAppRepository {
 
   private static final String TAG = "AuthAppRepo";
 
-
   private static AuthAppRepository instance;
   private FirebaseAuth firebaseAuth;
   private FirebaseUser user = null;
   private MutableLiveData<FirebaseUser> userLiveData = new MutableLiveData<>();
 
-  public static AuthAppRepository getInstance(){
-    if (instance == null){
+  /** Gives back an Instance of AuthAppRepository. */
+  public static AuthAppRepository getInstance() {
+    if (instance == null) {
       instance = new AuthAppRepository();
     }
     return instance;
@@ -59,12 +55,12 @@ public class AuthAppRepository {
 
   public void logOut() {
     this.firebaseAuth.signOut();
-    Log.d(TAG, "logOut: " + firebaseAuth.getCurrentUser());
     this.userLiveData.postValue(firebaseAuth.getCurrentUser());
   }
 
+  /** Gives back the current User. */
   public MutableLiveData<FirebaseUser> getUserLiveData() {
-    if (user == null){
+    if (user == null) {
       user = firebaseAuth.getCurrentUser();
     }
     userLiveData.setValue(user);

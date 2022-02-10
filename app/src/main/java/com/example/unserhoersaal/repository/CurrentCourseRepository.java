@@ -46,7 +46,6 @@ public class CurrentCourseRepository {
   /** Loading all messages from the database. */
   public void loadMessages() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-
     Query query = reference.child("Courses").child(courseId).child("Messages");
     query.addValueEventListener(new ValueEventListener() {
       @Override

@@ -21,9 +21,7 @@ import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
-import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
-
 import java.util.List;
 
 /** Courses. */

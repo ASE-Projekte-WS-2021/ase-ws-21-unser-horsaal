@@ -60,12 +60,13 @@ public class CreateCourseFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     createCourseViewModel.init();
     enterCourseViewModel.init();
-    createCourseViewModel.getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>(){
-      @Override
-      public void onChanged(UserCourse course) {
-        courseCreated(course);
-      }
-    });
+    createCourseViewModel
+            .getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>() {
+              @Override
+              public void onChanged(UserCourse course) {
+                courseCreated(course);
+              }
+            });
     initUi(view);
     setupNavigation(view);
   }
@@ -81,7 +82,8 @@ public class CreateCourseFragment extends Fragment {
     createCourseButton.setOnClickListener(v -> createCourse());
   }
 
-  public void createCourse(){
+  /** Creates a new course. */
+  public void createCourse() {
     String courseTitle = courseTitelEditText.getText().toString();
     String courseDescription = "";
 
@@ -94,6 +96,7 @@ public class CreateCourseFragment extends Fragment {
     }
   }
 
+  /** Signs the creator in the course. */
   public void courseCreated(UserCourse course) {
     enterCourseViewModel.addUserToCourse(course.key, course.name);
     currentCourseViewModel.setCourseId(course.key);

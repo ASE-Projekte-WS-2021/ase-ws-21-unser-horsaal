@@ -54,14 +54,15 @@ public class ProfileFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     loginRegisterViewModel.init();
-    loginRegisterViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
-      @Override
-      public void onChanged(FirebaseUser firebaseUser) {
-        if(firebaseUser == null){
-          navController.navigate(R.id.action_profileFragment_to_loginFragment);
-        }
-      }
-    });
+    loginRegisterViewModel
+            .getUserLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
+              @Override
+              public void onChanged(FirebaseUser firebaseUser) {
+                if (firebaseUser == null) {
+                  navController.navigate(R.id.action_profileFragment_to_loginFragment);
+                }
+              }
+            });
     initUi(view);
     initLogoutButton(view);
   }
