@@ -2,7 +2,10 @@ package com.example.unserhoersaal.repository;
 
 
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.views.CreateCourseFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -17,6 +20,7 @@ public class CreateCourseRepository {
   private DatabaseReference databaseReference;
   private String courseId;
   private FirebaseAuth firebaseAuth;
+  private MutableLiveData<UserCourse> userCourse = new MutableLiveData<>();
 
   /**Method gets an instance of Firebase.**/
 
@@ -26,9 +30,13 @@ public class CreateCourseRepository {
     this.firebaseAuth = FirebaseAuth.getInstance();
   }
 
+  public MutableLiveData<UserCourse> getUserCourse(){
+    return userCourse;
+  }
+
   /**Method creates an course.**/
 
-  public void createNewCourse(String courseName, String courseDescription, CreateCourseFragment listener) {
+  public void createNewCourse(String courseName, String courseDescription) {
     String courseCreatedById = firebaseAuth.getCurrentUser().getUid();
     String courseCreatedBy = firebaseAuth.getCurrentUser().getEmail();
     //TODO: replace by user name or leave out and use dummy names
@@ -37,7 +45,7 @@ public class CreateCourseRepository {
     CourseModel courseModel = new CourseModel(courseName, courseId, courseDescription,
             courseCreatedById, courseCreatedBy, courseCreatedAt);
     this.databaseReference.child("Courses").child(courseId).setValue(courseModel);
-    listener.courseCreated(courseId, courseName);
+    userCourse.postValue(new UserCourse(courseId, courseName));
   }
 
   /**Gives back courseId.**/

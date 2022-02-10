@@ -10,19 +10,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.interfaces.CreateCourseInterface;
+import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 
 /** Fragment for course creation. */
-public class CreateCourseFragment extends Fragment implements CreateCourseInterface {
+public class CreateCourseFragment extends Fragment {
 
   private static final String TAG = "CreateCourseFragment";
 
@@ -58,6 +58,12 @@ public class CreateCourseFragment extends Fragment implements CreateCourseInterf
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    createCourseViewModel.getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>(){
+      @Override
+      public void onChanged(UserCourse course) {
+        courseCreated(course);
+      }
+    });
     initUi(view);
     setupNavigation(view);
   }
@@ -70,9 +76,6 @@ public class CreateCourseFragment extends Fragment implements CreateCourseInterf
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
     navController = Navigation.findNavController(view);
-
-    //createCourseButton.setOnClickListener(v ->
-    // navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment));
     createCourseButton.setOnClickListener(v -> createCourse());
   }
 
@@ -81,16 +84,7 @@ public class CreateCourseFragment extends Fragment implements CreateCourseInterf
     String courseDescription = "";
 
     if (courseTitle.length() > 0) {
-      createCourseViewModel.createCourse(courseTitle, courseDescription, CreateCourseFragment.this);
-      //enterCourseViewModel.addUsertoCourse()
-          /*enterCourseViewModel.saveUserCourses(createCourseViewModel.getCourseId())
-                  .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                    if (navController.getCurrentDestination().getId()
-                            == R.id.createCourseFragment) {
-                      navController
-                              .navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
-                    }
-                  });*/
+      createCourseViewModel.createCourse(courseTitle, courseDescription);
       KeyboardUtil.hideKeyboard(getActivity());
     } else {
       Toast.makeText(getContext(), "The course name should be 6 characters or longer.",
@@ -98,10 +92,9 @@ public class CreateCourseFragment extends Fragment implements CreateCourseInterf
     }
   }
 
-  @Override
-  public void courseCreated(String id, String title) {
-    enterCourseViewModel.addUserToCourse(id, title);
-    currentCourseViewModel.setCourseId(id);
+  public void courseCreated(UserCourse course) {
+    enterCourseViewModel.addUserToCourse(course.key, course.name);
+    currentCourseViewModel.setCourseId(course.key);
     navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
   }
 }
