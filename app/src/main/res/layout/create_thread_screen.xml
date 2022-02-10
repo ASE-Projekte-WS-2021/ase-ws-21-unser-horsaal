@@ -27,6 +27,7 @@
             android:id="@+id/createThreadTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="@string/create_thread_title"
             android:textAlignment="center"
             android:textSize="24sp"
@@ -36,6 +37,8 @@
             android:id="@+id/createThreadQuestionTitleTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="32dp"
             android:hint="@string/create_thread_screen_question_title_hing"
             style="@style/textInputField"
@@ -53,6 +56,8 @@
             android:id="@+id/createThreadQuestionTextTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="32dp"
             android:hint="@string/create_thread_screen_question_text_hint"
             style="@style/textInputField"
@@ -70,9 +75,12 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createThreadScreenSendQuestion"
             style="@style/wideOrangeButton"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="32dp"
             android:text="@string/create_thread_send_message" />
 
     </LinearLayout>
