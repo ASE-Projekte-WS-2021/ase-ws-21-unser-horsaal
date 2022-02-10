@@ -24,10 +24,12 @@ public class EnterCourseRepository {
 
   private FirebaseDatabase firebaseDb;
   private DatabaseReference databaseReference;
-  private final MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
+  private MutableLiveData<ArrayList> messages = new MutableLiveData<ArrayList>();
   private ArrayList<Message> messagesList = new ArrayList<Message>();
   private FirebaseAuth firebaseAuth;
-  private final MutableLiveData<Config.ThreeState> courseIdIsCorrect = new MutableLiveData<Config.ThreeState>();
+  private MutableLiveData<Config.ThreeState> courseIdIsCorrect = new MutableLiveData<Config.ThreeState>();
+  private MutableLiveData<String> courseId = new MutableLiveData<>();
+
 
   //private String courseId;
 
@@ -39,14 +41,18 @@ public class EnterCourseRepository {
     courseIdIsCorrect.setValue(Config.ThreeState.TRALSE);
   }
 
-  public void checkCode(String id, EnterCourseFragment listener){
+  public MutableLiveData<String> getCourseId() {
+    return courseId;
+  }
+
+  public void checkCode(String id){
     Query query = databaseReference.child("Courses").child(id);
     query.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
           String courseName = dataSnapshot.child("courseName").getValue(String.class);
-          isUserInCourse(id, courseName, listener);
+          isUserInCourse(id, courseName);
         }
       }
 
@@ -57,38 +63,14 @@ public class EnterCourseRepository {
     });
   }
 
-  /** Saving the user courses. */
-  /*public MutableLiveData<Config.ThreeState> saveUserCourses(String courseId) {
-    this.courseIdIsCorrect.setValue(Config.ThreeState.TRALSE);
-    this.databaseReference.child("Courses").child(courseId)
-            .addListenerForSingleValueEvent(new ValueEventListener() {
-              @Override
-              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                  String courseName = dataSnapshot.child("courseName").getValue(String.class);
-                  courseIdIsCorrect.setValue(Config.ThreeState.TRUE);
-                  isUserInCourse(courseId, courseName);
-                } else {
-                  courseIdIsCorrect.setValue(Config.ThreeState.FALSE);
-                }
-              }
-
-              @Override
-              public void onCancelled(@NonNull DatabaseError databaseError) {
-
-              }
-            });
-    return courseIdIsCorrect;
-  }*/
-
   /** Checks if user is in course. */
-  public void isUserInCourse(String courseId, String courseName, EnterCourseFragment listener) {
+  public void isUserInCourse(String id, String courseName) {
     ValueEventListener eventListener = new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (!dataSnapshot.exists()) {
-          saveCourseInUser(courseId, courseName);
-          listener.openNewCourse(courseId);
+          saveCourseInUser(id, courseName);
+          courseId.postValue(id);
         }
       }
 
@@ -98,7 +80,7 @@ public class EnterCourseRepository {
       }
     };
     this.databaseReference.child("User").child(firebaseAuth.getCurrentUser()
-            .getUid()).child(courseId).addListenerForSingleValueEvent(eventListener);
+            .getUid()).child(id).addListenerForSingleValueEvent(eventListener);
   }
 
   /** Saves a entered course for a user. */

@@ -16,13 +16,19 @@ public class EnterCourseViewModel extends ViewModel {
   private static final String TAG = "EnterCourseViewModel";
 
   private EnterCourseRepository enterCourseRepository;
+  private MutableLiveData<String> courseId;
 
   public EnterCourseViewModel() {
     enterCourseRepository = new EnterCourseRepository();
+    courseId = enterCourseRepository.getCourseId();
   }
 
-  public void checkCode(String id, EnterCourseFragment listener){
-    enterCourseRepository.checkCode(id, listener);
+  public void checkCode(String id){
+    enterCourseRepository.checkCode(id);
+  }
+
+  public LiveData<String> getCourseId() {
+    return courseId;
   }
 
   public void addUserToCourse(String id, String title) {
