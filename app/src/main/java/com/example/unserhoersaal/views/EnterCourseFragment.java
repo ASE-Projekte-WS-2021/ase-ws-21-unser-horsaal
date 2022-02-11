@@ -6,27 +6,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.DatabaseEnterCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
-  EditText enterCourseEditText;
-  Button enterCourseButton;
-  EnterCourseViewModel enterCourseViewModel;
-  CreateCourseViewModel createCourseViewModel;
+  private static final String TAG = "EnterCourseFragment";
+
+  private EditText enterCourseEditText;
+  private Button enterCourseButton;
+  private EnterCourseViewModel enterCourseViewModel;
+  private CurrentCourseViewModel currentCourseViewModel;
+  private NavController navController;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -35,6 +36,9 @@ public class EnterCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    enterCourseViewModel = new ViewModelProvider(requireActivity()).get(EnterCourseViewModel.class);
+    currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -48,9 +52,15 @@ public class EnterCourseFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    enterCourseViewModel = new ViewModelProvider(requireActivity()).get(EnterCourseViewModel.class);
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
+    enterCourseViewModel.init();
+
+    enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), new Observer<String>() {
+      @Override
+      public void onChanged(String id) {
+          openNewCourse(id);
+      }
+    });
+
     initUi(view);
     setupNavigation(view);
   }
@@ -62,26 +72,23 @@ public class EnterCourseFragment extends Fragment {
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
-    //todo add logic to entering course
-    enterCourseButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        createCourseViewModel.setCourseId(enterCourseEditText.getText().toString());
-        enterCourseViewModel.saveUserCourses(enterCourseEditText.getText().toString())
-                .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.TRUE) {
-                    if (navController.getCurrentDestination().getId() == R.id.enterCourseFragment){
-                      navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
-                    }
-                  }
-                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.FALSE){
-                    Toast.makeText(getActivity(), "Incorrect key",
-                            Toast.LENGTH_LONG).show();
-                  }
-        });
-        KeyboardUtil.hideKeyboard(getActivity());
-      }
-    });
+    navController = Navigation.findNavController(view);
+    enterCourseButton.setOnClickListener(v -> enterCode());
   }
+
+  /** Enters the code and checks if it is correct. */
+  public void enterCode() {
+    String id = enterCourseEditText.getText().toString();
+    if (id.length() > 0) {
+      enterCourseViewModel.checkCode(id);
+    }
+  }
+
+  /** Creates a new course if the code is correct. */
+  public void openNewCourse(String id) {
+    KeyboardUtil.hideKeyboard(getActivity());
+    currentCourseViewModel.setCourseId(id);
+    navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+  }
+
 }

@@ -7,6 +7,8 @@ import java.util.List;
 @IgnoreExtraProperties
 public class CourseModel {
 
+  private static final String TAG = "CourseModel";
+
   public String courseName;
   public String courseId;
   public String courseDescription;

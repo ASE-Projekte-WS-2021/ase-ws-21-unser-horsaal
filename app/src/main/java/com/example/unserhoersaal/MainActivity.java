@@ -1,6 +1,7 @@
-package com.example.unserhoersaal.views;
+package com.example.unserhoersaal;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -13,6 +14,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * Initiates the main activity.
  */
 public class MainActivity extends AppCompatActivity {
+
+  private static final String TAG = "MainActivity";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

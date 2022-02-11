@@ -1,29 +1,35 @@
 package com.example.unserhoersaal.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.DatabaseCourseCreation;
+import com.example.unserhoersaal.model.UserCourse;
+import com.example.unserhoersaal.repository.CreateCourseRepository;
 
-/**Class transfers data from DatabaseCourseCreation to CreateCourseFragment and viceversa.**/
+/**Class transfers data from CreateCourseRepository to CreateCourseFragment and viceversa.**/
 
 public class CreateCourseViewModel extends ViewModel {
-  private DatabaseCourseCreation databaseCourseCreation;
-  private final MutableLiveData<String> courseId = new MutableLiveData<String>();
 
+  private static final String TAG = "CreateCourseViewModel";
 
-  public CreateCourseViewModel() {
-    databaseCourseCreation = new DatabaseCourseCreation();
+  private CreateCourseRepository createCourseRepository;
+  private MutableLiveData<UserCourse> userCourse;
+
+  /** Initialization of the CreatCourseViewModel. */
+  public void init() {
+    if (userCourse != null) {
+      return;
+    }
+    createCourseRepository = CreateCourseRepository.getInstance();
+    userCourse = createCourseRepository.getUserCourse();
   }
 
   public void createCourse(String courseName, String courseDescription) {
-    databaseCourseCreation.createNewCourse(courseName, courseDescription);
+    createCourseRepository.createNewCourse(courseName, courseDescription);
   }
 
-  public String getCourseId() {
-    return databaseCourseCreation.getCourseId();
+  public LiveData<UserCourse> getUserCourse() {
+    return userCourse;
   }
 
-  public void setCourseId(String courseId) {
-    databaseCourseCreation.setCourseId(courseId);
-  }
 }

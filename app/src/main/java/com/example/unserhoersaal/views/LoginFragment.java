@@ -13,17 +13,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.interfaces.LoginInterface;
-import com.example.unserhoersaal.model.AuthAppRepository;
 import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
 import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,7 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
  * initiates the UI of the login area, the login function
  * and the navigation to the course page.
  */
-public class LoginFragment extends Fragment implements LoginInterface {
+public class LoginFragment extends Fragment {
+
+  private static final String TAG = "LoginFragment";
 
   EditText userEmailEditView;
   EditText userPasswordEditView;
@@ -40,10 +41,8 @@ public class LoginFragment extends Fragment implements LoginInterface {
   TextView forgotPasswordTextView;
   CheckBox keepLoggedInCheckBox;
   Button loginButton;
-  String firebaseResult;
   NavController navController;
 
-  private LoggedInViewModel loggedInViewModel;
   private LoginRegisterViewModel loginRegisterViewModel;
 
   public LoginFragment() {
@@ -52,32 +51,10 @@ public class LoginFragment extends Fragment implements LoginInterface {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    loginRegisterViewModel = new ViewModelProvider(this).get(LoginRegisterViewModel.class);
-    loggedInViewModel = new ViewModelProvider(this).get(LoggedInViewModel.class);
     super.onCreate(savedInstanceState);
-    DatabaseReference firebaseRef = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://unser-horsaal-default-rtdb.europe-west1.firebasedatabase.app/");
+    loginRegisterViewModel = new ViewModelProvider(requireActivity())
+            .get(LoginRegisterViewModel.class);
 
-    //firebaseRef.child("Courses").push().setValue("null");
-
-    firebaseRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-      @Override
-    public void onComplete(@NonNull Task<DataSnapshot> task) {
-        if (!task.isSuccessful()) {
-            Log.e("firebase", "Error getting data", task.getException());
-        } else {
-            Log.d("firebase", String.valueOf(task.getResult().getValue()));
-            String.valueOf(task.getResult().getValue());
-            saveDate(String.valueOf(task.getResult().getValue()));
-        }
-      }
-    });
-
-  }
-
-  public void saveDate(String data) {
-    String string1 = data;
-    System.out.println(data);
   }
 
   @Override
@@ -90,9 +67,20 @@ public class LoginFragment extends Fragment implements LoginInterface {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    loginRegisterViewModel.init();
+    loginRegisterViewModel
+            .getUserLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
+              @Override
+              public void onChanged(FirebaseUser firebaseUser) {
+                if (firebaseUser != null) {
+                  Log.d(TAG, "onChanged: " + firebaseUser.getEmail());
+                  navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+                }
+              }
+            });
     initUi(view);
     setupNavigation(view);
-    checkIfLogged();
+    //checkIfLogged();
   }
 
   private void initUi(View view) {
@@ -108,7 +96,6 @@ public class LoginFragment extends Fragment implements LoginInterface {
   private void setupNavigation(View view) {
     navController = Navigation.findNavController(view);
 
-    //todo add logic to login
     int toRegistrationFragment = R.id.action_loginFragment_to_registrationFragment;
     registrationTextView.setOnClickListener(v -> navController.navigate(toRegistrationFragment));
     loginButton.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +104,7 @@ public class LoginFragment extends Fragment implements LoginInterface {
             String email = userEmailEditView.getText().toString();
             String password = userPasswordEditView.getText().toString();
             if (email.length() > 0 && password.length() > 0) {
-              loginRegisterViewModel.login(email, password, LoginFragment.this);
+              loginRegisterViewModel.login(email, password);
             } else {
               String emptyInputMessage = "Email Address and Password Must Be Entered";
               Toast.makeText(getContext(), emptyInputMessage, Toast.LENGTH_SHORT).show();
@@ -126,22 +113,4 @@ public class LoginFragment extends Fragment implements LoginInterface {
     });
   }
 
-  private void checkIfLogged() {
-      if (loggedInViewModel.getCurrentUser() != null) {
-          navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-          KeyboardUtil.hideKeyboard(getActivity());
-      }
-  }
-
-  @Override
-  public void loginResult(Boolean result) {
-    if (result) {
-      navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-      KeyboardUtil.hideKeyboard(getActivity());
-    }
-    else {
-      String wrongInputMessage = "Email Address or Password is wrong!";
-      Toast.makeText(getContext(), wrongInputMessage, Toast.LENGTH_SHORT).show();
-    }
-  }
 }

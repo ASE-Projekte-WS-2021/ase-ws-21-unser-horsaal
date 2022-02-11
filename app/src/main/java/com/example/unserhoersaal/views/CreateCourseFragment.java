@@ -10,24 +10,28 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.DatabaseEnterCourse;
+import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 
 /** Fragment for course creation. */
 public class CreateCourseFragment extends Fragment {
 
-  EditText courseTitelEditText;
-  Button createCourseButton;
-  EnterCourseViewModel enterCourseViewModel;
+  private static final String TAG = "CreateCourseFragment";
+
+  private EditText courseTitelEditText;
+  private Button createCourseButton;
+  private EnterCourseViewModel enterCourseViewModel;
   private CreateCourseViewModel createCourseViewModel;
-  private FirebaseAuth firebaseAuth;
+  private CurrentCourseViewModel currentCourseViewModel;
+  private NavController navController;
 
   public CreateCourseFragment() {
     // Required empty public constructor
@@ -36,6 +40,12 @@ public class CreateCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    createCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CreateCourseViewModel.class);
+    enterCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(EnterCourseViewModel.class);
+    currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -48,11 +58,15 @@ public class CreateCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    firebaseAuth = FirebaseAuth.getInstance();
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
-    enterCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(EnterCourseViewModel.class);
+    createCourseViewModel.init();
+    enterCourseViewModel.init();
+    createCourseViewModel
+            .getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>() {
+              @Override
+              public void onChanged(UserCourse course) {
+                courseCreated(course);
+              }
+            });
     initUi(view);
     setupNavigation(view);
   }
@@ -64,31 +78,28 @@ public class CreateCourseFragment extends Fragment {
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
+    navController = Navigation.findNavController(view);
+    createCourseButton.setOnClickListener(v -> createCourse());
+  }
 
-    //todo add logic to login
-    //createCourseButton.setOnClickListener(v ->
-    // navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment));
-    createCourseButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        String courseTitle = courseTitelEditText.getText().toString();
-        String courseDescription = "";
+  /** Creates a new course. */
+  public void createCourse() {
+    String courseTitle = courseTitelEditText.getText().toString();
+    String courseDescription = "";
 
-        if (courseTitle.length() > 6) {
-          createCourseViewModel.createCourse(courseTitle, courseDescription);
-          enterCourseViewModel.saveUserCourses(createCourseViewModel.getCourseId())
-                  .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                    if (navController.getCurrentDestination().getId() == R.id.createCourseFragment){
-                      navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
-                    }
-          });
-          KeyboardUtil.hideKeyboard(getActivity());
-        } else {
-          Toast.makeText(getContext(), "The course name should be 6 characters or longer.",
-                  Toast.LENGTH_SHORT).show();
-        }
-      }
-    });
+    if (courseTitle.length() > 0) {
+      createCourseViewModel.createCourse(courseTitle, courseDescription);
+      KeyboardUtil.hideKeyboard(getActivity());
+    } else {
+      Toast.makeText(getContext(), "The course name should be 6 characters or longer.",
+              Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  /** Signs the creator in the course. */
+  public void courseCreated(UserCourse course) {
+    enterCourseViewModel.addUserToCourse(course.key, course.name);
+    currentCourseViewModel.setCourseId(course.key);
+    navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
   }
 }
