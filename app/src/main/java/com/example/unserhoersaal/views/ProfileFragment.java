@@ -33,7 +33,7 @@ public class ProfileFragment extends Fragment {
   private NavController navController;
   private MenuItem logout;
   private FloatingActionButton fab;
-  private MaterialButton deleteAccountButton;
+  private FloatingActionButton deleteAccountButton;
 
   private LoggedInViewModel loggedInViewModel;
 
@@ -70,7 +70,7 @@ public class ProfileFragment extends Fragment {
     toolbar = view.findViewById(R.id.profileFragmentToolbar);
     navController = Navigation.findNavController(view);
     logout = view.findViewById(R.id.profileFragmentToolbarLogout);
-    deleteAccountButton = view.findViewById(R.id.profileFragmentDeleteAccountButton);
+    deleteAccountButton = view.findViewById(R.id.profileFragmentDeleteAccountFab);
     fab = view.findViewById(R.id.profileFragmentFab);
     fab.setOnClickListener(v -> {
       navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
