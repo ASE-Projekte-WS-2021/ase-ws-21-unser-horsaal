@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -45,7 +44,7 @@ public class ProfileFragment extends Fragment {
   private NavController navController;
   private MenuItem logout;
   private FloatingActionButton fab;
-  private MaterialButton deleteAccountButton;
+  private FloatingActionButton deleteAccountButton;
 
   private LoginRegisterViewModel loginRegisterViewModel;
 
@@ -71,7 +70,6 @@ public class ProfileFragment extends Fragment {
     this.initViewModel();
     this.initUi(view);
     this.initToolbar();
-    this.initLogout(view);
     this.passwordMask = true;
   }
 
@@ -100,7 +98,7 @@ public class ProfileFragment extends Fragment {
     this.deleteAccountButton = view.findViewById(R.id.profileFragmentDeleteAccountButton);
     this.fab = view.findViewById(R.id.profileFragmentFab);
     this.fab.setOnClickListener(v -> {
-      navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
+      this.navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
     });
     this.togglePasswordIcon.setOnClickListener(v -> {
       this.togglePassword();
