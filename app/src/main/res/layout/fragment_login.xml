@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,38 +10,36 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/loginFragmentTitleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="98dp"
+                android:layout_marginTop="64dp"
                 android:text="@string/login_fragment_title_string"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/black"
                 android:textSize="44sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/loginFragmentUserEmailTextField"
+                style="@style/textInputField"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="72dp"
                 android:hint="@string/login_fragment_user_email_hint"
-                style="@style/textInputField"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loginFragmentTitleTextView">
+                android:layout_gravity="center">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/loginFragmentUserEmailEditText"
@@ -53,15 +51,13 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/loginFragmentPasswordTextField"
+                style="@style/textInputField"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:hint="@string/login_fragment_password_hint"
-                style="@style/textInputField"
                 app:endIconMode="password_toggle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loginFragmentUserEmailTextField">
+                android:layout_gravity="center">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/loginFragmentPasswordEditText"
@@ -74,53 +70,56 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginFragmentLoginButton"
+                style="@style/wideBlueButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="@string/login_fragment_login_button_string"
-                style="@style/wideBlueButton"
                 app:icon="@drawable/ic_baseline_login_24"
                 app:iconGravity="textStart"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loginFragmentPasswordTextField" />
+                android:layout_gravity="center"/>
 
             <TextView
                 android:id="@+id/loginFragmentForgotPasswortTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 android:text="@string/login_fragment_forgot_password"
                 android:textColor="@color/app_blue"
                 android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center"
                 android:layout_marginTop="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginFragmentLoginButton" />
+                >
 
-            <TextView
-                android:id="@+id/loginFragmentNoAccountTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_fragment_no_account"
-                android:textColor="@color/black"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/loginFragmentLoginButton" />
+                <TextView
+                    android:id="@+id/loginFragmentNoAccountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_fragment_no_account"
+                    android:textColor="@color/black"
+                    />
 
-            <TextView
-                android:id="@+id/loginFragmentRegistrationTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_fragment_registration_string"
-                android:textColor="@color/app_blue"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/loginFragmentLoginButton" />
+                <TextView
+                    android:id="@+id/loginFragmentRegistrationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_fragment_registration_string"
+                    android:textColor="@color/app_blue"
+                    android:textStyle="bold"
+                    android:layout_marginStart="32dp"
+                    />
+
+            </LinearLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </ScrollView>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
