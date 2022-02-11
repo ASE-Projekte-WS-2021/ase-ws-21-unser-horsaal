@@ -43,17 +43,26 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageView
+        android:id="@+id/profileFragmentNameIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_account_circle_24"
+        android:layout_marginStart="32dp"
+        app:tint="@color/grey"
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentNameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentNameTextView" />
+
     <TextView
         android:id="@+id/profileFragmentNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/profile_fragment_name_string"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileFragmentImageConstraintLayout"/>
+        android:layout_marginStart="16dp"
+        android:text="@string/profile_fragment_name_string"
+        app:layout_constraintStart_toEndOf="@+id/profileFragmentNameIcon"
+        app:layout_constraintTop_toBottomOf="@+id/profileFragmentImageConstraintLayout" />
 
     <TextView
         android:id="@+id/profileFragmentUserName"
@@ -63,21 +72,41 @@
         android:text="@string/profile_fragment_name_string"
         android:layout_marginEnd="32dp"
         android:textAlignment="viewEnd"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/profileFragmentNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileFragmentImageConstraintLayout" />
+
+    <View
+        android:id="@+id/profileFragmentNameHorizontalLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/profileFragmentUserName"
+        app:layout_constraintStart_toStartOf="@+id/profileFragmentNameIcon"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentNameTextView" />
+
+    <ImageView
+        android:id="@+id/profileFragmentInstitutionIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/ic_baseline_institution_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentNameHorizontalLine" />
 
     <TextView
         android:id="@+id/profileFragmentInstitutionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:text="@string/profile_fragment_institution_string"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileFragmentNameTextView" />
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentInstitutionIcon"
+        app:layout_constraintStart_toEndOf="@+id/profileFragmentInstitutionIcon"
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentInstitutionIcon"
+        app:layout_constraintVertical_bias="0.4" />
 
     <TextView
         android:id="@+id/profileFragmentInstitution"
@@ -86,21 +115,40 @@
         android:text="@string/profile_fragment_example_institution"
         android:layout_marginEnd="32dp"
         android:textAlignment="viewEnd"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/profileFragmentInstitutionTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/profileFragmentInstitutionTextView" />
+
+    <View
+        android:id="@+id/profileFragmentInstitutionHorizontalLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/profileFragmentInstitution"
+        app:layout_constraintStart_toStartOf="@+id/profileFragmentInstitutionIcon"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentInstitutionTextView" />
+
+    <ImageView
+        android:id="@+id/profileFragmentEmailIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/ic_baseline_email_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentInstitutionHorizontalLine" />
 
     <TextView
         android:id="@+id/profileFragmentEmailTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:text="@string/profile_fragment_email_title"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@id/profileFragmentInstitutionTextView"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentEmailIcon"
+        app:layout_constraintStart_toEndOf="@id/profileFragmentEmailIcon"
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentEmailIcon" />
 
     <TextView
         android:id="@+id/profileFragmentUserEmail"
@@ -109,21 +157,40 @@
         android:text="@string/profile_fragment_example_email"
         android:layout_marginEnd="32dp"
         android:textAlignment="viewEnd"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/profileFragmentEmailTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/profileFragmentEmailTitle" />
+
+    <View
+        android:id="@+id/profileFragmentEmailHorizontalLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/grey"
+        app:layout_constraintEnd_toEndOf="@+id/profileFragmentUserEmail"
+        app:layout_constraintStart_toStartOf="@+id/profileFragmentEmailIcon"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentUserEmail" />
+
+    <ImageView
+        android:id="@+id/profileFragmentPasswordIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/ic_baseline_password_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentEmailHorizontalLine" />
 
     <TextView
         android:id="@+id/profileFragmentPasswordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:text="@string/profile_fragment_password_title"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@id/profileFragmentEmailTitle"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentPasswordIcon"
+        app:layout_constraintStart_toEndOf="@id/profileFragmentPasswordIcon"
+        app:layout_constraintTop_toTopOf="@+id/profileFragmentPasswordIcon" />
 
     <EditText
         android:id="@+id/profileFragmentPassword"
@@ -135,6 +202,7 @@
         android:inputType="textPassword"
         android:focusable="false"
         android:clickable="false"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/profileFragmentPasswordTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/profileFragmentPasswordTextView" />
@@ -150,16 +218,26 @@
         app:layout_constraintEnd_toStartOf="@+id/profileFragmentPassword"
         app:layout_constraintTop_toTopOf="@+id/profileFragmentPassword" />
 
+    <View
+        android:id="@+id/profileFragmentPasswordHorizontalLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/grey"
+        app:layout_constraintEnd_toEndOf="@+id/profileFragmentPassword"
+        app:layout_constraintStart_toStartOf="@+id/profileFragmentPasswordIcon"
+        app:layout_constraintTop_toBottomOf="@id/profileFragmentPassword" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/profileFragmentDeleteAccountButton"
         style="@style/wideRedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profile_fragment_delete_account"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileFragmentPasswordTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/profileFragmentPasswordHorizontalLine" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/profileFragmentFab"
