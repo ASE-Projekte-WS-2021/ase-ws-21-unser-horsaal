@@ -24,8 +24,13 @@ public class CurrentCourseViewModel extends ViewModel {
       return;
     }
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
-    this.currentCourseRepository.setCourseId(this.courseId.getValue());
-    this.messages = this.currentCourseRepository.getMessages();
+    this.courseId = this.currentCourseRepository.getCourseId();
+
+    // only load the messages if the courseId is set. Thus, the shared fragments, that do not need
+    // the messages and only set the courseId can init the CurrentCourseViewModel
+    if (this.courseId.getValue() != null) {
+      this.messages = this.currentCourseRepository.getMessages();
+    }
   }
 
   public LiveData<List<Message>> getMessages() {
@@ -41,6 +46,6 @@ public class CurrentCourseViewModel extends ViewModel {
   }
 
   public void setCourseId(String courseId) {
-    this.courseId.setValue(courseId);
+    this.currentCourseRepository.setCourseId(courseId);
   }
 }

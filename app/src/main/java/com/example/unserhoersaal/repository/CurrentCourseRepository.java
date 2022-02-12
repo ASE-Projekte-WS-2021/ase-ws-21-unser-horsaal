@@ -13,6 +13,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**Class communicates with Firebase for getting current course data.**/
 public class CurrentCourseRepository {
@@ -23,7 +24,7 @@ public class CurrentCourseRepository {
 
   private ArrayList<Message> messagesList = new ArrayList<Message>();
   private MutableLiveData<List<Message>> messages = new MutableLiveData<>();
-  private String courseId;
+  private MutableLiveData<String> courseId = new MutableLiveData<>();
 
   /** Generates a unique instance of CurrentCourseRepository. */
   public static CurrentCourseRepository getInstance() {
@@ -43,11 +44,15 @@ public class CurrentCourseRepository {
     return this.messages;
   }
 
+  public MutableLiveData<String> getCourseId() {
+    return this.courseId;
+  }
+
   /** Loading all messages from the database. */
   public void loadMessages() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Query query = reference.child(Config.CHILD_COURSES).child(this.courseId)
-            .child(Config.CHILD_MESSAGES);
+    Query query = reference.child(Config.CHILD_COURSES)
+            .child(Objects.requireNonNull(this.courseId.getValue())).child(Config.CHILD_MESSAGES);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -70,11 +75,12 @@ public class CurrentCourseRepository {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     Long time = System.currentTimeMillis();
     Message message = new Message(messageText, time);
-    databaseReference.child(Config.CHILD_COURSES).child(this.courseId).child(Config.CHILD_MESSAGES)
-            .push().setValue(message);
+    databaseReference.child(Config.CHILD_COURSES)
+            .child(Objects.requireNonNull(this.courseId.getValue()))
+            .child(Config.CHILD_MESSAGES).push().setValue(message);
   }
 
   public void setCourseId(String courseId) {
-    this.courseId = courseId;
+    this.courseId.postValue(courseId);
   }
 }

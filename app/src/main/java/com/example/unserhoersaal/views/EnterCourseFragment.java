@@ -62,6 +62,7 @@ public class EnterCourseFragment extends Fragment {
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
     this.enterCourseViewModel.init();
+    this.currentCourseViewModel.init();
     this.enterCourseViewModel.getCourseId()
             .observe(getViewLifecycleOwner(), new Observer<String>() {
               @Override

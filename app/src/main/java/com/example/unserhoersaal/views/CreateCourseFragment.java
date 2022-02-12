@@ -67,6 +67,7 @@ public class CreateCourseFragment extends Fragment {
             .get(CurrentCourseViewModel.class);
     this.createCourseViewModel.init();
     this.enterCourseViewModel.init();
+    this.currentCourseViewModel.init();
     this.createCourseViewModel
             .getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>() {
               @Override

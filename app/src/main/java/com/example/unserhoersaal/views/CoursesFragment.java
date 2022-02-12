@@ -75,6 +75,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
     this.coursesViewModel.init();
+    this.currentCourseViewModel.init();
     this.coursesViewModel.getUserCourses()
             .observe(getViewLifecycleOwner(), new Observer<List<UserCourse>>() {
               @SuppressLint("NotifyDataSetChanged")
