@@ -87,8 +87,11 @@ public class CurrentCourseFragment extends Fragment {
     this.sendQuestionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        currentCourseViewModel.sendMessage(questionEditText.getText().toString());
-        questionEditText.getText().clear();
+        String text = questionEditText.getText().toString();
+        if (text.length() > 0) {
+          currentCourseViewModel.sendMessage(text);
+          questionEditText.getText().clear();
+        }
       }
     });
   }
