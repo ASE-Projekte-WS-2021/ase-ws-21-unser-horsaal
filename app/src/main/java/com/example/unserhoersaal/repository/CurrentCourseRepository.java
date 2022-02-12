@@ -1,9 +1,9 @@
 package com.example.unserhoersaal.repository;
 
-
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.Message;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**Class communicates with Firebase for getting current course data.**/
-
 public class CurrentCourseRepository {
 
   private static final String TAG = "CurrentCourseRepo";
 
   private static CurrentCourseRepository instance;
+
   private ArrayList<Message> messagesList = new ArrayList<Message>();
   private MutableLiveData<List<Message>> messages = new MutableLiveData<>();
   private String courseId;
@@ -35,22 +35,22 @@ public class CurrentCourseRepository {
 
   /** This method provides all messages of a course. */
   public MutableLiveData<List<Message>> getMessages() {
-    if (messagesList.size() == 0) {
-      loadMessages();
+    if (this.messagesList.size() == 0) {
+      this.loadMessages();
     }
 
-    messages.setValue(messagesList);
-    return messages;
+    this.messages.setValue(this.messagesList);
+    return this.messages;
   }
 
   /** Loading all messages from the database. */
   public void loadMessages() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Query query = reference.child("Courses").child(courseId).child("Messages");
+    Query query = reference.child(Config.CHILD_COURSES).child(this.courseId)
+            .child(Config.CHILD_MESSAGES);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        Log.d("Message", "onDataChange: ");
         messagesList.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           messagesList.add(snapshot.getValue(Message.class));
@@ -60,7 +60,7 @@ public class CurrentCourseRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-
+        Log.d(TAG, "onCancelled: " + error.getMessage());
       }
     });
   }
@@ -70,7 +70,8 @@ public class CurrentCourseRepository {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     Long time = System.currentTimeMillis();
     Message message = new Message(messageText, time);
-    databaseReference.child("Courses").child(courseId).child("Messages").push().setValue(message);
+    databaseReference.child(Config.CHILD_COURSES).child(this.courseId).child(Config.CHILD_MESSAGES)
+            .push().setValue(message);
   }
 
   public void setCourseId(String courseId) {

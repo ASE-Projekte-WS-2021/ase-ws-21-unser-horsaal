@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,11 +31,11 @@ public class CurrentCourseFragment extends Fragment {
   private EditText questionEditText;
   private Button sendQuestionButton;
   private TextView courseKeyTextView;
-  private CurrentCourseViewModel currentCourseViewModel;
-  private String courseId;
   private RecyclerView recyclerView;
-  private Message[] emptyArray = {};
+
   private ChatAdapter chatAdapter;
+
+  private CurrentCourseViewModel currentCourseViewModel;
 
   public CurrentCourseFragment() {
     // Required empty public constructor
@@ -43,8 +44,6 @@ public class CurrentCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -57,29 +56,35 @@ public class CurrentCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-
-    currentCourseViewModel.init();
-    currentCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id -> {
-      this.courseId = id;
-      courseKeyTextView.setText(courseId);
-    });
-    currentCourseViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<List>() {
-      @Override
-      public void onChanged(List list) {
-        chatAdapter.notifyDataSetChanged();
-      }
-    });
-    initUi(view, courseId);
-    initRecyclerView();
+    this.initViewModel();
+    this.initUi(view);
+    this.initRecyclerView();
   }
 
-  private void initUi(View view, String courseId) {
-    questionEditText = view.findViewById(R.id.currentCourseFragmentQuestionEditText);
-    sendQuestionButton = view.findViewById(R.id.currentCourseFragmentSendQuestionButton);
-    courseKeyTextView = view.findViewById(R.id.courseKeyTextView);
-    recyclerView = view.findViewById(R.id.chatRecyclerView);
+  private void initViewModel() {
+    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
+    this.currentCourseViewModel.init();
+    this.currentCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id -> {
+      this.courseKeyTextView.setText(id);
+    });
+    this.currentCourseViewModel.getMessages()
+            .observe(getViewLifecycleOwner(), new Observer<List>() {
+              @SuppressLint("NotifyDataSetChanged")
+              @Override
+              public void onChanged(List list) {
+                chatAdapter.notifyDataSetChanged();
+              }
+            });
+  }
 
-    sendQuestionButton.setOnClickListener(new View.OnClickListener() {
+  private void initUi(View view) {
+    this.questionEditText = view.findViewById(R.id.currentCourseFragmentQuestionEditText);
+    this.sendQuestionButton = view.findViewById(R.id.currentCourseFragmentSendQuestionButton);
+    this.courseKeyTextView = view.findViewById(R.id.courseKeyTextView);
+    this.recyclerView = view.findViewById(R.id.chatRecyclerView);
+
+    this.sendQuestionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         currentCourseViewModel.sendMessage(questionEditText.getText().toString());
@@ -89,10 +94,10 @@ public class CurrentCourseFragment extends Fragment {
   }
 
   private void initRecyclerView() {
-    chatAdapter = new ChatAdapter(currentCourseViewModel.getMessages().getValue());
+    this.chatAdapter = new ChatAdapter(this.currentCourseViewModel.getMessages().getValue());
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    recyclerView.setLayoutManager(layoutManager);
-    recyclerView.setItemAnimator(new DefaultItemAnimator());
-    recyclerView.setAdapter(chatAdapter);
+    this. recyclerView.setLayoutManager(layoutManager);
+    this.recyclerView.setItemAnimator(new DefaultItemAnimator());
+    this.recyclerView.setAdapter(this.chatAdapter);
   }
 }

@@ -25,9 +25,12 @@ public class EnterCourseFragment extends Fragment {
 
   private EditText enterCourseEditText;
   private Button enterCourseButton;
+
+  private NavController navController;
+
   private EnterCourseViewModel enterCourseViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
-  private NavController navController;
+
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -36,9 +39,6 @@ public class EnterCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    enterCourseViewModel = new ViewModelProvider(requireActivity()).get(EnterCourseViewModel.class);
-    currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -51,44 +51,48 @@ public class EnterCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    this.initViewModel();
+    this.initUi(view);
+    this.setupNavigation(view);
+  }
 
-    enterCourseViewModel.init();
-
-    enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), new Observer<String>() {
-      @Override
-      public void onChanged(String id) {
-          openNewCourse(id);
-      }
-    });
-
-    initUi(view);
-    setupNavigation(view);
+  private void initViewModel() {
+    this.enterCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(EnterCourseViewModel.class);
+    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
+    this.enterCourseViewModel.init();
+    this.enterCourseViewModel.getCourseId()
+            .observe(getViewLifecycleOwner(), new Observer<String>() {
+              @Override
+              public void onChanged(String id) {
+                openNewCourse(id);
+              }
+            });
   }
 
   private void initUi(View view) {
-    enterCourseEditText = view.findViewById(R.id.enterCourseFragmentCourseNumberEditText);
-    enterCourseButton = view.findViewById(R.id.enterCourseFragmentEnterButton);
+    this.enterCourseEditText = view.findViewById(R.id.enterCourseFragmentCourseNumberEditText);
+    this.enterCourseButton = view.findViewById(R.id.enterCourseFragmentEnterButton);
   }
 
-  //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    navController = Navigation.findNavController(view);
-    enterCourseButton.setOnClickListener(v -> enterCode());
+    this.navController = Navigation.findNavController(view);
+    this.enterCourseButton.setOnClickListener(v -> enterCode());
   }
 
   /** Enters the code and checks if it is correct. */
   public void enterCode() {
     String id = enterCourseEditText.getText().toString();
     if (id.length() > 0) {
-      enterCourseViewModel.checkCode(id);
+      this.enterCourseViewModel.checkCode(id);
     }
   }
 
   /** Creates a new course if the code is correct. */
   public void openNewCourse(String id) {
     KeyboardUtil.hideKeyboard(getActivity());
-    currentCourseViewModel.setCourseId(id);
-    navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+    this.currentCourseViewModel.setCourseId(id);
+    this.navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
   }
-
 }

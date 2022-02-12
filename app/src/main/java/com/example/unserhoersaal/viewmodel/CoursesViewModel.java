@@ -7,26 +7,25 @@ import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.repository.CoursesRepository;
 import java.util.List;
 
-
-/** This class is the viewmodel for the signed up courses. */
+/** This class is the ViewModel for the signed up courses. */
 public class CoursesViewModel extends ViewModel {
 
   private static final String TAG = "CoursesViewModel";
 
   private CoursesRepository coursesRepository;
+
   private MutableLiveData<List<UserCourse>> userCourses;
 
   /** Initializes the database access. */
   public void init() {
-    if (userCourses != null) {
+    if (this.userCourses != null) {
       return;
     }
-    coursesRepository = CoursesRepository.getInstance();
-    userCourses = coursesRepository.getUserCourses();
+    this.coursesRepository = CoursesRepository.getInstance();
+    this.userCourses = this.coursesRepository.getUserCourses();
   }
 
   public LiveData<List<UserCourse>> getUserCourses() {
-    return userCourses;
+    return this.userCourses;
   }
-
 }

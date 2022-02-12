@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +37,7 @@ public class ProfileFragment extends Fragment {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-
     super.onCreate(savedInstanceState);
-    loginRegisterViewModel = new ViewModelProvider(this).get(LoginRegisterViewModel.class);
   }
 
   @Override
@@ -53,8 +50,16 @@ public class ProfileFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    loginRegisterViewModel.init();
-    loginRegisterViewModel
+    this.initViewModel();
+    this.initUi(view);
+    this.initLogoutButton(view);
+  }
+
+  private void initViewModel() {
+    this.loginRegisterViewModel
+            = new ViewModelProvider(requireActivity()).get(LoginRegisterViewModel.class);
+    this.loginRegisterViewModel.init();
+    this.loginRegisterViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
               @Override
               public void onChanged(FirebaseUser firebaseUser) {
@@ -63,22 +68,20 @@ public class ProfileFragment extends Fragment {
                 }
               }
             });
-    initUi(view);
-    initLogoutButton(view);
   }
 
   private void initUi(View view) {
-    userEmailEditText = view.findViewById(R.id.profileFragmentUserEmail);
-    userPasswordEditText = view.findViewById(R.id.profileFragmentExamplePassword);
-    editProfileButton = view.findViewById(R.id.profileFragmentEditProfileButton);
-    logoutButton = view.findViewById(R.id.profileFragmentLogoutButton);
+    this.userEmailEditText = view.findViewById(R.id.profileFragmentUserEmail);
+    this.userPasswordEditText = view.findViewById(R.id.profileFragmentExamplePassword);
+    this.editProfileButton = view.findViewById(R.id.profileFragmentEditProfileButton);
+    this.logoutButton = view.findViewById(R.id.profileFragmentLogoutButton);
   }
 
   /** This method initializes the logout button. */
   public void initLogoutButton(View view) {
-    navController = Navigation.findNavController(view);
+    this.navController = Navigation.findNavController(view);
 
-    logoutButton.setOnClickListener(new View.OnClickListener() {
+    this.logoutButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         loginRegisterViewModel.logOut();

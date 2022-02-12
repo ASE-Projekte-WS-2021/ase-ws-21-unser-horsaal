@@ -1,9 +1,9 @@
 package com.example.unserhoersaal.repository;
 
-
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import com.example.unserhoersaal.Config;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,11 +17,12 @@ public class EnterCourseRepository {
 
   private static final String TAG = "EnterCourseRepo";
 
+  private static EnterCourseRepository instance;
+
   private DatabaseReference databaseReference;
   private FirebaseAuth firebaseAuth;
-  private MutableLiveData<String> courseId = new MutableLiveData<>();
 
-  private static EnterCourseRepository instance;
+  private MutableLiveData<String> courseId = new MutableLiveData<>();
 
   /** Generates an Instance of the EnterCourseRepository. */
   public static EnterCourseRepository getInstance() {
@@ -31,9 +32,6 @@ public class EnterCourseRepository {
     return instance;
   }
 
-
-  //private String courseId;
-
   /** Constructor. */
   public EnterCourseRepository() {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -42,24 +40,24 @@ public class EnterCourseRepository {
 
   /** Gives back the current course id. */
   public MutableLiveData<String> getCourseId() {
-    return courseId;
+    return this.courseId;
   }
 
   /** Checks if the course exists. */
   public void checkCode(String id) {
-    Query query = databaseReference.child("Courses").child(id);
+    Query query = this.databaseReference.child(Config.CHILD_COURSES).child(id);
     query.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
-          String courseName = dataSnapshot.child("courseName").getValue(String.class);
+          String courseName = dataSnapshot.child(Config.CHILD_COURSES_NAME).getValue(String.class);
           isUserInCourse(id, courseName);
         }
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-
+        Log.d(TAG, "onCancelled: " + error.getMessage());
       }
     });
   }
@@ -77,18 +75,18 @@ public class EnterCourseRepository {
 
       @Override
       public void onCancelled(DatabaseError databaseError) {
-        Log.d("Error", databaseError.getMessage());
+        Log.d(TAG, "onCancelled: " + databaseError.getMessage());
       }
     };
-    this.databaseReference.child("User").child(firebaseAuth.getCurrentUser()
+
+    this.databaseReference.child(Config.CHILD_USER).child(this.firebaseAuth.getCurrentUser()
             .getUid()).child(id).addListenerForSingleValueEvent(eventListener);
   }
 
   /** Saves a entered course for a user. */
   public void saveCourseInUser(String courseId, String courseName) {
-
-    if (firebaseAuth.getCurrentUser() != null) {
-      this.databaseReference.child("User").child(firebaseAuth.getCurrentUser()
+    if (this.firebaseAuth.getCurrentUser() != null) {
+      this.databaseReference.child(Config.CHILD_USER).child(this.firebaseAuth.getCurrentUser()
               .getUid()).child(courseId).setValue(courseName);
     }
   }

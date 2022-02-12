@@ -5,9 +5,8 @@ public class UserCourse {
 
   private static final String TAG = "UserCourse";
 
-  public String key;
-  public String name;
-
+  private String key;
+  private String name;
 
   public UserCourse() {
     // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -20,14 +19,16 @@ public class UserCourse {
 
   }
 
+  /** Getter. */
   public String getKey() {
-    return key;
+    return this.key;
   }
 
   public String getName() {
-    return name;
+    return this.name;
   }
 
+  /** Setter. */
   public void setKey(String key) {
     this.key = key;
   }
