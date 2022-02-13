@@ -96,6 +96,7 @@ public class RegistrationFragment extends Fragment {
         String password = passwordEditText.getText().toString();
         if (email.length() > 0 && password.length() > 0) {
           loginRegisterViewModel.register(email, password);
+          //navController.navigate(R.id.action_registrationFragment_to_loginFragment);
           KeyboardUtil.hideKeyboard(getActivity());
         }
       }
