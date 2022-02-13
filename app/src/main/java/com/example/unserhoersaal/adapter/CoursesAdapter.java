@@ -66,7 +66,6 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
       this.onNoteListener = onNoteListener;
       this.courseNameTextView = (TextView) view.findViewById(R.id.courseItemTitle);
       this.keyTextView = (TextView) view.findViewById(R.id.courseItemEnterNumber);
-      this.shareImageView = (ImageView) view.findViewById(R.id.courseItemShareImageView);
 
       view.setOnClickListener(this);
     }

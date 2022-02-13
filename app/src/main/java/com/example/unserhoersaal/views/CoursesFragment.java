@@ -28,9 +28,11 @@ import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.List;
 
 /** Courses. */
 public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteListener {
@@ -106,7 +108,8 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     this.toolbar = (MaterialToolbar) view.findViewById(R.id.coursesFragmentToolbar);
 
     this.courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
-    this.coursesAdapter = new CoursesAdapter(this.coursesViewModel.getEmptyCourses(), this);
+    this.coursesAdapter =
+            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     this.courseListRecycler.setLayoutManager(layoutManager);
     this.courseListRecycler.setItemAnimator(new DefaultItemAnimator());

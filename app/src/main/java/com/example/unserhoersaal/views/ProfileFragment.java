@@ -24,7 +24,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.LoggedInViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -95,7 +94,7 @@ public class ProfileFragment extends Fragment {
     this.toolbar = view.findViewById(R.id.profileFragmentToolbar);
     this.navController = Navigation.findNavController(view);
     this.logout = view.findViewById(R.id.profileFragmentToolbarLogout);
-    this.deleteAccountButton = view.findViewById(R.id.profileFragmentDeleteAccountButton);
+    this.deleteAccountButton = view.findViewById(R.id.profileFragmentDeleteAccountFab);
     this.fab = view.findViewById(R.id.profileFragmentFab);
     this.fab.setOnClickListener(v -> {
       this.navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
