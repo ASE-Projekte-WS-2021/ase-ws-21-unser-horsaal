@@ -5,8 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,13 +30,10 @@ public class RegistrationFragment extends Fragment {
 
   private EditText userEmailEditText;
   private EditText passwordEditText;
-  private EditText repeatPasswordEditText;
-  private CheckBox checkBox;
   private Button registrationButton;
-
-  private NavController navController;
-
+  private TextView loginTextView;
   private LoginRegisterViewModel loginRegisterViewModel;
+  private NavController navController;
 
   public RegistrationFragment() {
       // Required empty public constructor
@@ -80,18 +78,20 @@ public class RegistrationFragment extends Fragment {
   private void initUi(View view) {
     this.userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
     this.passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
-    this.repeatPasswordEditText =
-            view.findViewById(R.id.registrationFragmentRepeatPasswordEditText);
-    this.checkBox = view.findViewById(R.id.registrationFragmentCheckBox);
     this.registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
+    this.loginTextView = view.findViewById(R.id.registrationFragmentLoginTextView);
   }
 
   private void setupNavigation(View view) {
     this.navController = Navigation.findNavController(view);
 
+    this.loginTextView.setOnClickListener(v -> {
+      navController.navigate(R.id.action_registrationFragment_to_loginFragment);
+    });
+
     this.registrationButton.setOnClickListener(new View.OnClickListener() {
       @Override
-    public void onClick(View view) {
+      public void onClick(View view) {
         String email = userEmailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         if (email.length() > 0 && password.length() > 0) {
@@ -101,4 +101,5 @@ public class RegistrationFragment extends Fragment {
       }
     });
   }
+
 }
