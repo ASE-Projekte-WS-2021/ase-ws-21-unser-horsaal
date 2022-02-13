@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,12 +21,12 @@ public class CourseDescriptionFragment extends Fragment {
   TextView courseCreator;
   TextView courseInstitution;
   TextView courseDescription;
-  RelativeLayout courseDescriptionContainer;
-  ImageView expandParticipantsIcon;
+  TableRow courseDescriptionContainer;
+  TableRow courseParticipantsContainer;
   FloatingActionButton shareCourseFab;
   MaterialToolbar toolbar;
   NavController navController;
-  Button unsubscribeButton;
+  TextView unsubscribeTextView;
 
   public CourseDescriptionFragment() {
     // Required empty public constructor
@@ -58,13 +56,13 @@ public class CourseDescriptionFragment extends Fragment {
     courseInstitution = view.findViewById(R.id.courseDescriptionFragmentInstitution);
     courseDescription = view.findViewById(R.id.courseDescriptionFragmentCourseDescription);
     courseDescriptionContainer = view
-            .findViewById(R.id.courseDescriptionFragmentDescriptionContainer);
-    expandParticipantsIcon = view
-            .findViewById(R.id.courseDescriptionFragmentExpandParticipantsIcon);
+            .findViewById(R.id.courseDescriptionFragmentCourseDescriptionContainer);
+    courseParticipantsContainer = view
+            .findViewById(R.id.courseDescriptionFragmentCourseParticipantsContainer);
     shareCourseFab = view.findViewById(R.id.courseDescriptionFragmentShareCourseFab);
     toolbar = view.findViewById(R.id.courseDescriptionFragmentToolbar);
     navController = Navigation.findNavController(view);
-    unsubscribeButton = view.findViewById(R.id.courseDescriptionFragmentUnsubscribeButton);
+    unsubscribeTextView = view.findViewById(R.id.courseDescriptionFragmentUnsubscribeTextView);
   }
 
   private void initToolbar() {
