@@ -84,7 +84,7 @@
     <string name="course_description_fragment_creator">Ersteller:in</string>
     <string name="course_description_fragment_description_textview">Beschreibung</string>
     <string name="course_description_example_institution">Universität Regensburg</string>
-    <string name="course_description_fragment_example_description">Dieser Kurs richtet sich an Master-Studierende der</string>
+    <string name="course_description_fragment_example_description">Dieser Kurs richtet sich an Master-Studierende der Universität Regensburg. Es sollen viele interessante Inhalte vermittelt werden.</string>
     <string name="course_description_fragment_participants_textview">Teilnehmer:innen</string>
     <string name="course_description_course_example_title">Kurstitel</string>
     <string name="course_description_unsubscribe_from_course">Von Kurs abmelden</string>
@@ -104,4 +104,5 @@
     <string name="course_history_fragment_create_meeting_date_hint">Datum</string>
     <string name="course_history_create_meeting_create_button">Erstellen</string>
     <string name="course_history_fragment_create_meeting_time_hint">Startzeit</string>
+    <string name="course_description_fragment_institution_textview">Institution</string>
 </resources>
