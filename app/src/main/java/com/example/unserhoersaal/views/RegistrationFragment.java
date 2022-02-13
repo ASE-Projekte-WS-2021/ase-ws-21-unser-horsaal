@@ -28,7 +28,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegistrationFragment extends Fragment {
   EditText userEmailEditText;
   EditText passwordEditText;
-  CheckBox checkBox;
   Button registrationButton;
   TextView loginTextView;
 
