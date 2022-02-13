@@ -105,4 +105,5 @@
     <string name="course_history_create_meeting_create_button">Erstellen</string>
     <string name="course_history_fragment_create_meeting_time_hint">Startzeit</string>
     <string name="course_description_fragment_institution_textview">Institution</string>
+    <string name="registration_fragment_user_name">Nutzername</string>
 </resources>

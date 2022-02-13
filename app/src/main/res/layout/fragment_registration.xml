@@ -34,12 +34,29 @@
                 android:textAlignment="center" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/registrationFragmentUserEmailEditField"
+                android:id="@+id/registrationFragmentUserNameEditField"
                 style="@style/textInputField"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="64dp"
+                android:hint="@string/registration_fragment_user_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/registrationFragmentUserNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/registrationFragmentUserEmailEditField"
+                style="@style/textInputField"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
                 android:hint="@string/registration_fragment_user_email_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -64,6 +81,7 @@
                     android:id="@+id/registrationFragmentPasswordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:singleLine="true" />
 

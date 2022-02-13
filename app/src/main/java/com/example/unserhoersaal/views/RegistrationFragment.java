@@ -30,6 +30,7 @@ public class RegistrationFragment extends Fragment {
   EditText passwordEditText;
   Button registrationButton;
   TextView loginTextView;
+  EditText userNameEditText;
 
   private LoginRegisterViewModel loginRegisterViewModel;
 
@@ -75,6 +76,7 @@ public class RegistrationFragment extends Fragment {
     passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
     registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
     loginTextView = view.findViewById(R.id.registrationFragmentLoginTextView);
+    userNameEditText = view.findViewById(R.id.registrationFragmentUserNameEditText);
   }
 
 
