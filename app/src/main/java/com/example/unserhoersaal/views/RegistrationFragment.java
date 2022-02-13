@@ -28,7 +28,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegistrationFragment extends Fragment {
   EditText userEmailEditText;
   EditText passwordEditText;
-  EditText repeatPasswordEditText;
   CheckBox checkBox;
   Button registrationButton;
   TextView loginTextView;
@@ -75,7 +74,6 @@ public class RegistrationFragment extends Fragment {
   private void initUi(View view) {
     userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
     passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
-    repeatPasswordEditText = view.findViewById(R.id.registrationFragmentRepeatPasswordEditText);
     registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
     loginTextView = view.findViewById(R.id.registrationFragmentLoginTextView);
   }
