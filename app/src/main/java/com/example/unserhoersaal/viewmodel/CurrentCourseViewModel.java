@@ -14,32 +14,38 @@ public class CurrentCourseViewModel extends ViewModel {
   private static final String TAG = "CurrentCourseViewModel";
 
   private CurrentCourseRepository currentCourseRepository;
+
   private MutableLiveData<List<Message>> messages;
-  private final MutableLiveData<String> courseid = new MutableLiveData<String>();
+  private MutableLiveData<String> courseId = new MutableLiveData<String>();
 
   /** This method initializes the database access. */
   public void init() {
-    if (messages != null) {
+    if (this.messages != null) {
       return;
     }
-    currentCourseRepository = CurrentCourseRepository.getInstance();
-    currentCourseRepository.setCourseId(this.courseid.getValue());
-    messages = currentCourseRepository.getMessages();
-  }
+    this.currentCourseRepository = CurrentCourseRepository.getInstance();
+    this.courseId = this.currentCourseRepository.getCourseId();
 
-  public void sendMessage(String messageText) {
-    currentCourseRepository.sendMessage(messageText);
+    // only load the messages if the courseId is set. Thus, the shared fragments, that do not need
+    // the messages and only set the courseId can init the CurrentCourseViewModel
+    if (this.courseId.getValue() != null) {
+      this.messages = this.currentCourseRepository.getMessages();
+    }
   }
 
   public LiveData<List<Message>> getMessages() {
-    return messages;
-  }
-
-  public void setCourseId(String courseId) {
-    this.courseid.setValue(courseId);
+    return this.messages;
   }
 
   public LiveData<String> getCourseId() {
-    return this.courseid;
+    return this.courseId;
+  }
+
+  public void sendMessage(String messageText) {
+    this.currentCourseRepository.sendMessage(messageText);
+  }
+
+  public void setCourseId(String courseId) {
+    this.currentCourseRepository.setCourseId(courseId);
   }
 }

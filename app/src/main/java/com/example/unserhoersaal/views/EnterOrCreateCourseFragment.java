@@ -17,8 +17,8 @@ public class EnterOrCreateCourseFragment extends Fragment {
 
   private static final String TAG = "EnterOrCreateFragment";
 
-  CardView enterCourseCardView;
-  CardView createCourseCardView;
+  private CardView enterCourseCardView;
+  private CardView createCourseCardView;
 
   public EnterOrCreateCourseFragment() {
       // Required empty public constructor
@@ -39,26 +39,11 @@ public class EnterOrCreateCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    initUi(view);
-    //setupNavigation(view);
+    this.initUi(view);
   }
 
   private void initUi(View view) {
-    enterCourseCardView = view.findViewById(R.id.enterCourseCardView);
-    createCourseCardView = view.findViewById(R.id.createCourseCardView);
+    this.enterCourseCardView = view.findViewById(R.id.enterCourseCardView);
+    this.createCourseCardView = view.findViewById(R.id.createCourseCardView);
   }
-
-  /*
-  //setup Navigation to corresponding fragments
-  private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
-    enterCourseCardView.setOnClickListener(v ->
-              navController.navigate(R.id.action_enterOrCreateCourseFragment_to_enterCourseFragment)
-    );
-    createCourseCardView.setOnClickListener(v ->
-              navController.navigate(R.id.action_enterOrCreateCourseFragment_to_createCourseFragment
-              ));
-  }
-
-   */
 }

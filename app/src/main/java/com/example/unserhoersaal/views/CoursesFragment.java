@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.model.UserCourse;
@@ -33,11 +35,14 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   private Button enterNewCourseButton;
   private Button createNewCourseButton;
   private TextView titelTextView;
+
+  private CoursesAdapter coursesAdapter;
+
+  private NavController navController;
+
   private CoursesViewModel coursesViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
-  private List<UserCourse> courses;
-  private NavController navController;
-  private CoursesAdapter coursesAdapter;
+
 
   public CoursesFragment() {
     // Required empty public constructor
@@ -46,10 +51,6 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    coursesViewModel = new ViewModelProvider(requireActivity())
-            .get(CoursesViewModel.class);
-    currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -62,42 +63,52 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    coursesViewModel.init();
-    coursesViewModel.getUserCourses()
+    this.initViewModel();
+    this.initUi(view);
+    this.initRecyclerView();
+    this.setupNavigation(view);
+  }
+
+  private void initViewModel() {
+    this.coursesViewModel = new ViewModelProvider(requireActivity())
+            .get(CoursesViewModel.class);
+    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
+    this.coursesViewModel.init();
+    this.currentCourseViewModel.init();
+    this.coursesViewModel.getUserCourses()
             .observe(getViewLifecycleOwner(), new Observer<List<UserCourse>>() {
+              @SuppressLint("NotifyDataSetChanged")
               @Override
               public void onChanged(@Nullable List<UserCourse> userCourses) {
-                courses = userCourses;
                 coursesAdapter.notifyDataSetChanged();
               }
             });
-
-    initUi(view);
-    initRecyclerView();
-    setupNavigation(view);
   }
 
   private void initUi(View view) {
-    enterNewCourseButton = view.findViewById(R.id.coursesFragmentEnterNewCourseButton);
-    createNewCourseButton = view.findViewById(R.id.coursesFragmentCreateNewCourseButton);
-    titelTextView = view.findViewById(R.id.coursesFragmentTitleTextView);
-    courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
-    titelTextView.setText("Meine Kurse");
+    this.enterNewCourseButton = view.findViewById(R.id.coursesFragmentEnterNewCourseButton);
+    this.createNewCourseButton = view.findViewById(R.id.coursesFragmentCreateNewCourseButton);
+    this.titelTextView = view.findViewById(R.id.coursesFragmentTitleTextView);
+    this.courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
+    this.titelTextView.setText(Config.COURSES_TITLE);
   }
 
   private void initRecyclerView() {
-    coursesAdapter = new CoursesAdapter(coursesViewModel.getUserCourses().getValue(), this);
+    this.coursesAdapter =
+            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    courseListRecycler.setLayoutManager(layoutManager);
-    courseListRecycler.setItemAnimator(new DefaultItemAnimator());
-    courseListRecycler.setAdapter(coursesAdapter);
+    this.courseListRecycler.setLayoutManager(layoutManager);
+    this.courseListRecycler.setItemAnimator(new DefaultItemAnimator());
+    this.courseListRecycler.setAdapter(this.coursesAdapter);
   }
 
   private void setupNavigation(View view) {
-    navController = Navigation.findNavController(view);
-    enterNewCourseButton.setOnClickListener(v -> navController.navigate(
+    this.navController = Navigation.findNavController(view);
+
+    this.enterNewCourseButton.setOnClickListener(v -> this.navController.navigate(
             R.id.action_coursesFragment_to_enterCourseFragment));
-    createNewCourseButton.setOnClickListener(v -> navController.navigate(
+    this.createNewCourseButton.setOnClickListener(v -> this.navController.navigate(
             R.id.action_coursesFragment_to_createCourseFragment)
     );
 
@@ -106,7 +117,8 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
 
   @Override
   public void onNoteClick(int position) {
-    currentCourseViewModel.setCourseId(courses.get(position).key);
-    navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
+    String id = this.coursesViewModel.getUserCourses().getValue().get(position).getKey();
+    this.currentCourseViewModel.setCourseId(id);
+    this.navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
   }
 }

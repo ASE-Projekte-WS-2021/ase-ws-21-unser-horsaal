@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -28,10 +27,12 @@ public class CreateCourseFragment extends Fragment {
 
   private EditText courseTitelEditText;
   private Button createCourseButton;
+
+  private NavController navController;
+
   private EnterCourseViewModel enterCourseViewModel;
   private CreateCourseViewModel createCourseViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
-  private NavController navController;
 
   public CreateCourseFragment() {
     // Required empty public constructor
@@ -40,12 +41,6 @@ public class CreateCourseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
-    enterCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(EnterCourseViewModel.class);
-    currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
   }
 
   @Override
@@ -58,48 +53,58 @@ public class CreateCourseFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    createCourseViewModel.init();
-    enterCourseViewModel.init();
-    createCourseViewModel
+    this.initViewModel();
+    this.initUi(view);
+    this.setupNavigation(view);
+  }
+
+  private void initViewModel() {
+    this.createCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CreateCourseViewModel.class);
+    this.enterCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(EnterCourseViewModel.class);
+    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
+    this.createCourseViewModel.init();
+    this.enterCourseViewModel.init();
+    this.currentCourseViewModel.init();
+    this.createCourseViewModel
             .getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>() {
               @Override
               public void onChanged(UserCourse course) {
                 courseCreated(course);
               }
             });
-    initUi(view);
-    setupNavigation(view);
   }
 
   private void initUi(View view) {
-    courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
-    createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
+    this.courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
+    this.createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
   }
 
   //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    navController = Navigation.findNavController(view);
-    createCourseButton.setOnClickListener(v -> createCourse());
+    this.navController = Navigation.findNavController(view);
+    this.createCourseButton.setOnClickListener(v -> createCourse());
   }
 
   /** Creates a new course. */
   public void createCourse() {
-    String courseTitle = courseTitelEditText.getText().toString();
+    String courseTitle = this.courseTitelEditText.getText().toString();
     String courseDescription = "";
 
     if (courseTitle.length() > 0) {
-      createCourseViewModel.createCourse(courseTitle, courseDescription);
+      this.createCourseViewModel.createCourse(courseTitle, courseDescription);
       KeyboardUtil.hideKeyboard(getActivity());
-    } else {
-      Toast.makeText(getContext(), "The course name should be 6 characters or longer.",
-              Toast.LENGTH_SHORT).show();
     }
   }
 
   /** Signs the creator in the course. */
   public void courseCreated(UserCourse course) {
-    enterCourseViewModel.addUserToCourse(course.key, course.name);
-    currentCourseViewModel.setCourseId(course.key);
-    navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
+    String key = course.getKey();
+    String name = course.getName();
+    this.enterCourseViewModel.addUserToCourse(key, name);
+    this.currentCourseViewModel.setCourseId(key);
+    this.navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
   }
 }

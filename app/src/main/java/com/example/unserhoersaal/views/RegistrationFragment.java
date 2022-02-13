@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -28,13 +27,14 @@ public class RegistrationFragment extends Fragment {
 
   private static final String TAG = "RegistrationFragment";
 
-  EditText userEmailEditText;
-  EditText passwordEditText;
-  EditText repeatPasswordEditText;
-  CheckBox checkBox;
-  Button registrationButton;
+  private EditText userEmailEditText;
+  private EditText passwordEditText;
+  private EditText repeatPasswordEditText;
+  private CheckBox checkBox;
+  private Button registrationButton;
 
   private NavController navController;
+
   private LoginRegisterViewModel loginRegisterViewModel;
 
   public RegistrationFragment() {
@@ -44,9 +44,6 @@ public class RegistrationFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    loginRegisterViewModel = new ViewModelProvider(requireActivity())
-            .get(LoginRegisterViewModel.class);
   }
 
   @Override
@@ -60,8 +57,16 @@ public class RegistrationFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    loginRegisterViewModel.init();
-    loginRegisterViewModel
+    this.initViewModel();
+    this.initUi(view);
+    this.setupNavigation(view);
+  }
+
+  private void initViewModel() {
+    this.loginRegisterViewModel = new ViewModelProvider(requireActivity())
+            .get(LoginRegisterViewModel.class);
+    this.loginRegisterViewModel.init();
+    this.loginRegisterViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
               @Override
               public void onChanged(FirebaseUser firebaseUser) {
@@ -70,25 +75,21 @@ public class RegistrationFragment extends Fragment {
                 }
               }
             });
-    initUi(view);
-    setupNavigation(view);
   }
 
   private void initUi(View view) {
-    userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
-    passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
-    repeatPasswordEditText = view.findViewById(R.id.registrationFragmentRepeatPasswordEditText);
-    checkBox = view.findViewById(R.id.registrationFragmentCheckBox);
-    registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
+    this.userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
+    this.passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
+    this.repeatPasswordEditText =
+            view.findViewById(R.id.registrationFragmentRepeatPasswordEditText);
+    this.checkBox = view.findViewById(R.id.registrationFragmentCheckBox);
+    this.registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
   }
 
-
-  //setup Navigation to corresponding fragments
   private void setupNavigation(View view) {
-    navController = Navigation.findNavController(view);
+    this.navController = Navigation.findNavController(view);
 
-    // todo add logic to registration
-    registrationButton.setOnClickListener(new View.OnClickListener() {
+    this.registrationButton.setOnClickListener(new View.OnClickListener() {
       @Override
     public void onClick(View view) {
         String email = userEmailEditText.getText().toString();
@@ -96,12 +97,8 @@ public class RegistrationFragment extends Fragment {
         if (email.length() > 0 && password.length() > 0) {
           loginRegisterViewModel.register(email, password);
           KeyboardUtil.hideKeyboard(getActivity());
-        } else {
-          String emptyInputMessage = "Email Address and Password Must Be Entered";
-          Toast.makeText(getContext(), emptyInputMessage, Toast.LENGTH_SHORT).show();
         }
       }
     });
   }
-
 }

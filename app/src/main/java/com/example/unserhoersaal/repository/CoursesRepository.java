@@ -1,7 +1,9 @@
 package com.example.unserhoersaal.repository;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.UserCourse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +21,7 @@ public class CoursesRepository {
   private static final String TAG = "CoursesRepo";
 
   private static CoursesRepository instance;
+
   private ArrayList<UserCourse> userCoursesList = new ArrayList<UserCourse>();
   private MutableLiveData<List<UserCourse>> courses = new MutableLiveData<>();
 
@@ -32,12 +35,12 @@ public class CoursesRepository {
 
   /** This method provides all courses a user has signed up for. */
   public MutableLiveData<List<UserCourse>> getUserCourses() {
-    if (userCoursesList.size() == 0) {
-      loadUserCourses();
+    if (this.userCoursesList.size() == 0) {
+      this.loadUserCourses();
     }
 
-    courses.setValue(userCoursesList);
-    return courses;
+    this.courses.setValue(userCoursesList);
+    return this.courses;
   }
 
   /** This method loads all courses in which the user is signed in. */
@@ -45,7 +48,7 @@ public class CoursesRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    Query query = reference.child("User").child(auth.getCurrentUser().getUid());
+    Query query = reference.child(Config.CHILD_USER).child(auth.getCurrentUser().getUid());
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -58,7 +61,7 @@ public class CoursesRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-
+        Log.d(TAG, "onCancelled: " + error.getMessage());
       }
     });
   }

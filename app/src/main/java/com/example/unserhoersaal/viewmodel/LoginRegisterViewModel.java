@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,19 +14,24 @@ public class LoginRegisterViewModel extends ViewModel {
   private static final String TAG = "LoginRegisterViewModel";
 
   private AuthAppRepository authAppRepository;
+
   private MutableLiveData<FirebaseUser> userLiveData;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
-    if (userLiveData != null) {
+    if (this.userLiveData != null) {
       return;
     }
-    authAppRepository = AuthAppRepository.getInstance();
-    userLiveData = authAppRepository.getUserLiveData();
+    this.authAppRepository = AuthAppRepository.getInstance();
+    this.userLiveData = this.authAppRepository.getUserLiveData();
+  }
+
+  public LiveData<FirebaseUser> getUserLiveData() {
+    return this.userLiveData;
   }
 
   public void login(String email, String password) {
-    authAppRepository.login(email, password);
+    this.authAppRepository.login(email, password);
   }
 
   public void register(String email, String password) {
@@ -36,9 +40,5 @@ public class LoginRegisterViewModel extends ViewModel {
 
   public void logOut() {
     this.authAppRepository.logOut();
-  }
-
-  public LiveData<FirebaseUser> getUserLiveData() {
-    return this.userLiveData;
   }
 }

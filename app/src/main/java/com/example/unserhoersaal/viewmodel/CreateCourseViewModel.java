@@ -7,29 +7,28 @@ import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.repository.CreateCourseRepository;
 
 /**Class transfers data from CreateCourseRepository to CreateCourseFragment and viceversa.**/
-
 public class CreateCourseViewModel extends ViewModel {
 
   private static final String TAG = "CreateCourseViewModel";
 
   private CreateCourseRepository createCourseRepository;
+
   private MutableLiveData<UserCourse> userCourse;
 
   /** Initialization of the CreatCourseViewModel. */
   public void init() {
-    if (userCourse != null) {
+    if (this.userCourse != null) {
       return;
     }
-    createCourseRepository = CreateCourseRepository.getInstance();
-    userCourse = createCourseRepository.getUserCourse();
-  }
-
-  public void createCourse(String courseName, String courseDescription) {
-    createCourseRepository.createNewCourse(courseName, courseDescription);
+    this.createCourseRepository = CreateCourseRepository.getInstance();
+    this.userCourse = this.createCourseRepository.getUserCourse();
   }
 
   public LiveData<UserCourse> getUserCourse() {
-    return userCourse;
+    return this.userCourse;
   }
 
+  public void createCourse(String courseName, String courseDescription) {
+    this.createCourseRepository.createNewCourse(courseName, courseDescription);
+  }
 }
