@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,23 +20,23 @@ import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.firebase.auth.FirebaseAuth;
 
 /** Fragment for course creation. */
 public class CreateCourseFragment extends Fragment {
 
   private static final String TAG = "CreateCourseFragment";
 
-  private EditText courseTitelEditText;
+  private MaterialToolbar toolbar;
+  private EditText courseTitleEditText;
   private EditText courseDescriptionEditText;
   private EditText courseInstitutionEditText;
   private Button createCourseButton;
+
   private EnterCourseViewModel enterCourseViewModel;
-  private MaterialToolbar toolbar;
-  private NavController navController;
   private CreateCourseViewModel createCourseViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
-  private FirebaseAuth firebaseAuth;
+
+  private NavController navController;
 
   public CreateCourseFragment() {
     // Required empty public constructor
@@ -76,17 +75,19 @@ public class CreateCourseFragment extends Fragment {
     this.currentCourseViewModel.init();
     this.createCourseViewModel
             .getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>() {
-      @Override
-      public void onChanged(UserCourse course) {
-        courseCreated(course);
-      }
-    });
+              @Override
+              public void onChanged(UserCourse course) {
+                courseCreated(course);
+              }
+            });
   }
 
   private void initUi(View view) {
-    this.courseTitelEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
-    this.courseDescriptionEditText = view.findViewById(R.id.createCourseFragmentCourseDescriptionEditText);
-    this.courseInstitutionEditText = view.findViewById(R.id.createCourseFragmentCourseInstitutionEditText);
+    this.courseTitleEditText = view.findViewById(R.id.createCourseFragmentCourseTitleEditText);
+    this.courseDescriptionEditText =
+            view.findViewById(R.id.createCourseFragmentCourseDescriptionEditText);
+    this.courseInstitutionEditText =
+            view.findViewById(R.id.createCourseFragmentCourseInstitutionEditText);
     this.createCourseButton = view.findViewById(R.id.createCourseFragmentCreateButton);
     this.toolbar = view.findViewById(R.id.createCourseToolbar);
   }
@@ -99,7 +100,7 @@ public class CreateCourseFragment extends Fragment {
 
   /** Creates a new course. */
   public void createCourse() {
-    String courseTitle = this.courseTitelEditText.getText().toString();
+    String courseTitle = this.courseTitleEditText.getText().toString();
     String courseDescription = "";
 
     if (courseTitle.length() > 0) {

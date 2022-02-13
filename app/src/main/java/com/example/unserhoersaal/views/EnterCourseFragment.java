@@ -1,19 +1,13 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,22 +15,22 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
 
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
   private static final String TAG = "EnterCourseFragment";
 
+  private MaterialToolbar toolbar;
   private EditText enterCourseEditText;
   private Button enterCourseButton;
+
   private EnterCourseViewModel enterCourseViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
-  private MaterialToolbar toolbar;
+
   private NavController navController;
 
   public EnterCourseFragment() {
@@ -108,7 +102,7 @@ public class EnterCourseFragment extends Fragment {
     this.navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
   }
 
-  private void setupToolbar(){
+  private void setupToolbar() {
     this.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.toolbar.setNavigationOnClickListener(v -> {
       this.navController.navigate(R.id.action_enterCourseFragment_to_coursesFragment);

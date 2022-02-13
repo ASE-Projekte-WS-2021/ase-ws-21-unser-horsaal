@@ -1,19 +1,15 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -23,29 +19,29 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
-import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
 
 /** Profile page. */
 public class ProfileFragment extends Fragment {
 
   private static final String TAG = "ProfileFragment";
 
+  private MaterialToolbar toolbar;
+  private MenuItem logout;
   private TextView userEmail;
   private EditText userPassword;
   private ImageView togglePasswordIcon;
-  private boolean passwordMask;
-  private MaterialToolbar toolbar;
-  private NavController navController;
-  private MenuItem logout;
   private FloatingActionButton fab;
   private FloatingActionButton deleteAccountButton;
 
+  private boolean passwordMask;
+
   private LoginRegisterViewModel loginRegisterViewModel;
+
+  private NavController navController;
 
   public ProfileFragment() {
     // Required empty public constructor
@@ -104,7 +100,7 @@ public class ProfileFragment extends Fragment {
     });
   }
 
-  private void initToolbar(){
+  private void initToolbar() {
     this.toolbar.inflateMenu(R.menu.profile_fragment_toolbar);
     this.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.toolbar.setNavigationOnClickListener(v -> {
@@ -122,8 +118,8 @@ public class ProfileFragment extends Fragment {
     });
   }
 
-  private void togglePassword(){
-    if (this.passwordMask){
+  private void togglePassword() {
+    if (this.passwordMask) {
       this.userPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
       this.togglePasswordIcon.setColorFilter(getResources().getColor(R.color.app_blue));
       this.passwordMask = false;

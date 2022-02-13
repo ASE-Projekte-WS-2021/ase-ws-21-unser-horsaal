@@ -17,12 +17,13 @@ import com.google.android.material.button.MaterialButton;
  * fragmentactivity.*/
 public class EnterCourseDialogFragment extends DialogFragment {
 
-  View view;
-  MaterialButton cancelButton;
-  TextView courseTitel;
-  TextView courseCreator;
-  TextView courseInstitution;
-  TextView courseDescription;
+  private View view;
+
+  private MaterialButton cancelButton;
+  private TextView courseTitle;
+  private TextView courseCreator;
+  private TextView courseInstitution;
+  private TextView courseDescription;
 
   public EnterCourseDialogFragment() {
 
@@ -31,30 +32,30 @@ public class EnterCourseDialogFragment extends DialogFragment {
   @NonNull
   @Override
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-    initUi();
-    cancelButton.setOnClickListener(v -> dismiss());
+    this.initUi();
+    this.cancelButton.setOnClickListener(v -> dismiss());
     Dialog builder = new Dialog(getActivity());
     builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-    builder.setContentView(view);
+    builder.setContentView(this.view);
     builder.setCancelable(true);
     return builder;
   }
 
   private void initUi() {
-    view = getActivity().getLayoutInflater().inflate(R.layout.enter_course_detail_screen, new
+    this.view = getActivity().getLayoutInflater().inflate(R.layout.enter_course_detail_screen, new
             LinearLayout(getActivity()), false);
-    cancelButton = view.findViewById(R.id.enterCourseDialogDeclineButton);
-    courseTitel = view.findViewById(R.id.enterCourseDialogCourseTitle);
-    courseCreator = view.findViewById(R.id.enterCourseDialogCourseCreator);
-    courseInstitution = view.findViewById(R.id.enterCourseDialogCourseInstitution);
-    courseDescription = view.findViewById(R.id.enterCourseDialogCourseDescription);
+    this.cancelButton = this.view.findViewById(R.id.enterCourseDialogDeclineButton);
+    this.courseTitle = this.view.findViewById(R.id.enterCourseDialogCourseTitle);
+    this.courseCreator = this.view.findViewById(R.id.enterCourseDialogCourseCreator);
+    this.courseInstitution = this.view.findViewById(R.id.enterCourseDialogCourseInstitution);
+    this.courseDescription = this.view.findViewById(R.id.enterCourseDialogCourseDescription);
   }
 
   /**Comment.*/
   public void setContent(String title, String creator, String institution, String description) {
-    courseTitel.setText(title);
-    courseCreator.setText(creator);
-    courseInstitution.setText(institution);
-    courseDescription.setText(description);
+    this.courseTitle.setText(title);
+    this.courseCreator.setText(creator);
+    this.courseInstitution.setText(institution);
+    this.courseDescription.setText(description);
   }
 }

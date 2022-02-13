@@ -26,7 +26,7 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
     this.courseId = this.currentCourseRepository.getCourseId();
 
-    // only load the messages if the courseId is set. Thus, the shared fragments, that do not need
+    // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
     // the messages and only set the courseId can init the CurrentCourseViewModel
     if (this.courseId.getValue() != null) {
       this.messages = this.currentCourseRepository.getMessages();

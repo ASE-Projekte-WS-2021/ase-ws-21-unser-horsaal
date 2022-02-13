@@ -18,5 +18,6 @@ public class Config {
   public static final String CHILD_MESSAGES = "Messages";
 
   /** UI. */
-  public static final String COURSES_TITLE = "Meine Kurse";
+  public static final String COURSES_EMPTY = "Du bist noch keinen Kursen beigetreten";
+
 }

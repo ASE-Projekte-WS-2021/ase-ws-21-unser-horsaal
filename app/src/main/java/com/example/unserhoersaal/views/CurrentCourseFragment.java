@@ -2,7 +2,6 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
-import com.example.unserhoersaal.model.Message;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.List;
 

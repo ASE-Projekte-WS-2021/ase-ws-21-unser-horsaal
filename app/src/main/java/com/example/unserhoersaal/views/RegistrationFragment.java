@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -32,7 +31,9 @@ public class RegistrationFragment extends Fragment {
   private EditText passwordEditText;
   private Button registrationButton;
   private TextView loginTextView;
+
   private LoginRegisterViewModel loginRegisterViewModel;
+
   private NavController navController;
 
   public RegistrationFragment() {
@@ -96,11 +97,9 @@ public class RegistrationFragment extends Fragment {
         String password = passwordEditText.getText().toString();
         if (email.length() > 0 && password.length() > 0) {
           loginRegisterViewModel.register(email, password);
-          //navController.navigate(R.id.action_registrationFragment_to_loginFragment);
           KeyboardUtil.hideKeyboard(getActivity());
         }
       }
     });
   }
-
 }

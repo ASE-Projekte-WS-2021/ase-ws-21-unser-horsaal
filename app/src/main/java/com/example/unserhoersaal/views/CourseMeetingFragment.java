@@ -24,16 +24,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 /** Course-Meeting. */
 public class CourseMeetingFragment extends Fragment {
 
-  MaterialToolbar toolbar;
-  ConstraintLayout generalThreadContainer;
-  TextView generalThreadContributions;
-  RecyclerView threadRecycler;
-  FloatingActionButton floatingActionButton;
-  NavController navController;
-  ScrollView createThreadContainer;
-  EditText createThreadTitle;
-  EditText createThreadText;
-  MaterialButton sendThreadButton;
+  private MaterialToolbar toolbar;
+  private ConstraintLayout generalThreadContainer;
+  private TextView generalThreadContributions;
+  private RecyclerView threadRecycler;
+  private FloatingActionButton floatingActionButton;
+  private ScrollView createThreadContainer;
+  private EditText createThreadTitle;
+  private EditText createThreadText;
+  private MaterialButton sendThreadButton;
+
+  private NavController navController;
 
   public CourseMeetingFragment() {
     // Required empty public constructor
@@ -54,30 +55,31 @@ public class CourseMeetingFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    initUi(view);
-    initToolbar();
+    this.initUi(view);
+    this.initToolbar();
   }
 
   private void initUi(View view) {
-    toolbar = view.findViewById(R.id.courseMeetingFragmentToolbar);
-    generalThreadContainer = view.findViewById(R.id.courseMeetingFragmentGeneralThreadContainer);
-    generalThreadContributions = view
+    this.toolbar = view.findViewById(R.id.courseMeetingFragmentToolbar);
+    this.generalThreadContainer =
+            view.findViewById(R.id.courseMeetingFragmentGeneralThreadContainer);
+    this.generalThreadContributions = view
             .findViewById(R.id.courseMeetingFragmentGeneralThreadContributions);
-    threadRecycler = view.findViewById(R.id.courseMeetingFragmentThreadRecycler);
-    floatingActionButton = view.findViewById(R.id.courseMeetingFragmentFab);
-    floatingActionButton.setOnClickListener(v -> {
+    this.threadRecycler = view.findViewById(R.id.courseMeetingFragmentThreadRecycler);
+    this.floatingActionButton = view.findViewById(R.id.courseMeetingFragmentFab);
+    this.floatingActionButton.setOnClickListener(v -> {
       onFloatingActionButtonClicked();
     });
-    navController = Navigation.findNavController(view);
-    createThreadContainer = view.findViewById(R.id.courseMeetingFragmentCreateThreadContainer);
-    createThreadTitle = view.findViewById(R.id.courseMeetingFragmentQuestionTitleEditText);
-    createThreadText = view.findViewById(R.id.courseMeetingFragmentQuestionTextEditText);
-    sendThreadButton = view.findViewById(R.id.courseMeetingFragmentSendThreadButton);
+    this.navController = Navigation.findNavController(view);
+    this.createThreadContainer = view.findViewById(R.id.courseMeetingFragmentCreateThreadContainer);
+    this.createThreadTitle = view.findViewById(R.id.courseMeetingFragmentQuestionTitleEditText);
+    this.createThreadText = view.findViewById(R.id.courseMeetingFragmentQuestionTextEditText);
+    this.sendThreadButton = view.findViewById(R.id.courseMeetingFragmentSendThreadButton);
   }
 
   private void initToolbar() {
-    toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    toolbar.setNavigationOnClickListener(v -> {
+    this.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.toolbar.setNavigationOnClickListener(v -> {
 
     });
   }
@@ -85,16 +87,16 @@ public class CourseMeetingFragment extends Fragment {
   private void onFloatingActionButtonClicked() {
     if (createThreadContainer.getVisibility() == View.VISIBLE) {
       KeyboardUtil.hideKeyboard(getActivity());
-      createThreadContainer.setVisibility(View.GONE);
-      floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
-      floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
+      this.createThreadContainer.setVisibility(View.GONE);
+      this.floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
+      this.floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
               .getColor(R.color.orange, null)));
-      createThreadTitle.getText().clear();
-      createThreadText.getText().clear();
+      this.createThreadTitle.getText().clear();
+      this.createThreadText.getText().clear();
     } else {
-      createThreadContainer.setVisibility(View.VISIBLE);
-      floatingActionButton.setImageResource(R.drawable.ic_baseline_close_24);
-      floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
+      this.createThreadContainer.setVisibility(View.VISIBLE);
+      this.floatingActionButton.setImageResource(R.drawable.ic_baseline_close_24);
+      this.floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
               .getColor(R.color.red, null)));
     }
   }

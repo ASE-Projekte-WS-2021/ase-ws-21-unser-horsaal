@@ -36,8 +36,6 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
     if (viewHolder.getKeyTextView() != null && viewHolder.getCourseNameTextView() != null) {
-      //System.out.println(viewHolder.getCourseNameTextView());
-      //System.out.println(viewHolder.getKeyTextView());
       viewHolder.getCourseNameTextView().setText(this.localDataSet.get(position).getName());
       viewHolder.getKeyTextView().setText(this.localDataSet.get(position).getKey());
     }

@@ -3,16 +3,12 @@ package com.example.unserhoersaal.views;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,11 +23,9 @@ import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
-import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Courses. */
@@ -39,21 +33,24 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
 
   private static final String TAG = "CoursesFragment";
 
+  private MaterialToolbar toolbar;
   private RecyclerView courseListRecycler;
   private TextView titelTextView;
-  private CoursesViewModel coursesViewModel;
-  private CreateCourseViewModel createCourseViewModel;
-  private CurrentCourseViewModel currentCourseViewModel;
-  private ArrayList<UserCourse> userCourses;
-  private CoursesAdapter coursesAdapter;
-  private NavController navController;
   private FloatingActionButton fab;
   private FloatingActionButton fabEnterCourse;
   private FloatingActionButton fabCreateCourse;
   private LinearLayout enterCourseLinearLayout;
   private LinearLayout createCourseLinearLayout;
+
   private Boolean isFabOpen;
-  private MaterialToolbar toolbar;
+
+  private CoursesAdapter coursesAdapter;
+
+  private CoursesViewModel coursesViewModel;
+  private CurrentCourseViewModel currentCourseViewModel;
+
+  private NavController navController;
+
 
   public CoursesFragment() {
     // Required empty public constructor
@@ -114,7 +111,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     this.courseListRecycler.setLayoutManager(layoutManager);
     this.courseListRecycler.setItemAnimator(new DefaultItemAnimator());
     this.courseListRecycler.setAdapter(this.coursesAdapter);
-    this.titelTextView.setText("Du bist noch keinen Kursen beigetreten");
+    this.titelTextView.setText(Config.COURSES_EMPTY);
   }
 
   private void setupNavigation(View view) {
@@ -137,7 +134,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
 
   private void setupToolbar() {
     this.toolbar.inflateMenu(R.menu.courses_fragment_toolbar);
-    Menu menu = toolbar.getMenu();
+    //Menu menu = this.toolbar.getMenu();
     this.toolbar.setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
     this.toolbar.setNavigationOnClickListener(v -> {
       this.navController.navigate(R.id.action_coursesFragment_to_profileFragment);

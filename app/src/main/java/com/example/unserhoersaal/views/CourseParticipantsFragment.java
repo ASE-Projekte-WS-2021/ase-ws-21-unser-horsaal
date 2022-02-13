@@ -16,9 +16,10 @@ import com.google.android.material.appbar.MaterialToolbar;
 /** Course-Participants.*/
 public class CourseParticipantsFragment extends Fragment {
 
-  MaterialToolbar toolbar;
-  RecyclerView participantsList;
-  NavController navController;
+  private MaterialToolbar toolbar;
+  private RecyclerView participantsList;
+
+  private NavController navController;
 
   public CourseParticipantsFragment() {
     // Required empty public constructor
@@ -39,20 +40,21 @@ public class CourseParticipantsFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    initUi(view);
-    initToolbar();
+    this.initUi(view);
+    this.initToolbar();
   }
 
   private void initUi(View view) {
-    toolbar = view.findViewById(R.id.courseParticipantsFragmentToolbar);
-    participantsList = view.findViewById(R.id.courseParticipantsParticipantsRecycler);
-    navController = Navigation.findNavController(view);
+    this.toolbar = view.findViewById(R.id.courseParticipantsFragmentToolbar);
+    this.participantsList = view.findViewById(R.id.courseParticipantsParticipantsRecycler);
+    this.navController = Navigation.findNavController(view);
   }
 
   private void initToolbar() {
-    toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    toolbar.setNavigationOnClickListener(v -> {
-      navController.navigate(R.id.action_courseParticipantsFragment_to_courseDescriptionFragment);
+    this.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.toolbar.setNavigationOnClickListener(v -> {
+      this.navController
+              .navigate(R.id.action_courseParticipantsFragment_to_courseDescriptionFragment);
     });
   }
 }

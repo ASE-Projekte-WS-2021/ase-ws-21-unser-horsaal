@@ -25,8 +25,9 @@ public class EditProfileFragment extends Fragment {
   private EditText institution;
   private EditText currentPassword;
   private EditText newPassword;
-  private NavController navController;
   private MenuItem saveButton;
+
+  private NavController navController;
 
   public EditProfileFragment() {
     // Required empty public constructor
@@ -47,28 +48,28 @@ public class EditProfileFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    initUi(view);
-    setupToolbar();
+    this.initUi(view);
+    this.setupToolbar();
   }
 
   private void initUi(View view) {
-    toolbar = view.findViewById(R.id.editProfileFragmentToolbar);
-    profileImage = view.findViewById(R.id.editProfileFragmentProfileImage);
-    username = view.findViewById(R.id.editProfileFragmentUserName);
-    institution = view.findViewById(R.id.editProfileFragmentInstitution);
-    currentPassword = view.findViewById(R.id.editProfileFragmentCurrentPassword);
-    newPassword = view.findViewById(R.id.editProfileFragmentNewPassword);
-    saveButton = view.findViewById(R.id.editProfileToolbarSave);
-    navController = Navigation.findNavController(view);
+    this.toolbar = view.findViewById(R.id.editProfileFragmentToolbar);
+    this.profileImage = view.findViewById(R.id.editProfileFragmentProfileImage);
+    this.username = view.findViewById(R.id.editProfileFragmentUserName);
+    this.institution = view.findViewById(R.id.editProfileFragmentInstitution);
+    this.currentPassword = view.findViewById(R.id.editProfileFragmentCurrentPassword);
+    this.newPassword = view.findViewById(R.id.editProfileFragmentNewPassword);
+    this.saveButton = view.findViewById(R.id.editProfileToolbarSave);
+    this.navController = Navigation.findNavController(view);
   }
 
   private void setupToolbar() {
-    toolbar.inflateMenu(R.menu.edit_profile_fragment_toolbar);
-    toolbar.setNavigationIcon(R.drawable.ic_baseline_close_24);
-    toolbar.setNavigationOnClickListener(v -> {
-      navController.navigate(R.id.action_editProfileFragment_to_profileFragment);
+    this.toolbar.inflateMenu(R.menu.edit_profile_fragment_toolbar);
+    this.toolbar.setNavigationIcon(R.drawable.ic_baseline_close_24);
+    this.toolbar.setNavigationOnClickListener(v -> {
+      this.navController.navigate(R.id.action_editProfileFragment_to_profileFragment);
     });
-    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+    this.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.editProfileToolbarSave) {
@@ -78,5 +79,4 @@ public class EditProfileFragment extends Fragment {
       }
     });
   }
-
 }
