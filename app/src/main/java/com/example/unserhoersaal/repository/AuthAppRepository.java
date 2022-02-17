@@ -70,4 +70,10 @@ public class AuthAppRepository {
     //todo postValue(null) better?
     this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
   }
+
+  public void deleteAccount() {
+    //TODO: delete Account in real time database and firebase authentication
+    //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
+    this.userLiveData.postValue(null);
+  }
 }
