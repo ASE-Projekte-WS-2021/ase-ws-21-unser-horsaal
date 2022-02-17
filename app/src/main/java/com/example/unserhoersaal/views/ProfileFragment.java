@@ -20,6 +20,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
+import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,6 +33,8 @@ public class ProfileFragment extends Fragment {
   private MaterialToolbar toolbar;
   private MenuItem logout;
   private TextView userEmail;
+  private TextView userName;
+  private TextView userInstitution;
   private EditText userPassword;
   private ImageView togglePasswordIcon;
   private FloatingActionButton fab;
@@ -40,6 +43,7 @@ public class ProfileFragment extends Fragment {
   private boolean passwordMask;
 
   private LoginRegisterViewModel loginRegisterViewModel;
+  private ProfileViewModel profileViewModel;
 
   private NavController navController;
 
@@ -81,11 +85,24 @@ public class ProfileFragment extends Fragment {
                 }
               }
             });
+    this.profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+    this.profileViewModel.init();
+    this.profileViewModel.getName().observe(getViewLifecycleOwner(), name -> {
+      this.userName.setText(name);
+    });
+    this.profileViewModel.getInstitution().observe(getViewLifecycleOwner(), institution -> {
+      this.userInstitution.setText(institution);
+    });
+    this.profileViewModel.getMail().observe(getViewLifecycleOwner(), mail -> {
+      this.userEmail.setText(mail);
+    });
   }
 
   private void initUi(View view) {
     this.userEmail = view.findViewById(R.id.profileFragmentUserEmail);
+    this.userName = view.findViewById(R.id.profileFragmentUserName);
     this.userPassword = view.findViewById(R.id.profileFragmentPassword);
+    this.userInstitution = view.findViewById(R.id.profileFragmentInstitution);
     this.togglePasswordIcon = view.findViewById(R.id.profileFragmentTogglePasswordIcon);
     this.toolbar = view.findViewById(R.id.profileFragmentToolbar);
     this.navController = Navigation.findNavController(view);

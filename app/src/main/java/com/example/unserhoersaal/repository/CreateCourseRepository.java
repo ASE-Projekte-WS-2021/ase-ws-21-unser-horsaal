@@ -40,9 +40,9 @@ public class CreateCourseRepository {
     String courseCreatedBy = firebaseAuth.getCurrentUser().getEmail();
     String courseCreatedAt = String.valueOf(System.currentTimeMillis());
     String courseId = databaseReference.getRoot().push().getKey();
-    CourseModel courseModel = new CourseModel(courseName, courseId, courseDescription,
-            courseCreatedById, courseCreatedBy, courseCreatedAt);
-    databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel);
+    //CourseModel courseModel = new CourseModel(courseName, courseId, courseDescription,
+    //        courseCreatedById, courseCreatedBy, courseCreatedAt);
+    //databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel);
     this.userCourse.postValue(new UserCourse(courseId, courseName));
   }
 }
