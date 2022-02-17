@@ -94,6 +94,11 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
               @Override
               public void onChanged(@Nullable List<CourseModel> userCourses) {
                 coursesAdapter.notifyDataSetChanged();
+                if (userCourses.size() == 0) {
+                  titelTextView.setVisibility(View.VISIBLE);
+                } else {
+                  titelTextView.setVisibility(View.INVISIBLE);
+                }
               }
             });
   }

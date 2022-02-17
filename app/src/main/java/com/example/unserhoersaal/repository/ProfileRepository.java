@@ -23,9 +23,7 @@ public class ProfileRepository {
 
   private UserModel userModel;
 
-  private MutableLiveData<String> name = new MutableLiveData<>();
-  private MutableLiveData<String> institution = new MutableLiveData<>();
-  private MutableLiveData<String> mail = new MutableLiveData<>();
+  private MutableLiveData<UserModel> user = new MutableLiveData<>();
 
   public ProfileRepository() {
     this.loadUser();
@@ -38,18 +36,10 @@ public class ProfileRepository {
     return instance;
   }
 
-  public MutableLiveData<String> getName() {
-    return this.name;
+  public MutableLiveData<UserModel> getUser() {
+    return this.user;
   }
 
-  public MutableLiveData<String> getInstitution() {
-
-    return this.institution;
-  }
-
-  public MutableLiveData<String> getMail() {
-    return this.mail;
-  }
 
   public void loadUser() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -61,9 +51,7 @@ public class ProfileRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         userModel = snapshot.getValue(UserModel.class);
-        name.postValue(userModel.getDisplayName());
-        institution.postValue(userModel.getInstitution());
-        mail.postValue(userModel.getEmail());
+        user.postValue(userModel);
       }
 
       @Override

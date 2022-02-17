@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.ProfileRepository;
 
 public class ProfileViewModel extends ViewModel {
@@ -12,29 +13,17 @@ public class ProfileViewModel extends ViewModel {
 
   private ProfileRepository profileRepository;
 
-  private MutableLiveData<String> name;
-  private MutableLiveData<String> institution;
-  private MutableLiveData<String> mail;
+  private MutableLiveData<UserModel> user;
 
   public void init() {
-    if (this.mail != null) {
+    if (this.user != null) {
       return;
     }
     this.profileRepository = ProfileRepository.getInstance();
-    this.name = this.profileRepository.getName();
-    this.institution = this.profileRepository.getInstitution();
-    this.mail = this.profileRepository.getMail();
+    this.user = this.profileRepository.getUser();
   }
 
-  public LiveData<String> getName() {
-    return this.name;
-  }
-
-  public LiveData<String> getInstitution() {
-    return this.institution;
-  }
-
-  public LiveData<String> getMail() {
-    return this.mail;
+  public LiveData<UserModel> getUser() {
+    return this.user;
   }
 }

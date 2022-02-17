@@ -87,14 +87,10 @@ public class ProfileFragment extends Fragment {
             });
     this.profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
-    this.profileViewModel.getName().observe(getViewLifecycleOwner(), name -> {
-      this.userName.setText(name);
-    });
-    this.profileViewModel.getInstitution().observe(getViewLifecycleOwner(), institution -> {
-      this.userInstitution.setText(institution);
-    });
-    this.profileViewModel.getMail().observe(getViewLifecycleOwner(), mail -> {
-      this.userEmail.setText(mail);
+    this.profileViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
+      this.userName.setText(user.getDisplayName());
+      this.userInstitution.setText(user.getInstitution());
+      this.userEmail.setText(user.getEmail());
     });
   }
 
