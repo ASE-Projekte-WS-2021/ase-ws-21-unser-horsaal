@@ -66,6 +66,13 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.2128623188405797" />
+<<<<<<< HEAD
+=======
+        <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.22395833333333334" />
+        <entry key="app/src/main/res/menu/course_history_fragment_toolbar.xml" value="0.22395833333333334" />
+        <entry key="app/src/main/res/menu/edit_profile_fragment_toolbar.xml" value="0.22395833333333334" />
+        <entry key="app/src/main/res/menu/profile_fragment_toolbar.xml" value="0.22395833333333334" />
+>>>>>>> 20b2eda (databinding for profile fragment)
       </map>
     </option>
   </component>
