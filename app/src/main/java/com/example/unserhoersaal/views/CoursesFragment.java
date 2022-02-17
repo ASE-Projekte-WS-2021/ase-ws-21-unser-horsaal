@@ -71,7 +71,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    this.initViewModel();
+    //this.initViewModel();
     this.initUi(view);
     this.setupNavigation(view);
     this.setupToolbar();
@@ -105,8 +105,8 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     this.toolbar = (MaterialToolbar) view.findViewById(R.id.coursesFragmentToolbar);
 
     this.courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
-    this.coursesAdapter =
-            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue(), this);
+   // this.coursesAdapter =
+          //  new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     this.courseListRecycler.setLayoutManager(layoutManager);
     this.courseListRecycler.setItemAnimator(new DefaultItemAnimator());
