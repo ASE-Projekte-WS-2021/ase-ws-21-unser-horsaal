@@ -96,7 +96,7 @@ public class RegistrationFragment extends Fragment {
         String email = userEmailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         if (email.length() > 0 && password.length() > 0) {
-          loginRegisterViewModel.register(email, password);
+          loginRegisterViewModel.register();
           KeyboardUtil.hideKeyboard(getActivity());
         }
       }
