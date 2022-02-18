@@ -17,11 +17,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
-import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 
 /** Fragment for course creation. */
@@ -36,7 +35,7 @@ public class CreateCourseFragment extends Fragment {
   private Button createCourseButton;
 
   private CreateCourseViewModel createCourseViewModel;
-  private CurrentCourseViewModel currentCourseViewModel;
+  private CourseHistoryViewModel courseHistoryViewModel;
 
   private NavController navController;
 
@@ -68,10 +67,10 @@ public class CreateCourseFragment extends Fragment {
   private void initViewModel() {
     this.createCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CreateCourseViewModel.class);
-    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
     this.createCourseViewModel.init();
-    this.currentCourseViewModel.init();
+    this.courseHistoryViewModel.init();
     this.createCourseViewModel
             .getCourseModel().observe(getViewLifecycleOwner(), new Observer<CourseModel>() {
               @Override
@@ -120,8 +119,8 @@ public class CreateCourseFragment extends Fragment {
   /** Signs the creator in the course. */
   public void courseCreated(CourseModel course) {
     String key = course.getKey();
-    this.currentCourseViewModel.setCourseId(key);
-    //this.navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
+    this.courseHistoryViewModel.setCourseId(key);
+    this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
     Toast.makeText(getActivity(), key, Toast.LENGTH_LONG).show();
   }
 }

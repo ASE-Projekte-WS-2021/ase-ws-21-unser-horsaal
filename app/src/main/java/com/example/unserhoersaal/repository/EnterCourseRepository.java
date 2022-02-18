@@ -69,7 +69,6 @@ public class EnterCourseRepository {
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (!dataSnapshot.exists()) {
           saveCourseInUser(id);
-
         }
         //if user has already entered the course just open it
         courseId.postValue(id);

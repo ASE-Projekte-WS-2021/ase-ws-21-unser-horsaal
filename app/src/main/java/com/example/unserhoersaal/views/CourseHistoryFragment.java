@@ -2,28 +2,38 @@ package com.example.unserhoersaal.views;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.adapter.MeetingAdapter;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /** Fragment contains list of course-meetings.*/
-public class CourseHistoryFragment extends Fragment {
+public class CourseHistoryFragment extends Fragment implements MeetingAdapter.OnNoteListener {
+
+  private static final String TAG = "CourseHistoryFragment";
 
   MaterialToolbar toolbar;
-  RecyclerView coursesRecyclerView;
+  private RecyclerView meetingsRecyclerView;
   FloatingActionButton floatingActionButton;
   NavController navController;
   ScrollView createMeetingContainer;
@@ -31,6 +41,10 @@ public class CourseHistoryFragment extends Fragment {
   EditText createMeetingDate;
   EditText createMeetingTime;
   MaterialButton createMeetingCreateButton;
+
+  private MeetingAdapter meetingAdapter;
+
+  private CourseHistoryViewModel courseHistoryViewModel;
 
   public CourseHistoryFragment() {
     // Required empty public constructor
@@ -51,13 +65,24 @@ public class CourseHistoryFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    initViewModel();
     initUi(view);
     setupToolbar();
   }
 
+  private void initViewModel() {
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
+    courseHistoryViewModel.init();
+    courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
+      Log.d(TAG, "initViewModel: " + meetingsModels.size());
+      meetingAdapter.notifyDataSetChanged();
+    });
+  }
+
   private void initUi(View view) {
     toolbar = view.findViewById(R.id.courseHistoryFragmentToolbar);
-    coursesRecyclerView = view.findViewById(R.id.courseHistoryFragmentCoursesRecyclerView);
+    meetingsRecyclerView = view.findViewById(R.id.courseHistoryFragmentCoursesRecyclerView);
     floatingActionButton = view.findViewById(R.id.courseHistoryFragmentFab);
     floatingActionButton.setOnClickListener(v -> {
       onFloatingActionButtonClicked();
@@ -69,6 +94,13 @@ public class CourseHistoryFragment extends Fragment {
     createMeetingTime = view.findViewById(R.id.courseHistoryFragmentCreateMeetingTimeEditText);
     createMeetingCreateButton = view.findViewById(R.id
             .courseHistoryFragmentCreateMeetingCreateButton);
+
+    this.meetingAdapter =
+            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue(), this);
+    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+    this.meetingsRecyclerView.setLayoutManager(layoutManager);
+    this.meetingsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    this.meetingsRecyclerView.setAdapter(this.meetingAdapter);
   }
 
   private void setupNavigation() {
@@ -98,5 +130,11 @@ public class CourseHistoryFragment extends Fragment {
       floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
               .getColor(R.color.red, null)));
     }
+  }
+
+  @Override
+  public void onNoteClick(int position) {
+    String id = this.courseHistoryViewModel.getMeetings().getValue().get(position).getKey();
+    Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
   }
 }

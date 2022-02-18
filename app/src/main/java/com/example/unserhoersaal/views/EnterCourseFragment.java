@@ -17,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -31,7 +32,7 @@ public class EnterCourseFragment extends Fragment {
   private Button enterCourseButton;
 
   private EnterCourseViewModel enterCourseViewModel;
-  private CurrentCourseViewModel currentCourseViewModel;
+  private CourseHistoryViewModel courseHistoryViewModel;
 
   private NavController navController;
 
@@ -64,10 +65,10 @@ public class EnterCourseFragment extends Fragment {
   private void initViewModel() {
     this.enterCourseViewModel = new ViewModelProvider(requireActivity())
             .get(EnterCourseViewModel.class);
-    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
     this.enterCourseViewModel.init();
-    this.currentCourseViewModel.init();
+    this.courseHistoryViewModel.init();
     this.enterCourseViewModel.getCourseId()
             .observe(getViewLifecycleOwner(), new Observer<String>() {
               @Override
@@ -100,8 +101,8 @@ public class EnterCourseFragment extends Fragment {
   /** Creates a new course if the code is correct. */
   public void openNewCourse(String id) {
     KeyboardUtil.hideKeyboard(getActivity());
-    this.currentCourseViewModel.setCourseId(id);
-    //this.navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+    this.courseHistoryViewModel.setCourseId(id);
+    this.navController.navigate(R.id.action_enterCourseFragment_to_courseHistoryFragment);
     Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
   }
 

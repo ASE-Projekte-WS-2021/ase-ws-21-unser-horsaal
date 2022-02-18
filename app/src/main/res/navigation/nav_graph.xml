@@ -46,6 +46,9 @@
             app:destination="@id/coursesFragment"
             app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_enterCourseFragment_to_courseHistoryFragment"
+            app:destination="@id/courseHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/createCourseFragment"
@@ -62,6 +65,9 @@
             app:destination="@id/coursesFragment"
             app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_createCourseFragment_to_courseHistoryFragment"
+            app:destination="@id/courseHistoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/currentCourseFragment"
