@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 import com.example.unserhoersaal.enums.LoginErrorMessEnum;
 import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
-import com.example.unserhoersaal.viewmodel.LoginViewModel;
 
 /**
  * initiates the UI of the login area, the login function
@@ -26,7 +24,7 @@ public class LoginFragment extends Fragment {
 
   private static final String TAG = "LoginFragment";
 
-  private LoginViewModel loginViewModel;
+  private LoginRegisterViewModel loginRegisterViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
 
@@ -58,10 +56,10 @@ public class LoginFragment extends Fragment {
   }
 
   private void initViewModel() {
-    this.loginViewModel = new ViewModelProvider(requireActivity())
-            .get(LoginViewModel.class);
-    this.loginViewModel.init();
-    this.loginViewModel
+    this.loginRegisterViewModel = new ViewModelProvider(requireActivity())
+            .get(LoginRegisterViewModel.class);
+    this.loginRegisterViewModel.init();
+    this.loginRegisterViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
               if (firebaseUser != null) {
                 navController.navigate(R.id.action_loginFragment_to_coursesFragment);
@@ -71,7 +69,7 @@ public class LoginFragment extends Fragment {
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
-    this.binding.setVm(this.loginViewModel);
+    this.binding.setVm(this.loginRegisterViewModel);
   }
 
 }

@@ -1,7 +1,5 @@
 package com.example.unserhoersaal.repository;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,7 +35,7 @@ public class AuthAppRepository {
     }
   }
 
-  /** Gives back the current UserModel. */
+  /** Gives back the current User. */
   public MutableLiveData<FirebaseUser> getUserLiveData() {
     if (this.user == null) {
       this.user = this.firebaseAuth.getCurrentUser();
@@ -71,11 +69,5 @@ public class AuthAppRepository {
     this.firebaseAuth.signOut();
     //todo postValue(null) better?
     this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
-  }
-
-  public void deleteAccount() {
-    //TODO: delete Account in real time database and firebase authentication
-    //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
-    this.userLiveData.postValue(null);
   }
 }

@@ -3,8 +3,6 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.repository.CoursesRepository;
 import java.util.List;
@@ -16,7 +14,7 @@ public class CoursesViewModel extends ViewModel {
 
   private CoursesRepository coursesRepository;
 
-  private MutableLiveData<List<CourseModel>> userCourses;
+  private MutableLiveData<List<UserCourse>> userCourses;
 
   /** Initializes the database access. */
   public void init() {
@@ -27,7 +25,7 @@ public class CoursesViewModel extends ViewModel {
     this.userCourses = this.coursesRepository.getUserCourses();
   }
 
-  public LiveData<List<CourseModel>> getUserCourses() {
+  public LiveData<List<UserCourse>> getUserCourses() {
     return this.userCourses;
   }
 }

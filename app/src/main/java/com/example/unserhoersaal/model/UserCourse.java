@@ -9,7 +9,7 @@ public class UserCourse {
   private String name;
 
   public UserCourse() {
-    // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
+    // Default constructor required for calls to DataSnapshot.getValue(User.class)
   }
 
   /** Constructor. */

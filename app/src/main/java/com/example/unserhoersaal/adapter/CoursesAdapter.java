@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserCourse;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +17,10 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
 
   private static final String TAG = "CoursesAdapter";
 
-  private List<CourseModel> localDataSet = new ArrayList<>();
+  private List<UserCourse> localDataSet = new ArrayList<>();
   private OnNoteListener onNoteListener;
 
-  public CoursesAdapter(List<CourseModel> dataSet, OnNoteListener onNoteListener) {
+  public CoursesAdapter(List<UserCourse> dataSet, OnNoteListener onNoteListener) {
     this.localDataSet = dataSet;
     this.onNoteListener = onNoteListener;
   }
@@ -37,8 +36,8 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
     if (viewHolder.getKeyTextView() != null && viewHolder.getCourseNameTextView() != null) {
-      viewHolder.getCourseNameTextView().setText(this.localDataSet.get(position).getTitle());
-      viewHolder.getKeyTextView().setText(this.localDataSet.get(position).getCreatorId());
+      viewHolder.getCourseNameTextView().setText(this.localDataSet.get(position).getName());
+      viewHolder.getKeyTextView().setText(this.localDataSet.get(position).getKey());
     }
   }
 

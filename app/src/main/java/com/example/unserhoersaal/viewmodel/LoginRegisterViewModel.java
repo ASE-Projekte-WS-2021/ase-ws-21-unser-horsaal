@@ -1,24 +1,29 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Patterns;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.UserModel;
+
+import com.example.unserhoersaal.enums.LoginErrorMessEnum;
+import com.example.unserhoersaal.model.LoginUser;
 import com.example.unserhoersaal.repository.AuthAppRepository;
-import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 //source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/blob/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/view/LoginRegisterFragment.java [30.12.2021]
 
 /** Class Description. */
-public class LoginViewModel extends ViewModel {
+public class LoginRegisterViewModel extends ViewModel {
 
   private static final String TAG = "LoginRegisterViewModel";
 
   private AuthAppRepository authAppRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
-  public MutableLiveData<UserModel> user;
-  public MutableLiveData<String> password;
+  public MutableLiveData<LoginUser> loginUser;
+  //neu
+  public MutableLiveData<LoginErrorMessEnum> errorMessage;
 
 
 
@@ -34,55 +39,47 @@ public class LoginViewModel extends ViewModel {
     this.loginUser.setValue(new LoginUser());
     this.errorMessage = new MutableLiveData<>();
     this.errorMessage.setValue(LoginErrorMessEnum.NONE);
-
-    //Databinding containers
-    this.user = new MutableLiveData<>();
-    this.password = new MutableLiveData<>();
-    this.resetDatabindingData();
   }
 
   public LiveData<FirebaseUser> getUserLiveData() {
-    //remove user data from mutablelivedata after successful firebase interaction
-    //TODO: is this best practice?
-    this.resetDatabindingData();
+    //remove login data from mutablelivedata after successful login
+    this.loginUser.setValue(new LoginUser());
 
     return this.userLiveData;
   }
 
-  private void resetDatabindingData() {
-    this.user.setValue(new UserModel());
-    this.password.setValue("");
-  }
-
   public void login() {
-    if (this.user.getValue() == null) return;
+    if (loginUser.getValue() == null) return;
 
-    String email = this.user.getValue().getEmail();
-    String password= this.password.getValue();
+    String email = loginUser.getValue().getEmail();
+    String password= loginUser.getValue().getPassword();
 
     if (email == null || email.equals("")) {
       this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY);
-
-    if (Validation.emptyEmail(email)) {
       //TODO: change ENUM livedata to email may not be empty -> view get changes by observing
-      System.out.println(1);
     }
-    else if (Validation.emptyPassword(password)) {
+    else if (password == null || password.equals("")) {
       //TODO: change ENUM livedata to password may not be empty -> view get changes by observing
-      System.out.println(2);
     }
-    else if (!Validation.emailHasPattern(email)) {
+    else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
       //TODO: email does not match pattern
-      System.out.println(3);
-    }
-    else if (!Validation.passwordHasPattern(password)) {
-      //TODO: password does not match pattern
-      System.out.println(4);
     }
     else {
-      System.out.println(5);
       this.authAppRepository.login(email, password);
     }
+  }
+
+  public void register() {
+    if (loginUser.getValue() == null) return;
+
+    String email = loginUser.getValue().getEmail();
+    String password= loginUser.getValue().getPassword();
+
+    this.authAppRepository.register(email, password);
+  }
+
+  public void logOut() {
+    this.authAppRepository.logOut();
   }
 
 }
