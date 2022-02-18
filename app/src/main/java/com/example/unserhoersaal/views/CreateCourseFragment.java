@@ -121,6 +121,5 @@ public class CreateCourseFragment extends Fragment {
     String key = course.getKey();
     this.courseHistoryViewModel.setCourseId(key);
     this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
-    Toast.makeText(getActivity(), key, Toast.LENGTH_LONG).show();
   }
 }

@@ -38,4 +38,7 @@ public class Config {
   */
   public static final String PASSWORD_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$";
 
+  /** CodeMapping */
+  public static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  public static final int CODE_LENGTH = 9;
 }
