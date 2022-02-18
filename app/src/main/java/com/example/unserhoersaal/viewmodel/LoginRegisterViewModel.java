@@ -4,6 +4,8 @@ import android.util.Patterns;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.unserhoersaal.enums.LoginErrorMessEnum;
 import com.example.unserhoersaal.model.LoginUser;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +22,8 @@ public class LoginRegisterViewModel extends ViewModel {
   private AuthAppRepository authAppRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
   public MutableLiveData<LoginUser> loginUser;
+  //neu
+  public MutableLiveData<LoginErrorMessEnum> errorMessage;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
