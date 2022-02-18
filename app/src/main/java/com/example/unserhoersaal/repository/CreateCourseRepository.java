@@ -42,7 +42,6 @@ public class CreateCourseRepository {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String uid = firebaseAuth.getCurrentUser().getUid();
 
-    //todo generate codeMapping
     courseModel.setCreatorId(uid);
     courseModel.setCreationTime(System.currentTimeMillis());
     String courseId = databaseReference.getRoot().push().getKey();
@@ -50,13 +49,18 @@ public class CreateCourseRepository {
     databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel);
     courseModel.setKey(courseId);
     this.addUserToCourse(courseId, uid);
+    this.addMapping(courseId, courseModel.getCodeMapping());
     this.courseModelMutableLiveData.postValue(courseModel);
   }
 
   private void addUserToCourse(String course, String user) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Log.d(TAG, "addUserToCourse: "+user);
     reference.child(Config.CHILD_USER)
             .child(user).child(Config.CHILD_COURSES).child(course).setValue(Boolean.TRUE);
+  }
+
+  private void addMapping(String course, String mappingCode) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_CODE_MAPPING).child(mappingCode).setValue(course);
   }
 }
