@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -29,7 +32,7 @@ public class EnterCourseFragment extends Fragment {
   private Button enterCourseButton;
 
   private EnterCourseViewModel enterCourseViewModel;
-  private CurrentCourseViewModel currentCourseViewModel;
+  private CourseHistoryViewModel courseHistoryViewModel;
 
   private NavController navController;
 
@@ -62,10 +65,10 @@ public class EnterCourseFragment extends Fragment {
   private void initViewModel() {
     this.enterCourseViewModel = new ViewModelProvider(requireActivity())
             .get(EnterCourseViewModel.class);
-    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
     this.enterCourseViewModel.init();
-    this.currentCourseViewModel.init();
+    this.courseHistoryViewModel.init();
     this.enterCourseViewModel.getCourseId()
             .observe(getViewLifecycleOwner(), new Observer<String>() {
               @Override
@@ -89,17 +92,17 @@ public class EnterCourseFragment extends Fragment {
 
   /** Enters the code and checks if it is correct. */
   public void enterCode() {
-    String id = enterCourseEditText.getText().toString();
-    if (id.length() > 0) {
-      this.enterCourseViewModel.checkCode(id);
+    String code = enterCourseEditText.getText().toString();
+    if (code.length() > 0) {
+      this.enterCourseViewModel.checkCode(code);
     }
   }
 
   /** Creates a new course if the code is correct. */
   public void openNewCourse(String id) {
     KeyboardUtil.hideKeyboard(getActivity());
-    this.currentCourseViewModel.setCourseId(id);
-    this.navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+    this.courseHistoryViewModel.setCourseId(id);
+    this.navController.navigate(R.id.action_enterCourseFragment_to_courseHistoryFragment);
   }
 
   private void setupToolbar() {

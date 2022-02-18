@@ -23,8 +23,8 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -50,7 +50,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   private CoursesAdapter coursesAdapter;
 
   private CoursesViewModel coursesViewModel;
-  private CurrentCourseViewModel currentCourseViewModel;
+  private CourseHistoryViewModel courseHistoryViewModel;
 
   private NavController navController;
 
@@ -84,10 +84,10 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   private void initViewModel() {
     this.coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
-    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
     this.coursesViewModel.init();
-    this.currentCourseViewModel.init();
+    this.courseHistoryViewModel.init();
     this.coursesViewModel.getUserCourses()
             .observe(getViewLifecycleOwner(), new Observer<List<CourseModel>>() {
               @SuppressLint("NotifyDataSetChanged")
@@ -135,9 +135,9 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
 
   @Override
   public void onNoteClick(int position) {
-    String id = this.coursesViewModel.getUserCourses().getValue().get(position).getTitle();
-    //this.currentCourseViewModel.setCourseId(id);
-    //this.navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
+    String id = this.coursesViewModel.getUserCourses().getValue().get(position).getKey();
+    this.courseHistoryViewModel.setCourseId(id);
+    this.navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
     Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
   }
 

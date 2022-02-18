@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,11 +16,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.UserCourse;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
-import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 
 /** Fragment for course creation. */
@@ -32,9 +34,8 @@ public class CreateCourseFragment extends Fragment {
   private EditText courseInstitutionEditText;
   private Button createCourseButton;
 
-  private EnterCourseViewModel enterCourseViewModel;
   private CreateCourseViewModel createCourseViewModel;
-  private CurrentCourseViewModel currentCourseViewModel;
+  private CourseHistoryViewModel courseHistoryViewModel;
 
   private NavController navController;
 
@@ -66,17 +67,14 @@ public class CreateCourseFragment extends Fragment {
   private void initViewModel() {
     this.createCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CreateCourseViewModel.class);
-    this.enterCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(EnterCourseViewModel.class);
-    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
     this.createCourseViewModel.init();
-    this.enterCourseViewModel.init();
-    this.currentCourseViewModel.init();
+    this.courseHistoryViewModel.init();
     this.createCourseViewModel
-            .getUserCourse().observe(getViewLifecycleOwner(), new Observer<UserCourse>() {
+            .getCourseModel().observe(getViewLifecycleOwner(), new Observer<CourseModel>() {
               @Override
-              public void onChanged(UserCourse course) {
+              public void onChanged(CourseModel course) {
                 courseCreated(course);
               }
             });
@@ -101,10 +99,12 @@ public class CreateCourseFragment extends Fragment {
   /** Creates a new course. */
   public void createCourse() {
     String courseTitle = this.courseTitleEditText.getText().toString();
-    String courseDescription = "";
+    String courseDescription = this.courseDescriptionEditText.getText().toString();
+    String courseInstitution = this.courseInstitutionEditText.getText().toString();
 
     if (courseTitle.length() > 0) {
-      this.createCourseViewModel.createCourse(courseTitle, courseDescription);
+      CourseModel courseModel = new CourseModel(courseTitle, courseDescription, courseInstitution);
+      this.createCourseViewModel.createCourse(courseModel);
       KeyboardUtil.hideKeyboard(getActivity());
     }
   }
@@ -117,11 +117,9 @@ public class CreateCourseFragment extends Fragment {
   }
 
   /** Signs the creator in the course. */
-  public void courseCreated(UserCourse course) {
+  public void courseCreated(CourseModel course) {
     String key = course.getKey();
-    String name = course.getName();
-    this.enterCourseViewModel.addUserToCourse(key, name);
-    this.currentCourseViewModel.setCourseId(key);
-    this.navController.navigate(R.id.action_createCourseFragment_to_currentCourseFragment);
+    this.courseHistoryViewModel.setCourseId(key);
+    this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
   }
 }

@@ -44,15 +44,15 @@ public class EnterCourseRepository {
   }
 
   /** Checks if the course exists. */
-  public void checkCode(String id) {
-    Query query = this.databaseReference.child(Config.CHILD_COURSES).child(id);
+  public void checkCode(String code) {
+    Query query = this.databaseReference.child(Config.CHILD_CODE_MAPPING).child(code);
     query.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
-          String courseName = dataSnapshot.child(Config.CHILD_COURSES_NAME).getValue(String.class);
-          isUserInCourse(id, courseName);
+          isUserInCourse((String) dataSnapshot.getValue());
         }
+        //TODO: Wrong Code
       }
 
       @Override
@@ -63,14 +63,15 @@ public class EnterCourseRepository {
   }
 
   /** Checks if user is in course. */
-  public void isUserInCourse(String id, String courseName) {
+  public void isUserInCourse(String id) {
     ValueEventListener eventListener = new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (!dataSnapshot.exists()) {
-          saveCourseInUser(id, courseName);
-          courseId.postValue(id);
+          saveCourseInUser(id);
         }
+        //if user has already entered the course just open it
+        courseId.postValue(id);
       }
 
       @Override
@@ -79,16 +80,20 @@ public class EnterCourseRepository {
       }
     };
 
-    this.databaseReference.child(Config.CHILD_USER).child(this.firebaseAuth.getCurrentUser()
-            .getUid()).child(id).addListenerForSingleValueEvent(eventListener);
+    this.databaseReference.child(Config.CHILD_USER)
+            .child(this.firebaseAuth.getCurrentUser().getUid())
+            .child(Config.CHILD_COURSES)
+            .child(id).addListenerForSingleValueEvent(eventListener);
   }
 
   /** Saves a entered course for a user. */
-  public void saveCourseInUser(String courseId, String courseName) {
-    if (this.firebaseAuth.getCurrentUser() != null) {
-      this.databaseReference.child(Config.CHILD_USER).child(this.firebaseAuth.getCurrentUser()
-              .getUid()).child(courseId).setValue(courseName);
-    }
+  public void saveCourseInUser(String courseId) {
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
+    this.databaseReference.child(Config.CHILD_USER).child(uid).child(Config.CHILD_COURSES)
+            .child(courseId).setValue(Boolean.TRUE);
+    this.databaseReference.child(Config.CHILD_COURSES).child(courseId).child(Config.CHILD_USER)
+            .child(uid).setValue(Boolean.TRUE);
+
   }
 
 }

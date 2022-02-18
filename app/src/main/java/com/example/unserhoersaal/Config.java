@@ -13,9 +13,12 @@ public class Config {
   public static final String CHILD_USER = "users";
 
   public static final String CHILD_COURSES = "courses";
-  public static final String CHILD_COURSES_NAME = "title";
 
   public static final String CHILD_MESSAGES = "messages";
+
+  public static final String CHILD_CODE_MAPPING = "codeMapping";
+
+  public static final String CHILD_MEETINGS = "meetings";
 
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;
@@ -35,4 +38,7 @@ public class Config {
   */
   public static final String PASSWORD_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$";
 
+  /** CodeMapping */
+  public static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  public static final int CODE_LENGTH = 9;
 }
