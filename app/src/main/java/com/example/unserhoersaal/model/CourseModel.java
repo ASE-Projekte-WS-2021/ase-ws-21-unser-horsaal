@@ -18,6 +18,8 @@ public class CourseModel {
   private String title;
   private HashMap<String, Boolean> users;
 
+  private String key;
+
   public CourseModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
@@ -63,6 +65,9 @@ public class CourseModel {
     return this.users;
   }
 
+  public String getKey(){
+    return this.key;
+  }
 
   /** Setter. */
   public void setBlocked(HashMap<String, Boolean> blocked) {
@@ -103,5 +108,9 @@ public class CourseModel {
 
   public void setUsers(HashMap<String, Boolean> users) {
     this.users = users;
+  }
+
+  public void setKey(String key) {
+    this.key = key;
   }
 }

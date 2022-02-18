@@ -68,7 +68,9 @@ public class CoursesRepository {
                   new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      userCoursesList.add(snapshot.getValue(CourseModel.class));
+                      CourseModel model = snapshot.getValue(CourseModel.class);
+                      model.setKey(snapshot.getKey());
+                      userCoursesList.add(model);
                       //TODO: update after loading
                       courses.postValue(userCoursesList);
                     }
