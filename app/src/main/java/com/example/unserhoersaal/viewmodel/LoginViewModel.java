@@ -3,6 +3,8 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.unserhoersaal.enums.LoginErrorMessEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
@@ -19,19 +21,18 @@ public class LoginViewModel extends ViewModel {
   private MutableLiveData<FirebaseUser> userLiveData;
   public MutableLiveData<UserModel> user;
   public MutableLiveData<String> password;
+  public MutableLiveData<LoginErrorMessEnum> errorMessage;
 
 
-
-
-  /** Initialize the LoginRegisterViewModel. */
+  /**
+   * Initialize the LoginRegisterViewModel.
+   */
   public void init() {
     if (this.userLiveData != null) {
       return;
     }
     this.authAppRepository = AuthAppRepository.getInstance();
     this.userLiveData = this.authAppRepository.getUserLiveData();
-    this.loginUser = new MutableLiveData<>();
-    this.loginUser.setValue(new LoginUser());
     this.errorMessage = new MutableLiveData<>();
     this.errorMessage.setValue(LoginErrorMessEnum.NONE);
 
@@ -58,31 +59,28 @@ public class LoginViewModel extends ViewModel {
     if (this.user.getValue() == null) return;
 
     String email = this.user.getValue().getEmail();
-    String password= this.password.getValue();
+    String password = this.password.getValue();
 
     if (email == null || email.equals("")) {
       this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY);
 
-    if (Validation.emptyEmail(email)) {
-      //TODO: change ENUM livedata to email may not be empty -> view get changes by observing
-      System.out.println(1);
+      if (Validation.emptyEmail(email)) {
+        //TODO: change ENUM livedata to email may not be empty -> view get changes by observing
+        System.out.println(1);
+      } else if (Validation.emptyPassword(password)) {
+        //TODO: change ENUM livedata to password may not be empty -> view get changes by observing
+        System.out.println(2);
+      } else if (!Validation.emailHasPattern(email)) {
+        //TODO: email does not match pattern
+        System.out.println(3);
+      } else if (!Validation.passwordHasPattern(password)) {
+        //TODO: password does not match pattern
+        System.out.println(4);
+      } else {
+        System.out.println(5);
+        this.authAppRepository.login(email, password);
+      }
     }
-    else if (Validation.emptyPassword(password)) {
-      //TODO: change ENUM livedata to password may not be empty -> view get changes by observing
-      System.out.println(2);
-    }
-    else if (!Validation.emailHasPattern(email)) {
-      //TODO: email does not match pattern
-      System.out.println(3);
-    }
-    else if (!Validation.passwordHasPattern(password)) {
-      //TODO: password does not match pattern
-      System.out.println(4);
-    }
-    else {
-      System.out.println(5);
-      this.authAppRepository.login(email, password);
-    }
-  }
 
+  }
 }

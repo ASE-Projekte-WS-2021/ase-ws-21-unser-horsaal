@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.unserhoersaal.viewmodel.LoginRegisterViewModel"/>
+            type="com.example.unserhoersaal.viewmodel.LoginViewModel"/>
 
         <import
             type="com.example.unserhoersaal.enums.LoginErrorMessEnum" />
@@ -62,7 +62,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentUserEmailEditText"
-                        android:text="@={vm.loginUser.email}"
+                        android:text="@={vm.user.email}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true" />
@@ -87,7 +87,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentPasswordEditText"
-                        android:text="@={vm.loginUser.password}"
+                        android:text="@={vm.user.password}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
