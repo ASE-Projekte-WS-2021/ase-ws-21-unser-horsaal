@@ -42,6 +42,7 @@ public class CreateCourseRepository {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String uid = firebaseAuth.getCurrentUser().getUid();
 
+    //todo generate codeMapping
     courseModel.setCreatorId(uid);
     courseModel.setCreationTime(System.currentTimeMillis());
     String courseId = databaseReference.getRoot().push().getKey();
@@ -56,6 +57,6 @@ public class CreateCourseRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Log.d(TAG, "addUserToCourse: "+user);
     reference.child(Config.CHILD_USER)
-            .child(user).child(Config.CHILD_COURSES).child(course).setValue(true);
+            .child(user).child(Config.CHILD_COURSES).child(course).setValue(Boolean.TRUE);
   }
 }
