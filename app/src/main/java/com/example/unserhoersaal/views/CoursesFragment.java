@@ -135,7 +135,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
 
   @Override
   public void onNoteClick(int position) {
-    String id = this.coursesViewModel.getUserCourses().getValue().get(position).getTitle();
+    String id = this.coursesViewModel.getUserCourses().getValue().get(position).getKey();
     //this.currentCourseViewModel.setCourseId(id);
     //this.navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
     Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();

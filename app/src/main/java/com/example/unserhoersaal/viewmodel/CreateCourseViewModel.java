@@ -3,6 +3,8 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.repository.CreateCourseRepository;
 
@@ -13,22 +15,22 @@ public class CreateCourseViewModel extends ViewModel {
 
   private CreateCourseRepository createCourseRepository;
 
-  private MutableLiveData<UserCourse> userCourse;
+  private MutableLiveData<CourseModel> courseModel;
 
   /** Initialization of the CreatCourseViewModel. */
   public void init() {
-    if (this.userCourse != null) {
+    if (this.courseModel != null) {
       return;
     }
     this.createCourseRepository = CreateCourseRepository.getInstance();
-    this.userCourse = this.createCourseRepository.getUserCourse();
+    this.courseModel = this.createCourseRepository.getUserCourse();
   }
 
-  public LiveData<UserCourse> getUserCourse() {
-    return this.userCourse;
+  public LiveData<CourseModel> getCourseModel() {
+    return this.courseModel;
   }
 
-  public void createCourse(String courseName, String courseDescription) {
-    this.createCourseRepository.createNewCourse(courseName, courseDescription);
+  public void createCourse(CourseModel courseModel) {
+    this.createCourseRepository.createNewCourse(courseModel);
   }
 }
