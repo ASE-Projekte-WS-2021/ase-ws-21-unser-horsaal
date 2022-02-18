@@ -27,11 +27,8 @@ public class EnterCourseViewModel extends ViewModel {
     return this.courseId;
   }
 
-  public void checkCode(String id) {
-    this.enterCourseRepository.checkCode(id);
+  public void checkCode(String code) {
+    this.enterCourseRepository.checkCode(code);
   }
 
-  public void addUserToCourse(String id, String title) {
-    this.enterCourseRepository.saveCourseInUser(id, title);
-  }
 }

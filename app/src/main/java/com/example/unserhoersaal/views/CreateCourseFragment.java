@@ -35,7 +35,6 @@ public class CreateCourseFragment extends Fragment {
   private EditText courseInstitutionEditText;
   private Button createCourseButton;
 
-  private EnterCourseViewModel enterCourseViewModel;
   private CreateCourseViewModel createCourseViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
 
@@ -69,12 +68,9 @@ public class CreateCourseFragment extends Fragment {
   private void initViewModel() {
     this.createCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CreateCourseViewModel.class);
-    this.enterCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(EnterCourseViewModel.class);
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
     this.createCourseViewModel.init();
-    this.enterCourseViewModel.init();
     this.currentCourseViewModel.init();
     this.createCourseViewModel
             .getCourseModel().observe(getViewLifecycleOwner(), new Observer<CourseModel>() {

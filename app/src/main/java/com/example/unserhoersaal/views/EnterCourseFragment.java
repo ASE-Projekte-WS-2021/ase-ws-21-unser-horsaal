@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -89,9 +91,9 @@ public class EnterCourseFragment extends Fragment {
 
   /** Enters the code and checks if it is correct. */
   public void enterCode() {
-    String id = enterCourseEditText.getText().toString();
-    if (id.length() > 0) {
-      this.enterCourseViewModel.checkCode(id);
+    String code = enterCourseEditText.getText().toString();
+    if (code.length() > 0) {
+      this.enterCourseViewModel.checkCode(code);
     }
   }
 
@@ -99,7 +101,8 @@ public class EnterCourseFragment extends Fragment {
   public void openNewCourse(String id) {
     KeyboardUtil.hideKeyboard(getActivity());
     this.currentCourseViewModel.setCourseId(id);
-    this.navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+    //this.navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
+    Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
   }
 
   private void setupToolbar() {

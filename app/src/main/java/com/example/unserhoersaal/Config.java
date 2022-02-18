@@ -17,6 +17,8 @@ public class Config {
 
   public static final String CHILD_MESSAGES = "messages";
 
+  public static final String CHILD_CODE_MAPPING = "codeMapping";
+
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;
   public static final int ERROR_PROFILE_AVATAR = R.drawable.ic_baseline_account_circle_24;
