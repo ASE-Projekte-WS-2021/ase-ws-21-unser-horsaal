@@ -9,7 +9,11 @@ public class ImageAdapter {
 
   @BindingAdapter("setImage")
   public static void setImage(ImageView view, String url) {
-    Glide.with(view).load(url).placeholder(Config.PLACEHOLDER_AVATAR).error(Config.ERROR_PROFILE_AVATAR).into(view);
+    Glide.with(view)
+            .load(url)
+            .placeholder(Config.PLACEHOLDER_AVATAR)
+            .error(Config.ERROR_PROFILE_AVATAR)
+            .into(view);
   }
 
 }

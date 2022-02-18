@@ -1,22 +1,17 @@
 package com.example.unserhoersaal.model;
 
 public class UserModel {
-  private String userName;
+  private String displayName;
   private String email;
-  private String password;
   private String photoURL;
   private String institution;
 
-  public String getUserName() {
-    return userName;
+  public String getDisplayName() {
+    return displayName;
   }
 
   public String getEmail() {
     return email;
-  }
-
-  public String getPassword() {
-    return password;
   }
 
   public String getPhotoURL() {
@@ -27,16 +22,12 @@ public class UserModel {
     return institution;
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setDisplayName(String userName) {
+    this.displayName = userName;
   }
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public void setPhotoURL(String photoURL) {

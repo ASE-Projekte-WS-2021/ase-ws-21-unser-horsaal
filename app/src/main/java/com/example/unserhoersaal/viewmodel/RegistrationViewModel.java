@@ -18,6 +18,7 @@ public class RegistrationViewModel extends ViewModel {
   private AuthAppRepository authAppRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
   public MutableLiveData<UserModel> user;
+  public MutableLiveData<String> password;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
@@ -29,6 +30,7 @@ public class RegistrationViewModel extends ViewModel {
 
     //Databinding containers
     this.user = new MutableLiveData<>();
+    this.password = new MutableLiveData<>();
     this.resetDatabindingData();
   }
 
@@ -47,9 +49,9 @@ public class RegistrationViewModel extends ViewModel {
   public void register() {
     if (this.user.getValue() == null) return;
 
-    String userName = this.user.getValue().getUserName();
+    String userName = this.user.getValue().getDisplayName();
     String email = this.user.getValue().getEmail();
-    String password= this.user.getValue().getPassword();
+    String password= this.password.getValue();
 
     if (Validation.emptyEmail(email)) {
       //TODO: change ENUM livedata to email may not be empty -> view get changes by observing

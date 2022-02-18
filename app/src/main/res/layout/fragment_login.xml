@@ -72,7 +72,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentPasswordEditText"
-                        android:text="@={vm.user.password}"
+                        android:text="@={vm.password}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"

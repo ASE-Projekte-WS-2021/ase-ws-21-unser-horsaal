@@ -87,7 +87,7 @@
 
                 <TextView
                     android:id="@+id/profileFragmentUserName"
-                    android:text="@={vm.user.userName}"
+                    android:text="@={vm.user.displayName}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
