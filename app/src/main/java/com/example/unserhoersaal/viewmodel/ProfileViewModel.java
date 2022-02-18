@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
-import com.example.unserhoersaal.utils.Validation;
+import com.example.unserhoersaal.repository.ProfileRepository;
 import com.google.firebase.auth.FirebaseUser;
 
 /** Class Description */
@@ -14,8 +14,9 @@ public class ProfileViewModel extends ViewModel {
   private static final String TAG = "LoginRegisterViewModel";
 
   private AuthAppRepository authAppRepository;
+  private ProfileRepository profileRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
-  public MutableLiveData<UserModel> user;
+  private MutableLiveData<UserModel> profileLiveData;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
@@ -25,21 +26,17 @@ public class ProfileViewModel extends ViewModel {
     this.authAppRepository = AuthAppRepository.getInstance();
     this.userLiveData = this.authAppRepository.getUserLiveData();
 
-    //Databinding containers
-    this.user = new MutableLiveData<>();
-    this.resetDatabindingData();
+    //this live data loads profile data into the text views
+    this.profileRepository = ProfileRepository.getInstance();
+    this.profileLiveData = this.profileRepository.getUser();
   }
 
   public LiveData<FirebaseUser> getUserLiveData() {
-    //remove user data from mutablelivedata after successful firebase interaction
-    //TODO: is this best practice?
-    this.resetDatabindingData();
-
     return this.userLiveData;
   }
 
-  private void resetDatabindingData() {
-    this.user.setValue(new UserModel());
+  public LiveData<UserModel> getProfileLiveData() {
+    return this.profileLiveData;
   }
 
   public void logout() {

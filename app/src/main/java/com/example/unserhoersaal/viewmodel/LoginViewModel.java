@@ -55,22 +55,17 @@ public class LoginViewModel extends ViewModel {
 
     if (Validation.emptyEmail(email)) {
       //TODO: change ENUM livedata to email may not be empty -> view get changes by observing
-      System.out.println(1);
     }
     else if (Validation.emptyPassword(password)) {
       //TODO: change ENUM livedata to password may not be empty -> view get changes by observing
-      System.out.println(2);
     }
     else if (!Validation.emailHasPattern(email)) {
       //TODO: email does not match pattern
-      System.out.println(3);
     }
     else if (!Validation.passwordHasPattern(password)) {
       //TODO: password does not match pattern
-      System.out.println(4);
     }
     else {
-      System.out.println(5);
       this.authAppRepository.login(email, password);
     }
   }
