@@ -78,11 +78,6 @@ public class ProfileFragment extends Fragment {
             });
     this.profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
-    this.profileViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
-      this.userName.setText(user.getDisplayName());
-      this.userInstitution.setText(user.getInstitution());
-      this.userEmail.setText(user.getEmail());
-    });
   }
 
   private void connectBinding() {
