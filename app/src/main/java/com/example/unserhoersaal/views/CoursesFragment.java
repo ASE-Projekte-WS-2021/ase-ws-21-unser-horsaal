@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
@@ -71,7 +74,7 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    //this.initViewModel();
+    this.initViewModel();
     this.initUi(view);
     this.setupNavigation(view);
     this.setupToolbar();
@@ -86,11 +89,16 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     this.coursesViewModel.init();
     this.currentCourseViewModel.init();
     this.coursesViewModel.getUserCourses()
-            .observe(getViewLifecycleOwner(), new Observer<List<UserCourse>>() {
+            .observe(getViewLifecycleOwner(), new Observer<List<CourseModel>>() {
               @SuppressLint("NotifyDataSetChanged")
               @Override
-              public void onChanged(@Nullable List<UserCourse> userCourses) {
+              public void onChanged(@Nullable List<CourseModel> userCourses) {
                 coursesAdapter.notifyDataSetChanged();
+                if (userCourses.size() == 0) {
+                  titelTextView.setVisibility(View.VISIBLE);
+                } else {
+                  titelTextView.setVisibility(View.INVISIBLE);
+                }
               }
             });
   }
@@ -105,8 +113,8 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     this.toolbar = (MaterialToolbar) view.findViewById(R.id.coursesFragmentToolbar);
 
     this.courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
-   // this.coursesAdapter =
-          //  new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue(), this);
+    this.coursesAdapter =
+            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     this.courseListRecycler.setLayoutManager(layoutManager);
     this.courseListRecycler.setItemAnimator(new DefaultItemAnimator());
@@ -127,9 +135,10 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
 
   @Override
   public void onNoteClick(int position) {
-    String id = this.coursesViewModel.getUserCourses().getValue().get(position).getKey();
-    this.currentCourseViewModel.setCourseId(id);
-    this.navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
+    String id = this.coursesViewModel.getUserCourses().getValue().get(position).getTitle();
+    //this.currentCourseViewModel.setCourseId(id);
+    //this.navController.navigate(R.id.action_coursesFragment_to_currentCourseFragment);
+    Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
   }
 
   private void setupToolbar() {
