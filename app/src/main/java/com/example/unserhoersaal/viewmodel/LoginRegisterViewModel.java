@@ -25,6 +25,9 @@ public class LoginRegisterViewModel extends ViewModel {
   //neu
   public MutableLiveData<LoginErrorMessEnum> errorMessage;
 
+
+
+
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
     if (this.userLiveData != null) {
@@ -34,6 +37,8 @@ public class LoginRegisterViewModel extends ViewModel {
     this.userLiveData = this.authAppRepository.getUserLiveData();
     this.loginUser = new MutableLiveData<>();
     this.loginUser.setValue(new LoginUser());
+    this.errorMessage = new MutableLiveData<>();
+    this.errorMessage.setValue(LoginErrorMessEnum.NONE);
   }
 
   public LiveData<FirebaseUser> getUserLiveData() {
@@ -50,6 +55,7 @@ public class LoginRegisterViewModel extends ViewModel {
     String password= loginUser.getValue().getPassword();
 
     if (email == null || email.equals("")) {
+      this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY);
       //TODO: change ENUM livedata to email may not be empty -> view get changes by observing
     }
     else if (password == null || password.equals("")) {

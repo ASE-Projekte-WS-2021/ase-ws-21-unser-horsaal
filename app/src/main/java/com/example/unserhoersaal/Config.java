@@ -20,4 +20,8 @@ public class Config {
   /** UI. */
   public static final String COURSES_EMPTY = "Du bist noch keinen Kursen beigetreten";
 
+  /** Login Error Message. */
+  public static final String EMAIL_EMPTY = "Bitte geben Sie eine Email ein";
+  public static final String EMAIL_PATTERN = "Email wurde falsch eingegeben";
+
 }
