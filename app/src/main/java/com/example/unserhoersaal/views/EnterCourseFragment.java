@@ -103,7 +103,6 @@ public class EnterCourseFragment extends Fragment {
     KeyboardUtil.hideKeyboard(getActivity());
     this.courseHistoryViewModel.setCourseId(id);
     this.navController.navigate(R.id.action_enterCourseFragment_to_courseHistoryFragment);
-    Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
   }
 
   private void setupToolbar() {
