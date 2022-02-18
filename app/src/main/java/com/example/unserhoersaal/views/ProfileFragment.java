@@ -13,13 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
+import com.example.unserhoersaal.databinding.FragmentProfileBinding;
+import com.example.unserhoersaal.viewmodel.LoginViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,21 +33,9 @@ public class ProfileFragment extends Fragment {
   private static final String TAG = "ProfileFragment";
 
   private MaterialToolbar toolbar;
-  private MenuItem logout;
-  private TextView userEmail;
-  private TextView userName;
-  private TextView userInstitution;
-  private EditText userPassword;
-  private ImageView togglePasswordIcon;
-  private FloatingActionButton fab;
-  private FloatingActionButton deleteAccountButton;
-
-  private boolean passwordMask;
-
-  private LoginRegisterViewModel loginRegisterViewModel;
   private ProfileViewModel profileViewModel;
-
   private NavController navController;
+  private FragmentProfileBinding binding;
 
   public ProfileFragment() {
     // Required empty public constructor
@@ -57,32 +47,33 @@ public class ProfileFragment extends Fragment {
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_profile, container, false);
+    this.binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_profile, container, false);
+    return this.binding.getRoot();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+
+    this.navController = Navigation.findNavController(view);
+    this.toolbar = view.findViewById(R.id.profileFragmentToolbar);
+
     this.initViewModel();
-    this.initUi(view);
+    this.connectBinding();
     this.initToolbar();
-    this.passwordMask = true;
   }
 
   private void initViewModel() {
-    this.loginRegisterViewModel
-            = new ViewModelProvider(requireActivity()).get(LoginRegisterViewModel.class);
-    this.loginRegisterViewModel.init();
-    this.loginRegisterViewModel
-            .getUserLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
-              @Override
-              public void onChanged(FirebaseUser firebaseUser) {
-                if (firebaseUser == null) {
-                  navController.navigate(R.id.action_profileFragment_to_loginFragment);
-                }
+    this.profileViewModel
+            = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+    this.profileViewModel.init();
+    this.profileViewModel
+            .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
+              if (firebaseUser == null) {
+                navController.navigate(R.id.action_profileFragment_to_loginFragment);
               }
             });
     this.profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
@@ -94,23 +85,9 @@ public class ProfileFragment extends Fragment {
     });
   }
 
-  private void initUi(View view) {
-    this.userEmail = view.findViewById(R.id.profileFragmentUserEmail);
-    this.userName = view.findViewById(R.id.profileFragmentUserName);
-    this.userPassword = view.findViewById(R.id.profileFragmentPassword);
-    this.userInstitution = view.findViewById(R.id.profileFragmentInstitution);
-    this.togglePasswordIcon = view.findViewById(R.id.profileFragmentTogglePasswordIcon);
-    this.toolbar = view.findViewById(R.id.profileFragmentToolbar);
-    this.navController = Navigation.findNavController(view);
-    this.logout = view.findViewById(R.id.profileFragmentToolbarLogout);
-    this.deleteAccountButton = view.findViewById(R.id.profileFragmentDeleteAccountFab);
-    this.fab = view.findViewById(R.id.profileFragmentFab);
-    this.fab.setOnClickListener(v -> {
-      this.navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
-    });
-    this.togglePasswordIcon.setOnClickListener(v -> {
-      this.togglePassword();
-    });
+  private void connectBinding() {
+    this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.profileViewModel);
   }
 
   private void initToolbar() {
@@ -119,27 +96,12 @@ public class ProfileFragment extends Fragment {
     this.toolbar.setNavigationOnClickListener(v -> {
       this.navController.navigate(R.id.action_profileFragment_to_coursesFragment);
     });
-    this.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.profileFragmentToolbarLogout) {
-          loginRegisterViewModel.logOut();
-          //navController.navigate(R.id.action_profileFragment_to_loginFragment);
-        }
-        return false;
+    this.toolbar.setOnMenuItemClickListener(item -> {
+      if (item.getItemId() == R.id.profileFragmentToolbarLogout) {
+        profileViewModel.logout();
       }
+      return false;
     });
   }
 
-  private void togglePassword() {
-    if (this.passwordMask) {
-      this.userPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-      this.togglePasswordIcon.setColorFilter(getResources().getColor(R.color.app_blue));
-      this.passwordMask = false;
-    } else {
-      this.userPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-      this.togglePasswordIcon.setColorFilter(getResources().getColor(R.color.grey));
-      this.passwordMask = true;
-    }
-  }
 }

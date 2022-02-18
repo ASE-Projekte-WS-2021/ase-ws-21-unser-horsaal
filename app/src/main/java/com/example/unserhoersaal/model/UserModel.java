@@ -37,13 +37,13 @@ public class UserModel {
   public void setCourses(HashMap<String, Boolean> courses) {
     this.courses = courses;
   }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
+  
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
+  }
+  
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public void setInstitution(String institution) {
@@ -53,4 +53,5 @@ public class UserModel {
   public void setPhotoURL(String photoURL) {
     this.photoURL = photoURL;
   }
+  
 }
