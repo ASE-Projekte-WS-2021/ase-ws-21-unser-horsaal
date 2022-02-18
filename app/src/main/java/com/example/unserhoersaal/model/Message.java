@@ -10,7 +10,7 @@ public class Message {
 
   /**Default class constructor.**/
   public Message() {
-    // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
 
   /**Class constructor.**/

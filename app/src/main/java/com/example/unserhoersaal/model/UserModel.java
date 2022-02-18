@@ -1,41 +1,57 @@
 package com.example.unserhoersaal.model;
 
+import java.util.HashMap;
+
 public class UserModel {
+
+  private HashMap<String, Boolean> courses;
   private String displayName;
   private String email;
-  private String photoURL;
   private String institution;
+  private String photoURL;
+
+  public UserModel() {
+    // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
+  }
+
+  public HashMap<String, Boolean> getCourses() {
+    return this.courses;
+  }
 
   public String getDisplayName() {
-    return displayName;
+    return this.displayName;
   }
 
   public String getEmail() {
-    return email;
-  }
-
-  public String getPhotoURL() {
-    return photoURL;
+    return this.email;
   }
 
   public String getInstitution() {
-    return institution;
+    return this.institution;
   }
 
-  public void setDisplayName(String userName) {
-    this.displayName = userName;
+  public String getPhotoURL() {
+    return this.photoURL;
   }
 
+  public void setCourses(HashMap<String, Boolean> courses) {
+    this.courses = courses;
+  }
+  
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
+  }
+  
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public void setPhotoURL(String photoURL) {
-    this.photoURL = photoURL;
   }
 
   public void setInstitution(String institution) {
     this.institution = institution;
   }
 
+  public void setPhotoURL(String photoURL) {
+    this.photoURL = photoURL;
+  }
+  
 }

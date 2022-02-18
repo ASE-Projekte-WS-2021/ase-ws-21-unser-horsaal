@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +37,7 @@ public class AuthAppRepository {
     }
   }
 
-  /** Gives back the current User. */
+  /** Gives back the current UserModel. */
   public MutableLiveData<FirebaseUser> getUserLiveData() {
     if (this.user == null) {
       this.user = this.firebaseAuth.getCurrentUser();
