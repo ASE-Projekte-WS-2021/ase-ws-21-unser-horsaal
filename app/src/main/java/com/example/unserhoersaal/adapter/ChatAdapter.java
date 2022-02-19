@@ -8,7 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.Message;
+import com.example.unserhoersaal.model.MessageModel;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,9 +19,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
   private static final String TAG = "ChatAdapter";
 
-  private List<Message> localDataSet = new ArrayList<>();
+  private List<MessageModel> localDataSet = new ArrayList<>();
 
-  public ChatAdapter(List<Message> dataSet) {
+  public ChatAdapter(List<MessageModel> dataSet) {
     this.localDataSet = dataSet;
   }
 
@@ -34,8 +35,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
-    viewHolder.getMessage().setText(this.localDataSet.get(position).getMessageText());
-    viewHolder.getDate().setText(calculateDate(this.localDataSet.get(position).getTime()));
+    viewHolder.getMessage().setText("Todo rename child in firebase");//this.localDataSet.get(position).getTextMessage());
+    viewHolder.getDate().setText(calculateDate(this.localDataSet.get(position).getCreationTime()));
   }
 
   @Override

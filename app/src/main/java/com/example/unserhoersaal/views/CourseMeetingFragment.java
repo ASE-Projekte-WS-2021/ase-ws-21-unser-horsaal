@@ -25,6 +25,7 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,6 +48,7 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
   private ThreadAdapter threadAdapter;
 
   private CourseMeetingViewModel courseMeetingViewModel;
+  private CurrentCourseViewModel currentCourseViewModel;
 
   private NavController navController;
 
@@ -77,9 +79,11 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
   public void initViewModel() {
     this.courseMeetingViewModel = new ViewModelProvider(requireActivity())
             .get(CourseMeetingViewModel.class);
+    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
     courseMeetingViewModel.init();
+    currentCourseViewModel.init();
     courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
-      Log.d(TAG, "initViewModel: " + messageList.size());
       threadAdapter.notifyDataSetChanged();
     });
   }
@@ -136,6 +140,7 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
   @Override
   public void onNoteClick(int position) {
     String id = this.courseMeetingViewModel.getThreads().getValue().get(position).getKey();
-    Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();
+    this.currentCourseViewModel.setThreadId(id);
+    navController.navigate(R.id.action_courseMeetingFragment_to_currentCourseFragment);
   }
 }

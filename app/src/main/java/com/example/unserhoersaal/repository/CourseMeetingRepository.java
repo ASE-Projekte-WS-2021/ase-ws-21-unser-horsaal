@@ -53,7 +53,7 @@ public class CourseMeetingRepository {
 
   public void loadThreads() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Query query = reference.child(Config.CHILD_MEETINGS).child(meetingId.getValue())
+    Query query = reference.child(Config.CHILD_MEETINGS).child(this.meetingId.getValue())
             .child(Config.CHILD_THREADS);
     query.addValueEventListener(new ValueEventListener() {
       @Override
