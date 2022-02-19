@@ -137,6 +137,9 @@
         <action
             android:id="@+id/action_courseHistoryFragment_to_courseDescriptionFragment"
             app:destination="@id/courseDescriptionFragment" />
+        <action
+            android:id="@+id/action_courseHistoryFragment_to_courseMeetingFragment"
+            app:destination="@id/courseMeetingFragment" />
     </fragment>
     <fragment
         android:id="@+id/courseDescriptionFragment"
