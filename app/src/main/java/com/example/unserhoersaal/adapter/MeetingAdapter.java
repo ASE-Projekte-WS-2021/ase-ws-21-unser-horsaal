@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.MeetingsModel;
 
@@ -38,7 +39,8 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
     if (viewHolder.getMeetingTitle() != null && viewHolder.getMeetingDate() != null) {
       viewHolder.getMeetingTitle().setText(this.localDataSet.get(position).getTitle());
-      viewHolder.getMeetingDate().setText(Long.toString(this.localDataSet.get(position).getEventTime()));
+      viewHolder.getMeetingDate()
+              .setText(Config.OLD_FORMAT.format(this.localDataSet.get(position).getEventTime()));
     }
   }
 

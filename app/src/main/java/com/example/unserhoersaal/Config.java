@@ -20,6 +20,8 @@ public class Config {
 
   public static final String CHILD_MEETINGS = "meetings";
 
+  public static final String CHILD_THREADS = "threads";
+
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;
   public static final int ERROR_PROFILE_AVATAR = R.drawable.ic_baseline_account_circle_24;
