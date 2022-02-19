@@ -170,5 +170,9 @@
         android:id="@+id/courseMeetingFragment"
         android:name="com.example.unserhoersaal.views.CourseMeetingFragment"
         android:label="fragment_course_meeting"
-        tools:layout="@layout/fragment_course_meeting" />
+        tools:layout="@layout/fragment_course_meeting" >
+        <action
+            android:id="@+id/action_courseMeetingFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment" />
+    </fragment>
 </navigation>

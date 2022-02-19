@@ -4,7 +4,7 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.Message;
+import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
 import java.util.List;
 
@@ -15,8 +15,8 @@ public class CurrentCourseViewModel extends ViewModel {
 
   private CurrentCourseRepository currentCourseRepository;
 
-  private MutableLiveData<List<Message>> messages;
-  private MutableLiveData<String> courseId = new MutableLiveData<String>();
+  private MutableLiveData<List<MessageModel>> messages;
+  private MutableLiveData<String> threadId = new MutableLiveData<String>();
 
   /** This method initializes the database access. */
   public void init() {
@@ -24,28 +24,28 @@ public class CurrentCourseViewModel extends ViewModel {
       return;
     }
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
-    this.courseId = this.currentCourseRepository.getCourseId();
+    this.threadId = this.currentCourseRepository.getThreadId();
 
     // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
     // the messages and only set the courseId can init the CurrentCourseViewModel
-    if (this.courseId.getValue() != null) {
+    if (this.threadId.getValue() != null) {
       this.messages = this.currentCourseRepository.getMessages();
     }
   }
 
-  public LiveData<List<Message>> getMessages() {
+  public LiveData<List<MessageModel>> getMessages() {
     return this.messages;
   }
 
-  public LiveData<String> getCourseId() {
-    return this.courseId;
+  public LiveData<String> getThreadId() {
+    return this.threadId;
   }
 
   public void sendMessage(String messageText) {
     this.currentCourseRepository.sendMessage(messageText);
   }
 
-  public void setCourseId(String courseId) {
-    this.currentCourseRepository.setCourseId(courseId);
+  public void setThreadId(String threadId) {
+    this.currentCourseRepository.setThreadId(threadId);
   }
 }
