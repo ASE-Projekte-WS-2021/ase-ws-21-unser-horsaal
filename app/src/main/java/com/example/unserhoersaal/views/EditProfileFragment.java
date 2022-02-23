@@ -10,24 +10,24 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.databinding.FragmentEditProfileBinding;
+import com.example.unserhoersaal.viewmodel.ProfileViewModel;
+import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 
 /** Fragment for Editing a profile.*/
 public class EditProfileFragment extends Fragment {
 
   private MaterialToolbar toolbar;
-  private ImageView profileImage;
-  private EditText username;
-  private EditText institution;
-  private EditText currentPassword;
-  private EditText newPassword;
-  private MenuItem saveButton;
-
   private NavController navController;
+  private FragmentEditProfileBinding binding;
+  private ProfileViewModel profileViewModel;
 
   public EditProfileFragment() {
     // Required empty public constructor
@@ -39,28 +39,40 @@ public class EditProfileFragment extends Fragment {
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_edit_profile, container, false);
+    this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false);
+    return this.binding.getRoot();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    this.initUi(view);
+
+    this.navController = Navigation.findNavController(view);
+    this.toolbar = view.findViewById(R.id.editProfileFragmentToolbar);
+
+    this.initViewModel();
+    this.connectBinding();
     this.setupToolbar();
   }
 
-  private void initUi(View view) {
-    this.toolbar = view.findViewById(R.id.editProfileFragmentToolbar);
-    this.profileImage = view.findViewById(R.id.editProfileFragmentProfileImage);
-    this.username = view.findViewById(R.id.editProfileFragmentUserName);
-    this.institution = view.findViewById(R.id.editProfileFragmentInstitution);
-    this.currentPassword = view.findViewById(R.id.editProfileFragmentCurrentPassword);
-    this.newPassword = view.findViewById(R.id.editProfileFragmentNewPassword);
-    this.saveButton = view.findViewById(R.id.editProfileToolbarSave);
-    this.navController = Navigation.findNavController(view);
+  private void initViewModel() {
+    this.profileViewModel = new ViewModelProvider(requireActivity())
+            .get(ProfileViewModel.class);
+    this.profileViewModel.init();
+    /*
+    this.profileViewModel
+            .getProfileLiveData().observe(getViewLifecycleOwner(), updatedProfile -> {
+        navController.navigate(R.id.action_editProfileFragment_to_profileFragment);
+    });
+
+     */
+  }
+
+  private void connectBinding() {
+    this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.profileViewModel);
   }
 
   private void setupToolbar() {
@@ -69,14 +81,12 @@ public class EditProfileFragment extends Fragment {
     this.toolbar.setNavigationOnClickListener(v -> {
       this.navController.navigate(R.id.action_editProfileFragment_to_profileFragment);
     });
-    this.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.editProfileToolbarSave) {
-          //save changes and navigate back to profile page
-        }
-        return false;
+    this.toolbar.setOnMenuItemClickListener(item -> {
+      if (item.getItemId() == R.id.editProfileToolbarSave) {
+        //save changes and navigate back to profile page
+        profileViewModel.saveNewProfileData();
       }
+      return false;
     });
   }
 }

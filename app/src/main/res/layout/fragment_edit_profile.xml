@@ -1,179 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".views.EditProfileFragment"
-    android:orientation="vertical"
-    android:background="@color/app_background">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/editProfileFragmentToolbar"
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.ProfileViewModel" />
+        <import type="com.example.unserhoersaal.utils.ImageAdapter"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/app_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Profil bearbeiten"
-        app:titleTextColor="@color/white" />
+        android:layout_height="match_parent"
+        tools:context=".views.EditProfileFragment"
+        android:orientation="vertical"
+        android:background="@color/app_background">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editProfileFragmentToolbar">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/editProfileFragmentToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/app_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Profil bearbeiten"
+            app:titleTextColor="@color/white" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editProfileFragmentToolbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/editProfileFragmentImageConstraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/app_blue"
-                android:paddingBottom="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/editProfileFragmentProfileImage"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:clickable="true"
-                    android:src="@drawable/ic_baseline_account_circle_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/editProfileFragmentImageConstraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/app_blue"
+                    android:paddingBottom="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/editProfileFragmentCameraIcon"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/editProfileFragmentProfileImage"
+                        setImage="@{vm.profileLiveData.photoURL}"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:clickable="true"
+                        android:src="@drawable/ic_baseline_account_circle_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/editProfileFragmentCameraIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_camera_alt_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/editProfileFragmentProfileImage"
+                        app:layout_constraintStart_toEndOf="@+id/editProfileFragmentProfileImage" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/editProfileFragmentUserNameTextField"
+                    style="@style/textInputField"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_camera_alt_24"
-                    app:layout_constraintBottom_toBottomOf="@+id/editProfileFragmentProfileImage"
-                    app:layout_constraintStart_toEndOf="@+id/editProfileFragmentProfileImage" />
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editProfileFragmentImageConstraintLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileFragmentUserName"
+                        android:text="@{vm.profileLiveData.displayName}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="16dp"
+                        android:singleLine="true"
+                        android:hint="@string/edit_profile_fragment_user_name" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/editProfileFragmentInstitutionTextField"
+                    style="@style/textInputField"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editProfileFragmentUserNameTextField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileFragmentInstitution"
+                        android:text="@{vm.profileLiveData.institution}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="16dp"
+                        android:singleLine="true"
+                        android:hint="@string/edit_profile_fragment_institution" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/editProfileFragmentUserEmailTextField"
+                    style="@style/textInputField"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editProfileFragmentInstitutionTextField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileFragmentUserEmail"
+                        android:text="@{vm.profileLiveData.email}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="16dp"
+                        android:singleLine="true"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/editProfileFragmentCurrentPasswordTextField"
+                    style="@style/textInputField"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    app:endIconMode="password_toggle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editProfileFragmentUserEmailTextField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileFragmentCurrentPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:hint="@string/edit_profile_fragment_current_password" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/editProfileFragmentNewPasswordTextField"
+                    style="@style/textInputField"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    app:endIconMode="password_toggle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editProfileFragmentCurrentPasswordTextField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editProfileFragmentNewPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:hint="@string/edit_profile_fragment_new_password" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editProfileFragmentUserNameTextField"
-                style="@style/textInputField"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editProfileFragmentImageConstraintLayout">
+        </ScrollView>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editProfileFragmentUserName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="16dp"
-                    android:singleLine="true"
-                    android:hint="@string/edit_profile_fragment_user_name" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editProfileFragmentInstitutionTextField"
-                style="@style/textInputField"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/editProfileFragmentUserNameTextField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editProfileFragmentInstitution"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="16dp"
-                    android:singleLine="true"
-                    android:hint="@string/edit_profile_fragment_institution" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editProfileFragmentUserEmailTextField"
-                style="@style/textInputField"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/editProfileFragmentInstitutionTextField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editProfileFragmentUserEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="16dp"
-                    android:singleLine="true"
-                    android:text="@string/profile_fragment_example_email" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editProfileFragmentCurrentPasswordTextField"
-                style="@style/textInputField"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/white"
-                app:endIconMode="password_toggle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/editProfileFragmentUserEmailTextField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editProfileFragmentCurrentPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:singleLine="true"
-                    android:hint="@string/edit_profile_fragment_current_password" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editProfileFragmentNewPasswordTextField"
-                style="@style/textInputField"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/white"
-                app:endIconMode="password_toggle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/editProfileFragmentCurrentPasswordTextField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editProfileFragmentNewPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:singleLine="true"
-                    android:hint="@string/edit_profile_fragment_new_password" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
