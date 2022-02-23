@@ -86,6 +86,17 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
     courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
       threadAdapter.notifyDataSetChanged();
     });
+    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
+      if (threadModel != null) {
+        KeyboardUtil.hideKeyboard(getActivity());
+        this.createThreadContainer.setVisibility(View.GONE);
+        this.floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
+        this.floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
+                .getColor(R.color.orange, null)));
+        this.createThreadTitle.getText().clear();
+        this.createThreadText.getText().clear();
+      }
+    });
   }
 
   private void initUi(View view) {
@@ -104,6 +115,9 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
     this.createThreadTitle = view.findViewById(R.id.courseMeetingFragmentQuestionTitleEditText);
     this.createThreadText = view.findViewById(R.id.courseMeetingFragmentQuestionTextEditText);
     this.sendThreadButton = view.findViewById(R.id.courseMeetingFragmentSendThreadButton);
+    this.sendThreadButton.setOnClickListener(v -> {
+      onSendThreadButtonClicked();
+    });
 
     this.threadAdapter =
             new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue(), this);
@@ -134,6 +148,14 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
       this.floatingActionButton.setImageResource(R.drawable.ic_baseline_close_24);
       this.floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
               .getColor(R.color.red, null)));
+    }
+  }
+
+  public void onSendThreadButtonClicked() {
+    String title = this.createThreadTitle.getText().toString();
+    String text = this.createThreadText.getText().toString();
+    if (title.length() > 0) {
+      this.courseMeetingViewModel.createThread(title, text);
     }
   }
 
