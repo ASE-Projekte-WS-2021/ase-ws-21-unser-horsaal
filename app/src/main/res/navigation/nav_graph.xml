@@ -226,7 +226,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
-    </fragment>
     <fragment
         android:id="@+id/editProfileNameFragment"
         android:name="com.example.unserhoersaal.views.EditProfileNameFragment"
@@ -331,5 +330,18 @@
             app:destination="@id/courseDescriptionFragment"
             app:popUpTo="@id/courseDescriptionFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseThreadFragment"
+        android:name="com.example.unserhoersaal.views.CourseThreadFragment"
+        android:label="fragment_course_thread"
+        tools:layout="@layout/fragment_course_thread" >
+        <action
+            android:id="@+id/action_courseThreadFragment_to_courseMeetingFragment"
+            app:destination="@id/courseMeetingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 </navigation>
