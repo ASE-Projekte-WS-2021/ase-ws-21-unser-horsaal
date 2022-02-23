@@ -2,6 +2,7 @@ package com.example.unserhoersaal.model;
 
 import java.util.HashMap;
 
+/** Model for a thread. */
 public class ThreadModel {
 
   private static final String TAG = "ThreadModel";
@@ -10,7 +11,7 @@ public class ThreadModel {
   public long creationTime;
   public String creatorId;
   public int likes;
-  public HashMap<String, Boolean> messages;
+  public HashMap<String, Boolean> messages = new HashMap<>();
   public String text;
   public String title;
   public String key;

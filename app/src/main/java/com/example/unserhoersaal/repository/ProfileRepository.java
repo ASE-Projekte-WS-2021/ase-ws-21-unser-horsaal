@@ -2,10 +2,8 @@ package com.example.unserhoersaal.repository;
 
 import android.net.Uri;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+/** Repository for the ProfileViewModel. */
 public class ProfileRepository {
 
   private static final String TAG = "ProfileRepo";
@@ -28,6 +27,7 @@ public class ProfileRepository {
     this.loadUser();
   }
 
+  /** Generate an instance of the class. */
   public static ProfileRepository getInstance() {
     if (instance == null) {
       instance = new ProfileRepository();
@@ -40,6 +40,7 @@ public class ProfileRepository {
   }
 
 
+  /** Loads an user from the database. */
   public void loadUser() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();

@@ -4,17 +4,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.MeetingsModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/** Adapter for the Meetings in CourseHistoryFragment. */
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHolder> {
 
   private static final String TAG = "MeetingAdapter";
@@ -49,15 +47,18 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
     return this.localDataSet.size();
   }
 
+  /** Interface to handle the click on an item. */
   public interface OnNoteListener {
     void onNoteClick(int position);
   }
 
+  /** ViewHolder for a meeting item. */
   public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView meetingTitle;
     private TextView meetingDate;
     private OnNoteListener onNoteListener;
 
+    /** Constructor. */
     public ViewHolder(View view, OnNoteListener onNoteListener) {
       super(view);
       this.onNoteListener = onNoteListener;

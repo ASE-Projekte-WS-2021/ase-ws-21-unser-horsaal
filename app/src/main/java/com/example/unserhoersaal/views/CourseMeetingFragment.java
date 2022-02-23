@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -76,6 +75,7 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
     this.initToolbar();
   }
 
+  /** Initialise all ViewModels for the Fragment. */
   public void initViewModel() {
     this.courseMeetingViewModel = new ViewModelProvider(requireActivity())
             .get(CourseMeetingViewModel.class);
@@ -151,6 +151,7 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
     }
   }
 
+  /** Create a new thread. */
   public void onSendThreadButtonClicked() {
     String title = this.createThreadTitle.getText().toString();
     String text = this.createThreadText.getText().toString();

@@ -34,6 +34,7 @@ public class RegistrationViewModel extends ViewModel {
     this.resetDatabindingData();
   }
 
+  /** Give back all user data. */
   public LiveData<FirebaseUser> getUserLiveData() {
     //remove user data from mutablelivedata after successful firebase interaction
     //TODO: is this best practice?
@@ -46,32 +47,29 @@ public class RegistrationViewModel extends ViewModel {
     this.user.setValue(new UserModel());
   }
 
+  /** Register a new user. */
   public void register() {
-    if (this.user.getValue() == null) return;
+    if (this.user.getValue() == null) {
+      return;
+    }
 
     String userName = this.user.getValue().getDisplayName();
     String email = this.user.getValue().getEmail();
-    String password= this.password.getValue();
+    String password = this.password.getValue();
 
     if (Validation.emptyEmail(email)) {
       //TODO: change ENUM livedata to email may not be empty -> view get changes by observing
-    }
-    else if (Validation.emptyUserName(userName)) {
+    } else if (Validation.emptyUserName(userName)) {
       //TODO: change ENUM livedata to userName may not be empty -> view get changes by observing
-    }
-    else if (Validation.emptyPassword(password)) {
+    } else if (Validation.emptyPassword(password)) {
       //TODO: change ENUM livedata to password may not be empty -> view get changes by observing
-    }
-    else if (!Validation.emailHasPattern(email)) {
+    } else if (!Validation.emailHasPattern(email)) {
       //TODO: email does not match pattern
-    }
-    else if (!Validation.userNameHasPattern(userName)) {
+    } else if (!Validation.userNameHasPattern(userName)) {
       //TODO: userName does not match pattern
-    }
-    else if (!Validation.passwordHasPattern(password)) {
+    } else if (!Validation.passwordHasPattern(password)) {
       //TODO: password does not match pattern
-    }
-    else {
+    } else {
       this.authAppRepository.register(email, password);
     }
   }

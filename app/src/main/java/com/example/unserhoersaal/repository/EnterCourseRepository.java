@@ -68,6 +68,7 @@ public class EnterCourseRepository {
     });
   }
 
+  /** Loads a course by its id from the data base. */
   public void loadCourse(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_COURSES).child(courseId);

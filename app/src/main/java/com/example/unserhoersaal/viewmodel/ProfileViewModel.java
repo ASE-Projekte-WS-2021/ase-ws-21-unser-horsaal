@@ -9,7 +9,7 @@ import com.example.unserhoersaal.repository.ProfileRepository;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 
-/** Class Description */
+/** Class Description. */
 public class ProfileViewModel extends ViewModel {
 
   private static final String TAG = "LoginRegisterViewModel";
@@ -39,6 +39,7 @@ public class ProfileViewModel extends ViewModel {
     this.changing.setValue(true);
   }
 
+  /** Give back the user data. */
   public LiveData<FirebaseUser> getUserLiveData() {
     return this.userLiveData;
   }

@@ -2,6 +2,7 @@ package com.example.unserhoersaal.model;
 
 import java.util.HashMap;
 
+/** Model for a meeting. */
 public class MeetingsModel {
 
   private Long creationTime;
@@ -12,7 +13,7 @@ public class MeetingsModel {
   private String title;
   private String key;
 
-  public MeetingsModel(){
+  public MeetingsModel() {
     //needed for Firebase
   }
 

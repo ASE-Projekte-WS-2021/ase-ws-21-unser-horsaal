@@ -77,12 +77,14 @@ public class CurrentCourseRepository {
     this.addMessageToThread(threadId.getValue(), messageId);
   }
 
+  /** Adds the new message to the current thread in the database. */
   public void addMessageToThread(String threadId, String messageId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     reference.child(Config.CHILD_THREADS)
             .child(threadId).child(Config.CHILD_MESSAGES).child(messageId).setValue(Boolean.TRUE);
   }
 
+  /** Sets the id of the new entered thread. */
   public void setThreadId(String threadId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.threadId.getValue() != null) {
@@ -94,6 +96,7 @@ public class CurrentCourseRepository {
     this.threadId.postValue(threadId);
   }
 
+  /** Initialise the listener for the database access. */
   public void initListener() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     this.listener = new ValueEventListener() {
@@ -105,8 +108,8 @@ public class CurrentCourseRepository {
           messageIds.add(snapshot.getKey());
         }
         for (String key : messageIds) {
-          reference.child(Config.CHILD_MESSAGES).child(key).addListenerForSingleValueEvent(
-                  new ValueEventListener() {
+          reference.child(Config.CHILD_MESSAGES).child(key)
+                  .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                       MessageModel model = snapshot.getValue(MessageModel.class);

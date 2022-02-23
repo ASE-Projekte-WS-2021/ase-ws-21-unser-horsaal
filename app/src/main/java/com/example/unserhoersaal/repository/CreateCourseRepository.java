@@ -1,16 +1,12 @@
 package com.example.unserhoersaal.repository;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.model.UserCourse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
 
 /**Class creates a course and saves it in Firebase.**/
 public class CreateCourseRepository {
