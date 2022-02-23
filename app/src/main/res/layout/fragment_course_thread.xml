@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    tools:context=".views.CourseThreadFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/courseThreadFragmentToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_blue"
+        app:title="Meeting-Name"
+        app:titleTextColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/courseThreadFragmentQuestionTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/current_course_fragment_question_title"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:padding="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/courseThreadFragmentToolbar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/courseThreadFragmentRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/courseThreadFragmentEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseThreadFragmentQuestionTitle"
+        tools:listitem="@layout/answer_item"/>
+
+    <EditText
+        android:id="@+id/courseThreadFragmentEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/white"
+        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:hint="Antwort"
+        app:layout_constraintBottom_toBottomOf="@+id/courseThreadFragmentSendFab"
+        app:layout_constraintEnd_toStartOf="@id/courseThreadFragmentSendFab"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/courseThreadFragmentSendFab" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/courseThreadFragmentSendFab"
+        style="@style/fabStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_baseline_send_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/courseThreadFragmentRecycler"
+        app:tint="@color/white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
