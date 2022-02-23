@@ -76,6 +76,11 @@
             app:destination="@id/courseHistoryFragment" />
     </fragment>
     <fragment
+        android:id="@+id/currentCourseFragment"
+        android:name="com.example.unserhoersaal.views.CurrentCourseFragment"
+        android:label="fragment_current_course"
+        tools:layout="@layout/fragment_current_course" />
+    <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.unserhoersaal.views.ProfileFragment"
         android:label="fragment_profile"
@@ -188,7 +193,7 @@
         android:id="@+id/courseMeetingFragment"
         android:name="com.example.unserhoersaal.views.CourseMeetingFragment"
         android:label="fragment_course_meeting"
-        tools:layout="@layout/fragment_course_meeting" >
+        tools:layout="@layout/fragment_course_meeting">
         <action
             android:id="@+id/action_courseMeetingFragment_to_courseHistoryFragment"
             app:destination="@id/courseHistoryFragment"

@@ -50,7 +50,7 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_login.xml" value="0.264" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_no_course_found.xml" value="0.3625" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_placeholder.xml" value="0.140625" />
-        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_registration.xml" value="0.264" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/participant_list_item.xml" value="0.264" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_course_item.xml" value="0.16799999999999998" />
@@ -75,6 +75,15 @@
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_second.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_history.xml" value="0.17654508611955422" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_meeting.xml" value="0.17654508611955422" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_thread.xml" value="0.11980749746707194" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course.xml" value="0.17654508611955422" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_current_course.xml" value="0.1621376811594203" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_course.xml" value="0.1" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_course_meeting.xml" value="0.17654508611955422" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_question_item.xml" value="0.17654508611955422" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/thread_item.xml" value="0.17654508611955422" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21875" />
       </map>
     </option>
   </component>
