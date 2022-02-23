@@ -40,9 +40,9 @@ public class CourseMeetingRepository {
   }
 
   public MutableLiveData<List<ThreadModel>> getThreads() {
-    if (this.threadModelList.size() == 0) {
+    /*if (this.threadModelList.size() == 0) {
       loadThreads();
-    }
+    }*/
 
     this.threads.setValue(this.threadModelList);
     return this.threads;

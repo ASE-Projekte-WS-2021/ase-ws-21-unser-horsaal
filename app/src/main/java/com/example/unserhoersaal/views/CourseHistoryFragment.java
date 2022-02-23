@@ -80,9 +80,21 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
     this.courseHistoryViewModel.init();
     this.courseMeetingViewModel.init();
     this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
-      Log.d(TAG, "initViewModel: " + meetingsModels.size());
       meetingAdapter.notifyDataSetChanged();
     });
+    this.courseHistoryViewModel.getMeetingsModel()
+            .observe(getViewLifecycleOwner(), meetingsModel -> {
+              if (meetingsModel != null) {
+                KeyboardUtil.hideKeyboard(getActivity());
+                createMeetingContainer.setVisibility(View.GONE);
+                floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
+                floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
+                        .getColor(R.color.orange, null)));
+                createMeetingTitle.getText().clear();
+                createMeetingDate.getText().clear();
+                createMeetingTime.getText().clear();
+              }
+            });
   }
 
   private void initUi(View view) {
@@ -99,6 +111,9 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
     createMeetingTime = view.findViewById(R.id.courseHistoryFragmentCreateMeetingTimeEditText);
     createMeetingCreateButton = view.findViewById(R.id
             .courseHistoryFragmentCreateMeetingCreateButton);
+    createMeetingCreateButton.setOnClickListener(v -> {
+      onCreateMeetingCreateButtonClicked();
+    });
 
     this.meetingAdapter =
             new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue(), this);
@@ -117,6 +132,13 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
     toolbar.setNavigationOnClickListener(v -> {
       navController.navigate(R.id.action_courseHistoryFragment_to_coursesFragment);
     });
+  }
+  
+  private void onCreateMeetingCreateButtonClicked(){
+    String title = this.createMeetingTitle.getText().toString();
+    if (title.length() > 0) {
+      this.courseHistoryViewModel.createMeeting(title);
+    }
   }
 
   private void onFloatingActionButtonClicked() {
