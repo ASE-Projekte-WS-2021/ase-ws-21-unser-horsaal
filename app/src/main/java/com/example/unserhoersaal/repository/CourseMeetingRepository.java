@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.ThreadModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +27,7 @@ public class CourseMeetingRepository {
   private ArrayList<ThreadModel> threadModelList = new ArrayList<>();
   private MutableLiveData<List<ThreadModel>> threads = new MutableLiveData<>();
   private MutableLiveData<String> meetingId = new MutableLiveData<>();
+  private MutableLiveData<ThreadModel> threadModelMutableLiveData = new MutableLiveData<>();
   private ValueEventListener listener;
 
   public CourseMeetingRepository() {
@@ -52,6 +54,10 @@ public class CourseMeetingRepository {
     return this.meetingId;
   }
 
+  public MutableLiveData<ThreadModel> getThreadModelMutableLiveData() {
+    return this.threadModelMutableLiveData;
+  }
+
   public void setMeetingId(String meetingId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.meetingId.getValue() != null) {
@@ -68,6 +74,26 @@ public class CourseMeetingRepository {
     Query query = reference.child(Config.CHILD_MEETINGS).child(this.meetingId.getValue())
             .child(Config.CHILD_THREADS);
     query.addValueEventListener(this.listener);
+  }
+
+  public void createThread(ThreadModel threadModel) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    String uid = firebaseAuth.getCurrentUser().getUid();
+
+    threadModel.setCreatorId(uid);
+    threadModel.setCreationTime(System.currentTimeMillis());
+    String threadId = reference.getRoot().push().getKey();
+    reference.child(Config.CHILD_THREADS).child(threadId).setValue(threadModel);
+    threadModel.setKey(threadId);
+    this.addThreadToMeeting(meetingId.getValue(), threadId);
+    threadModelMutableLiveData.postValue(threadModel);
+  }
+
+  public void addThreadToMeeting(String meeting, String thread) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_MEETINGS).child(meeting).child(Config.CHILD_THREADS).child(thread)
+            .setValue(Boolean.TRUE);
   }
 
   public void initListener(){
