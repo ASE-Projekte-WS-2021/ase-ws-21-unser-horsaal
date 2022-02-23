@@ -24,7 +24,9 @@ public class Config {
 
   /** Login Error Message. */
   public static final String EMAIL_EMPTY = "Bitte geben Sie eine Email ein";
-  public static final String EMAIL_PATTERN = "Email wurde falsch eingegeben";
+  public static final String EMAIL_PATTERN_WRONG = "Email wurde falsch eingegeben";
+  public static final String PASSWORD_EMPTY = "Bitte geben Sie ein Passwort ein";
+  public static final String PASSWORD_PATTERN_WRONG = "Passwort wurde falsch eingegeben";
 
   /** Regex */
   /* reference: https://ihateregex.io/expr/username/ */

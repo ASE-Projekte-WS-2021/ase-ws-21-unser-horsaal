@@ -68,7 +68,8 @@
                         android:singleLine="true" />
 
                     <TextView
-                        android:text="@{vm.errorMessage == LoginErrorMessEnum.EMAIL_EMPTY ? Config.EMAIL_EMPTY : Config.EMAIL_PATTERN}"
+                        android:text="@{vm.errorMessage == LoginErrorMessEnum.EMAIL_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG ? Config.EMAIL_EMPTY : Config.EMAIL_PATTERN_WRONG}"
+                        android:visibility="@{vm.errorMessage == LoginErrorMessEnum.EMAIL_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_WRONG_PATTERN || vm.errorMessage == LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG || vm.errorMessage == LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG ? View.VISIBLE : View.GONE}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -93,19 +94,33 @@
                         android:inputType="textPassword"
                         android:singleLine="true" />
 
+                    <TextView
+                        android:text="@{vm.errorMessage == LoginErrorMessEnum.PASSWORD_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.PASSWORD_PATTERN_WRONG}"
+                        android:visibility="@{vm.errorMessage == LoginErrorMessEnum.PASSWORD_EMPTY || vm.errorMessage == LoginErrorMessEnum.PASSWORD_WRONG_PATTERN || vm.errorMessage == LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG || vm.errorMessage == LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY || vm.errorMessage == LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG ? View.VISIBLE : View.GONE}"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginFragmentLoginButton"
-                    android:onClick="@{() -> vm.login()}"
                     style="@style/wideBlueButton"
+                    android:onClick="@{() -> vm.login()}"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/login_fragment_login_button_string"
+                    android:layout_gravity="center"
                     app:icon="@drawable/ic_baseline_login_24"
-                    app:iconGravity="textStart"
-                    android:layout_gravity="center" />
+                    app:iconGravity="textStart" />
+
+                <TextView
+                    android:text="BlaBla"
+                    android:visibility="@{vm.errorMessage == LoginErrorMessEnum.WRONG_LOGIN_INPUT ? View.VISIBLE : View.GONE}"
+                    android:textColor="@color/red"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
 
                 <TextView
                     android:id="@+id/loginFragmentForgotPasswortTextView"

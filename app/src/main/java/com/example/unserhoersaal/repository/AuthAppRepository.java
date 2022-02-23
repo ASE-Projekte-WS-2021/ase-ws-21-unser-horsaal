@@ -1,8 +1,11 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
+
+import com.example.unserhoersaal.enums.LoginErrorMessEnum;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -19,6 +22,7 @@ public class AuthAppRepository {
   private FirebaseUser user = null;
 
   private MutableLiveData<FirebaseUser> userLiveData = new MutableLiveData<>();
+  public MutableLiveData<LoginErrorMessEnum> errorMessage = new MutableLiveData<>();
 
   /** Gives back an Instance of AuthAppRepository. */
   public static AuthAppRepository getInstance() {
@@ -52,6 +56,8 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
+              } else {
+                this.errorMessage.setValue(LoginErrorMessEnum.WRONG_LOGIN_INPUT);
               }
             });
   }

@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -61,26 +63,35 @@ public class LoginViewModel extends ViewModel {
     String email = this.user.getValue().getEmail();
     String password = this.password.getValue();
 
-    if (email == null || email.equals("")) {
-      this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY);
-
-      if (Validation.emptyEmail(email)) {
-        //TODO: change ENUM livedata to email may not be empty -> view get changes by observing
-        System.out.println(1);
-      } else if (Validation.emptyPassword(password)) {
-        //TODO: change ENUM livedata to password may not be empty -> view get changes by observing
-        System.out.println(2);
-      } else if (!Validation.emailHasPattern(email)) {
-        //TODO: email does not match pattern
-        System.out.println(3);
-      } else if (!Validation.passwordHasPattern(password)) {
-        //TODO: password does not match pattern
-        System.out.println(4);
-      } else {
-        System.out.println(5);
+    // login-error-case 1: email and password inputs are empty
+    if(Validation.emptyEmail(email) && Validation.emptyPassword(password)) {
+      this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY);
+    // login-error-case 2: email and password pattern are wrong
+    } else if(!Validation.emailHasPattern(email) && !Validation.passwordHasPattern(password)) {
+        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG);
+    // login-error-case 3: email is empty and password pattern is wrong
+    } else if((Validation.emptyEmail(email)) && (!Validation.emptyPassword(password)) &&
+              (!Validation.passwordHasPattern(password))) {
+        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG);
+    // login-error-case 4: password is empty and email pattern is wrong
+    } else if(!Validation.emailHasPattern(email) && Validation.emptyPassword(password)) {
+        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY);
+    // login-error-case 5: email is empty
+    } else if (Validation.emptyEmail(email)) {
+        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY);
+    // login-error-case 6: password is empty
+    } else if(Validation.emptyPassword(password)) {
+        this.errorMessage.setValue(LoginErrorMessEnum.PASSWORD_EMPTY);
+    // login-error-case 7: email pattern is wrong
+    } else if (!Validation.emailHasPattern(email)) {
+        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_WRONG_PATTERN);
+    // login-error-case 8: password pattern is wrong
+    } else if(!Validation.passwordHasPattern(password)) {
+        this.errorMessage.setValue(LoginErrorMessEnum.PASSWORD_WRONG_PATTERN);
+    } else {
+    // login success: email and password aren´t empty and the pattern is correct
+        this.errorMessage.setValue(LoginErrorMessEnum.NONE);
         this.authAppRepository.login(email, password);
-      }
     }
-
-  }
+}
 }
