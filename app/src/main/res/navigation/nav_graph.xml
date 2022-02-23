@@ -37,11 +37,6 @@
         android:label="fragment_enter_course"
         tools:layout="@layout/fragment_enter_course" >
         <action
-            android:id="@+id/action_enterCourseFragment_to_currentCourseFragment"
-            app:destination="@id/currentCourseFragment"
-            app:popUpTo="@id/enterCourseFragment"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_enterCourseFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
             app:popUpTo="@id/coursesFragment"
@@ -55,11 +50,6 @@
         android:name="com.example.unserhoersaal.views.CreateCourseFragment"
         android:label="fragment_create_course"
         tools:layout="@layout/fragment_create_course" >
-        <action
-            android:id="@+id/action_createCourseFragment_to_currentCourseFragment"
-            app:destination="@id/currentCourseFragment"
-            app:popUpTo="@id/createCourseFragment"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_createCourseFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
@@ -102,9 +92,6 @@
         <action
             android:id="@+id/action_coursesFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
-        <action
-            android:id="@+id/action_coursesFragment_to_currentCourseFragment"
-            app:destination="@id/currentCourseFragment" />
         <action
             android:id="@+id/action_coursesFragment_to_courseHistoryFragment"
             app:destination="@id/courseHistoryFragment" />
