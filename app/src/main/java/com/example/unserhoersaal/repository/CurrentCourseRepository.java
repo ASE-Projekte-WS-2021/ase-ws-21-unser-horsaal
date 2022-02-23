@@ -27,6 +27,11 @@ public class CurrentCourseRepository {
   private ArrayList<MessageModel> messagesList = new ArrayList<MessageModel>();
   private MutableLiveData<List<MessageModel>> messages = new MutableLiveData<>();
   private MutableLiveData<String> threadId = new MutableLiveData<>();
+  private ValueEventListener listener;
+
+  public CurrentCourseRepository() {
+    initListener();
+  }
 
   /** Generates a unique instance of CurrentCourseRepository. */
   public static CurrentCourseRepository getInstance() {
@@ -55,7 +60,43 @@ public class CurrentCourseRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_THREADS).child(this.threadId.getValue())
             .child(Config.CHILD_MESSAGES);
-    query.addValueEventListener(new ValueEventListener() {
+    query.addValueEventListener(this.listener);
+  }
+
+  /** This method saves a message in the data base. */
+  public void sendMessage(MessageModel message) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    String uid = firebaseAuth.getCurrentUser().getUid();
+
+    message.setCreatorId(uid);
+    message.setCreationTime(System.currentTimeMillis());
+    String messageId = reference.getRoot().push().getKey();
+    reference.child(Config.CHILD_MESSAGES).child(messageId).setValue(message);
+    message.setKey(messageId);
+    this.addMessageToThread(threadId.getValue(), messageId);
+  }
+
+  public void addMessageToThread(String threadId, String messageId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_THREADS)
+            .child(threadId).child(Config.CHILD_MESSAGES).child(messageId).setValue(Boolean.TRUE);
+  }
+
+  public void setThreadId(String threadId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    if (this.threadId.getValue() != null) {
+      reference.child(Config.CHILD_THREADS).child(this.threadId.getValue())
+              .child(Config.CHILD_MESSAGES).removeEventListener(this.listener);
+    }
+    reference.child(Config.CHILD_THREADS).child(threadId)
+            .child(Config.CHILD_MESSAGES).addValueEventListener(this.listener);
+    this.threadId.postValue(threadId);
+  }
+
+  public void initListener() {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         HashSet<String> messageIds = new HashSet<>();
@@ -87,39 +128,6 @@ public class CurrentCourseRepository {
       public void onCancelled(@NonNull DatabaseError error) {
         Log.d(TAG, "onCancelled: " + error.getMessage());
       }
-    });
-  }
-
-  /** This method saves a message in the data base. */
-  public void sendMessage(MessageModel message) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    String uid = firebaseAuth.getCurrentUser().getUid();
-
-    message.setCreatorId(uid);
-    message.setCreationTime(System.currentTimeMillis());
-    String messageId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_MESSAGES).child(messageId).setValue(message);
-    message.setKey(messageId);
-    this.addMessageToThread(threadId.getValue(), messageId);
-
-    /*DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-    Long time = System.currentTimeMillis();
-    MessageModel messageModel = new MessageModel(messageText, time);
-    databaseReference.child(Config.CHILD_COURSES)
-            .child(Objects.requireNonNull(this.threadId.getValue()))
-            .child(Config.CHILD_MESSAGES).push().setValue(messageModel);
-
-     */
-  }
-
-  public void addMessageToThread(String threadId, String messageId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_THREADS)
-            .child(threadId).child(Config.CHILD_MESSAGES).child(messageId).setValue(Boolean.TRUE);
-  }
-
-  public void setThreadId(String threadId) {
-    this.threadId.postValue(threadId);
+    };
   }
 }
