@@ -11,8 +11,8 @@ public class EnterCourseViewModel extends ViewModel {
   private static final String TAG = "EnterCourseViewModel";
 
   private EnterCourseRepository enterCourseRepository;
-
   private MutableLiveData<String> courseId;
+  public MutableLiveData<String> enteredCourseId;
 
   /** Initialize the EnterCourseViewModel. */
   public void init() {
@@ -21,13 +21,15 @@ public class EnterCourseViewModel extends ViewModel {
     }
     this.enterCourseRepository = EnterCourseRepository.getInstance();
     this.courseId = this.enterCourseRepository.getCourseId();
+    this.enteredCourseId = new MutableLiveData<>();
   }
 
   public LiveData<String> getCourseId() {
     return this.courseId;
   }
 
-  public void checkCode(String id) {
+  public void checkCode() {
+    String id = enteredCourseId.getValue();
     this.enterCourseRepository.checkCode(id);
   }
 
