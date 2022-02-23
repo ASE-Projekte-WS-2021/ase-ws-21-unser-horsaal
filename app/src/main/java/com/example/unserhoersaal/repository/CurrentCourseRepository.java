@@ -43,9 +43,9 @@ public class CurrentCourseRepository {
 
   /** This method provides all messages of a course. */
   public MutableLiveData<List<MessageModel>> getMessages() {
-    if (this.messagesList.size() == 0) {
+    /*if (this.messagesList.size() == 0) {
       this.loadMessages();
-    }
+    }*/
 
     this.messages.setValue(this.messagesList);
     return this.messages;

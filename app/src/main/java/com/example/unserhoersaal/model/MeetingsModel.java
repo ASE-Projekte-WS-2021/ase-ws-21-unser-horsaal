@@ -8,7 +8,7 @@ public class MeetingsModel {
   private String creatorId;
   private String description;
   private Long eventTime;
-  private HashMap<String, Boolean> threads;
+  private HashMap<String, Boolean> threads = new HashMap<>();
   private String title;
   private String key;
 
