@@ -79,7 +79,15 @@
         android:id="@+id/currentCourseFragment"
         android:name="com.example.unserhoersaal.views.CurrentCourseFragment"
         android:label="fragment_current_course"
-        tools:layout="@layout/fragment_current_course" />
+        tools:layout="@layout/fragment_current_course" >
+        <action
+            android:id="@+id/action_currentCourseFragment_to_courseMeetingFragment"
+            app:destination="@id/courseMeetingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.unserhoersaal.views.ProfileFragment"
@@ -195,6 +203,13 @@
         android:label="fragment_course_meeting"
         tools:layout="@layout/fragment_course_meeting">
         <action
+            android:id="@+id/action_courseMeetingFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
             android:id="@+id/action_courseMeetingFragment_to_courseHistoryFragment"
             app:destination="@id/courseHistoryFragment"
             app:enterAnim="@anim/slide_in_left"
@@ -210,6 +225,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     </fragment>
     <fragment
         android:id="@+id/editProfileNameFragment"
