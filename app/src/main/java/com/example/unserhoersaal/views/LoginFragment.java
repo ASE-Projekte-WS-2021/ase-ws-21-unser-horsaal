@@ -15,7 +15,6 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 import com.example.unserhoersaal.enums.LoginErrorMessEnum;
-import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 
 /**
