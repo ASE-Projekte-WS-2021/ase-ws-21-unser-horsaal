@@ -2,7 +2,6 @@ package com.example.unserhoersaal.repository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,12 +11,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.nio.channels.MulticastChannel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+/** Repository for the CourseMeetingViewModel. */
 public class CourseMeetingRepository {
 
   private static final String TAG = "CourseMeetingRepository";
@@ -34,6 +32,7 @@ public class CourseMeetingRepository {
     initListener();
   }
 
+  /** Generate an instance of the class. */
   public static CourseMeetingRepository getInstance() {
     if (instance == null) {
       instance = new CourseMeetingRepository();
@@ -41,6 +40,7 @@ public class CourseMeetingRepository {
     return instance;
   }
 
+  /** Give back all threads of the Meeting. */
   public MutableLiveData<List<ThreadModel>> getThreads() {
     /*if (this.threadModelList.size() == 0) {
       loadThreads();
@@ -58,6 +58,7 @@ public class CourseMeetingRepository {
     return this.threadModelMutableLiveData;
   }
 
+  /** Set the id of the current meeting. */
   public void setMeetingId(String meetingId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.meetingId.getValue() != null) {
@@ -69,6 +70,7 @@ public class CourseMeetingRepository {
     this.meetingId.postValue(meetingId);
   }
 
+  /** Loads all threads of the current meeting from the database. */
   public void loadThreads() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_MEETINGS).child(this.meetingId.getValue())
@@ -76,6 +78,7 @@ public class CourseMeetingRepository {
     query.addValueEventListener(this.listener);
   }
 
+  /** Creates a new threat in the meeting. */
   public void createThread(ThreadModel threadModel) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -90,13 +93,15 @@ public class CourseMeetingRepository {
     threadModelMutableLiveData.postValue(threadModel);
   }
 
+  /** Adds a new thread to the current meeting in the database. */
   public void addThreadToMeeting(String meeting, String thread) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     reference.child(Config.CHILD_MEETINGS).child(meeting).child(Config.CHILD_THREADS).child(thread)
             .setValue(Boolean.TRUE);
   }
 
-  public void initListener(){
+  /** Initialise the listener for the database access. */
+  public void initListener() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     listener = new ValueEventListener() {
       @Override
@@ -107,8 +112,8 @@ public class CourseMeetingRepository {
           threadIds.add(snapshot.getKey());
         }
         for (String key : threadIds) {
-          reference.child(Config.CHILD_THREADS).child(key).addListenerForSingleValueEvent(
-                  new ValueEventListener() {
+          reference.child(Config.CHILD_THREADS).child(key)
+                  .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                       ThreadModel model = snapshot.getValue(ThreadModel.class);

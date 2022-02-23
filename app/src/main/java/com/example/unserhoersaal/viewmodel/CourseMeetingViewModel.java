@@ -1,15 +1,13 @@
 package com.example.unserhoersaal.viewmodel;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
-
 import java.util.List;
 
+/** ViewModel for the CourseMeetingFragment. */
 public class CourseMeetingViewModel extends ViewModel {
 
   private static final String TAG = "CourseMeetingViewModel";
@@ -20,6 +18,7 @@ public class CourseMeetingViewModel extends ViewModel {
   private MutableLiveData<List<ThreadModel>> threads;
   private MutableLiveData<ThreadModel> threadModelMutableLiveData;
 
+  /** Initialise the ViewModel. */
   public void init() {
     if (this.threads != null) {
       return;
@@ -51,6 +50,7 @@ public class CourseMeetingViewModel extends ViewModel {
     this.courseMeetingRepository.setMeetingId(meetingId);
   }
 
+  /** Create a new Thread. */
   public void createThread(String title, String text) {
     ThreadModel threadModel = new ThreadModel();
     threadModel.setTitle(title);

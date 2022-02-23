@@ -2,9 +2,10 @@ package com.example.unserhoersaal.model;
 
 import java.util.HashMap;
 
+/** Model for an user of the app. */
 public class UserModel {
 
-  private HashMap<String, Boolean> courses;
+  private HashMap<String, Boolean> courses = new HashMap<>();
   private String displayName;
   private String email;
   private String institution;
@@ -14,6 +15,7 @@ public class UserModel {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
 
+  /** Getter. */
   public HashMap<String, Boolean> getCourses() {
     return this.courses;
   }
@@ -34,6 +36,7 @@ public class UserModel {
     return this.photoURL;
   }
 
+  /** Setter. */
   public void setCourses(HashMap<String, Boolean> courses) {
     this.courses = courses;
   }

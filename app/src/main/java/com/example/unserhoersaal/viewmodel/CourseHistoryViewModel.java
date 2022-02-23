@@ -3,12 +3,11 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
-
 import java.util.List;
 
+/** ViewModel for the CourseHistoryFragment. */
 public class CourseHistoryViewModel extends ViewModel {
 
   private static final String TAG = "CourseHistoryViewModel";
@@ -19,7 +18,8 @@ public class CourseHistoryViewModel extends ViewModel {
   private MutableLiveData<List<MeetingsModel>> meetings;
   private MutableLiveData<MeetingsModel> meetingsModelMutableLiveData;
 
-  public void init(){
+  /** Initialise the ViewModel. */
+  public void init() {
     if (this.meetings != null) {
       return;
     }
@@ -50,6 +50,7 @@ public class CourseHistoryViewModel extends ViewModel {
     this.courseHistoryRepository.setCourseId(courseId);
   }
 
+  /** Create a new Meeting. */
   public void createMeeting(String title) {
     MeetingsModel meetingsModel = new MeetingsModel();
     meetingsModel.setTitle(title);

@@ -7,16 +7,16 @@ public class CourseModel {
 
   private static final String TAG = "CourseModel";
 
-  private HashMap<String, Boolean> blocked;
+  private HashMap<String, Boolean> blocked = new HashMap<>();
   private String codeMapping;
   private Long creationTime;
   private String creatorId;
   private String description;
   private String groupIcon;
   private String institution;
-  private HashMap<String, Boolean> meetings;
+  private HashMap<String, Boolean> meetings = new HashMap<>();
   private String title;
-  private HashMap<String, Boolean> users;
+  private HashMap<String, Boolean> users = new HashMap<>();
 
   private String key;
 
@@ -24,13 +24,11 @@ public class CourseModel {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
 
+  /** Constructor. */
   public CourseModel(String title, String description, String institution) {
     this.title = title;
     this.description = description;
     this.institution = institution;
-    this.blocked = new HashMap<>();
-    this.meetings = new HashMap<>();
-    this.users = new HashMap<>();
   }
 
   /** Getter. */
@@ -74,7 +72,7 @@ public class CourseModel {
     return this.users;
   }
 
-  public String getKey(){
+  public String getKey() {
     return this.key;
   }
 

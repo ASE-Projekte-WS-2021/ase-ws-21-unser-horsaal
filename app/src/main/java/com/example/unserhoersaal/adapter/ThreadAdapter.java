@@ -4,17 +4,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.ThreadModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/** Adapter for the RecyclerView inCourseMeetingRepository. */
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
 
   private static final String TAG = "ThreadAdapter";
@@ -57,10 +55,12 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     return this.localDataSet.size();
   }
 
+  /** Interface for the click on an item of the adapter. */
   public interface OnNoteListener {
     void onNoteClick(int position);
   }
 
+  /** Viewholder for an thread item. */
   public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView threadTitle;
     private TextView threadText;
@@ -69,6 +69,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     private TextView threadAuthor;
     private OnNoteListener onNoteListener;
 
+    /** Constructor. */
     public ViewHolder(View view, OnNoteListener onNoteListener) {
       super(view);
       this.onNoteListener = onNoteListener;

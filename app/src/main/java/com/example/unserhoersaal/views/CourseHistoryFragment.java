@@ -2,14 +2,11 @@ package com.example.unserhoersaal.views;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -134,7 +131,7 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
     });
   }
   
-  private void onCreateMeetingCreateButtonClicked(){
+  private void onCreateMeetingCreateButtonClicked() {
     String title = this.createMeetingTitle.getText().toString();
     if (title.length() > 0) {
       this.courseHistoryViewModel.createMeeting(title);

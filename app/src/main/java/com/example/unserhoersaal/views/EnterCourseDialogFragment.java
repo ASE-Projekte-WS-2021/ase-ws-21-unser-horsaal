@@ -7,18 +7,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.android.material.button.MaterialButton;
 
@@ -58,6 +52,7 @@ public class EnterCourseDialogFragment extends DialogFragment {
     return builder;
   }
 
+  /** Initialize all ViewModels for the fragment. */
   public void initViewModel() {
     this.enterCourseViewModel = new ViewModelProvider(requireActivity())
             .get(EnterCourseViewModel.class);
@@ -83,12 +78,12 @@ public class EnterCourseDialogFragment extends DialogFragment {
     this.courseCreator.setText(course.getCreatorId());
     this.courseInstitution.setText(course.getInstitution());
     //TODO ALTERNATIVE FOR TOO LONG STRING
-    String upToNCharacters = course.getDescription()
+    String maxCharacterString = course.getDescription()
             .substring(0, Math.min(course.getDescription().length(), 200));
-    this.courseDescription.setText(upToNCharacters);
+    this.courseDescription.setText(maxCharacterString);
   }
 
-  public void enter(){
+  public void enter() {
     this.enterCourseViewModel.enterCourse();
     dismiss();
   }

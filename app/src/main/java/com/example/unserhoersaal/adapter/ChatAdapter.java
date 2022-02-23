@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.MessageModel;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
