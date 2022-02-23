@@ -42,7 +42,9 @@ public class CurrentCourseViewModel extends ViewModel {
   }
 
   public void sendMessage(String messageText) {
-    this.currentCourseRepository.sendMessage(messageText);
+    MessageModel messageModel = new MessageModel();
+    messageModel.setText(messageText);
+    this.currentCourseRepository.sendMessage(messageModel);
   }
 
   public void setThreadId(String threadId) {

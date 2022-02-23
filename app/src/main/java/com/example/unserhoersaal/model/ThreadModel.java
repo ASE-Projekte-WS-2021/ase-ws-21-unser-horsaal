@@ -59,11 +59,11 @@ public class ThreadModel {
     this.messages = messages;
   }
 
-  public String getTextThread() {
+  public String getText() {
     return this.text;
   }
 
-  public void setTextThread(String textThread) {
+  public void setText(String textThread) {
     this.text = textThread;
   }
 

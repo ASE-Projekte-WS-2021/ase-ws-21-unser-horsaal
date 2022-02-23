@@ -43,7 +43,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
             && viewHolder.getThreadTime() != null
             && viewHolder.getThreadAuthor() != null) {
       viewHolder.getThreadTitle().setText(this.localDataSet.get(position).getTitle());
-      viewHolder.getThreadText().setText(this.localDataSet.get(position).getTextThread());
+      viewHolder.getThreadText().setText(this.localDataSet.get(position).getText());
       viewHolder.getThreadLikes()
               .setText(Integer.toString(this.localDataSet.get(position).getLikes()));
       viewHolder.getThreadTime()
