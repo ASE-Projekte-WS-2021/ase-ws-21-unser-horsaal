@@ -138,7 +138,6 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     String id = this.coursesViewModel.getUserCourses().getValue().get(position).getKey();
     this.courseHistoryViewModel.setCourseId(id);
     this.navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
-    Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
   }
 
   private void setupToolbar() {

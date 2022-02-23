@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
-    viewHolder.getMessage().setText("Todo rename child in firebase");//this.localDataSet.get(position).getTextMessage());
+    viewHolder.getMessage().setText(this.localDataSet.get(position).getText());
+    Log.d(TAG, "onBindViewHolder: " + this.localDataSet.get(position).getKey());
     viewHolder.getDate().setText(calculateDate(this.localDataSet.get(position).getCreationTime()));
   }
 

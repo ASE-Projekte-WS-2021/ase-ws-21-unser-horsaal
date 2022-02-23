@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.MessageModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -90,8 +91,18 @@ public class CurrentCourseRepository {
   }
 
   /** This method saves a message in the data base. */
-  public void sendMessage(String messageText) {
-    //todo correct path
+  public void sendMessage(MessageModel message) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    String uid = firebaseAuth.getCurrentUser().getUid();
+
+    message.setCreatorId(uid);
+    message.setCreationTime(System.currentTimeMillis());
+    String messageId = reference.getRoot().push().getKey();
+    reference.child(Config.CHILD_MESSAGES).child(messageId).setValue(message);
+    message.setKey(messageId);
+    this.addMessageToThread(threadId.getValue(), messageId);
+
     /*DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     Long time = System.currentTimeMillis();
     MessageModel messageModel = new MessageModel(messageText, time);
@@ -100,6 +111,12 @@ public class CurrentCourseRepository {
             .child(Config.CHILD_MESSAGES).push().setValue(messageModel);
 
      */
+  }
+
+  public void addMessageToThread(String threadId, String messageId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_THREADS)
+            .child(threadId).child(Config.CHILD_MESSAGES).child(messageId).setValue(Boolean.TRUE);
   }
 
   public void setThreadId(String threadId) {

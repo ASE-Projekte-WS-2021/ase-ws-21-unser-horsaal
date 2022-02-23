@@ -41,11 +41,11 @@ public class MessageModel {
     this.likes = likes;
   }
 
-  public String getTextMessage() {
+  public String getText() {
     return this.text;
   }
 
-  public void setTextMessage(String textMessage) {
+  public void setText(String textMessage) {
     this.text = textMessage;
   }
 
