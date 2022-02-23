@@ -222,7 +222,7 @@
                 android:id="@+id/courseDescriptionFragmentUnsubscribeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_span="3"
+                android:layout_span="4"
                 android:text="@string/course_description_unsubscribe_from_course"
                 android:textAlignment="center"
                 android:textColor="@color/red"
