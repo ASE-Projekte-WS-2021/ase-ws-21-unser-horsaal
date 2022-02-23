@@ -26,6 +26,11 @@ public class CourseMeetingRepository {
   private ArrayList<ThreadModel> threadModelList = new ArrayList<>();
   private MutableLiveData<List<ThreadModel>> threads = new MutableLiveData<>();
   private MutableLiveData<String> meetingId = new MutableLiveData<>();
+  private ValueEventListener listener;
+
+  public CourseMeetingRepository() {
+    initListener();
+  }
 
   public static CourseMeetingRepository getInstance() {
     if (instance == null) {
@@ -48,6 +53,13 @@ public class CourseMeetingRepository {
   }
 
   public void setMeetingId(String meetingId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    if (this.meetingId.getValue() != null) {
+      reference.child(Config.CHILD_MEETINGS).child(this.meetingId.getValue())
+              .child(Config.CHILD_THREADS).removeEventListener(this.listener);
+    }
+    reference.child(Config.CHILD_MEETINGS).child(meetingId)
+            .child(Config.CHILD_THREADS).addValueEventListener(this.listener);
     this.meetingId.postValue(meetingId);
   }
 
@@ -55,7 +67,12 @@ public class CourseMeetingRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_MEETINGS).child(this.meetingId.getValue())
             .child(Config.CHILD_THREADS);
-    query.addValueEventListener(new ValueEventListener() {
+    query.addValueEventListener(this.listener);
+  }
+
+  public void initListener(){
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         HashSet<String> threadIds = new HashSet<>();
@@ -87,6 +104,6 @@ public class CourseMeetingRepository {
       public void onCancelled(@NonNull DatabaseError error) {
 
       }
-    });
+    };
   }
 }
