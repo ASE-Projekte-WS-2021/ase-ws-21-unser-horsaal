@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
@@ -69,13 +70,17 @@ public class EnterCourseFragment extends Fragment {
             .get(CourseHistoryViewModel.class);
     this.enterCourseViewModel.init();
     this.courseHistoryViewModel.init();
-    this.enterCourseViewModel.getCourseId()
-            .observe(getViewLifecycleOwner(), new Observer<String>() {
+    this.enterCourseViewModel.getCourse()
+            .observe(getViewLifecycleOwner(), new Observer<CourseModel>() {
               @Override
-              public void onChanged(String id) {
-                openNewCourse(id);
+              public void onChanged(CourseModel model) {
+                //openNewCourse(id);
+                if (model != null) {
+                  showDialog();
+                }
               }
             });
+    this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), this::openNewCourse);
   }
 
   private void initUi(View view) {
