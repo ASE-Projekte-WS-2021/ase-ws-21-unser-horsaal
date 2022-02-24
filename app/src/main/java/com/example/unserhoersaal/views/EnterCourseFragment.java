@@ -27,7 +27,6 @@ public class EnterCourseFragment extends Fragment {
 
   private MaterialToolbar toolbar;
   private EnterCourseViewModel enterCourseViewModel;
-  private CurrentCourseViewModel currentCourseViewModel;
   private CourseHistoryViewModel courseHistoryViewModel;
   private NavController navController;
   private FragmentEnterCourseBinding binding;
@@ -64,13 +63,10 @@ public class EnterCourseFragment extends Fragment {
   private void initViewModel() {
     this.enterCourseViewModel = new ViewModelProvider(requireActivity())
             .get(EnterCourseViewModel.class);
-    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CurrentCourseViewModel.class);
     this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
             .get(CourseHistoryViewModel.class);
     this.enterCourseViewModel.init();
     this.courseHistoryViewModel.init();
-    this.currentCourseViewModel.init();
     this.enterCourseViewModel.getCourse()
             .observe(getViewLifecycleOwner(), new Observer<CourseModel>() {
               @Override
