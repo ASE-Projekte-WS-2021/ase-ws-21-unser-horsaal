@@ -31,12 +31,14 @@ public class EnterCourseViewModel extends ViewModel {
     return this.courseModel;
   }
 
-  public LiveData<CourseModel> getCourse() {
-    return this.courseModel;
-  }
-
   public LiveData<String> getCourseId() {
     return this.courseId;
+  }
+
+  public void resetEnterCourseId() {
+    this.enteredCourseId.setValue(null);
+    this.courseModel.setValue(null);
+    this.courseId.setValue(null);
   }
 
   public void checkCode() {
@@ -45,7 +47,10 @@ public class EnterCourseViewModel extends ViewModel {
   }
 
   public void enterCourse() {
-    this.enterCourseRepository.isUserInCourse(courseModel.getValue().getKey());
+    if (courseModel.getValue() != null) {
+      this.enterCourseRepository.isUserInCourse(courseModel.getValue().getKey());
+    }
+    //TODO: else error?
   }
 
 }
