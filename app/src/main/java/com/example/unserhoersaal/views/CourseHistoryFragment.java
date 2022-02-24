@@ -2,14 +2,11 @@ package com.example.unserhoersaal.views;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ScrollView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,6 +20,7 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.MeetingAdapter;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
+import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,6 +43,7 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
   private MeetingAdapter meetingAdapter;
 
   private CourseHistoryViewModel courseHistoryViewModel;
+  private CourseMeetingViewModel courseMeetingViewModel;
 
   public CourseHistoryFragment() {
     // Required empty public constructor
@@ -73,11 +72,26 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
   private void initViewModel() {
     this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
             .get(CourseHistoryViewModel.class);
-    courseHistoryViewModel.init();
-    courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
-      Log.d(TAG, "initViewModel: " + meetingsModels.size());
+    this.courseMeetingViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseMeetingViewModel.class);
+    this.courseHistoryViewModel.init();
+    this.courseMeetingViewModel.init();
+    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
       meetingAdapter.notifyDataSetChanged();
     });
+    this.courseHistoryViewModel.getMeetingsModel()
+            .observe(getViewLifecycleOwner(), meetingsModel -> {
+              if (meetingsModel != null) {
+                KeyboardUtil.hideKeyboard(getActivity());
+                createMeetingContainer.setVisibility(View.GONE);
+                floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
+                floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources()
+                        .getColor(R.color.orange, null)));
+                createMeetingTitle.getText().clear();
+                createMeetingDate.getText().clear();
+                createMeetingTime.getText().clear();
+              }
+            });
   }
 
   private void initUi(View view) {
@@ -94,6 +108,9 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
     createMeetingTime = view.findViewById(R.id.courseHistoryFragmentCreateMeetingTimeEditText);
     createMeetingCreateButton = view.findViewById(R.id
             .courseHistoryFragmentCreateMeetingCreateButton);
+    createMeetingCreateButton.setOnClickListener(v -> {
+      onCreateMeetingCreateButtonClicked();
+    });
 
     this.meetingAdapter =
             new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue(), this);
@@ -112,6 +129,13 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
     toolbar.setNavigationOnClickListener(v -> {
       navController.navigate(R.id.action_courseHistoryFragment_to_coursesFragment);
     });
+  }
+  
+  private void onCreateMeetingCreateButtonClicked() {
+    String title = this.createMeetingTitle.getText().toString();
+    if (title.length() > 0) {
+      this.courseHistoryViewModel.createMeeting(title);
+    }
   }
 
   private void onFloatingActionButtonClicked() {
@@ -135,6 +159,7 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
   @Override
   public void onNoteClick(int position) {
     String id = this.courseHistoryViewModel.getMeetings().getValue().get(position).getKey();
-    Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
+    this.courseMeetingViewModel.setMeetingId(id);
+    navController.navigate(R.id.action_courseHistoryFragment_to_courseMeetingFragment);
   }
 }

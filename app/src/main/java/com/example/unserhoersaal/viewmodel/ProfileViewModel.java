@@ -8,7 +8,7 @@ import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 
-/** Class Description */
+/** Class Description. */
 public class ProfileViewModel extends ViewModel {
 
   private static final String TAG = "LoginRegisterViewModel";
@@ -30,6 +30,7 @@ public class ProfileViewModel extends ViewModel {
     this.resetDatabindingData();
   }
 
+  /** Give back the user data. */
   public LiveData<FirebaseUser> getUserLiveData() {
     //remove user data from mutablelivedata after successful firebase interaction
     //TODO: is this best practice?

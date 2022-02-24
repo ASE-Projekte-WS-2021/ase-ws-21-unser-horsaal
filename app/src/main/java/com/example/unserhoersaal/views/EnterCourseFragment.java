@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,9 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
-import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -69,13 +67,17 @@ public class EnterCourseFragment extends Fragment {
             .get(CourseHistoryViewModel.class);
     this.enterCourseViewModel.init();
     this.courseHistoryViewModel.init();
-    this.enterCourseViewModel.getCourseId()
-            .observe(getViewLifecycleOwner(), new Observer<String>() {
+    this.enterCourseViewModel.getCourse()
+            .observe(getViewLifecycleOwner(), new Observer<CourseModel>() {
               @Override
-              public void onChanged(String id) {
-                openNewCourse(id);
+              public void onChanged(CourseModel model) {
+                //openNewCourse(id);
+                if (model != null) {
+                  showDialog();
+                }
               }
             });
+    this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), this::openNewCourse);
   }
 
   private void initUi(View view) {

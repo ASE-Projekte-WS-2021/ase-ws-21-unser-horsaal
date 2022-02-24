@@ -2,17 +2,18 @@ package com.example.unserhoersaal.model;
 
 import java.util.HashMap;
 
+/** Model for a meeting. */
 public class MeetingsModel {
 
   private Long creationTime;
   private String creatorId;
   private String description;
   private Long eventTime;
-  private HashMap<String, Boolean> threads;
+  private HashMap<String, Boolean> threads = new HashMap<>();
   private String title;
   private String key;
 
-  public MeetingsModel(){
+  public MeetingsModel() {
     //needed for Firebase
   }
 

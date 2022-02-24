@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -138,7 +136,6 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
     String id = this.coursesViewModel.getUserCourses().getValue().get(position).getKey();
     this.courseHistoryViewModel.setCourseId(id);
     this.navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
-    Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
   }
 
   private void setupToolbar() {

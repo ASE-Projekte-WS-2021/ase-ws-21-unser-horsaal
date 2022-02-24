@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.model.CourseModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +23,7 @@ public class EnterCourseRepository {
   private DatabaseReference databaseReference;
   private FirebaseAuth firebaseAuth;
 
+  private MutableLiveData<CourseModel> courseModel = new MutableLiveData<>();
   private MutableLiveData<String> courseId = new MutableLiveData<>();
 
   /** Generates an Instance of the EnterCourseRepository. */
@@ -38,6 +40,10 @@ public class EnterCourseRepository {
     this.firebaseAuth = FirebaseAuth.getInstance();
   }
 
+  public MutableLiveData<CourseModel> getCourse() {
+    return this.courseModel;
+  }
+
   /** Gives back the current course id. */
   public MutableLiveData<String> getCourseId() {
     return this.courseId;
@@ -50,7 +56,7 @@ public class EnterCourseRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
-          isUserInCourse((String) dataSnapshot.getValue());
+          loadCourse((String) dataSnapshot.getValue());
         }
         //TODO: Wrong Code
       }
@@ -58,6 +64,25 @@ public class EnterCourseRepository {
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.d(TAG, "onCancelled: " + error.getMessage());
+      }
+    });
+  }
+
+  /** Loads a course by its id from the data base. */
+  public void loadCourse(String courseId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    Query query = reference.child(Config.CHILD_COURSES).child(courseId);
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        CourseModel course = snapshot.getValue(CourseModel.class);
+        course.setKey(snapshot.getKey());
+        courseModel.postValue(course);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
       }
     });
   }

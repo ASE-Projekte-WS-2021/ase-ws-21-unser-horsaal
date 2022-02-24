@@ -34,6 +34,7 @@ public class LoginViewModel extends ViewModel {
     this.resetDatabindingData();
   }
 
+  /** Give Back the current user. */
   public LiveData<FirebaseUser> getUserLiveData() {
     //remove user data from mutablelivedata after successful firebase interaction
     //TODO: is this best practice?
@@ -47,29 +48,28 @@ public class LoginViewModel extends ViewModel {
     this.password.setValue("");
   }
 
+  /** Login the user. */
   public void login() {
-    if (this.user.getValue() == null) return;
+    if (this.user.getValue() == null) {
+      return;
+    }
 
     String email = this.user.getValue().getEmail();
-    String password= this.password.getValue();
+    String password = this.password.getValue();
 
     if (Validation.emptyEmail(email)) {
       //TODO: change ENUM livedata to email may not be empty -> view get changes by observing
       System.out.println(1);
-    }
-    else if (Validation.emptyPassword(password)) {
+    } else if (Validation.emptyPassword(password)) {
       //TODO: change ENUM livedata to password may not be empty -> view get changes by observing
       System.out.println(2);
-    }
-    else if (!Validation.emailHasPattern(email)) {
+    } else if (!Validation.emailHasPattern(email)) {
       //TODO: email does not match pattern
       System.out.println(3);
-    }
-    else if (!Validation.passwordHasPattern(password)) {
+    } else if (!Validation.passwordHasPattern(password)) {
       //TODO: password does not match pattern
       System.out.println(4);
-    }
-    else {
+    } else {
       System.out.println(5);
       this.authAppRepository.login(email, password);
     }
