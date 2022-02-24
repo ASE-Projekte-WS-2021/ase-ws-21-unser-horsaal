@@ -49,7 +49,9 @@ public class AuthAppRepository {
     return this.userLiveData;
   }
 
-  /** This method is logging in the user. */
+  /** This method is logging in the user.
+   * if loggin process fails show error message
+   */
   public void login(String email, String password, MutableLiveData<LoginErrorMessEnum> errorMessage) {
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {

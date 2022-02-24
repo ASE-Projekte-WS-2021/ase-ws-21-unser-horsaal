@@ -57,6 +57,12 @@ public class LoginViewModel extends ViewModel {
     this.password.setValue("");
   }
 
+  /** login process
+   *
+   * check email and password input
+   * show error message if a input is empty or the pattern is wrong
+   * if not -> log in -> if login info is wrong -> show error message
+   */
   public void login() {
     if (this.user.getValue() == null) return;
 
@@ -67,13 +73,13 @@ public class LoginViewModel extends ViewModel {
     if(Validation.emptyEmail(email) && Validation.emptyPassword(password)) {
       this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY);
     // login-error-case 2: email and password pattern are wrong
-    } else if(!Validation.emailHasPattern(email) && !Validation.passwordHasPattern(password)) {
+    } else if(!Validation.emptyEmail(email) && !Validation.emailHasPattern(email) && !Validation.emptyPassword(password) && !Validation.passwordHasPattern(password)) {
         this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG);
     // login-error-case 3: email is empty and password pattern is wrong
     } else if(!Validation.passwordHasPattern(password) && Validation.emptyEmail(email)) {
         this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG);
     // login-error-case 4: password is empty and email pattern is wrong
-    } else if(!Validation.emailHasPattern(email) && Validation.emptyPassword(password)) {
+    } else if(!Validation.emptyEmail(email) && !Validation.emailHasPattern(email) && Validation.emptyPassword(password)) {
         this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY);
     // login-error-case 5: email is empty
     } else if (Validation.emptyEmail(email)) {
@@ -88,7 +94,7 @@ public class LoginViewModel extends ViewModel {
     } else if(!Validation.passwordHasPattern(password)) {
         this.errorMessage.setValue(LoginErrorMessEnum.PASSWORD_WRONG_PATTERN);
     } else {
-    // login success: email and password aren´t empty and the pattern is correct
+    // login-input success: email and password aren´t empty and the pattern is correct
         this.errorMessage.setValue(LoginErrorMessEnum.NONE);
         this.authAppRepository.login(email, password, errorMessage);
     }
