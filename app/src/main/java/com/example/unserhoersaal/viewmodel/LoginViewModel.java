@@ -70,8 +70,7 @@ public class LoginViewModel extends ViewModel {
     } else if(!Validation.emailHasPattern(email) && !Validation.passwordHasPattern(password)) {
         this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG);
     // login-error-case 3: email is empty and password pattern is wrong
-    } else if((Validation.emptyEmail(email)) && (!Validation.emptyPassword(password)) &&
-              (!Validation.passwordHasPattern(password))) {
+    } else if(!Validation.passwordHasPattern(password) && Validation.emptyEmail(email)) {
         this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG);
     // login-error-case 4: password is empty and email pattern is wrong
     } else if(!Validation.emailHasPattern(email) && Validation.emptyPassword(password)) {
@@ -91,7 +90,7 @@ public class LoginViewModel extends ViewModel {
     } else {
     // login success: email and password aren´t empty and the pattern is correct
         this.errorMessage.setValue(LoginErrorMessEnum.NONE);
-        this.authAppRepository.login(email, password);
+        this.authAppRepository.login(email, password, errorMessage);
     }
 }
 }

@@ -22,7 +22,6 @@ public class AuthAppRepository {
   private FirebaseUser user = null;
 
   private MutableLiveData<FirebaseUser> userLiveData = new MutableLiveData<>();
-  public MutableLiveData<LoginErrorMessEnum> errorMessage = new MutableLiveData<>();
 
   /** Gives back an Instance of AuthAppRepository. */
   public static AuthAppRepository getInstance() {
@@ -51,13 +50,14 @@ public class AuthAppRepository {
   }
 
   /** This method is logging in the user. */
-  public void login(String email, String password) {
+  public void login(String email, String password, MutableLiveData<LoginErrorMessEnum> errorMessage) {
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
+                errorMessage.setValue(LoginErrorMessEnum.NONE);
               } else {
-                this.errorMessage.setValue(LoginErrorMessEnum.WRONG_LOGIN_INPUT);
+                errorMessage.setValue(LoginErrorMessEnum.WRONG_LOGIN_INPUT);
               }
             });
   }

@@ -10,6 +10,7 @@
     <string name="login_fragment_registration_string">Registrieren</string>
     <string name="login_fragment_no_account">Noch kein Account?</string>
     <string name="login_fragment_title_string">Unser Hörsaal</string>
+    <string name="login_fragment_login_failure">Eingegebene Email oder Passwort ist falsch</string>
     <string name="registration_fragment_password_hint">Passwort</string>
     <string name="registration_fragment_repeat_password_hint">Passwort wiederholen</string>
     <string name="registration_fragment_user_email_hint">Email</string>
