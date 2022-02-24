@@ -204,7 +204,11 @@
                         app:layout_constraintEnd_toStartOf="@+id/profileFragmentPassword"
                         app:layout_constraintTop_toTopOf="@+id/profileFragmentPassword"
                         android:layout_gravity="center"/>
-              </LinearLayout>
+                </LinearLayout>
+
+            </TableRow>
+
+        </TableLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/profileFragmentFab"

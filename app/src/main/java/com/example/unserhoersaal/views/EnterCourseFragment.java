@@ -68,16 +68,17 @@ public class EnterCourseFragment extends Fragment {
     this.enterCourseViewModel.init();
     this.courseHistoryViewModel.init();
     this.enterCourseViewModel.getCourse()
-            .observe(getViewLifecycleOwner(), new Observer<CourseModel>() {
-              @Override
-              public void onChanged(CourseModel model) {
-                //openNewCourse(id);
-                if (model != null) {
-                  showDialog();
-                }
+            .observe(getViewLifecycleOwner(), model -> {
+              //openNewCourse(id);
+              if (model != null) {
+                showDialog();
               }
             });
-    this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), this::openNewCourse);
+    this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id -> {
+      if (id != null) {
+        openNewCourse(id);
+      }
+    });
   }
 
   private void connectBinding() {
@@ -89,6 +90,7 @@ public class EnterCourseFragment extends Fragment {
   public void openNewCourse(String id) {
     KeyboardUtil.hideKeyboard(getActivity());
     this.courseHistoryViewModel.setCourseId(id);
+    this.enterCourseViewModel.resetEnterCourseId();
     this.navController.navigate(R.id.action_enterCourseFragment_to_courseHistoryFragment);
   }
 
