@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.repository;
 
+import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -19,9 +20,7 @@ public class ProfileRepository {
   private static final String TAG = "ProfileRepo";
 
   private static ProfileRepository instance;
-
   private UserModel userModel;
-
   private MutableLiveData<UserModel> user = new MutableLiveData<>();
 
   public ProfileRepository() {
@@ -60,5 +59,21 @@ public class ProfileRepository {
         Log.d(TAG, "onCancelled: " + error.getMessage());
       }
     });
+  }
+
+  public void changePhotoURL(Uri file) {
+    //TODO: https://firebase.google.com/docs/storage/android/upload-files#upload_from_a_local_file
+    //TODO: upload local file to firebase storage -> save URL to UserModel -> update UserModel -> update liveData -> BindingAdapter loads picture from storage (caching?)
+  }
+
+  public void changeProfileData(UserModel profileChanges) {
+    //TODO: save updated profile data to database and inform user about success -> return to profile fragment
+    //TODO: Things to change: displayName, institution, email
+    //duplicate data saved to firebase auth!!!
+  }
+
+  public void changeAuthData(UserModel profileChanges, String password) {
+    //TODO: change the password of logged in user; separated
+    //TODO: Things to change: email, displayName, password
   }
 }
