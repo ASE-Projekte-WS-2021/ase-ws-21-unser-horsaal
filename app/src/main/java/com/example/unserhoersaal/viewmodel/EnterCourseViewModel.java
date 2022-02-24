@@ -31,6 +31,10 @@ public class EnterCourseViewModel extends ViewModel {
     return this.courseModel;
   }
 
+  public LiveData<CourseModel> getCourse() {
+    return this.courseModel;
+  }
+
   public LiveData<String> getCourseId() {
     return this.courseId;
   }

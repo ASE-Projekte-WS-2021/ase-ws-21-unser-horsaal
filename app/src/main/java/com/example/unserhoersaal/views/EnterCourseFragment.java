@@ -80,7 +80,6 @@ public class EnterCourseFragment extends Fragment {
     this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), this::openNewCourse);
   }
 
-
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.enterCourseViewModel);
