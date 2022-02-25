@@ -3,10 +3,10 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.CourseDescriptionRepository;
 
+/** ViewModel for the CourseDescriptionFragment. */
 public class CourseDescriptionViewModel extends ViewModel {
 
   private static final String TAG = "courseDescriptionViewModel";
@@ -16,6 +16,7 @@ public class CourseDescriptionViewModel extends ViewModel {
   private MutableLiveData<String> courseId = new MutableLiveData<>();
   private MutableLiveData<CourseModel> courseModel;
 
+  /** Initialize the ViewModel. */
   public void init() {
     if (this.courseModel != null) {
       return;

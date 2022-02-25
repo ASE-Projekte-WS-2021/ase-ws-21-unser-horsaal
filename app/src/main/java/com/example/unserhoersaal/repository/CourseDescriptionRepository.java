@@ -2,7 +2,6 @@ package com.example.unserhoersaal.repository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.google.firebase.database.DataSnapshot;
@@ -11,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/** Repository for the CourseDescriptionViewModel. */
 public class CourseDescriptionRepository {
 
   private static final String TAG = "CourseDescriptionRepository";
@@ -26,6 +26,7 @@ public class CourseDescriptionRepository {
     initListener();
   }
 
+  /** Generates an instance of CourseDescriptionRepository. */
   public static CourseDescriptionRepository getInstance() {
     if (instance == null) {
       instance = new CourseDescriptionRepository();
@@ -42,6 +43,7 @@ public class CourseDescriptionRepository {
   }
 
   //TODO get whole CourseModel from ViewModel
+  /** Sets the current course. */
   public void setCourseId(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.courseId.getValue() != null) {
@@ -52,6 +54,7 @@ public class CourseDescriptionRepository {
     this.courseId.postValue(courseId);
   }
 
+  /** Initializes the listener for the database access. */
   public void initListener() {
     this.listener = new ValueEventListener() {
       @Override

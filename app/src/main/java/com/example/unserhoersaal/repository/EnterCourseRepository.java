@@ -124,8 +124,8 @@ public class EnterCourseRepository {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                           @Override
                           public void onSuccess(Void unused) {
-                    courseId.postValue(id);
-                  }
+                            courseId.postValue(id);
+                          }
                         });
               }
             });
