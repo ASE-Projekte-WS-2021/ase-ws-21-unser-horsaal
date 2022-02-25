@@ -52,14 +52,14 @@ public class AuthAppRepository {
   /** This method is logging in the user.
    * if loggin process fails show error message
    */
-  public void login(String email, String password, MutableLiveData<LoginErrorMessEnum> errorMessage) {
+  public void login(String email, String password, MutableLiveData<LoginErrorMessEnum> errorMessageLogin) {
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
-                errorMessage.setValue(LoginErrorMessEnum.NONE);
+                errorMessageLogin.setValue(LoginErrorMessEnum.NONE);
               } else {
-                errorMessage.setValue(LoginErrorMessEnum.WRONG_LOGIN_INPUT);
+                errorMessageLogin.setValue(LoginErrorMessEnum.WRONG_LOGIN_INPUT);
               }
             });
   }

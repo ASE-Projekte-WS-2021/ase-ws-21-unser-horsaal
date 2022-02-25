@@ -3,6 +3,9 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.unserhoersaal.enums.LoginErrorMessEnum;
+import com.example.unserhoersaal.enums.RegistrationErrorMessEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
@@ -19,6 +22,7 @@ public class RegistrationViewModel extends ViewModel {
   private MutableLiveData<FirebaseUser> userLiveData;
   public MutableLiveData<UserModel> user;
   public MutableLiveData<String> password;
+  public MutableLiveData<RegistrationErrorMessEnum> errorMessageRegistration;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
@@ -27,6 +31,8 @@ public class RegistrationViewModel extends ViewModel {
     }
     this.authAppRepository = AuthAppRepository.getInstance();
     this.userLiveData = this.authAppRepository.getUserLiveData();
+    this.errorMessageRegistration = new MutableLiveData<>();
+    this.errorMessageRegistration.setValue(RegistrationErrorMessEnum.NONE);
 
     //Databinding containers
     this.user = new MutableLiveData<>();

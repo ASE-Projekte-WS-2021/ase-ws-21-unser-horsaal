@@ -23,7 +23,7 @@ public class LoginViewModel extends ViewModel {
   private MutableLiveData<FirebaseUser> userLiveData;
   public MutableLiveData<UserModel> user;
   public MutableLiveData<String> password;
-  public MutableLiveData<LoginErrorMessEnum> errorMessage;
+  public MutableLiveData<LoginErrorMessEnum> errorMessageLogin;
 
 
   /**
@@ -35,8 +35,8 @@ public class LoginViewModel extends ViewModel {
     }
     this.authAppRepository = AuthAppRepository.getInstance();
     this.userLiveData = this.authAppRepository.getUserLiveData();
-    this.errorMessage = new MutableLiveData<>();
-    this.errorMessage.setValue(LoginErrorMessEnum.NONE);
+    this.errorMessageLogin = new MutableLiveData<>();
+    this.errorMessageLogin.setValue(LoginErrorMessEnum.NONE);
 
     //Databinding containers
     this.user = new MutableLiveData<>();
@@ -71,32 +71,32 @@ public class LoginViewModel extends ViewModel {
 
     // login-error-case 1: email and password inputs are empty
     if(Validation.emptyEmail(email) && Validation.emptyPassword(password)) {
-      this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY);
+      this.errorMessageLogin.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY);
     // login-error-case 2: email and password pattern are wrong
     } else if(!Validation.emptyEmail(email) && !Validation.emailHasPattern(email) && !Validation.emptyPassword(password) && !Validation.passwordHasPattern(password)) {
-        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG);
+        this.errorMessageLogin.setValue(LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG);
     // login-error-case 3: email is empty and password pattern is wrong
     } else if(!Validation.passwordHasPattern(password) && Validation.emptyEmail(email)) {
-        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG);
+        this.errorMessageLogin.setValue(LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG);
     // login-error-case 4: password is empty and email pattern is wrong
     } else if(!Validation.emptyEmail(email) && !Validation.emailHasPattern(email) && Validation.emptyPassword(password)) {
-        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY);
+        this.errorMessageLogin.setValue(LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY);
     // login-error-case 5: email is empty
     } else if (Validation.emptyEmail(email)) {
-        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_EMPTY);
+        this.errorMessageLogin.setValue(LoginErrorMessEnum.EMAIL_EMPTY);
     // login-error-case 6: password is empty
     } else if(Validation.emptyPassword(password)) {
-        this.errorMessage.setValue(LoginErrorMessEnum.PASSWORD_EMPTY);
+        this.errorMessageLogin.setValue(LoginErrorMessEnum.PASSWORD_EMPTY);
     // login-error-case 7: email pattern is wrong
     } else if (!Validation.emailHasPattern(email)) {
-        this.errorMessage.setValue(LoginErrorMessEnum.EMAIL_WRONG_PATTERN);
+        this.errorMessageLogin.setValue(LoginErrorMessEnum.EMAIL_WRONG_PATTERN);
     // login-error-case 8: password pattern is wrong
     } else if(!Validation.passwordHasPattern(password)) {
-        this.errorMessage.setValue(LoginErrorMessEnum.PASSWORD_WRONG_PATTERN);
+        this.errorMessageLogin.setValue(LoginErrorMessEnum.PASSWORD_WRONG_PATTERN);
     } else {
     // login-input success: email and password aren´t empty and the pattern is correct
-        this.errorMessage.setValue(LoginErrorMessEnum.NONE);
-        this.authAppRepository.login(email, password, errorMessage);
+        this.errorMessageLogin.setValue(LoginErrorMessEnum.NONE);
+        this.authAppRepository.login(email, password, errorMessageLogin);
     }
 }
 }
