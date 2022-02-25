@@ -1,10 +1,16 @@
 package com.example.unserhoersaal.repository;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
+import com.example.unserhoersaal.model.UserCourse;
+import com.example.unserhoersaal.model.UserModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 // source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/tree/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/model [30.12.2021]
 
@@ -17,6 +23,7 @@ public class AuthAppRepository {
 
   private FirebaseAuth firebaseAuth;
   private FirebaseUser user = null;
+  private UserModel newUser = new UserModel();
 
   private MutableLiveData<FirebaseUser> userLiveData = new MutableLiveData<>();
 
@@ -65,17 +72,35 @@ public class AuthAppRepository {
   /** This method registers a new user.
    * if registration process fails show error message
    */
-  public void register(String email, String password, MutableLiveData<LogRegErrorMessEnum>
-          errorMessageRegistration) {
+  public void register(String username, String email, String password,
+                       MutableLiveData<LogRegErrorMessEnum> errorMessageRegistration) {
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
-                this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
+                createNewUser(username, this.firebaseAuth.getCurrentUser());
                 errorMessageRegistration.setValue(LogRegErrorMessEnum.NONE);
               } else {
                 errorMessageRegistration.setValue(LogRegErrorMessEnum.REGISTRATION_PROCESS_FAIL);
               }
             });
+  }
+
+  /**Method creates a new user.**/
+  private void createNewUser(String username, FirebaseUser regUser) {
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+    newUser.setDisplayName(username);
+    newUser.setEmail(regUser.getEmail());
+
+    databaseReference.child("users").child(regUser.getUid()).setValue(newUser).addOnSuccessListener(
+            new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                userLiveData.postValue(firebaseAuth.getCurrentUser());
+              }
+            }
+    );
+
   }
 
   /** Logging out the current user. */

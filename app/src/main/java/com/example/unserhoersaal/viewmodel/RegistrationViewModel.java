@@ -103,7 +103,7 @@ public class RegistrationViewModel extends ViewModel {
     if (!Validation.emptyUserName(userName) && Validation.userNameHasPattern(userName) &&
             !Validation.emptyEmail(email) && Validation.emailHasPattern(email) &&
             !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
-      this.authAppRepository.register(email, password, errorMessageRegProcess);
+      this.authAppRepository.register(userName,email, password, errorMessageRegProcess);
     }
   }
 }
