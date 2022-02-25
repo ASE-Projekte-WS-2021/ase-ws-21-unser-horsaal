@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -94,9 +95,10 @@ public class EnterCourseRepository {
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (!dataSnapshot.exists()) {
           saveCourseInUser(id);
+        } else {
+          //if user has already entered the course just open it
+          courseId.postValue(id);
         }
-        //if user has already entered the course just open it
-        courseId.postValue(id);
       }
 
       @Override
@@ -112,12 +114,22 @@ public class EnterCourseRepository {
   }
 
   /** Saves a entered course for a user. */
-  public void saveCourseInUser(String courseId) {
+  public void saveCourseInUser(String id) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
     this.databaseReference.child(Config.CHILD_USER).child(uid).child(Config.CHILD_COURSES)
-            .child(courseId).setValue(Boolean.TRUE);
-    this.databaseReference.child(Config.CHILD_COURSES).child(courseId).child(Config.CHILD_USER)
-            .child(uid).setValue(Boolean.TRUE);
+            .child(id).setValue(Boolean.TRUE).addOnSuccessListener(new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void unused) {
+        databaseReference.child(Config.CHILD_COURSES).child(id).child(Config.CHILD_USER)
+                .child(uid).setValue(Boolean.TRUE)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                  @Override
+                  public void onSuccess(Void unused) {
+                    courseId.postValue(id);
+                  }
+                });
+      }
+    });
 
   }
 

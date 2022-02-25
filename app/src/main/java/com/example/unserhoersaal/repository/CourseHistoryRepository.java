@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.MeetingsModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -87,18 +88,27 @@ public class CourseHistoryRepository {
     meetingsModel.setCreatorId(uid);
     meetingsModel.setCreationTime(System.currentTimeMillis());
     String meetingId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_MEETINGS).child(meetingId).setValue(meetingsModel);
-    meetingsModel.setKey(meetingId);
-    this.addMeetingToCourse(courseId.getValue(), meetingId);
-    //TODO make react to finish better
-    meetingsModelMutableLiveData.postValue(meetingsModel);
+    reference.child(Config.CHILD_MEETINGS).child(meetingId).setValue(meetingsModel)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                meetingsModel.setKey(meetingId);
+                addMeetingToCourse(courseId.getValue(), meetingsModel);
+              }
+            });
   }
 
   /** Adds the meeting to the course in the database. */
-  public void addMeetingToCourse(String course, String meeting) {
+  public void addMeetingToCourse(String course, MeetingsModel meetingsModel) {
+    String meeting = meetingsModel.getKey();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     reference.child(Config.CHILD_COURSES).child(course).child(Config.CHILD_MEETINGS).child(meeting)
-            .setValue(Boolean.TRUE);
+            .setValue(Boolean.TRUE).addOnSuccessListener(new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void unused) {
+        meetingsModelMutableLiveData.postValue(meetingsModel);
+      }
+    });
   }
 
   /** Initialises the database listener. */

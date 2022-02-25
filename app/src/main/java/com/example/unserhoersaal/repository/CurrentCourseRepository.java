@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.MessageModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,9 +73,15 @@ public class CurrentCourseRepository {
     message.setCreatorId(uid);
     message.setCreationTime(System.currentTimeMillis());
     String messageId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_MESSAGES).child(messageId).setValue(message);
-    message.setKey(messageId);
-    this.addMessageToThread(threadId.getValue(), messageId);
+    reference.child(Config.CHILD_MESSAGES).child(messageId).setValue(message)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                message.setKey(messageId);
+                addMessageToThread(threadId.getValue(), messageId);
+              }
+            });
+
   }
 
   /** Adds the new message to the current thread in the database. */

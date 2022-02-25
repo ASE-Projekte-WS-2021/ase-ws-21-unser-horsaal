@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.ThreadModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -87,17 +88,27 @@ public class CourseMeetingRepository {
     threadModel.setCreatorId(uid);
     threadModel.setCreationTime(System.currentTimeMillis());
     String threadId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_THREADS).child(threadId).setValue(threadModel);
-    threadModel.setKey(threadId);
-    this.addThreadToMeeting(meetingId.getValue(), threadId);
-    threadModelMutableLiveData.postValue(threadModel);
+    reference.child(Config.CHILD_THREADS).child(threadId).setValue(threadModel)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                threadModel.setKey(threadId);
+                addThreadToMeeting(meetingId.getValue(), threadModel);
+              }
+            });
   }
 
   /** Adds a new thread to the current meeting in the database. */
-  public void addThreadToMeeting(String meeting, String thread) {
+  public void addThreadToMeeting(String meeting, ThreadModel threadModel) {
+    String thread = threadModel.getKey();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     reference.child(Config.CHILD_MEETINGS).child(meeting).child(Config.CHILD_THREADS).child(thread)
-            .setValue(Boolean.TRUE);
+            .setValue(Boolean.TRUE).addOnSuccessListener(new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void unused) {
+        threadModelMutableLiveData.postValue(threadModel);
+      }
+    });
   }
 
   /** Initialise the listener for the database access. */
