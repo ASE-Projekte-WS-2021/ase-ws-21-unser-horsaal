@@ -42,7 +42,6 @@ public class CreateCourseRepository {
     courseModel.setCreatorId(uid);
     courseModel.setCreationTime(System.currentTimeMillis());
     String courseId = databaseReference.getRoot().push().getKey();
-    courseModel.addUser(uid);
     databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
@@ -55,12 +54,19 @@ public class CreateCourseRepository {
 
   private void addUserToCourse(CourseModel course, String user) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_USER)
-            .child(user).child(Config.CHILD_COURSES).child(course.getKey()).setValue(Boolean.TRUE)
+    reference.child(Config.CHILD_USER_COURSES).child(user).child(course.getKey())
+            .setValue(Boolean.TRUE)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
               public void onSuccess(Void unused) {
-                addMapping(course);
+                reference.child(Config.CHILD_COURSES_USER).child(course.getKey()).child(user)
+                        .setValue(Boolean.TRUE)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                          @Override
+                          public void onSuccess(Void unused) {
+                            addMapping(course);
+                          }
+                        });
               }
             });
   }

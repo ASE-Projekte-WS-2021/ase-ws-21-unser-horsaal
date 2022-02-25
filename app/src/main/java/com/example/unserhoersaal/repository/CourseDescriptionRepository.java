@@ -41,7 +41,7 @@ public class CourseDescriptionRepository {
     return this.courseModel;
   }
 
-  //TODO SingleValueEventListener Better?
+  //TODO get whole CourseModel from ViewModel
   public void setCourseId(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.courseId.getValue() != null) {
@@ -53,7 +53,6 @@ public class CourseDescriptionRepository {
   }
 
   public void initListener() {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {

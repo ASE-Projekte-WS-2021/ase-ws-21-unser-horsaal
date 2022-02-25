@@ -107,29 +107,28 @@ public class EnterCourseRepository {
       }
     };
 
-    this.databaseReference.child(Config.CHILD_USER)
-            .child(this.firebaseAuth.getCurrentUser().getUid())
-            .child(Config.CHILD_COURSES)
-            .child(id).addListenerForSingleValueEvent(eventListener);
+    this.databaseReference.child(Config.CHILD_USER_COURSES)
+            .child(this.firebaseAuth.getCurrentUser().getUid()).child(id)
+            .addListenerForSingleValueEvent(eventListener);
   }
 
   /** Saves a entered course for a user. */
   public void saveCourseInUser(String id) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.databaseReference.child(Config.CHILD_USER).child(uid).child(Config.CHILD_COURSES)
-            .child(id).setValue(Boolean.TRUE).addOnSuccessListener(new OnSuccessListener<Void>() {
-      @Override
-      public void onSuccess(Void unused) {
-        databaseReference.child(Config.CHILD_COURSES).child(id).child(Config.CHILD_USER)
-                .child(uid).setValue(Boolean.TRUE)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                  @Override
-                  public void onSuccess(Void unused) {
+    this.databaseReference.child(Config.CHILD_USER_COURSES).child(uid).child(id)
+            .setValue(Boolean.TRUE).addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                databaseReference.child(Config.CHILD_COURSES_USER).child(id).child(uid)
+                        .setValue(Boolean.TRUE)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                          @Override
+                          public void onSuccess(Void unused) {
                     courseId.postValue(id);
                   }
-                });
-      }
-    });
+                        });
+              }
+            });
 
   }
 

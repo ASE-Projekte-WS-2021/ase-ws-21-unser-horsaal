@@ -5,7 +5,6 @@ import java.util.HashMap;
 /** Model for an user of the app. */
 public class UserModel {
 
-  private HashMap<String, Boolean> courses = new HashMap<>();
   private String displayName;
   private String email;
   private String institution;
@@ -16,10 +15,6 @@ public class UserModel {
   }
 
   /** Getter. */
-  public HashMap<String, Boolean> getCourses() {
-    return this.courses;
-  }
-
   public String getDisplayName() {
     return this.displayName;
   }
@@ -37,10 +32,6 @@ public class UserModel {
   }
 
   /** Setter. */
-  public void setCourses(HashMap<String, Boolean> courses) {
-    this.courses = courses;
-  }
-  
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
   }

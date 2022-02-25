@@ -63,15 +63,15 @@ public class CourseMeetingRepository {
   public void setMeetingId(String meetingId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.meetingId.getValue() != null) {
-      reference.child(Config.CHILD_MEETINGS).child(this.meetingId.getValue())
-              .child(Config.CHILD_THREADS).removeEventListener(this.listener);
+      reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue())
+              .removeEventListener(this.listener);
     }
-    reference.child(Config.CHILD_MEETINGS).child(meetingId)
-            .child(Config.CHILD_THREADS).addValueEventListener(this.listener);
+    reference.child(Config.CHILD_THREADS).child(meetingId).addValueEventListener(this.listener);
     this.meetingId.postValue(meetingId);
   }
 
   /** Loads all threads of the current meeting from the database. */
+  //Query is not updated
   public void loadThreads() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_MEETINGS).child(this.meetingId.getValue())
@@ -88,27 +88,15 @@ public class CourseMeetingRepository {
     threadModel.setCreatorId(uid);
     threadModel.setCreationTime(System.currentTimeMillis());
     String threadId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_THREADS).child(threadId).setValue(threadModel)
+    reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue()).child(threadId)
+            .setValue(threadModel)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
               public void onSuccess(Void unused) {
                 threadModel.setKey(threadId);
-                addThreadToMeeting(meetingId.getValue(), threadModel);
+                threadModelMutableLiveData.postValue(threadModel);
               }
             });
-  }
-
-  /** Adds a new thread to the current meeting in the database. */
-  public void addThreadToMeeting(String meeting, ThreadModel threadModel) {
-    String thread = threadModel.getKey();
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_MEETINGS).child(meeting).child(Config.CHILD_THREADS).child(thread)
-            .setValue(Boolean.TRUE).addOnSuccessListener(new OnSuccessListener<Void>() {
-      @Override
-      public void onSuccess(Void unused) {
-        threadModelMutableLiveData.postValue(threadModel);
-      }
-    });
   }
 
   /** Initialise the listener for the database access. */
@@ -117,29 +105,13 @@ public class CourseMeetingRepository {
     listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        HashSet<String> threadIds = new HashSet<>();
         threadModelList.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          threadIds.add(snapshot.getKey());
+          ThreadModel model = snapshot.getValue(ThreadModel.class);
+          model.setKey(snapshot.getKey());
+          threadModelList.add(model);
         }
-        for (String key : threadIds) {
-          reference.child(Config.CHILD_THREADS).child(key)
-                  .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      ThreadModel model = snapshot.getValue(ThreadModel.class);
-                      model.setKey(snapshot.getKey());
-                      threadModelList.add(model);
-                      threads.postValue(threadModelList);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                  }
-          );
-        }
+        threads.postValue(threadModelList);
       }
 
       @Override
