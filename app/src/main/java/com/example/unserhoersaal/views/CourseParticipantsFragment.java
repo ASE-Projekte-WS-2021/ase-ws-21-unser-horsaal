@@ -1,23 +1,29 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 
 /** Course-Participants.*/
 public class CourseParticipantsFragment extends Fragment {
 
+  private static final String TAG = "CourseParticipantsFragment";
+
   private MaterialToolbar toolbar;
   private RecyclerView participantsList;
+
 
   private NavController navController;
 

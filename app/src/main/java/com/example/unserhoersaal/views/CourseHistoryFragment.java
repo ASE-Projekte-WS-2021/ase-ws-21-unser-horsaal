@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.MeetingAdapter;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -39,11 +40,14 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
   EditText createMeetingDate;
   EditText createMeetingTime;
   MaterialButton createMeetingCreateButton;
+  //TODO change button
+  private MaterialButton enterCourseOverview;
 
   private MeetingAdapter meetingAdapter;
 
   private CourseHistoryViewModel courseHistoryViewModel;
   private CourseMeetingViewModel courseMeetingViewModel;
+  private CourseDescriptionViewModel courseDescriptionViewModel;
 
   public CourseHistoryFragment() {
     // Required empty public constructor
@@ -74,8 +78,11 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
             .get(CourseHistoryViewModel.class);
     this.courseMeetingViewModel = new ViewModelProvider(requireActivity())
             .get(CourseMeetingViewModel.class);
+    this.courseDescriptionViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseDescriptionViewModel.class);
     this.courseHistoryViewModel.init();
     this.courseMeetingViewModel.init();
+    this.courseDescriptionViewModel.init();
     this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
       meetingAdapter.notifyDataSetChanged();
     });
@@ -95,6 +102,12 @@ public class CourseHistoryFragment extends Fragment implements MeetingAdapter.On
   }
 
   private void initUi(View view) {
+    enterCourseOverview = view.findViewById(R.id.courseHistoryFragmentEnterOverview);
+    enterCourseOverview.setOnClickListener(v -> {
+      courseDescriptionViewModel.setCourseId(courseHistoryViewModel.getCourseId().getValue());
+      navController.navigate(R.id.action_courseHistoryFragment_to_courseDescriptionFragment);
+    });
+
     toolbar = view.findViewById(R.id.courseHistoryFragmentToolbar);
     meetingsRecyclerView = view.findViewById(R.id.courseHistoryFragmentCoursesRecyclerView);
     floatingActionButton = view.findViewById(R.id.courseHistoryFragmentFab);
