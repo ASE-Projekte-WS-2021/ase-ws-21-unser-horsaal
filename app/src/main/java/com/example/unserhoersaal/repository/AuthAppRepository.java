@@ -1,11 +1,8 @@
 package com.example.unserhoersaal.repository;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.unserhoersaal.enums.LoginErrorMessEnum;
+import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -50,26 +47,33 @@ public class AuthAppRepository {
   }
 
   /** This method is logging in the user.
-   * if loggin process fails show error message
+   * if login process fails show error message
    */
-  public void login(String email, String password, MutableLiveData<LoginErrorMessEnum> errorMessageLogin) {
+  public void login(String email, String password, MutableLiveData<LogRegErrorMessEnum>
+          errorMessageLogin) {
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
-                errorMessageLogin.setValue(LoginErrorMessEnum.NONE);
+                errorMessageLogin.setValue(LogRegErrorMessEnum.NONE);
               } else {
-                errorMessageLogin.setValue(LoginErrorMessEnum.WRONG_LOGIN_INPUT);
+                errorMessageLogin.setValue(LogRegErrorMessEnum.WRONG_LOGIN_INPUT);
               }
             });
   }
 
-  /** This method registers a new user. */
-  public void register(String email, String password) {
+  /** This method registers a new user.
+   * if registration process fails show error message
+   */
+  public void register(String email, String password, MutableLiveData<LogRegErrorMessEnum>
+          errorMessageRegistration) {
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
+                errorMessageRegistration.setValue(LogRegErrorMessEnum.NONE);
+              } else {
+                errorMessageRegistration.setValue(LogRegErrorMessEnum.REGISTRATION_PROCESS_FAIL);
               }
             });
   }

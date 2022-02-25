@@ -17,6 +17,7 @@
     <string name="registration_fragment_title">Account erstellen</string>
     <string name="registration_fragment_checkbox_string">Eingeloggt bleiben</string>
     <string name="registration_fragment_registrate_button_string">Registrieren</string>
+    <string name="registration_fragment_registration_fail_string">Registrierung fehlgeschlagen</string>
     <string name="enter_course_string">Kurs beitreten</string>
     <string name="enter_course_caption">Bestehendem Kurs beitreten, um Fragen zu stellen, Antworten zu senden, etc.</string>
     <string name="create_course_string">Kurs erstellen</string>

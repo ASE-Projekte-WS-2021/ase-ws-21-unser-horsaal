@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.databinding.FragmentLoginBinding;
-import com.example.unserhoersaal.enums.LoginErrorMessEnum;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
+import com.example.unserhoersaal.databinding.FragmentLoginBinding;
+
 
 /**
  * initiates the UI of the login area, the login function

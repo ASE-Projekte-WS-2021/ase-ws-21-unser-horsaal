@@ -9,7 +9,7 @@
             type="com.example.unserhoersaal.viewmodel.LoginViewModel"/>
 
         <import
-            type="com.example.unserhoersaal.enums.LoginErrorMessEnum" />
+            type="com.example.unserhoersaal.enums.LogRegErrorMessEnum" />
 
         <import
             type="com.example.unserhoersaal.Config" />
@@ -68,8 +68,8 @@
                         android:singleLine="true" />
 
                     <TextView
-                        android:text="@{vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG ? Config.EMAIL_EMPTY : Config.EMAIL_PATTERN_WRONG}"
-                        android:visibility="@{vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_WRONG_PATTERN || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_EMPTY ? Config.EMAIL_EMPTY : Config.EMAIL_PATTERN_WRONG}"
+                        android:visibility="@{vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_EMPTY || vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -95,8 +95,8 @@
                         android:singleLine="true" />
 
                     <TextView
-                        android:text="@{vm.errorMessageLogin == LoginErrorMessEnum.PASSWORD_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.PASSWORD_PATTERN_WRONG}"
-                        android:visibility="@{vm.errorMessageLogin == LoginErrorMessEnum.PASSWORD_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.PASSWORD_WRONG_PATTERN || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_EMPTY_AND_PASSWORD_PATTERN_WRONG || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_AND_PASSWORD_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_PATTERN_WRONG_AND_PASSWORD_EMPTY || vm.errorMessageLogin == LoginErrorMessEnum.EMAIL_AND_PASSWORD_PATTERN_WRONG ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.PASSWORD_PATTERN_WRONG}"
+                        android:visibility="@{vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_EMPTY || vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -117,7 +117,7 @@
 
                 <TextView
                     android:text="@string/login_fragment_login_failure"
-                    android:visibility="@{vm.errorMessageLogin == LoginErrorMessEnum.WRONG_LOGIN_INPUT ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{vm.errorMessageLogProcess == LogRegErrorMessEnum.WRONG_LOGIN_INPUT ? View.VISIBLE : View.GONE}"
                     android:textColor="@color/red"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"

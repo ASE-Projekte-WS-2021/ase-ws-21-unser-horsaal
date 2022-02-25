@@ -1,0 +1,13 @@
+package com.example.unserhoersaal.enums;
+
+public enum LogRegErrorMessEnum {
+  NONE,
+  EMAIL_EMPTY,
+  PASSWORD_EMPTY,
+  USERNAME_EMPTY,
+  EMAIL_WRONG_PATTERN,
+  PASSWORD_WRONG_PATTERN,
+  USERNAME_WRONG_PATTERN,
+  WRONG_LOGIN_INPUT,
+  REGISTRATION_PROCESS_FAIL
+}

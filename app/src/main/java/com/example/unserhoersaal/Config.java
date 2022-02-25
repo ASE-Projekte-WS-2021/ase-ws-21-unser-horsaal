@@ -29,6 +29,13 @@ public class Config {
   public static final String PASSWORD_PATTERN_WRONG = "Das eingegebene Passwort ist falsch. " +
           "Passwort vergessen?";
 
+  /** Registration Error Message. */
+  public static final String REG_EMAIL_PATTERN_WRONG = "Die Email wurde falsch eingegeben.";
+  public static final String REG_PASSWORD_PATTERN_WRONG = "Das Passwort muss mind. 8 Zeichen lang sein und " +
+          "mind. 1 Groß- und Kleinbuchstaben, sowie mind. 1 Zahl enthalten.";
+  public static final String REG_USERNAME_EMPTY = "Bitte geben Sie einen Nutzernamen ein.";
+  public static final String REG_USERNAME_WRONG_PATTERN = "Der eingegebene Nutzername muss mind. 3 und max. 15 Zeichen lang sein.";
+
   /** Regex */
   /* reference: https://ihateregex.io/expr/username/ */
   public static final String USERNAME_PATTERN = "^[a-zA-Z0-9_-]{3,15}$";
