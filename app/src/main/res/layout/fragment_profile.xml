@@ -191,50 +191,6 @@
             </TableRow>
 
             <TableRow
-                android:background="@color/white"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/profileFragmentPasswordIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_password_24"
-                    android:layout_column="0"
-                    android:layout_gravity="center"
-                    app:tint="@color/app_blue"/>
-
-                <TextView
-                    android:id="@+id/profileFragmentPasswordTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/profile_fragment_password_title"
-                    android:layout_column="1"
-                    android:layout_gravity="center_vertical"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="end">
-
-                    <ImageView
-                        android:id="@+id/profileFragmentTogglePasswordIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_remove_red_eye_24"
-                        android:layout_marginEnd="16dp"
-                        app:tint="@color/grey"
-                        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentPassword"
-                        app:layout_constraintEnd_toStartOf="@+id/profileFragmentPassword"
-                        app:layout_constraintTop_toTopOf="@+id/profileFragmentPassword"
-                        android:layout_gravity="center"/>
-                </LinearLayout>
-
-            </TableRow>
-
-            <TableRow
                 android:id="@+id/profileFragmentPasswordTableRow"
                 android:background="@color/white"
                 android:padding="8dp"
