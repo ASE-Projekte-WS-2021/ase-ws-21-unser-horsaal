@@ -7,16 +7,13 @@ public class CourseModel {
 
   private static final String TAG = "CourseModel";
 
-  private HashMap<String, Boolean> blocked = new HashMap<>();
   private String codeMapping;
   private Long creationTime;
   private String creatorId;
   private String description;
   private String groupIcon;
   private String institution;
-  private HashMap<String, Boolean> meetings = new HashMap<>();
   private String title;
-  private HashMap<String, Boolean> users = new HashMap<>();
 
   private String key;
 
@@ -32,10 +29,6 @@ public class CourseModel {
   }
 
   /** Getter. */
-  public HashMap<String, Boolean> getBlocked() {
-    return this.blocked;
-  }
-
   public String getCodeMapping() {
     return this.codeMapping;
   }
@@ -60,16 +53,8 @@ public class CourseModel {
     return this.institution;
   }
 
-  public HashMap<String, Boolean> getMeetings() {
-    return this.meetings;
-  }
-
   public String getTitle() {
     return this.title;
-  }
-
-  public HashMap<String, Boolean> getUsers() {
-    return this.users;
   }
 
   public String getKey() {
@@ -77,10 +62,6 @@ public class CourseModel {
   }
 
   /** Setter. */
-  public void setBlocked(HashMap<String, Boolean> blocked) {
-    this.blocked = blocked;
-  }
-
   public void setCodeMapping(String codeMapping) {
     this.codeMapping = codeMapping;
   }
@@ -105,23 +86,12 @@ public class CourseModel {
     this.institution = institution;
   }
 
-  public void setMeetings(HashMap<String, Boolean> meetings) {
-    this.meetings = meetings;
-  }
-
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public void setUsers(HashMap<String, Boolean> users) {
-    this.users = users;
   }
 
   public void setKey(String key) {
     this.key = key;
   }
 
-  public void addUser(String user) {
-    this.users.put(user, Boolean.TRUE);
-  }
 }

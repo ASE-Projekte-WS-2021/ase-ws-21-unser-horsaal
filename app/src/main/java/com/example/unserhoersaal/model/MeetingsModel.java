@@ -9,7 +9,6 @@ public class MeetingsModel {
   private String creatorId;
   private String description;
   private Long eventTime;
-  private HashMap<String, Boolean> threads = new HashMap<>();
   private String title;
   private String key;
 
@@ -47,14 +46,6 @@ public class MeetingsModel {
 
   public void setEventTime(Long eventTime) {
     this.eventTime = eventTime;
-  }
-
-  public HashMap<String, Boolean> getThreads() {
-    return this.threads;
-  }
-
-  public void setThreads(HashMap<String, Boolean> threads) {
-    this.threads = threads;
   }
 
   public String getTitle() {

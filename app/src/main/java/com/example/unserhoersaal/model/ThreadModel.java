@@ -11,7 +11,6 @@ public class ThreadModel {
   public long creationTime;
   public String creatorId;
   public int likes;
-  public HashMap<String, Boolean> messages = new HashMap<>();
   public String text;
   public String title;
   public String key;
@@ -50,14 +49,6 @@ public class ThreadModel {
 
   public void setLikes(int likes) {
     this.likes = likes;
-  }
-
-  public HashMap<String, Boolean> getMessages() {
-    return this.messages;
-  }
-
-  public void setMessages(HashMap<String, Boolean> messages) {
-    this.messages = messages;
   }
 
   public String getText() {

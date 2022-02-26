@@ -3,6 +3,7 @@ package com.example.unserhoersaal.repository;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,22 +42,44 @@ public class CreateCourseRepository {
     courseModel.setCreatorId(uid);
     courseModel.setCreationTime(System.currentTimeMillis());
     String courseId = databaseReference.getRoot().push().getKey();
-    courseModel.addUser(uid);
-    databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel);
-    courseModel.setKey(courseId);
-    this.addUserToCourse(courseId, uid);
-    this.addMapping(courseId, courseModel.getCodeMapping());
-    this.courseModelMutableLiveData.postValue(courseModel);
+    databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                courseModel.setKey(courseId);
+                addUserToCourse(courseModel, uid);
+              }
+            });
   }
 
-  private void addUserToCourse(String course, String user) {
+  private void addUserToCourse(CourseModel course, String user) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_USER)
-            .child(user).child(Config.CHILD_COURSES).child(course).setValue(Boolean.TRUE);
+    reference.child(Config.CHILD_USER_COURSES).child(user).child(course.getKey())
+            .setValue(Boolean.TRUE)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                reference.child(Config.CHILD_COURSES_USER).child(course.getKey()).child(user)
+                        .setValue(Boolean.TRUE)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                          @Override
+                          public void onSuccess(Void unused) {
+                            addMapping(course);
+                          }
+                        });
+              }
+            });
   }
 
-  private void addMapping(String course, String mappingCode) {
+  private void addMapping(CourseModel course) {
+    String mappingCode = course.getCodeMapping();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_CODE_MAPPING).child(mappingCode).setValue(course);
+    reference.child(Config.CHILD_CODE_MAPPING).child(mappingCode).setValue(course.getKey())
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                courseModelMutableLiveData.postValue(course);
+              }
+            });
   }
 }

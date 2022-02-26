@@ -45,6 +45,7 @@ public class CoursesRepository {
     return this.courses;
   }
 
+  //TODO set up pipeline
   /** This method loads all courses in which the user is signed in. */
   public void loadUserCourses() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -52,7 +53,7 @@ public class CoursesRepository {
     String id = auth.getCurrentUser().getUid();
 
 
-    Query query = reference.child(Config.CHILD_USER).child(id).child(Config.CHILD_COURSES);
+    Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

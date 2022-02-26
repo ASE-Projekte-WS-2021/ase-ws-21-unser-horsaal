@@ -11,16 +11,13 @@ public class Config {
 
   /** Database Children. */
   public static final String CHILD_USER = "users";
-
   public static final String CHILD_COURSES = "courses";
-
   public static final String CHILD_MESSAGES = "messages";
-
   public static final String CHILD_CODE_MAPPING = "codeMapping";
-
   public static final String CHILD_MEETINGS = "meetings";
-
   public static final String CHILD_THREADS = "threads";
+  public static final String CHILD_USER_COURSES = "usersCourses";
+  public static final String CHILD_COURSES_USER = "coursesUsers";
 
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;

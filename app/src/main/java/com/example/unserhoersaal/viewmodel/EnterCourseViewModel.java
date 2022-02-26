@@ -35,6 +35,7 @@ public class EnterCourseViewModel extends ViewModel {
     return this.courseId;
   }
 
+  /** Reset the entered data after joining the course. */
   public void resetEnterCourseId() {
     this.enteredCourseId.setValue(null);
     this.courseModel.setValue(null);
@@ -46,6 +47,7 @@ public class EnterCourseViewModel extends ViewModel {
     this.enterCourseRepository.checkCode(id);
   }
 
+  /** Join a course. */
   public void enterCourse() {
     if (courseModel.getValue() != null) {
       this.enterCourseRepository.isUserInCourse(courseModel.getValue().getKey());
