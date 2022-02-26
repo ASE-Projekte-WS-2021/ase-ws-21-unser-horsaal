@@ -1,84 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/enterCourseDialogScreen"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/transparent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/enterCourseDialogOverlayLinearLayout"
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.EnterCourseViewModel" />
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/enterCourseDialogScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_background"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <TextView
-            android:id="@+id/enterCourseDialogCourseTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/enter_course_fragment_course_titel"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/enterCourseDialogCourseCreator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/enter_course_fragment_course_creator"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/enterCourseDialogCourseInstitution"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/enter_course_fragment_course_institution"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/enterCourseDialogCourseDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/enter_course_fragment_course_description"
-            android:textAlignment="center" />
+        android:background="@color/transparent">
 
         <LinearLayout
+            android:id="@+id/enterCourseDialogOverlayLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_height="match_parent"
+            android:background="@color/app_background"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/enterCourseDialogDeclineButton"
-                style="@style/wideOrangeButton"
-                android:backgroundTint="@color/red"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/enter_course_dialog_decline"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/enterCourseDialogEnterCourseButton"
-                style="@style/wideOrangeButton"
-                android:backgroundTint="@color/green"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/enterCourseDialogCourseTitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/enter_course_fragment_enter_button_string" />
+                android:layout_marginTop="32dp"
+                android:text="@={vm.course.title}"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/enterCourseDialogCourseCreator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="TODO -> load creator name"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/enterCourseDialogCourseInstitution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@={vm.course.institution}"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/enterCourseDialogCourseDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@{vm.course.description.substring(0, 200)}"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/enterCourseDialogDeclineButton"
+                    android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_enterCourseFragment_to_coursesFragment)}"
+                    style="@style/wideOrangeButton"
+                    android:backgroundTint="@color/red"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enter_course_dialog_decline"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/enterCourseDialogEnterCourseButton"
+                    android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_enterCourseFragment_to_courseHistoryFragment)}"
+                    style="@style/wideOrangeButton"
+                    android:backgroundTint="@color/green"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/enter_course_fragment_enter_button_string" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
