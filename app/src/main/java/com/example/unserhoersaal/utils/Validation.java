@@ -5,6 +5,7 @@ import com.example.unserhoersaal.Config;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/** Class for String validation. */
 public class Validation {
 
   public static boolean emptyEmail(String email) {
@@ -23,12 +24,14 @@ public class Validation {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches();
   }
 
+  /** Check if the username fits the pattern. */
   public static boolean userNameHasPattern(String userName) {
     Pattern pattern = Pattern.compile(Config.USERNAME_PATTERN);
     Matcher matcher = pattern.matcher(userName);
     return matcher.matches();
   }
 
+  /** Check if the password fits the pattern. */
   public static boolean passwordHasPattern(String password) {
     Pattern pattern = Pattern.compile(Config.PASSWORD_PATTERN);
     Matcher matcher = pattern.matcher(password);

@@ -5,21 +5,16 @@ import java.util.HashMap;
 /** Model for an user of the app. */
 public class UserModel {
 
-  private HashMap<String, Boolean> courses = new HashMap<>();
   private String displayName;
   private String email;
   private String institution;
-  private String photoURL;
+  private String photoUrl;
 
   public UserModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
 
   /** Getter. */
-  public HashMap<String, Boolean> getCourses() {
-    return this.courses;
-  }
-
   public String getDisplayName() {
     return this.displayName;
   }
@@ -32,15 +27,11 @@ public class UserModel {
     return this.institution;
   }
 
-  public String getPhotoURL() {
-    return this.photoURL;
+  public String getPhotoUrl() {
+    return this.photoUrl;
   }
 
   /** Setter. */
-  public void setCourses(HashMap<String, Boolean> courses) {
-    this.courses = courses;
-  }
-  
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
   }
@@ -53,8 +44,8 @@ public class UserModel {
     this.institution = institution;
   }
 
-  public void setPhotoURL(String photoURL) {
-    this.photoURL = photoURL;
+  public void setPhotoUrl(String photoUrl) {
+    this.photoUrl = photoUrl;
   }
   
 }

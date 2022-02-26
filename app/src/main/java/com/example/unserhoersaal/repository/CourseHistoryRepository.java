@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.MeetingsModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -62,15 +63,15 @@ public class CourseHistoryRepository {
   public void setCourseId(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.courseId.getValue() != null) {
-      reference.child(Config.CHILD_COURSES).child(this.courseId.getValue())
-              .child(Config.CHILD_MEETINGS).removeEventListener(this.listener);
+      reference.child(Config.CHILD_MEETINGS).child(this.courseId.getValue())
+              .removeEventListener(this.listener);
     }
-    reference.child(Config.CHILD_COURSES).child(courseId)
-            .child(Config.CHILD_MEETINGS).addValueEventListener(this.listener);
+    reference.child(Config.CHILD_MEETINGS).child(courseId).addValueEventListener(this.listener);
     this.courseId.postValue(courseId);
   }
 
   /** Loads all meetings of the course. */
+  //Query veraltert
   public void loadMeetings() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_COURSES).child(courseId.getValue())
@@ -78,7 +79,7 @@ public class CourseHistoryRepository {
     query.addValueEventListener(this.listener);
   }
 
-  /** Creats a new meeting in the course. */
+  /** Creates a new meeting in the course. */
   public void createMeeting(MeetingsModel meetingsModel) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -87,18 +88,15 @@ public class CourseHistoryRepository {
     meetingsModel.setCreatorId(uid);
     meetingsModel.setCreationTime(System.currentTimeMillis());
     String meetingId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_MEETINGS).child(meetingId).setValue(meetingsModel);
-    meetingsModel.setKey(meetingId);
-    this.addMeetingToCourse(courseId.getValue(), meetingId);
-    //TODO make react to finish better
-    meetingsModelMutableLiveData.postValue(meetingsModel);
-  }
-
-  /** Adds the meeting to the course in the database. */
-  public void addMeetingToCourse(String course, String meeting) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_COURSES).child(course).child(Config.CHILD_MEETINGS).child(meeting)
-            .setValue(Boolean.TRUE);
+    reference.child(Config.CHILD_MEETINGS).child(this.courseId.getValue()).child(meetingId)
+            .setValue(meetingsModel)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                meetingsModel.setKey(meetingId);
+                meetingsModelMutableLiveData.postValue(meetingsModel);
+              }
+            });
   }
 
   /** Initialises the database listener. */
@@ -107,29 +105,13 @@ public class CourseHistoryRepository {
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        HashSet<String> meetingIds = new HashSet<>();
         meetingsModelList.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          meetingIds.add(snapshot.getKey());
+          MeetingsModel model = snapshot.getValue(MeetingsModel.class);
+          model.setKey(snapshot.getKey());
+          meetingsModelList.add(model);
         }
-        for (String key : meetingIds) {
-          reference.child(Config.CHILD_MEETINGS).child(key)
-                  .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      MeetingsModel model = snapshot.getValue(MeetingsModel.class);
-                      model.setKey(snapshot.getKey());
-                      meetingsModelList.add(model);
-                      meetings.postValue(meetingsModelList);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                  }
-          );
-        }
+        meetings.postValue(meetingsModelList);
       }
 
       @Override

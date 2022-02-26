@@ -13,6 +13,7 @@ import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
+/** Class for Navigation. */
 public class NavUtil {
 
   @BindingAdapter("navigate")
@@ -38,15 +39,18 @@ public class NavUtil {
     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
     builder.setMessage(R.string.dialog_delete_account_message)
             .setTitle(R.string.dialog_delete_account_title)
-            .setPositiveButton(R.string.dialog_delete_account_true, (DialogInterface.OnClickListener) (dialog, which) -> {
-              viewModel.deleteAccount();
-              dialog.dismiss();
-            })
-            .setNegativeButton(R.string.dialog_delete_account_false, (DialogInterface.OnClickListener) (dialog, which) -> {
-              dialog.dismiss();
-            });
+            .setPositiveButton(R.string.dialog_delete_account_true,
+                    (DialogInterface.OnClickListener) (dialog, which) -> {
+                      viewModel.deleteAccount();
+                      dialog.dismiss();
+                    })
+            .setNegativeButton(R.string.dialog_delete_account_false,
+                    (DialogInterface.OnClickListener) (dialog, which) -> {
+                      dialog.dismiss();
+                    });
 
     AlertDialog dialog = builder.create();
     dialog.show();
   }
+  
 }

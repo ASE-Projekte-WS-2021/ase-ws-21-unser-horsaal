@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.MessageModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,59 +73,41 @@ public class CurrentCourseRepository {
     message.setCreatorId(uid);
     message.setCreationTime(System.currentTimeMillis());
     String messageId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_MESSAGES).child(messageId).setValue(message);
-    message.setKey(messageId);
-    this.addMessageToThread(threadId.getValue(), messageId);
-  }
+    reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
+            .setValue(message)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                //todo needed?
+                message.setKey(messageId);
+              }
+            });
 
-  /** Adds the new message to the current thread in the database. */
-  public void addMessageToThread(String threadId, String messageId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_THREADS)
-            .child(threadId).child(Config.CHILD_MESSAGES).child(messageId).setValue(Boolean.TRUE);
   }
 
   /** Sets the id of the new entered thread. */
   public void setThreadId(String threadId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.threadId.getValue() != null) {
-      reference.child(Config.CHILD_THREADS).child(this.threadId.getValue())
-              .child(Config.CHILD_MESSAGES).removeEventListener(this.listener);
+      reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue())
+              .removeEventListener(this.listener);
     }
-    reference.child(Config.CHILD_THREADS).child(threadId)
-            .child(Config.CHILD_MESSAGES).addValueEventListener(this.listener);
+    reference.child(Config.CHILD_MESSAGES).child(threadId).addValueEventListener(this.listener);
     this.threadId.postValue(threadId);
   }
 
   /** Initialise the listener for the database access. */
   public void initListener() {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        HashSet<String> messageIds = new HashSet<>();
         messagesList.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          messageIds.add(snapshot.getKey());
+          MessageModel model = snapshot.getValue(MessageModel.class);
+          model.setKey(snapshot.getKey());
+          messagesList.add(model);
         }
-        for (String key : messageIds) {
-          reference.child(Config.CHILD_MESSAGES).child(key)
-                  .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      MessageModel model = snapshot.getValue(MessageModel.class);
-                      model.setKey(snapshot.getKey());
-                      messagesList.add(model);
-                      messages.postValue(messagesList);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                  }
-          );
-        }
+        messages.postValue(messagesList);
       }
 
       @Override

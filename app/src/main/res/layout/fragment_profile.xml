@@ -43,7 +43,7 @@
 
             <ImageView
                 android:id="@+id/profileFragmentProfileImage"
-                setImage="@{vm.profileLiveData.photoURL}"
+                setImage="@{vm.profileLiveData.photoUrl}"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:maxWidth="100dp"

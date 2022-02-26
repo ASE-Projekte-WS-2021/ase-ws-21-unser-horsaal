@@ -48,17 +48,21 @@ public class ProfileViewModel extends ViewModel {
     return this.profileLiveData;
   }
 
+  /** Save the userprofile data. */
   public void saveNewProfileData() {
     UserModel userModel = this.profileLiveData.getValue();
-    if (userModel == null) return;
+    if (userModel == null) {
+      return;
+    }
 
     this.profileRepository.changeProfileData(userModel);
 
-    if (Validation.emptyPassword(newPassword.getValue()) || Validation.passwordHasPattern(newPassword.getValue())) {
-      String password = Validation.emptyPassword(newPassword.getValue()) ? newPassword.getValue() : null;
+    if (Validation.emptyPassword(newPassword.getValue())
+            || Validation.passwordHasPattern(newPassword.getValue())) {
+      String password =
+              Validation.emptyPassword(newPassword.getValue()) ? newPassword.getValue() : null;
       this.profileRepository.changeAuthData(userModel, password);
-    }
-    else {
+    } else {
       //TODO: propagate error message to databinding
     }
 
@@ -72,8 +76,11 @@ public class ProfileViewModel extends ViewModel {
     this.authAppRepository.deleteAccount();
   }
 
+  /** Toggle. */
   public void toggle() {
-    if (this.changing == null || this.changing.getValue() == null) return;
+    if (this.changing == null || this.changing.getValue() == null) {
+      return;
+    }
     boolean b = this.changing.getValue();
     this.changing.setValue(!b);
   }
