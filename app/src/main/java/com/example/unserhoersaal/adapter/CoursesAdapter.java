@@ -1,15 +1,13 @@
 package com.example.unserhoersaal.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.databinding.SimpleCourseItemBinding;
 import com.example.unserhoersaal.model.CourseModel;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Coursesadapter. */
@@ -17,28 +15,23 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
 
   private static final String TAG = "CoursesAdapter";
 
-  private List<CourseModel> localDataSet = new ArrayList<>();
-  private OnNoteListener onNoteListener;
+  private final List<CourseModel> localDataSet;
 
-  public CoursesAdapter(List<CourseModel> dataSet, OnNoteListener onNoteListener) {
+  public CoursesAdapter(List<CourseModel> dataSet) {
     this.localDataSet = dataSet;
-    this.onNoteListener = onNoteListener;
   }
 
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    View view = LayoutInflater.from(viewGroup.getContext())
-            .inflate(R.layout.simple_course_item, viewGroup, false);
-    return new ViewHolder(view, this.onNoteListener);
+    SimpleCourseItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.simple_course_item, viewGroup, false);
+    return new ViewHolder(binding);
   }
 
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
-    if (viewHolder.getKeyTextView() != null && viewHolder.getCourseNameTextView() != null) {
-      viewHolder.getCourseNameTextView().setText(this.localDataSet.get(position).getTitle());
-      viewHolder.getKeyTextView().setText(this.localDataSet.get(position).getCreatorId());
-    }
+    CourseModel courseModel = localDataSet.get(position);
+    viewHolder.connect(courseModel);
   }
 
   @Override
@@ -46,39 +39,21 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
     return this.localDataSet.size();
   }
 
-  /** Interface to get the clicked Course. */
-  public interface OnNoteListener {
-    void onNoteClick(int position);
-  }
-
   /** Viewholder. */
-  public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private TextView courseNameTextView;
-    private TextView keyTextView;
-    private ImageView shareImageView;
-    private OnNoteListener onNoteListener;
+  public static class ViewHolder extends RecyclerView.ViewHolder {
+    private final SimpleCourseItemBinding binding;
 
     /** Constructor. */
-    public ViewHolder(View view, OnNoteListener onNoteListener) {
-      super(view);
-      this.onNoteListener = onNoteListener;
-      this.courseNameTextView = (TextView) view.findViewById(R.id.courseItemTitle);
-      this.keyTextView = (TextView) view.findViewById(R.id.courseItemEnterNumber);
-
-      view.setOnClickListener(this);
+    public ViewHolder(SimpleCourseItemBinding binding) {
+      super(binding.getRoot());
+      this.binding = binding;
     }
 
-    public TextView getCourseNameTextView() {
-      return this.courseNameTextView;
+    public void connect(CourseModel model) {
+      this.binding.setModel(model);
+      this.binding.executePendingBindings();
     }
 
-    public TextView getKeyTextView() {
-      return this.keyTextView;
-    }
-
-    @Override
-    public void onClick(View v) {
-      this.onNoteListener.onNoteClick(getAdapterPosition());
-    }
   }
+
 }

@@ -23,9 +23,9 @@ public class RegistrationFragment extends Fragment {
 
   private static final String TAG = "RegistrationFragment";
 
+  private FragmentRegistrationBinding binding;
   private RegistrationViewModel registrationViewModel;
   private NavController navController;
-  private FragmentRegistrationBinding binding;
 
   public RegistrationFragment() {
       // Required empty public constructor
