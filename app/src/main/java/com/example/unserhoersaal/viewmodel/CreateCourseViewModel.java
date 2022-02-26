@@ -3,12 +3,9 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.model.UserCourse;
 import com.example.unserhoersaal.repository.CreateCourseRepository;
-
 import java.util.Random;
 
 /**Class transfers data from CreateCourseRepository to CreateCourseFragment and viceversa.**/
@@ -33,6 +30,7 @@ public class CreateCourseViewModel extends ViewModel {
     return this.courseModel;
   }
 
+  /** Create a new course. */
   public void createCourse(CourseModel courseModel) {
     String codeMapping = this.getCodeMapping();
     courseModel.setCodeMapping(codeMapping);

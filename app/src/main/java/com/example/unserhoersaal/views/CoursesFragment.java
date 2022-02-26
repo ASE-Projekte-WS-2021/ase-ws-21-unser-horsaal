@@ -5,55 +5,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
-import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
+import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
-import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.List;
 
 /** Courses. */
-public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteListener {
+public class CoursesFragment extends Fragment {
 
   private static final String TAG = "CoursesFragment";
 
   private MaterialToolbar toolbar;
-  private RecyclerView courseListRecycler;
-  private TextView titelTextView;
-  private FloatingActionButton fab;
-  private FloatingActionButton fabEnterCourse;
-  private FloatingActionButton fabCreateCourse;
-  private LinearLayout enterCourseLinearLayout;
-  private LinearLayout createCourseLinearLayout;
-
-  private Boolean isFabOpen;
-
-  private CoursesAdapter coursesAdapter;
-
+  private FragmentCoursesBinding binding;
   private CoursesViewModel coursesViewModel;
-  private CourseHistoryViewModel courseHistoryViewModel;
-
   private NavController navController;
-
+  private CoursesAdapter coursesAdapter;
 
   public CoursesFragment() {
     // Required empty public constructor
@@ -65,123 +39,55 @@ public class CoursesFragment extends Fragment implements CoursesAdapter.OnNoteLi
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_courses, container, false);
+    this.binding =  DataBindingUtil.inflate(inflater,
+            R.layout.fragment_courses, container,false);
+    return this.binding.getRoot();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+
+    this.navController = Navigation.findNavController(view);
+    this.toolbar = view.findViewById(R.id.coursesFragmentToolbar);
+
     this.initViewModel();
-    this.initUi(view);
-    this.setupNavigation(view);
-    this.setupToolbar();
-    this.setupFabs();
+    this.connectBinding();
+    this.initToolbar();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
-    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
-            .get(CourseHistoryViewModel.class);
     this.coursesViewModel.init();
-    this.courseHistoryViewModel.init();
+
     this.coursesViewModel.getUserCourses()
-            .observe(getViewLifecycleOwner(), new Observer<List<CourseModel>>() {
-              @SuppressLint("NotifyDataSetChanged")
-              @Override
-              public void onChanged(@Nullable List<CourseModel> userCourses) {
-                coursesAdapter.notifyDataSetChanged();
-                if (userCourses.size() == 0) {
-                  titelTextView.setVisibility(View.VISIBLE);
-                } else {
-                  titelTextView.setVisibility(View.INVISIBLE);
-                }
-              }
-            });
+            .observe(getViewLifecycleOwner(), userCourses ->
+                    coursesAdapter.notifyDataSetChanged());
+
+    this.coursesAdapter = new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue());
   }
 
-  private void initUi(View view) {
-    this.titelTextView = view.findViewById(R.id.coursesFragmentTitleTextView);
-    this.fab = view.findViewById(R.id.coursesFragmentFab);
-    this.fabEnterCourse = view.findViewById(R.id.coursesFragmentFabEnterCourse);
-    this.fabCreateCourse = view.findViewById(R.id.coursesFragmentFabCreateCourse);
-    this.enterCourseLinearLayout = view.findViewById(R.id.coursesFragmentEnterCourseFabLayout);
-    this.createCourseLinearLayout = view.findViewById(R.id.coursesFragmentCreateCourseFabLayout);
-    this.toolbar = (MaterialToolbar) view.findViewById(R.id.coursesFragmentToolbar);
-
-    this.courseListRecycler = view.findViewById(R.id.coursesFragmentRecyclerView);
-    this.coursesAdapter =
-            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue(), this);
-    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    this.courseListRecycler.setLayoutManager(layoutManager);
-    this.courseListRecycler.setItemAnimator(new DefaultItemAnimator());
-    this.courseListRecycler.setAdapter(this.coursesAdapter);
-    this.titelTextView.setText(Config.COURSES_EMPTY);
+  private void connectBinding() {
+    this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.coursesViewModel);
+    this.binding.setAdapter(this.coursesAdapter);
   }
 
-  private void setupNavigation(View view) {
-    this.navController = Navigation.findNavController(view);
-    this.fabEnterCourse.setOnClickListener(v -> this.navController.navigate(
-            R.id.action_coursesFragment_to_enterCourseFragment));
-    this.fabCreateCourse.setOnClickListener(v -> this.navController.navigate(
-            R.id.action_coursesFragment_to_createCourseFragment)
-    );
-
-    KeyboardUtil.hideKeyboard(getActivity());
-  }
-
-  @Override
-  public void onNoteClick(int position) {
-    String id = this.coursesViewModel.getUserCourses().getValue().get(position).getKey();
-    this.courseHistoryViewModel.setCourseId(id);
-    this.navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
-    Toast.makeText(getActivity(), id, Toast.LENGTH_LONG).show();
-  }
-
-  private void setupToolbar() {
+  private void initToolbar() {
     this.toolbar.inflateMenu(R.menu.courses_fragment_toolbar);
-    //Menu menu = this.toolbar.getMenu();
     this.toolbar.setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
-    this.toolbar.setNavigationOnClickListener(v -> {
-      this.navController.navigate(R.id.action_coursesFragment_to_profileFragment);
-    });
+    this.toolbar.setNavigationOnClickListener(v ->
+            this.navController.navigate(R.id.action_coursesFragment_to_profileFragment));
   }
 
-  /** Source: https://mobikul.com/expandable-floating-action-button-fab-menu
-   * /#:~:text=A%20Floating%20Action%20Button(fab,common%20actions%20within%20an%20app.*/
-
-  private void setupFabs() {
-    this.isFabOpen = false;
-    this.fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (!isFabOpen) {
-          showFabMenu();
-        } else {
-          closeFabMenu();
-        }
-      }
-    });
-  }
-
-  private void showFabMenu() {
-    this.isFabOpen = true;
-    this.createCourseLinearLayout.setVisibility(View.VISIBLE);
-    this.enterCourseLinearLayout.setVisibility(View.VISIBLE);
-    this.enterCourseLinearLayout.animate().translationY(-getResources()
-            .getDimension(R.dimen.standard_55));
-    this.createCourseLinearLayout.animate().translationY(-getResources()
-            .getDimension(R.dimen.standard_105));
-  }
-
-  private void closeFabMenu() {
-    this.isFabOpen = false;
-    this.enterCourseLinearLayout.animate().translationY(0);
-    this.createCourseLinearLayout.animate().translationY(0);
-    this.createCourseLinearLayout.setVisibility(View.INVISIBLE);
-    this.enterCourseLinearLayout.setVisibility(View.INVISIBLE);
+  //For closing the Floating Action Buttons when returning to this Fragment and the Buttons were not closed before.
+  @Override
+  public void onResume() {
+    super.onResume();
+    this.coursesViewModel.toggle.setValue(true);
   }
 }

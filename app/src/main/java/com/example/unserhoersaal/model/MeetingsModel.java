@@ -2,17 +2,17 @@ package com.example.unserhoersaal.model;
 
 import java.util.HashMap;
 
+/** Model for a meeting. */
 public class MeetingsModel {
 
   private Long creationTime;
   private String creatorId;
   private String description;
   private Long eventTime;
-  private HashMap<String, Boolean> threads;
   private String title;
   private String key;
 
-  public MeetingsModel(){
+  public MeetingsModel() {
     //needed for Firebase
   }
 
@@ -46,14 +46,6 @@ public class MeetingsModel {
 
   public void setEventTime(Long eventTime) {
     this.eventTime = eventTime;
-  }
-
-  public HashMap<String, Boolean> getThreads() {
-    return this.threads;
-  }
-
-  public void setThreads(HashMap<String, Boolean> threads) {
-    this.threads = threads;
   }
 
   public String getTitle() {

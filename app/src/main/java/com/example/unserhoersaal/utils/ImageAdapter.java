@@ -5,8 +5,10 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.example.unserhoersaal.Config;
 
+/** Adapter for the profile pictures. */
 public class ImageAdapter {
 
+  /** Set the profile image. */
   @BindingAdapter("setImage")
   public static void setImage(ImageView view, String url) {
     Glide.with(view)

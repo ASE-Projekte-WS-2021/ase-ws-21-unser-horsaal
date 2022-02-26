@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,24 +10,31 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /** Course-Description.*/
 public class CourseDescriptionFragment extends Fragment {
 
+  private static final String TAG = "CourseDescriptionFragment";
+
   TextView courseCreator;
   TextView courseInstitution;
   TextView courseDescription;
+  TextView courseTitle;
   TableRow courseDescriptionContainer;
   TableRow courseParticipantsContainer;
   FloatingActionButton shareCourseFab;
   MaterialToolbar toolbar;
   NavController navController;
   TextView unsubscribeTextView;
+
+  private CourseDescriptionViewModel courseDescriptionViewModel;
 
   public CourseDescriptionFragment() {
     // Required empty public constructor
@@ -47,14 +55,29 @@ public class CourseDescriptionFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    initViewModel();
     initUi(view);
     initToolbar();
+  }
+
+  private void initViewModel() {
+    this.courseDescriptionViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseDescriptionViewModel.class);
+    this.courseDescriptionViewModel.init();
+    this.courseDescriptionViewModel.getCourseModel()
+            .observe(getViewLifecycleOwner(), courseModel -> {
+              courseInstitution.setText(courseModel.getInstitution());
+              courseDescription.setText(courseModel.getDescription());
+              courseCreator.setText(courseModel.getCreatorId());
+              courseTitle.setText(courseModel.getTitle());
+            });
   }
 
   private void initUi(View view) {
     courseCreator = view.findViewById(R.id.courseDescriptionCreator);
     courseInstitution = view.findViewById(R.id.courseDescriptionFragmentInstitution);
     courseDescription = view.findViewById(R.id.courseDescriptionFragmentCourseDescription);
+    courseTitle = view.findViewById(R.id.courseDescriptionCourseTitle);
     courseDescriptionContainer = view
             .findViewById(R.id.courseDescriptionFragmentCourseDescriptionContainer);
     courseParticipantsContainer = view

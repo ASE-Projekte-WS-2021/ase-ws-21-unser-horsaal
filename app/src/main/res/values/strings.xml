@@ -112,4 +112,7 @@
     <string name="dialog_delete_account_false">Abbrechen</string>
     <string name="edit_profile_name_hint">Nutzername</string>
     <string name="current_course_fragment_question_title">Dies ist ein beispielhafter Titel für eine Frage</string>
+    <string name="kurs_beitreten">Kurs beitreten</string>
+    <string name="kurs_erstellen">Kurs erstellen</string>
+    <string name="du_bist_noch_keinem_kurs_beigetreten">Du bist noch keinem Kurs beigetreten.</string>
 </resources>
