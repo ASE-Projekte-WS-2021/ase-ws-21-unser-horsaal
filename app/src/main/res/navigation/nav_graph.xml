@@ -63,7 +63,15 @@
         android:id="@+id/currentCourseFragment"
         android:name="com.example.unserhoersaal.views.CurrentCourseFragment"
         android:label="fragment_current_course"
-        tools:layout="@layout/fragment_current_course" />
+        tools:layout="@layout/fragment_current_course" >
+        <action
+            android:id="@+id/action_currentCourseFragment_to_courseMeetingFragment"
+            app:destination="@id/courseMeetingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.unserhoersaal.views.ProfileFragment"
@@ -77,6 +85,28 @@
             app:destination="@id/coursesFragment"
             app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileNameFragment"
+            app:destination="@id/editProfileNameFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileInstitutionFragment"
+            app:destination="@id/editProfileInstitutionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfilePasswordFragment"
+            app:destination="@id/editProfilePasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
     <fragment
         android:id="@+id/coursesFragment"
@@ -111,7 +141,11 @@
             app:destination="@id/courseDescriptionFragment" />
         <action
             android:id="@+id/action_courseHistoryFragment_to_courseMeetingFragment"
-            app:destination="@id/courseMeetingFragment" />
+            app:destination="@id/courseMeetingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/courseDescriptionFragment"
@@ -145,6 +179,84 @@
         tools:layout="@layout/fragment_course_meeting" >
         <action
             android:id="@+id/action_courseMeetingFragment_to_currentCourseFragment"
-            app:destination="@id/currentCourseFragment" />
+            app:destination="@id/currentCourseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_courseMeetingFragment_to_courseHistoryFragment"
+            app:destination="@id/courseHistoryFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/courseHistoryFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_courseMeetingFragment_to_courseThreadFragment"
+            app:destination="@id/courseThreadFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileNameFragment"
+        android:name="com.example.unserhoersaal.views.EditProfileNameFragment"
+        android:label="EditProfileNameFragment"
+        tools:layout="@layout/fragment_edit_profile_name">
+        <action
+            android:id="@+id/action_editProfileNameFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileInstitutionFragment"
+        android:name="com.example.unserhoersaal.views.EditProfileInstitutionFragment"
+        android:label="fragment_edit_profile_institution"
+        tools:layout="@layout/fragment_edit_profile_institution" >
+        <action
+            android:id="@+id/action_editProfileInstitutionFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfilePasswordFragment"
+        android:name="com.example.unserhoersaal.views.EditProfilePasswordFragment"
+        android:label="fragment_edit_profile_password"
+        tools:layout="@layout/fragment_edit_profile_password" >
+        <action
+            android:id="@+id/action_editProfilePasswordFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseThreadFragment"
+        android:name="com.example.unserhoersaal.views.CourseThreadFragment"
+        android:label="fragment_course_thread"
+        tools:layout="@layout/fragment_course_thread" >
+        <action
+            android:id="@+id/action_courseThreadFragment_to_courseMeetingFragment"
+            app:destination="@id/courseMeetingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 </navigation>
