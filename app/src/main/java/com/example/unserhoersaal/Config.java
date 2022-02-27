@@ -18,6 +18,7 @@ public class Config {
   public static final String CHILD_THREADS = "threads";
   public static final String CHILD_USER_COURSES = "usersCourses";
   public static final String CHILD_COURSES_USER = "coursesUsers";
+  public static final String CHILD_USER_NAME = "displayName";
 
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;
