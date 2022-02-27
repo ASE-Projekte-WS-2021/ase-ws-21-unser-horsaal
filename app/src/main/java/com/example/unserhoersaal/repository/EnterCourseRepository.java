@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -78,12 +80,26 @@ public class EnterCourseRepository {
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel course = snapshot.getValue(CourseModel.class);
         course.setKey(snapshot.getKey());
-        courseModel.postValue(course);
+        getAuthorName(course);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
 
+      }
+    });
+  }
+
+  public void getAuthorName(CourseModel course) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    Task<DataSnapshot> task = reference.child(Config.CHILD_USER).child(course.getCreatorId())
+            .child(Config.CHILD_USER_NAME).get();
+
+    task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(DataSnapshot dataSnapshot) {
+        course.setCreatorName(dataSnapshot.getValue(String.class));
+        courseModel.postValue(course);
       }
     });
   }
