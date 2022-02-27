@@ -99,9 +99,10 @@ public class CoursesRepository {
       @Override
       public void onSuccess(Void unused) {
         for (int i = 0; i < authorList.size(); i++) {
-          CourseModel model = authorList.get(i);
+          /*CourseModel model = authorList.get(i);
           model.setCreatorName(authorNames.get(i).getResult().getValue(String.class));
-          authorList.set(i, model);
+          authorList.set(i, model);*/
+          authorList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
         }
         userCoursesList.clear();
         userCoursesList.addAll(authorList);
