@@ -11,6 +11,7 @@ public class MessageModel {
   private String text;
   private boolean topAnswer;
   private String key;
+  private String creatorName;
 
   /**Default class constructor.**/
   public MessageModel() {
@@ -63,5 +64,13 @@ public class MessageModel {
 
   public void setKey(String key) {
     this.key = key;
+  }
+
+  public String getCreatorName() {
+    return this.creatorName;
+  }
+
+  public void setCreatorName(String creatorName) {
+    this.creatorName = creatorName;
   }
 }

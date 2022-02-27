@@ -5,7 +5,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.MessageModel;
+import com.example.unserhoersaal.model.ThreadModel;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -96,18 +99,41 @@ public class CurrentCourseRepository {
     this.threadId.postValue(threadId);
   }
 
+  public void getAuthor(List<MessageModel> mesList) {
+    List<Task<DataSnapshot>> authorNames = new ArrayList<>();
+    for (MessageModel message : mesList) {
+      authorNames.add(getAuthorName(message.getCreatorId()));
+    }
+    Tasks.whenAll(authorNames).addOnSuccessListener(new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void unused) {
+        for (int i = 0; i < authorNames.size(); i++) {
+          mesList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+        }
+        messagesList.clear();
+        messagesList.addAll(mesList);
+        messages.postValue(messagesList);
+      }
+    });
+  }
+
+  public Task<DataSnapshot> getAuthorName(String authorId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    return reference.child(Config.CHILD_USER).child(authorId).child(Config.CHILD_USER_NAME).get();
+  }
+
   /** Initialise the listener for the database access. */
   public void initListener() {
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        messagesList.clear();
+        List<MessageModel> mesList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           MessageModel model = snapshot.getValue(MessageModel.class);
           model.setKey(snapshot.getKey());
-          messagesList.add(model);
+          mesList.add(model);
         }
-        messages.postValue(messagesList);
+        getAuthor(mesList);
       }
 
       @Override

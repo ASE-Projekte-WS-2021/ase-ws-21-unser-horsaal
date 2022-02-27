@@ -29,15 +29,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
     View view = LayoutInflater.from(viewGroup.getContext())
-            .inflate(R.layout.simple_question_item, viewGroup, false);
+            .inflate(R.layout.answer_item, viewGroup, false);
     return new ViewHolder(view);
   }
 
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
     viewHolder.getMessage().setText(this.localDataSet.get(position).getText());
-    Log.d(TAG, "onBindViewHolder: " + this.localDataSet.get(position).getKey());
     viewHolder.getDate().setText(calculateDate(this.localDataSet.get(position).getCreationTime()));
+    viewHolder.getAuthor().setText(this.localDataSet.get(position).getCreatorName());
+    viewHolder.getLikes().setText(Integer.toString(this.localDataSet.get(position).getLikes()));
   }
 
   @Override
@@ -60,13 +61,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private TextView message;
     private TextView date;
+    private TextView author;
+    private TextView likes;
 
     /** Constructor. */
     public ViewHolder(View view) {
       super(view);
 
-      this.message = (TextView) view.findViewById(R.id.questionTextTextView);
-      this.date = (TextView) view.findViewById(R.id.questionDateTextView);
+      this.message = (TextView) view.findViewById(R.id.answerItemAnswerText);
+      this.date = (TextView) view.findViewById(R.id.answerItemTime);
+      this.author = (TextView)  view.findViewById(R.id.answerItemAuthor);
+      this.likes = (TextView) view.findViewById(R.id.answerItemDislikeCount);
     }
 
     public TextView getMessage() {
@@ -75,6 +80,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public TextView getDate() {
       return this.date;
+    }
+
+    public TextView getAuthor() {
+      return this.author;
+    }
+
+    public TextView getLikes() {
+      return this.likes;
     }
   }
 }

@@ -164,7 +164,7 @@ public class CourseMeetingFragment extends Fragment implements ThreadAdapter.OnN
   public void onNoteClick(int position) {
     String id = this.courseMeetingViewModel.getThreads().getValue().get(position).getKey();
     this.currentCourseViewModel.setThreadId(id);
-    navController.navigate(R.id.action_courseMeetingFragment_to_currentCourseFragment);
+    navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
     //Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();
   }
 }
