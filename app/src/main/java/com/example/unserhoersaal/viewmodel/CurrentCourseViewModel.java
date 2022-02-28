@@ -59,4 +59,8 @@ public class CurrentCourseViewModel extends ViewModel {
   public void dislike(String messageId) {
     this.currentCourseRepository.dislike(messageId);
   }
+
+  public void solved(String messageId) {
+    this.currentCourseRepository.solved(messageId);
+  }
 }

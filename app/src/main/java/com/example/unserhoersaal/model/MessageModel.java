@@ -50,7 +50,7 @@ public class MessageModel {
     this.text = textMessage;
   }
 
-  public boolean isTopAnswer() {
+  public boolean getTopAnswer() {
     return this.topAnswer;
   }
 

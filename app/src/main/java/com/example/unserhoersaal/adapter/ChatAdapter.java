@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.adapter;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +45,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     viewHolder.getDate().setText(calculateDate(this.localDataSet.get(position).getCreationTime()));
     viewHolder.getAuthor().setText(this.localDataSet.get(position).getCreatorName());
     viewHolder.getLikes().setText(Integer.toString(this.localDataSet.get(position).getLikes()));
+    if(this.localDataSet.get(position).getTopAnswer()) {
+      viewHolder.answeredButton.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+    } else {
+      viewHolder.answeredButton.clearColorFilter();
+    }
   }
 
   @Override
@@ -63,6 +70,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   public interface OnNoteListener {
     void onLikeClicked(int position);
     void onDislikeClicked(int position);
+    void onSolvedClicked(int position);
   }
 
   /** Viewholder. */
@@ -74,6 +82,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private TextView likes;
     private ImageView likeButton;
     private ImageView dislikeButton;
+    private ImageView answeredButton;
     private OnNoteListener onNoteListener;
 
     /** Constructor. */
@@ -86,8 +95,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
       this.author = (TextView)  view.findViewById(R.id.answerItemAuthor);
       this.likes = (TextView) view.findViewById(R.id.answerItemDislikeCount);
 
+      this.answeredButton = (ImageView) view.findViewById(R.id.answerItemSolvedIcon);
       this.dislikeButton = (ImageView) view.findViewById(R.id.answerItemDislikeIcon);
       this.likeButton = (ImageView) view.findViewById(R.id.answerItemLikeIcon);
+      this.answeredButton.setOnClickListener(this);
       this.likeButton.setOnClickListener(this);
       this.dislikeButton.setOnClickListener(this);
     }
@@ -108,6 +119,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
       return this.likes;
     }
 
+    public ImageView getAnsweredButton() {
+      return this.answeredButton;
+    }
+
     @Override
     public void onClick(View view) {
       switch (view.getId()) {
@@ -117,6 +132,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         case R.id.answerItemLikeIcon:
           onNoteListener.onLikeClicked(getAdapterPosition());
           break;
+        case R.id.answerItemSolvedIcon:
+          onNoteListener.onSolvedClicked(getAdapterPosition());
         default:
           break;
       }

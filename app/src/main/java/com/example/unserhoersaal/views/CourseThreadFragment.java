@@ -131,4 +131,10 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
     String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
     this.currentCourseViewModel.dislike(id);
   }
+
+  @Override
+  public void onSolvedClicked(int position) {
+    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
+    this.currentCourseViewModel.solved(id);
+  }
 }

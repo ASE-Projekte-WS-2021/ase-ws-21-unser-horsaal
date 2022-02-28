@@ -114,4 +114,9 @@ public class CurrentCourseFragment extends Fragment implements ChatAdapter.OnNot
     String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
     this.currentCourseViewModel.dislike(id);
   }
+
+  @Override
+  public void onSolvedClicked(int position) {
+
+  }
 }

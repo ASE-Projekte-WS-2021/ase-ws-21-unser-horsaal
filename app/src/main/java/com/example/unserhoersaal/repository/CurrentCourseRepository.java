@@ -169,4 +169,22 @@ public class CurrentCourseRepository {
     reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
             .child(Config.CHILD_LIKE).setValue(ServerValue.increment(-1));
   }
+
+  public void solved(String messageId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
+            .child(Config.CHILD_TOP_ANSWER).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        boolean topAnswer = snapshot.getValue(Boolean.class) ? Boolean.FALSE : Boolean.TRUE;
+        reference.child(Config.CHILD_MESSAGES).child(threadId.getValue()).child(messageId)
+                .child(Config.CHILD_TOP_ANSWER).setValue(topAnswer);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+  }
 }
