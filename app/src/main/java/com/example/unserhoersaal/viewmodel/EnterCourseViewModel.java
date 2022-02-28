@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.EnterCourseRepository;
 
+import java.util.Locale;
+
 /**Class EnterCourseViewModel.**/
 public class EnterCourseViewModel extends ViewModel {
 
@@ -44,7 +46,12 @@ public class EnterCourseViewModel extends ViewModel {
 
   public void checkCode() {
     String id = enteredCourseId.getValue();
-    this.enterCourseRepository.checkCode(id);
+    if (id != null) {
+      id = id.toUpperCase();
+      id = id.replace(" ", "");
+      id = id.replace("-", "");
+      this.enterCourseRepository.checkCode(id);
+    }
   }
 
   /** Join a course. */

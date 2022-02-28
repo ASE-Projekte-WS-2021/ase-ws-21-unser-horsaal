@@ -41,7 +41,7 @@ public class CurrentCourseViewModel extends ViewModel {
     return this.threadId;
   }
 
-  /** Send a new messag in a thread. */
+  /** Send a new message in a thread. */
   public void sendMessage(String messageText) {
     MessageModel messageModel = new MessageModel();
     messageModel.setText(messageText);
