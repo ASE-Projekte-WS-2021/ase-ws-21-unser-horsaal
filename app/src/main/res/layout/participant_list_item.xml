@@ -22,11 +22,12 @@
 
     <TextView
         android:id="@+id/participantListItemName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/participant_list_item_example_name"
         android:layout_marginStart="64dp"
+        android:text="@string/participant_list_item_example_name"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/participantListItemProfileIcon"
         app:layout_constraintTop_toTopOf="parent" />
 
