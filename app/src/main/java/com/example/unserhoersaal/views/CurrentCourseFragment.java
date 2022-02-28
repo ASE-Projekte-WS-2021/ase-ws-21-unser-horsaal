@@ -22,7 +22,7 @@ import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.List;
 
 /** Fragment for current course.*/
-public class CurrentCourseFragment extends Fragment {
+public class CurrentCourseFragment extends Fragment implements ChatAdapter.OnNoteListener {
 
   private static final String TAG = "CurrentCourseFragment";
 
@@ -95,10 +95,23 @@ public class CurrentCourseFragment extends Fragment {
   }
 
   private void initRecyclerView() {
-    this.chatAdapter = new ChatAdapter(this.currentCourseViewModel.getMessages().getValue());
+    this.chatAdapter =
+            new ChatAdapter(this.currentCourseViewModel.getMessages().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     this. recyclerView.setLayoutManager(layoutManager);
     this.recyclerView.setItemAnimator(new DefaultItemAnimator());
     this.recyclerView.setAdapter(this.chatAdapter);
+  }
+
+  @Override
+  public void onLikeClicked(int position) {
+    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
+    this.currentCourseViewModel.like(id);
+  }
+
+  @Override
+  public void onDislikeClicked(int position) {
+    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
+    this.currentCourseViewModel.dislike(id);
   }
 }

@@ -30,7 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 /**Course Thread.*/
-public class CourseThreadFragment extends Fragment {
+public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNoteListener{
 
   private static final String TAG = "CourseThreadFragment";
 
@@ -104,7 +104,8 @@ public class CourseThreadFragment extends Fragment {
   }
 
   private void initRecyclerView() {
-    this.chatAdapter = new ChatAdapter(this.currentCourseViewModel.getMessages().getValue());
+    this.chatAdapter =
+            new ChatAdapter(this.currentCourseViewModel.getMessages().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     this. recyclerView.setLayoutManager(layoutManager);
     this.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -117,5 +118,17 @@ public class CourseThreadFragment extends Fragment {
     this.toolbar.setNavigationOnClickListener(v -> {
       this.navController.navigate(R.id.action_courseThreadFragment_to_courseMeetingFragment);
     });
+  }
+
+  @Override
+  public void onLikeClicked(int position) {
+    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
+    this.currentCourseViewModel.like(id);
+  }
+
+  @Override
+  public void onDislikeClicked(int position) {
+    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
+    this.currentCourseViewModel.dislike(id);
   }
 }

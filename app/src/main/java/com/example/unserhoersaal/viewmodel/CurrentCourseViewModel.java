@@ -51,4 +51,12 @@ public class CurrentCourseViewModel extends ViewModel {
   public void setThreadId(String threadId) {
     this.currentCourseRepository.setThreadId(threadId);
   }
+
+  public void like(String messageId) {
+    this.currentCourseRepository.like(messageId);
+  }
+
+  public void dislike(String messageId) {
+    this.currentCourseRepository.dislike(messageId);
+  }
 }
