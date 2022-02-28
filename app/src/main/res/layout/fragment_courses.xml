@@ -165,6 +165,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             style="@style/fabStyle" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

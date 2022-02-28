@@ -17,6 +17,8 @@ public class CourseHistoryViewModel extends ViewModel {
   private MutableLiveData<String> courseId = new MutableLiveData<>();
   private MutableLiveData<List<MeetingsModel>> meetings;
   private MutableLiveData<MeetingsModel> meetingsModelMutableLiveData;
+  //databinding
+  public MutableLiveData<MeetingsModel> newMeeting;
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -32,6 +34,12 @@ public class CourseHistoryViewModel extends ViewModel {
     if (this.courseId.getValue() != null) {
       this.meetings = this.courseHistoryRepository.getMeetings();
     }
+
+    this.newMeeting = new MutableLiveData<>(new MeetingsModel());
+  }
+
+  public void resetMeetingData() {
+    this.newMeeting.setValue(new MeetingsModel());
   }
 
   public LiveData<List<MeetingsModel>> getMeetings() {
@@ -51,12 +59,9 @@ public class CourseHistoryViewModel extends ViewModel {
   }
 
   /** Create a new Meeting. */
-  public void createMeeting(String title) {
-    MeetingsModel meetingsModel = new MeetingsModel();
-    meetingsModel.setTitle(title);
-    //TODO ändern auf angegebene Zeit
-    meetingsModel.setEventTime(System.currentTimeMillis());
-    this.courseHistoryRepository.createMeeting(meetingsModel);
+  public void createMeeting() {
+    if (newMeeting.getValue() == null) return;
+    this.courseHistoryRepository.createMeeting(newMeeting.getValue());
   }
 
 }

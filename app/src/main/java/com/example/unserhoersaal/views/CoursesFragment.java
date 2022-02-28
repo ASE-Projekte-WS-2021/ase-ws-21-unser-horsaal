@@ -16,14 +16,12 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
-import com.google.android.material.appbar.MaterialToolbar;
 
 /** Courses. */
 public class CoursesFragment extends Fragment {
 
   private static final String TAG = "CoursesFragment";
 
-  private MaterialToolbar toolbar;
   private FragmentCoursesBinding binding;
   private CoursesViewModel coursesViewModel;
   private NavController navController;
@@ -51,9 +49,9 @@ public class CoursesFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    this.toolbar = view.findViewById(R.id.coursesFragmentToolbar);
 
     this.initViewModel();
+    this.connectAdapter();
     this.connectBinding();
     this.initToolbar();
   }
@@ -67,7 +65,9 @@ public class CoursesFragment extends Fragment {
     this.coursesViewModel.getUserCourses()
             .observe(getViewLifecycleOwner(), userCourses ->
                     coursesAdapter.notifyDataSetChanged());
+  }
 
+  private void connectAdapter() {
     this.coursesAdapter = new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue());
   }
 
@@ -78,10 +78,10 @@ public class CoursesFragment extends Fragment {
   }
 
   private void initToolbar() {
-    this.toolbar.inflateMenu(R.menu.courses_fragment_toolbar);
-    this.toolbar.setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
-    this.toolbar.setNavigationOnClickListener(v ->
-            this.navController.navigate(R.id.action_coursesFragment_to_profileFragment));
+    this.binding.coursesFragmentToolbar.inflateMenu(R.menu.courses_fragment_toolbar);
+    this.binding.coursesFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.coursesFragmentToolbar.setNavigationOnClickListener(v ->
+            navController.navigate(R.id.action_coursesFragment_to_profileFragment));
   }
 
   //For closing the Floating Action Buttons when returning to this Fragment and the Buttons were not closed before.

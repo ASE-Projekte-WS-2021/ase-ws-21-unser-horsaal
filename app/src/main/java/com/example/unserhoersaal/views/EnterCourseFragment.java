@@ -67,9 +67,8 @@ public class EnterCourseFragment extends Fragment {
     this.courseHistoryViewModel.init();
     this.enterCourseViewModel.getCourse()
             .observe(getViewLifecycleOwner(), model -> {
-              //openNewCourse(id);
               if (model != null) {
-                showDialog();
+                enterCourseViewModel.toggleConfirmationWindow();
               }
             });
     this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id -> {
@@ -99,8 +98,4 @@ public class EnterCourseFragment extends Fragment {
     });
   }
 
-  private void showDialog() {
-    EnterCourseDialogFragment dialogFragment = new EnterCourseDialogFragment();
-    dialogFragment.show(getActivity().getSupportFragmentManager(), "enter dialog");
-  }
 }

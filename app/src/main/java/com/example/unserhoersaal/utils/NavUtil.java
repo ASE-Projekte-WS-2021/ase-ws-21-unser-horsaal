@@ -10,7 +10,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
+import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
 /** Class for Navigation. */
@@ -22,12 +24,25 @@ public class NavUtil {
     navController.navigate(navAction);
   }
 
-  @BindingAdapter("navigateByAdapterItem")
-  public static void navigateByAdapterItem(View view, CourseModel model) {
+  @BindingAdapter("navigateToCourse")
+  public static void navigateToCourse(View view, CourseModel model) {
+    if (model == null) return;
     CourseHistoryViewModel courseHistoryViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseHistoryViewModel.class);
     courseHistoryViewModel.init();
     courseHistoryViewModel.setCourseId(model.getKey());
+
+    NavController navController = Navigation.findNavController(view);
+    navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
+  }
+
+  @BindingAdapter("navigateToMeeting")
+  public static void navigateToMeeting(View view, MeetingsModel model) {
+    if (model == null) return;
+    CourseMeetingViewModel courseMeetingViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+            .get(CourseMeetingViewModel.class);
+    courseMeetingViewModel.init();
+    courseMeetingViewModel.setMeetingId(model.getKey());
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);

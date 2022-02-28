@@ -82,14 +82,11 @@ public class CurrentCourseFragment extends Fragment {
     this.courseKeyTextView = view.findViewById(R.id.courseKeyTextView);
     this.recyclerView = view.findViewById(R.id.chatRecyclerView);
 
-    this.sendQuestionButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        String text = questionEditText.getText().toString();
-        if (text.length() > 0) {
-          currentCourseViewModel.sendMessage(text);
-          questionEditText.getText().clear();
-        }
+    this.sendQuestionButton.setOnClickListener(view1 -> {
+      String text = questionEditText.getText().toString();
+      if (text.length() > 0) {
+        currentCourseViewModel.sendMessage(text);
+        questionEditText.getText().clear();
       }
     });
   }
