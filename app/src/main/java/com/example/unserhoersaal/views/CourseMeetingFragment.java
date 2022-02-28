@@ -98,4 +98,9 @@ public class CourseMeetingFragment extends Fragment {
     );
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    this.courseMeetingViewModel.resetThreadModelInput();
+  }
 }

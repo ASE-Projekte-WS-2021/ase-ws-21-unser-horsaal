@@ -23,8 +23,6 @@ public class CourseParticipantsFragment extends Fragment {
 
   private MaterialToolbar toolbar;
   private RecyclerView participantsList;
-
-
   private NavController navController;
 
   public CourseParticipantsFragment() {
