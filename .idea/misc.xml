@@ -84,6 +84,7 @@
         <entry key="app/src/main/res/layout/fragment_course_meeting.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_course_participants.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_courses.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_create_course.xml" value="0.21829710144927536" />
         <entry key="app/src/main/res/layout/fragment_current_course.xml" value="0.254981884057971" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_enter_course.xml" value="0.25" />

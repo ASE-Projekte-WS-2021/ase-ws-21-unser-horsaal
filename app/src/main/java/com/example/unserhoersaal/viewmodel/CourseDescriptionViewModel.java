@@ -38,4 +38,9 @@ public class CourseDescriptionViewModel extends ViewModel {
   public void setCourseId(String courseId) {
     this.courseDescriptionRepository.setCourseId(courseId);
   }
+
+  public void unregisterFromCourse() {
+    //TODO: unregister user from course
+    //TODO: check observable in coursedescriptionfragment:61
+  }
 }

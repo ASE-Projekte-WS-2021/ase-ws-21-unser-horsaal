@@ -15,7 +15,6 @@ public class EnterCourseViewModel extends ViewModel {
   private MutableLiveData<CourseModel> courseModel;
   private MutableLiveData<String> courseId;
   public MutableLiveData<String> enteredCourseId;
-  public MutableLiveData<Boolean> toggleConfirmation;
 
   /** Initialize the EnterCourseViewModel. */
   public void init() {
@@ -26,7 +25,6 @@ public class EnterCourseViewModel extends ViewModel {
     this.courseModel = this.enterCourseRepository.getCourse();
     this.courseId = this.enterCourseRepository.getCourseId();
     this.enteredCourseId = new MutableLiveData<>();
-    this.toggleConfirmation = new MutableLiveData<>(false);
   }
 
   public LiveData<CourseModel> getCourse() {
@@ -42,7 +40,6 @@ public class EnterCourseViewModel extends ViewModel {
     this.enteredCourseId.setValue(null);
     this.courseModel.setValue(null);
     this.courseId.setValue(null);
-    this.toggleConfirmation.setValue(false);
   }
 
   public void checkCode() {
@@ -57,11 +54,6 @@ public class EnterCourseViewModel extends ViewModel {
       this.enterCourseRepository.isUserInCourse(courseModel.getValue().getKey());
     }
     //TODO: else error?
-  }
-
-  public void toggleConfirmationWindow() {
-    if (this.toggleConfirmation.getValue() == null) return;
-    this.toggleConfirmation.setValue(!this.toggleConfirmation.getValue());
   }
 
 }
