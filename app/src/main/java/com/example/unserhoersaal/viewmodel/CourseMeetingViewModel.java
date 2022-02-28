@@ -17,6 +17,7 @@ public class CourseMeetingViewModel extends ViewModel {
   private MutableLiveData<String> meetingId = new MutableLiveData<>();
   private MutableLiveData<List<ThreadModel>> threads;
   private MutableLiveData<ThreadModel> threadModelMutableLiveData;
+  public MutableLiveData<ThreadModel> threadModelInput;
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -32,6 +33,7 @@ public class CourseMeetingViewModel extends ViewModel {
     if (this.meetingId.getValue() != null) {
       this.threads = this.courseMeetingRepository.getThreads();
     }
+    this.threadModelInput = new MutableLiveData<>(new ThreadModel());
   }
 
   public LiveData<List<ThreadModel>> getThreads() {
@@ -46,15 +48,18 @@ public class CourseMeetingViewModel extends ViewModel {
     return this.threadModelMutableLiveData;
   }
 
+  public void resetThreadModelInput() {
+    this.threadModelInput.setValue(new ThreadModel());
+  }
+
   public void setMeetingId(String meetingId) {
     this.courseMeetingRepository.setMeetingId(meetingId);
   }
 
   /** Create a new Thread. */
-  public void createThread(String title, String text) {
-    ThreadModel threadModel = new ThreadModel();
-    threadModel.setTitle(title);
-    threadModel.setText(text);
-    this.courseMeetingRepository.createThread(threadModel);
+  public void createThread() {
+    if (this.threadModelInput.getValue() == null) return;
+
+    this.courseMeetingRepository.createThread(this.threadModelInput.getValue());
   }
 }

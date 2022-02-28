@@ -115,4 +115,5 @@
     <string name="du_bist_noch_keinem_kurs_beigetreten">Du bist noch keinem Kurs beigetreten.</string>
     <string name="unregister_from_course_message">Möchten Sie sich wirklich aus dem Kurs ausschreiben?</string>
     <string name="unregister_from_course_title">Kurs verlassen</string>
+    <string name="abbrechen">Abbrechen</string>
 </resources>

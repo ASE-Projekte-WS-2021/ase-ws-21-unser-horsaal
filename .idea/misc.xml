@@ -94,6 +94,7 @@
         <entry key="app/src/main/res/layout/simple_course_item.xml" value="0.21829710144927536" />
         <entry key="app/src/main/res/layout/simple_course_meeting.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/simple_question_item.xml" value="0.17147922998986828" />
+        <entry key="app/src/main/res/layout/thread_item.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.22395833333333334" />
         <entry key="app/src/main/res/menu/course_history_fragment_toolbar.xml" value="0.22395833333333334" />
         <entry key="app/src/main/res/menu/edit_profile_fragment_toolbar.xml" value="0.22395833333333334" />

@@ -166,7 +166,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/courseHistoryFragmentCreateMeetingDismissButton"
-                    android:onClick="@{() -> VisibilityAdapter.closeMeetingCreationLayout(courseHistoryFragmentFab, courseHistoryFragmentCreateMeetingContainer)}"
+                    android:onClick="@{() -> VisibilityAdapter.closeCreationLayout(courseHistoryFragmentFab, courseHistoryFragmentCreateMeetingContainer)}"
                     style="@style/wideRedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/courseHistoryFragmentFab"
-            android:onClick="@{() -> VisibilityAdapter.openMeetingCreationLayout(courseHistoryFragmentFab, courseHistoryFragmentCreateMeetingContainer)}"
+            android:onClick="@{() -> VisibilityAdapter.openCreationLayout(courseHistoryFragmentFab, courseHistoryFragmentCreateMeetingContainer)}"
             style="@style/fabStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
