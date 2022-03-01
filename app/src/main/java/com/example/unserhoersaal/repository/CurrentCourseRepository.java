@@ -5,14 +5,20 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.MessageModel;
+import com.example.unserhoersaal.model.ThreadModel;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,7 +40,9 @@ public class CurrentCourseRepository {
     initListener();
   }
 
-  /** Generates a unique instance of CurrentCourseRepository. */
+  /**
+   * Generates a unique instance of CurrentCourseRepository.
+   */
   public static CurrentCourseRepository getInstance() {
     if (instance == null) {
       instance = new CurrentCourseRepository();
@@ -42,7 +50,9 @@ public class CurrentCourseRepository {
     return instance;
   }
 
-  /** This method provides all messages of a course. */
+  /**
+   * This method provides all messages of a course.
+   */
   public MutableLiveData<List<MessageModel>> getMessages() {
     /*if (this.messagesList.size() == 0) {
       this.loadMessages();
@@ -56,7 +66,9 @@ public class CurrentCourseRepository {
     return this.threadId;
   }
 
-  /** Loading all messages from the database. */
+  /**
+   * Loading all messages from the database.
+   */
   public void loadMessages() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_THREADS).child(this.threadId.getValue())
@@ -64,7 +76,9 @@ public class CurrentCourseRepository {
     query.addValueEventListener(this.listener);
   }
 
-  /** This method saves a message in the data base. */
+  /**
+   * This method saves a message in the data base.
+   */
   public void sendMessage(MessageModel message) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -85,7 +99,9 @@ public class CurrentCourseRepository {
 
   }
 
-  /** Sets the id of the new entered thread. */
+  /**
+   * Sets the id of the new entered thread.
+   */
   public void setThreadId(String threadId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.threadId.getValue() != null) {
@@ -96,18 +112,43 @@ public class CurrentCourseRepository {
     this.threadId.postValue(threadId);
   }
 
-  /** Initialise the listener for the database access. */
+  public void getAuthor(List<MessageModel> mesList) {
+    List<Task<DataSnapshot>> authorNames = new ArrayList<>();
+    for (MessageModel message : mesList) {
+      authorNames.add(getAuthorName(message.getCreatorId()));
+    }
+    Tasks.whenAll(authorNames).addOnSuccessListener(new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void unused) {
+        for (int i = 0; i < authorNames.size(); i++) {
+          mesList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+        }
+        messagesList.clear();
+        messagesList.addAll(mesList);
+        messages.postValue(messagesList);
+      }
+    });
+  }
+
+  public Task<DataSnapshot> getAuthorName(String authorId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    return reference.child(Config.CHILD_USER).child(authorId).child(Config.CHILD_USER_NAME).get();
+  }
+
+  /**
+   * Initialise the listener for the database access.
+   */
   public void initListener() {
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        messagesList.clear();
+        List<MessageModel> mesList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           MessageModel model = snapshot.getValue(MessageModel.class);
           model.setKey(snapshot.getKey());
-          messagesList.add(model);
+          mesList.add(model);
         }
-        messages.postValue(messagesList);
+        getAuthor(mesList);
       }
 
       @Override
@@ -115,5 +156,35 @@ public class CurrentCourseRepository {
         Log.d(TAG, "onCancelled: " + error.getMessage());
       }
     };
+  }
+
+  public void like(String messageId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
+            .child(Config.CHILD_LIKE).setValue(ServerValue.increment(1));
+  }
+
+  public void dislike(String messageId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
+            .child(Config.CHILD_LIKE).setValue(ServerValue.increment(-1));
+  }
+
+  public void solved(String messageId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
+            .child(Config.CHILD_TOP_ANSWER).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        boolean topAnswer = snapshot.getValue(Boolean.class) ? Boolean.FALSE : Boolean.TRUE;
+        reference.child(Config.CHILD_MESSAGES).child(threadId.getValue()).child(messageId)
+                .child(Config.CHILD_TOP_ANSWER).setValue(topAnswer);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
   }
 }

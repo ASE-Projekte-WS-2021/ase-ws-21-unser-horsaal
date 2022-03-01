@@ -11,8 +11,11 @@ public class ThreadModel {
   public int likes;
   public String text;
   public String title;
+
   public String key;
+  public String creatorName;
   public int answersCount;
+
 
   public ThreadModel() {
 
@@ -80,5 +83,13 @@ public class ThreadModel {
 
   public void setKey(String key) {
     this.key = key;
+  }
+
+  public String getCreatorName() {
+    return this.creatorName;
+  }
+
+  public void setCreatorName(String creatorName) {
+    this.creatorName = creatorName;
   }
 }

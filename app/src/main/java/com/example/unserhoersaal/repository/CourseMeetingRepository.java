@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,6 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -99,19 +103,41 @@ public class CourseMeetingRepository {
             });
   }
 
+  public void getAuthor(List<ThreadModel> threadList) {
+    List<Task<DataSnapshot>> authorNames = new ArrayList<>();
+    for (ThreadModel thread : threadList) {
+      authorNames.add(getAuthorName(thread.getCreatorId()));
+    }
+    Tasks.whenAll(authorNames).addOnSuccessListener(new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void unused) {
+        for (int i = 0; i < threadList.size(); i++) {
+          threadList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+        }
+        threadModelList.clear();
+        threadModelList.addAll(threadList);
+        threads.postValue(threadModelList);
+      }
+    });
+  }
+
+  public Task<DataSnapshot> getAuthorName(String authorId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    return reference.child(Config.CHILD_USER).child(authorId).child(Config.CHILD_USER_NAME).get();
+  }
+
   /** Initialise the listener for the database access. */
   public void initListener() {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        threadModelList.clear();
+        List<ThreadModel> threadList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           ThreadModel model = snapshot.getValue(ThreadModel.class);
           model.setKey(snapshot.getKey());
-          threadModelList.add(model);
+          threadList.add(model);
         }
-        threads.postValue(threadModelList);
+        getAuthor(threadList);
       }
 
       @Override

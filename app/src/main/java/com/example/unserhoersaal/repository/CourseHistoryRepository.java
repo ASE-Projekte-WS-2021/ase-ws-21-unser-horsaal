@@ -102,7 +102,6 @@ public class CourseHistoryRepository {
 
   /** Initialises the database listener. */
   public void initListener() {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

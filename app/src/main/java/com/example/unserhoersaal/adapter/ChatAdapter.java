@@ -1,9 +1,13 @@
 package com.example.unserhoersaal.adapter;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,24 +24,32 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   private static final String TAG = "ChatAdapter";
 
   private List<MessageModel> localDataSet = new ArrayList<>();
+  private OnNoteListener onNoteListener;
 
-  public ChatAdapter(List<MessageModel> dataSet) {
+  public ChatAdapter(List<MessageModel> dataSet, OnNoteListener onNoteListener) {
     this.localDataSet = dataSet;
+    this.onNoteListener = onNoteListener;
   }
 
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
     View view = LayoutInflater.from(viewGroup.getContext())
-            .inflate(R.layout.simple_question_item, viewGroup, false);
-    return new ViewHolder(view);
+            .inflate(R.layout.answer_item, viewGroup, false);
+    return new ViewHolder(view, this.onNoteListener);
   }
 
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
     viewHolder.getMessage().setText(this.localDataSet.get(position).getText());
-    Log.d(TAG, "onBindViewHolder: " + this.localDataSet.get(position).getKey());
     viewHolder.getDate().setText(calculateDate(this.localDataSet.get(position).getCreationTime()));
+    viewHolder.getAuthor().setText(this.localDataSet.get(position).getCreatorName());
+    viewHolder.getLikes().setText(Integer.toString(this.localDataSet.get(position).getLikes()));
+    if(this.localDataSet.get(position).getTopAnswer()) {
+      viewHolder.answeredButton.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+    } else {
+      viewHolder.answeredButton.clearColorFilter();
+    }
   }
 
   @Override
@@ -55,18 +67,40 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     return date;
   }
 
+  public interface OnNoteListener {
+    void onLikeClicked(int position);
+    void onDislikeClicked(int position);
+    void onSolvedClicked(int position);
+  }
+
   /** Viewholder. */
-  public class ViewHolder extends RecyclerView.ViewHolder {
+  public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private TextView message;
     private TextView date;
+    private TextView author;
+    private TextView likes;
+    private ImageView likeButton;
+    private ImageView dislikeButton;
+    private ImageView answeredButton;
+    private OnNoteListener onNoteListener;
 
     /** Constructor. */
-    public ViewHolder(View view) {
+    public ViewHolder(View view, OnNoteListener onNoteListener) {
       super(view);
 
-      this.message = (TextView) view.findViewById(R.id.questionTextTextView);
-      this.date = (TextView) view.findViewById(R.id.questionDateTextView);
+      this.onNoteListener = onNoteListener;
+      this.message = (TextView) view.findViewById(R.id.answerItemAnswerText);
+      this.date = (TextView) view.findViewById(R.id.answerItemTime);
+      this.author = (TextView)  view.findViewById(R.id.answerItemAuthor);
+      this.likes = (TextView) view.findViewById(R.id.answerItemDislikeCount);
+
+      this.answeredButton = (ImageView) view.findViewById(R.id.answerItemSolvedIcon);
+      this.dislikeButton = (ImageView) view.findViewById(R.id.answerItemDislikeIcon);
+      this.likeButton = (ImageView) view.findViewById(R.id.answerItemLikeIcon);
+      this.answeredButton.setOnClickListener(this);
+      this.likeButton.setOnClickListener(this);
+      this.dislikeButton.setOnClickListener(this);
     }
 
     public TextView getMessage() {
@@ -75,6 +109,34 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public TextView getDate() {
       return this.date;
+    }
+
+    public TextView getAuthor() {
+      return this.author;
+    }
+
+    public TextView getLikes() {
+      return this.likes;
+    }
+
+    public ImageView getAnsweredButton() {
+      return this.answeredButton;
+    }
+
+    @Override
+    public void onClick(View view) {
+      switch (view.getId()) {
+        case R.id.answerItemDislikeIcon:
+          onNoteListener.onDislikeClicked(getAdapterPosition());
+          break;
+        case R.id.answerItemLikeIcon:
+          onNoteListener.onLikeClicked(getAdapterPosition());
+          break;
+        case R.id.answerItemSolvedIcon:
+          onNoteListener.onSolvedClicked(getAdapterPosition());
+        default:
+          break;
+      }
     }
   }
 }

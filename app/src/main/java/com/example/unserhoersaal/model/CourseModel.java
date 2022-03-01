@@ -16,6 +16,7 @@ public class CourseModel {
   private String title;
 
   private String key;
+  private String creatorName;
 
   public CourseModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
@@ -61,6 +62,10 @@ public class CourseModel {
     return this.key;
   }
 
+  public String getCreatorName() {
+    return this.creatorName;
+  }
+
   /** Setter. */
   public void setCodeMapping(String codeMapping) {
     this.codeMapping = codeMapping;
@@ -92,6 +97,10 @@ public class CourseModel {
 
   public void setKey(String key) {
     this.key = key;
+  }
+
+  public void setCreatorName(String creatorName) {
+    this.creatorName = creatorName;
   }
 
 }

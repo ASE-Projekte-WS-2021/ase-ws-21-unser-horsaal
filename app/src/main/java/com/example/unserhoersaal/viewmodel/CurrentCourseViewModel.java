@@ -41,7 +41,7 @@ public class CurrentCourseViewModel extends ViewModel {
     return this.threadId;
   }
 
-  /** Send a new messag in a thread. */
+  /** Send a new message in a thread. */
   public void sendMessage(String messageText) {
     MessageModel messageModel = new MessageModel();
     messageModel.setText(messageText);
@@ -50,5 +50,17 @@ public class CurrentCourseViewModel extends ViewModel {
 
   public void setThreadId(String threadId) {
     this.currentCourseRepository.setThreadId(threadId);
+  }
+
+  public void like(String messageId) {
+    this.currentCourseRepository.like(messageId);
+  }
+
+  public void dislike(String messageId) {
+    this.currentCourseRepository.dislike(messageId);
+  }
+
+  public void solved(String messageId) {
+    this.currentCourseRepository.solved(messageId);
   }
 }
