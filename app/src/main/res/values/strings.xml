@@ -120,4 +120,5 @@
     <string name="abbrechen">Abbrechen</string>
     <string name="es_gibt_noch_keine_meetings_in_diesem_kurs">Es gibt noch keine Meetings in diesem Kurs.</string>
     <string name="enter_course_fragment_information_string">Tritt einem Kurs bei, um dich darin mit anderen Mitgliedern über Inhalte auszutauschen</string>
+    <string name="create_course_fragment_information_string">In einem Kurs kannst du einzelne Veranstaltungen erstellen, in denen sich Mitglieder austauschen können</string>
 </resources>

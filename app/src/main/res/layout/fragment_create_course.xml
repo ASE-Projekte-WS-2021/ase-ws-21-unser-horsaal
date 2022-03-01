@@ -19,27 +19,36 @@
             android:id="@+id/createCourseToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_blue"
-            app:title="Kurs erstellen"
+            android:background="@drawable/app_background"
             app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <TextView
+                android:id="@+id/createCourseFragmentToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_course_string"
+                style="@style/toolbarTitleStyle"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/createCourseFragmentConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="@color/app_blue"
+            android:background="@drawable/app_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/createCourseToolbar">
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/ic_baseline_create_24"
+            <TextView
+                style="@style/toolbarSubtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_course_fragment_information_string"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,25 +67,31 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_margin="32dp"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="260dp"
+                    android:layout_height="173dp"
+                    android:src="@drawable/create_course_image"
+                    android:layout_gravity="center"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/createCourseFragmentCourseTitleInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_title_hint"
-                    style="@style/textInputField">
+                    android:hint="@string/create_course_fragment_title_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseTitleEditText"
                         android:text="@={vm.courseModelInput.title}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,8 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_course_description"
-                    style="@style/textInputField">
+                    android:hint="@string/create_course_fragment_course_description">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseDescriptionEditText"
@@ -94,7 +108,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
-                        android:singleLine="false" />
+                        android:singleLine="false"
+                        android:background="@color/white"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,8 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_course_institution"
-                    style="@style/textInputField">
+                    android:hint="@string/create_course_fragment_course_institution">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseInstitutionEditText"
@@ -112,7 +126,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,6 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
+                    android:layout_marginBottom="64dp"
                     android:text="@string/create_course_create_button"
                     style="@style/wideOrangeButton" />
 
