@@ -39,14 +39,14 @@
     <string name="bottom_navigation_menu_profile_string">Profil</string>
     <string name="bottom_navigation_menu_courses_string">Kurse</string>
     <string name="bottom_navigation_menu_create_string">Erstellen</string>
-    <string name="courses_fragment_title_string">Bereits beigetretene Kurse</string>
+    <string name="courses_fragment_title_string">Meine Kurse</string>
     <string name="courses_fragment_enter_new_course_button_string">Neuem Kurs beitreten</string>
     <string name="courses_fragment_create_new_course_button_string">Neuen Kurs erstellen</string>
     <string name="placeholder_fragment_string">Hier wird gerade an einem neuen Feature gearbeitet</string>
     <string name="bottom_navigation_menu_placeholder_string">Platzhalter</string>
     <string name="registration_fragment_account_available_string">Account vorhanden?</string>
     <string name="registration_fragment_login_string">Einloggen</string>
-    <string name="courses_fragment_live_tab_string">Live</string>
+    <string name="courses_fragment_live_tab_string">Heute</string>
     <string name="courses_fragment_all_tab_string">Alle</string>
     <string name="courses_fragment_created_tab_string">Erstellt</string>
     <string name="toolbar_search_string">Suchen</string>
