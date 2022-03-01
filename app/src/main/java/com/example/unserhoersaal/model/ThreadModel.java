@@ -1,22 +1,29 @@
 package com.example.unserhoersaal.model;
 
-import java.util.HashMap;
-
 /** Model for a thread. */
 public class ThreadModel {
 
   private static final String TAG = "ThreadModel";
 
   public boolean answered;
-  public long creationTime;
+  public Long creationTime;
   public String creatorId;
   public int likes;
   public String text;
   public String title;
   public String key;
+  public int answersCount;
 
   public ThreadModel() {
 
+  }
+
+  public int getAnswersCount() {
+    return answersCount;
+  }
+
+  public void setAnswersCount(int answersCount) {
+    this.answersCount = answersCount;
   }
 
   public boolean isAnswered() {
@@ -27,11 +34,11 @@ public class ThreadModel {
     this.answered = answered;
   }
 
-  public long getCreationTime() {
+  public Long getCreationTime() {
     return this.creationTime;
   }
 
-  public void setCreationTime(long creationTime) {
+  public void setCreationTime(Long creationTime) {
     this.creationTime = creationTime;
   }
 

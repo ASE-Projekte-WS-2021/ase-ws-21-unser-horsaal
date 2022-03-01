@@ -82,6 +82,7 @@ public class CreateCourseFragment extends Fragment {
   public void courseCreated(CourseModel course) {
     String key = course.getKey();
     this.courseHistoryViewModel.setCourseId(key);
+    this.createCourseViewModel.resetCourseModelInput();
     this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
   }
 

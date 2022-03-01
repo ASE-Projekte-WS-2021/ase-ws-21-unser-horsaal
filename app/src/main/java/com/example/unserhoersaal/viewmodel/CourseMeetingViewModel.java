@@ -58,8 +58,14 @@ public class CourseMeetingViewModel extends ViewModel {
 
   /** Create a new Thread. */
   public void createThread() {
+    //TODO: error -> view
     if (this.threadModelInput.getValue() == null) return;
 
-    this.courseMeetingRepository.createThread(this.threadModelInput.getValue());
+    //TODO: error -> view
+    ThreadModel threadModel = this.threadModelInput.getValue();
+    if (threadModel.getTitle() == null) return;
+    if (threadModel.getText() == null) return;
+
+    this.courseMeetingRepository.createThread(threadModel);
   }
 }

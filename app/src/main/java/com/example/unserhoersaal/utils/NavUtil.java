@@ -15,6 +15,7 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
 /** Class for Navigation. */
@@ -47,19 +48,31 @@ public class NavUtil {
     courseMeetingViewModel.setMeetingId(model.getKey());
 
     NavController navController = Navigation.findNavController(view);
-    navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
+    navController.navigate(R.id.action_courseHistoryFragment_to_courseMeetingFragment);
   }
 
   @BindingAdapter("navigateToThread")
   public static void navigateToThread(View view, ThreadModel model) {
     if (model == null) return;
-    CourseMeetingViewModel courseMeetingViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
-            .get(CourseMeetingViewModel.class);
-    courseMeetingViewModel.init();
-    courseMeetingViewModel.setMeetingId(model.getKey());
+    CurrentCourseViewModel currentCourseViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+            .get(CurrentCourseViewModel.class);
+    currentCourseViewModel.init();
+    currentCourseViewModel.setThreadId(model.getKey());
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseMeetingFragment_to_currentCourseFragment);
+  }
+
+  @BindingAdapter("navigateToDescription")
+  public static void navigateToDescription(View view, String courseId) {
+    if (courseId == null) return;
+    CourseDescriptionViewModel courseDescriptionViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+            .get(CourseDescriptionViewModel.class);
+    courseDescriptionViewModel.init();
+    courseDescriptionViewModel.setCourseId(courseId);
+
+    NavController navController = Navigation.findNavController(view);
+    navController.navigate(R.id.action_courseHistoryFragment_to_courseDescriptionFragment);
   }
 
   //reference: https://developer.android.com/guide/topics/ui/dialogs

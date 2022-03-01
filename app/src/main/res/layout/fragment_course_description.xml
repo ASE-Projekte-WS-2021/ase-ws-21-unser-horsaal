@@ -57,7 +57,7 @@
                 android:id="@+id/courseDescriptionCourseTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_description_course_example_title"
+                android:text="@{vm.courseModel.title}"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"

@@ -75,12 +75,19 @@ public class CourseHistoryFragment extends Fragment {
 
     this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
       meetingAdapter.notifyDataSetChanged();
+      if (meetingsModels.size() == 0) {
+        this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
+      }
+      else {
+        this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
+      }
     });
     this.courseHistoryViewModel.getMeetingsModel()
             .observe(getViewLifecycleOwner(), meetingsModel -> {
               if (meetingsModel != null) {
                 KeyboardUtil.hideKeyboard(getActivity());
                 this.binding.courseHistoryFragmentCreateMeetingContainer.setVisibility(View.GONE);
+                this.binding.courseHistoryFragmentFab.setVisibility(View.VISIBLE);
                 this.courseHistoryViewModel.resetMeetingData();
               }
             });

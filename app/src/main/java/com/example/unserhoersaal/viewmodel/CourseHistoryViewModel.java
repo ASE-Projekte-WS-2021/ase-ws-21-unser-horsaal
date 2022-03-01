@@ -60,8 +60,16 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Create a new Meeting. */
   public void createMeeting() {
-    if (newMeeting.getValue() == null) return;
-    this.courseHistoryRepository.createMeeting(newMeeting.getValue());
+    //TODO: send error back to view
+    if (this.newMeeting.getValue() == null) return;
+
+    MeetingsModel meetingsModel = this.newMeeting.getValue();
+    //TODO: send error back to view
+    if (meetingsModel.getTitle() == null) return;
+    if (meetingsModel.getCreationTimeInput() == null) return;
+    if (meetingsModel.getEventTimeInput() == null) return;
+
+    this.courseHistoryRepository.createMeeting(meetingsModel);
   }
 
 }

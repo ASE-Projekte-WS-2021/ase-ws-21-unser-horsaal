@@ -59,6 +59,7 @@ public class CurrentCourseFragment extends Fragment {
     this.initRecyclerView();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
@@ -67,13 +68,7 @@ public class CurrentCourseFragment extends Fragment {
       this.courseKeyTextView.setText(id);
     });
     this.currentCourseViewModel.getMessages()
-            .observe(getViewLifecycleOwner(), new Observer<List>() {
-              @SuppressLint("NotifyDataSetChanged")
-              @Override
-              public void onChanged(List list) {
-                chatAdapter.notifyDataSetChanged();
-              }
-            });
+            .observe(getViewLifecycleOwner(), (Observer<List>) list -> chatAdapter.notifyDataSetChanged());
   }
 
   private void initUi(View view) {

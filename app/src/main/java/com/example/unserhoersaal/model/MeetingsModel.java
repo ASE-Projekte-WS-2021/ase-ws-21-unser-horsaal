@@ -1,7 +1,5 @@
 package com.example.unserhoersaal.model;
 
-import java.util.HashMap;
-
 /** Model for a meeting. */
 public class MeetingsModel {
 

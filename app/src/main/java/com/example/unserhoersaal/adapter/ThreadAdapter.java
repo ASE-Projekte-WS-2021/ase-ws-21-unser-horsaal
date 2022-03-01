@@ -1,19 +1,13 @@
 package com.example.unserhoersaal.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.databinding.SimpleCourseItemBinding;
 import com.example.unserhoersaal.databinding.ThreadItemBinding;
-import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Adapter for the RecyclerView inCourseMeetingRepository. */
@@ -30,13 +24,13 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    ThreadItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.simple_course_item, viewGroup, false);
+    ThreadItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.thread_item, viewGroup, false);
     return new ViewHolder(binding);
   }
 
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
-    ThreadModel threadModel = localDataSet.get(position);
+    ThreadModel threadModel = this.localDataSet.get(position);
     viewHolder.connect(threadModel);
   }
 

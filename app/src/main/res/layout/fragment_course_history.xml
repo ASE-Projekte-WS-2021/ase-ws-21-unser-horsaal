@@ -24,6 +24,21 @@
         android:background="@color/app_background"
         tools:context=".views.CourseHistoryFragment">
 
+        <TextView
+            android:id="@+id/coursesHistoryFragmentTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/du_bist_noch_keinem_kurs_beigetreten"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/courseHistoryFragmentToolbar"
             android:layout_width="match_parent"
@@ -37,6 +52,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/courseHistoryFragmentEnterOverview"
+            android:onClick="@{(view) -> NavUtil.navigateToDescription(view, vm.courseId)}"
             style="@style/wideOrangeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

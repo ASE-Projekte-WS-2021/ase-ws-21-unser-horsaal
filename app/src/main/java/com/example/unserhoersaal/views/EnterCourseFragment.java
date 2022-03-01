@@ -65,7 +65,8 @@ public class EnterCourseFragment extends Fragment {
     this.enterCourseViewModel.getCourse()
             .observe(getViewLifecycleOwner(), model -> {
               if (model != null) {
-                this.binding.enterCourseFragmentConfirmationDialog.setVisibility(View.GONE);
+                KeyboardUtil.hideKeyboard(getActivity());
+                this.binding.enterCourseFragmentConfirmationDialog.setVisibility(View.VISIBLE);
               }
             });
     this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id -> {

@@ -63,8 +63,15 @@ public class CoursesFragment extends Fragment {
     this.coursesViewModel.init();
 
     this.coursesViewModel.getUserCourses()
-            .observe(getViewLifecycleOwner(), userCourses ->
-                    coursesAdapter.notifyDataSetChanged());
+            .observe(getViewLifecycleOwner(), userCourses -> {
+              coursesAdapter.notifyDataSetChanged();
+              if (userCourses.size() == 0) {
+                this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
+              }
+              else {
+                this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
+              }
+            });
   }
 
   private void connectAdapter() {
@@ -79,7 +86,7 @@ public class CoursesFragment extends Fragment {
 
   private void initToolbar() {
     this.binding.coursesFragmentToolbar.inflateMenu(R.menu.courses_fragment_toolbar);
-    this.binding.coursesFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.coursesFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
     this.binding.coursesFragmentToolbar.setNavigationOnClickListener(v ->
             navController.navigate(R.id.action_coursesFragment_to_profileFragment));
   }
