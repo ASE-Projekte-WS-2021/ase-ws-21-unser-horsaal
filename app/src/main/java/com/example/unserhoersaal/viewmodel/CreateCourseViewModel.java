@@ -33,6 +33,7 @@ public class CreateCourseViewModel extends ViewModel {
 
   public void resetCourseModelInput() {
     this.courseModelInput.setValue(new CourseModel());
+    this.courseModel.setValue(null);
   }
 
   /** Create a new course. */

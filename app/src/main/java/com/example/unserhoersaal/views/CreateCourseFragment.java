@@ -63,7 +63,11 @@ public class CreateCourseFragment extends Fragment {
     this.createCourseViewModel.init();
     this.courseHistoryViewModel.init();
     this.createCourseViewModel
-            .getCourseModel().observe(getViewLifecycleOwner(), this::courseCreated);
+            .getCourseModel().observe(getViewLifecycleOwner(), courseModel -> {
+              if (courseModel != null) {
+                courseCreated(courseModel);
+              }
+    });
   }
 
   private void connectBinding() {

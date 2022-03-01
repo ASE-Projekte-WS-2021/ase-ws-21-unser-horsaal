@@ -28,7 +28,7 @@
             android:id="@+id/coursesHistoryFragmentTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/du_bist_noch_keinem_kurs_beigetreten"
+            android:text="@string/es_gibt_noch_keine_meetings_in_diesem_kurs"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"

@@ -118,4 +118,5 @@
     <string name="unregister_from_course_message">Möchten Sie sich wirklich aus dem Kurs ausschreiben?</string>
     <string name="unregister_from_course_title">Kurs verlassen</string>
     <string name="abbrechen">Abbrechen</string>
+    <string name="es_gibt_noch_keine_meetings_in_diesem_kurs">Es gibt noch keine Meetings in diesem Kurs.</string>
 </resources>
