@@ -1,29 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".views.CourseParticipantsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/courseParticipantsFragmentToolbar"
+    <data>
+        <variable
+            name="adapter"
+            type="com.example.unserhoersaal.adapter.ParticipantAdapter" />
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/app_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Teilnehmer:innen" />
+        android:layout_height="match_parent"
+        tools:context=".views.CourseParticipantsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/courseParticipantsParticipantsRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseParticipantsFragmentToolbar"
-        tools:listitem="@layout/participant_list_item"/>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/courseParticipantsFragmentToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Teilnehmer:innen" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/courseParticipantsParticipantsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adapter="@{adapter}"
+            app:initLayoutManager="@{R.id.courseParticipantsParticipantsRecycler}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/courseParticipantsFragmentToolbar"
+            tools:listitem="@layout/participant_list_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

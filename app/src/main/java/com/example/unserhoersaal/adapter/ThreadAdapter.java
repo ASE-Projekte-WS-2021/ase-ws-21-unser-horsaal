@@ -1,15 +1,13 @@
 package com.example.unserhoersaal.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.databinding.ThreadItemBinding;
 import com.example.unserhoersaal.model.ThreadModel;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Adapter for the RecyclerView inCourseMeetingRepository. */
@@ -17,37 +15,23 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
   private static final String TAG = "ThreadAdapter";
 
-  private List<ThreadModel> localDataSet = new ArrayList<>();
-  private OnNoteListener onNoteListener;
+  private List<ThreadModel> localDataSet;
 
-  public ThreadAdapter(List<ThreadModel> dataSet, OnNoteListener onNoteListener) {
+  public ThreadAdapter(List<ThreadModel> dataSet) {
     this.localDataSet = dataSet;
-    this.onNoteListener = onNoteListener;
   }
 
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    View view = LayoutInflater.from(viewGroup.getContext())
-            .inflate(R.layout.thread_item, viewGroup, false);
-    return new ViewHolder(view, this.onNoteListener);
+    ThreadItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.thread_item, viewGroup, false);
+    return new ViewHolder(binding);
   }
 
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
-    if (viewHolder.getThreadTitle() != null
-            && viewHolder.getThreadText() != null
-            && viewHolder.getThreadLikes() != null
-            && viewHolder.getThreadTime() != null
-            && viewHolder.getThreadAuthor() != null) {
-      viewHolder.getThreadTitle().setText(this.localDataSet.get(position).getTitle());
-      viewHolder.getThreadText().setText(this.localDataSet.get(position).getText());
-      viewHolder.getThreadLikes()
-              .setText(Integer.toString(this.localDataSet.get(position).getLikes()));
-      viewHolder.getThreadTime()
-              .setText(Config.OLD_FORMAT.format(this.localDataSet.get(position).getCreationTime()));
-      viewHolder.getThreadAuthor().setText(this.localDataSet.get(position).getCreatorId());
-    }
+    ThreadModel threadModel = this.localDataSet.get(position);
+    viewHolder.connect(threadModel);
   }
 
   @Override
@@ -55,56 +39,21 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     return this.localDataSet.size();
   }
 
-  /** Interface for the click on an item of the adapter. */
-  public interface OnNoteListener {
-    void onNoteClick(int position);
-  }
-
   /** Viewholder for an thread item. */
-  public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private TextView threadTitle;
-    private TextView threadText;
-    private TextView threadLikes;
-    private TextView threadTime;
-    private TextView threadAuthor;
-    private OnNoteListener onNoteListener;
+  public class ViewHolder extends RecyclerView.ViewHolder {
+    private final ThreadItemBinding binding;
 
     /** Constructor. */
-    public ViewHolder(View view, OnNoteListener onNoteListener) {
-      super(view);
-      this.onNoteListener = onNoteListener;
-      this.threadTitle = view.findViewById(R.id.threadItemTitle);
-      this.threadText = view.findViewById(R.id.threadItemDescription);
-      this.threadLikes = view.findViewById(R.id.threadItemLikesCount);
-      this.threadTime = view.findViewById(R.id.threadItemTime);
-      this.threadAuthor = view.findViewById(R.id.threadItemAuthor);
-
-      view.setOnClickListener(this);
+    public ViewHolder(ThreadItemBinding binding) {
+      super(binding.getRoot());
+      this.binding = binding;
     }
 
-    public TextView getThreadTitle() {
-      return this.threadTitle;
+    public void connect(ThreadModel model) {
+      this.binding.setModel(model);
+      this.binding.executePendingBindings();
     }
 
-    public TextView getThreadText() {
-      return this.threadText;
-    }
-
-    public TextView getThreadLikes() {
-      return this.threadLikes;
-    }
-
-    public TextView getThreadTime() {
-      return this.threadTime;
-    }
-
-    public TextView getThreadAuthor() {
-      return  this.threadAuthor;
-    }
-
-    @Override
-    public void onClick(View v) {
-      this.onNoteListener.onNoteClick(getAdapterPosition());
-    }
   }
+
 }

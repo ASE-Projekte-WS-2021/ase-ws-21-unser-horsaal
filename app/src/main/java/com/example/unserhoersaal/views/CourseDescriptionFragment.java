@@ -1,40 +1,28 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableRow;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.databinding.FragmentCourseDescriptionBinding;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /** Course-Description.*/
 public class CourseDescriptionFragment extends Fragment {
 
   private static final String TAG = "CourseDescriptionFragment";
 
-  TextView courseCreator;
-  TextView courseInstitution;
-  TextView courseDescription;
-  TextView courseTitle;
-  TableRow courseDescriptionContainer;
-  TableRow courseParticipantsContainer;
-  FloatingActionButton shareCourseFab;
-  MaterialToolbar toolbar;
-  NavController navController;
-  TextView unsubscribeTextView;
-
+  private NavController navController;
   private CourseDescriptionViewModel courseDescriptionViewModel;
+  private FragmentCourseDescriptionBinding binding;
 
   public CourseDescriptionFragment() {
     // Required empty public constructor
@@ -46,18 +34,22 @@ public class CourseDescriptionFragment extends Fragment {
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_course_description, container, false);
+    this.binding =  DataBindingUtil.inflate(inflater,
+            R.layout.fragment_course_description, container,false);
+    return this.binding.getRoot();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    initViewModel();
-    initUi(view);
-    initToolbar();
+
+    this.navController = Navigation.findNavController(view);
+
+    this.initViewModel();
+    this.connectBinding();
+    this.initToolbar();
   }
 
   private void initViewModel() {
@@ -66,33 +58,27 @@ public class CourseDescriptionFragment extends Fragment {
     this.courseDescriptionViewModel.init();
     this.courseDescriptionViewModel.getCourseModel()
             .observe(getViewLifecycleOwner(), courseModel -> {
-              courseInstitution.setText(courseModel.getInstitution());
-              courseDescription.setText(courseModel.getDescription());
-              courseCreator.setText(courseModel.getCreatorId());
-              courseTitle.setText(courseModel.getTitle());
+              /*
+              use to navigate the user out of the fragment / course navigate back to course history
+              if (courseModel == null) {
+                navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment);
+              }
+              */
             });
   }
 
-  private void initUi(View view) {
-    courseCreator = view.findViewById(R.id.courseDescriptionCreator);
-    courseInstitution = view.findViewById(R.id.courseDescriptionFragmentInstitution);
-    courseDescription = view.findViewById(R.id.courseDescriptionFragmentCourseDescription);
-    courseTitle = view.findViewById(R.id.courseDescriptionCourseTitle);
-    courseDescriptionContainer = view
-            .findViewById(R.id.courseDescriptionFragmentCourseDescriptionContainer);
-    courseParticipantsContainer = view
-            .findViewById(R.id.courseDescriptionFragmentCourseParticipantsContainer);
-    shareCourseFab = view.findViewById(R.id.courseDescriptionFragmentShareCourseFab);
-    toolbar = view.findViewById(R.id.courseDescriptionFragmentToolbar);
-    navController = Navigation.findNavController(view);
-    unsubscribeTextView = view.findViewById(R.id.courseDescriptionFragmentUnsubscribeTextView);
+  private void connectBinding() {
+    this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.courseDescriptionViewModel);
   }
 
+
   private void initToolbar() {
-    toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    toolbar.setNavigationOnClickListener(v -> {
-      navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment);
-    });
+    this.binding.courseDescriptionFragmentToolbar
+            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.courseDescriptionFragmentToolbar
+            .setNavigationOnClickListener(v ->
+            navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment));
   }
 
 }

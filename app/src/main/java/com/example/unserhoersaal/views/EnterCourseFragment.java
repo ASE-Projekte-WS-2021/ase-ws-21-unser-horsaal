@@ -8,24 +8,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
-import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
-import com.google.android.material.appbar.MaterialToolbar;
 
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
   private static final String TAG = "EnterCourseFragment";
 
-  private MaterialToolbar toolbar;
   private EnterCourseViewModel enterCourseViewModel;
   private CourseHistoryViewModel courseHistoryViewModel;
   private NavController navController;
@@ -53,7 +49,6 @@ public class EnterCourseFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    this.toolbar = view.findViewById(R.id.enterCourseFragmentToolbar);
 
     this.initViewModel();
     this.connectBinding();
@@ -69,9 +64,9 @@ public class EnterCourseFragment extends Fragment {
     this.courseHistoryViewModel.init();
     this.enterCourseViewModel.getCourse()
             .observe(getViewLifecycleOwner(), model -> {
-              //openNewCourse(id);
               if (model != null) {
-                showDialog();
+                KeyboardUtil.hideKeyboard(getActivity());
+                this.binding.enterCourseFragmentConfirmationDialog.setVisibility(View.VISIBLE);
               }
             });
     this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id -> {
@@ -95,14 +90,10 @@ public class EnterCourseFragment extends Fragment {
   }
 
   private void setupToolbar() {
-    this.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    this.toolbar.setNavigationOnClickListener(v -> {
+    this.binding.enterCourseFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.enterCourseFragmentToolbar.setNavigationOnClickListener(v -> {
       this.navController.navigate(R.id.action_enterCourseFragment_to_coursesFragment);
     });
   }
 
-  private void showDialog() {
-    EnterCourseDialogFragment dialogFragment = new EnterCourseDialogFragment();
-    dialogFragment.show(getActivity().getSupportFragmentManager(), "enter dialog");
-  }
 }
