@@ -16,7 +16,7 @@ public class CurrentCourseViewModel extends ViewModel {
   private CurrentCourseRepository currentCourseRepository;
 
   private MutableLiveData<List<MessageModel>> messages;
-  private MutableLiveData<String> threadId = new MutableLiveData<String>();
+  private MutableLiveData<String> threadId = new MutableLiveData<>();
 
   /** This method initializes the database access. */
   public void init() {

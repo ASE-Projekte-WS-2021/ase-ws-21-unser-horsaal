@@ -45,7 +45,8 @@ public class CourseHistoryRepository {
   public MutableLiveData<List<MeetingsModel>> getMeetings() {
     /*if (this.meetingsModelList.size() == 0) {
       this.loadMeetings();
-    }*/
+    }
+    */
 
     this.meetings.setValue(this.meetingsModelList);
     return this.meetings;
@@ -84,7 +85,7 @@ public class CourseHistoryRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String uid = firebaseAuth.getCurrentUser().getUid();
-
+    //TODO: eventTimeInput -> eventTime umschreiben; startTimeInput -> startTime umschreiben; bzw auf datapicker warten
     meetingsModel.setCreatorId(uid);
     meetingsModel.setCreationTime(System.currentTimeMillis());
     String meetingId = reference.getRoot().push().getKey();

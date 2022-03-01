@@ -1,10 +1,11 @@
 package com.example.unserhoersaal.model;
 
-import java.util.HashMap;
-
 /** Model for a meeting. */
 public class MeetingsModel {
 
+
+  private String creationTimeInput;
+  private String eventTimeInput;
   private Long creationTime;
   private String creatorId;
   private String description;
@@ -14,6 +15,22 @@ public class MeetingsModel {
 
   public MeetingsModel() {
     //needed for Firebase
+  }
+
+  public String getCreationTimeInput() {
+    return creationTimeInput;
+  }
+
+  public void setCreationTimeInput(String creationTimeInput) {
+    this.creationTimeInput = creationTimeInput;
+  }
+
+  public String getEventTimeInput() {
+    return eventTimeInput;
+  }
+
+  public void setEventTimeInput(String eventTimeInput) {
+    this.eventTimeInput = eventTimeInput;
   }
 
   public Long getCreationTime() {

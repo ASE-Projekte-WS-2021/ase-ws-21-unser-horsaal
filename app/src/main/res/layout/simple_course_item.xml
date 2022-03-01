@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:onClick="@{(view) -> NavUtil.navigateByAdapterItem(view, model)}"
+        android:onClick="@{(view) -> NavUtil.navigateToCourse(view, model)}"
         android:background="@color/white"
         android:padding="16dp">
 

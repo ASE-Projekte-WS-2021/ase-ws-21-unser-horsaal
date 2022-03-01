@@ -52,14 +52,14 @@ public class EnterCourseViewModel extends ViewModel {
       id = id.replace("-", "");
       this.enterCourseRepository.checkCode(id);
     }
+
   }
 
-  /** Join a course. */
   public void enterCourse() {
-    if (courseModel.getValue() != null) {
-      this.enterCourseRepository.isUserInCourse(courseModel.getValue().getKey());
-    }
-    //TODO: else error?
+    //TODO: send status data back to view on error
+    if (courseModel.getValue() == null) return;
+    if (courseModel.getValue().getKey() == null) return;
+    this.enterCourseRepository.isUserInCourse(courseModel.getValue().getKey());
   }
 
 }
