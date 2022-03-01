@@ -20,7 +20,7 @@
     <string name="enter_course_caption">Bestehendem Kurs beitreten, um Fragen zu stellen, Antworten zu senden, etc.</string>
     <string name="create_course_string">Kurs erstellen</string>
     <string name="create_course_caption">Kurs, dem andere Nutzer über einen generierten Code beitreten können, erstellen</string>
-    <string name="enter_course_fragment_edit_text">Kursnummer eingeben</string>
+    <string name="enter_course_fragment_edit_text">Beitrittsnummer</string>
     <string name="enter_course_fragment_button_string">Kurs suchen</string>
     <string name="create_course_fragment_caption_string">Hier können Sie ganz einfach einen Kurs erstellen, dem über die generierte Nummer beigetreten werden kann</string>
     <string name="create_course_generate_number">Nummer generieren</string>
@@ -119,4 +119,5 @@
     <string name="unregister_from_course_title">Kurs verlassen</string>
     <string name="abbrechen">Abbrechen</string>
     <string name="es_gibt_noch_keine_meetings_in_diesem_kurs">Es gibt noch keine Meetings in diesem Kurs.</string>
+    <string name="enter_course_fragment_information_string">Tritt einem Kurs bei, um dich darin mit anderen Mitgliedern über Inhalte auszutauschen</string>
 </resources>
