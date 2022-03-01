@@ -31,10 +31,20 @@ public class Config {
 
   /** Registration Error Message. */
   public static final String REG_EMAIL_PATTERN_WRONG = "Die Email wurde falsch eingegeben.";
-  public static final String REG_PASSWORD_PATTERN_WRONG = "Das Passwort muss mind. 8 Zeichen lang sein und " +
-          "mind. 1 Groß- und Kleinbuchstaben, sowie mind. 1 Zahl enthalten.";
+  public static final String REG_PASSWORD_PATTERN_WRONG = "Das Passwort muss mind. 8 Zeichen " +
+          "lang sein und mind. 1 Groß- und Kleinbuchstaben, sowie mind. 1 Zahl enthalten.";
   public static final String REG_USERNAME_EMPTY = "Bitte geben Sie einen Nutzernamen ein.";
-  public static final String REG_USERNAME_WRONG_PATTERN = "Der eingegebene Nutzername muss mind. 3 und max. 15 Zeichen lang sein.";
+  public static final String REG_USERNAME_WRONG_PATTERN = "Der eingegebene Nutzername muss " +
+          "mind. 3 und max. 15 Zeichen lang sein.";
+
+  /** Toast Messages. */
+  public static final String REG_VERIFY_EMAIL = "Eine Verifizierungsnachricht wurde an die von " +
+          "Ihnen angegebene Email geschickt. Sollten Sie es nicht im Posteingang finden, " +
+          "kontrollieren Sie bitte Ihren Spam-Ordner.";
+  public static final String REG_VERIFICATION_EMAIL_ALREADY_SEND = "Ein Konto für die angegebene " +
+          "Emailadresse existiert bereits und wurde noch nicht von Ihnen verifiziert";
+  public static final String REG_REQUEST_EMAIL_VERIFICATION = "Sie haben Ihre Email noch " +
+          "nicht verifiziert";
 
   /** Regex */
   /* reference: https://ihateregex.io/expr/username/ */

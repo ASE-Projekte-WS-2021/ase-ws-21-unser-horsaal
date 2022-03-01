@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
+import com.example.unserhoersaal.enums.LogRegToastEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
@@ -24,7 +25,7 @@ public class LoginViewModel extends ViewModel {
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogEmail;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogPassword;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogProcess;
-
+  public MutableLiveData<LogRegToastEnum> logToastMessages;
 
   /**
    * Initialize the LoginRegisterViewModel.
@@ -38,9 +39,11 @@ public class LoginViewModel extends ViewModel {
     this.errorMessageLogEmail = new MutableLiveData<>();
     this.errorMessageLogPassword = new MutableLiveData<>();
     this.errorMessageLogProcess = new MutableLiveData<>();
+    this.logToastMessages = new MutableLiveData<>();
     this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageLogProcess.setValue(LogRegErrorMessEnum.NONE);
+    this.logToastMessages.setValue(LogRegToastEnum.NONE);
 
     //Databinding containers
     this.user = new MutableLiveData<>();
@@ -92,7 +95,7 @@ public class LoginViewModel extends ViewModel {
   // log in or throw error message if login process fails
     if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email) &&
             !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
-      this.authAppRepository.login(email, password, errorMessageLogProcess);
+      this.authAppRepository.login(email, password, errorMessageLogProcess, logToastMessages);
     }
   }
 }
