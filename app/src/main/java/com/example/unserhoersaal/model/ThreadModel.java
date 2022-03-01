@@ -29,7 +29,7 @@ public class ThreadModel {
     this.answersCount = answersCount;
   }
 
-  public boolean isAnswered() {
+  public boolean getAnswered() {
     return this.answered;
   }
 

@@ -50,6 +50,7 @@ public class CourseMeetingViewModel extends ViewModel {
 
   public void resetThreadModelInput() {
     this.threadModelInput.setValue(new ThreadModel());
+    this.threadModelMutableLiveData.setValue(null);
   }
 
   public void setMeetingId(String meetingId) {

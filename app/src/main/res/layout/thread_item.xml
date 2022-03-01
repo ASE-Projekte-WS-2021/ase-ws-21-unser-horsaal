@@ -7,7 +7,8 @@
             name="model"
             type="com.example.unserhoersaal.model.ThreadModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
+        <import type="com.example.unserhoersaal.utils.Format"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,8 +66,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_check_24"
-                android:visibility="@{model.answered ? View.VISIBLE : View.GONE}"
-                />
+                setColor="@{model.answered}" />
+                <!--android:visibility="@{model.answered ? View.VISIBLE : View.GONE}"-->
+
 
         </LinearLayout>
 
@@ -110,7 +112,7 @@
             android:id="@+id/threadItemTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{Long.toString(model.creationTime)}"
+            android:text="@{Format.getFormatedDateTime(threadItemTime, model.creationTime)}"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@id/threadItemAuthor"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -119,7 +121,7 @@
             android:id="@+id/threadItemAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.creatorId}"
+            android:text="@{model.creatorName}"
             android:textColor="@color/app_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

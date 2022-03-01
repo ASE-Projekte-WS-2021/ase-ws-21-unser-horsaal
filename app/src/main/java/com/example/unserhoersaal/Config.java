@@ -1,6 +1,7 @@
 package com.example.unserhoersaal;
 
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 
 /** Config Class. */
 public class Config {
@@ -8,6 +9,8 @@ public class Config {
   /** ChatAdapter. */
   public static final SimpleDateFormat RECENT_FORMAT = new SimpleDateFormat("HH:mm");
   public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");
+  public static final SimpleDateFormat DATE_TIME_FORMAT
+          = new SimpleDateFormat("dd. MMMM, HH:mm");
 
   /** Database Children. */
   public static final String CHILD_USER = "users";

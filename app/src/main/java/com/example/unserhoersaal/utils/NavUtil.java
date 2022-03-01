@@ -60,7 +60,7 @@ public class NavUtil {
     currentCourseViewModel.setThreadId(model.getKey());
 
     NavController navController = Navigation.findNavController(view);
-    navController.navigate(R.id.action_courseMeetingFragment_to_currentCourseFragment);
+    navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
   }
 
   @BindingAdapter("navigateToDescription")

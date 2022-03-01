@@ -8,6 +8,7 @@
             name="model"
             type="com.example.unserhoersaal.model.MeetingsModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.utils.Format"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,7 +37,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@{Long.toString(model.eventTime)}" />
+            tools:text="@{Format.getFormatedDate(courseMeetingDate, model.eventTime)}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

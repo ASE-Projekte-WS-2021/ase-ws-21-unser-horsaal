@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:text="@{vm.courseModel.creatorId}"
+                    android:text="@{vm.courseModel.creatorName}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold"
                     android:layout_marginEnd="8dp"
