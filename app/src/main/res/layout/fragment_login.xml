@@ -44,25 +44,25 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginFragmentUserEmailTextField"
-                    style="@style/textInputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="72dp"
                     android:hint="@string/login_fragment_user_email_hint"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    app:boxStrokeColor="@color/app_blue">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentUserEmailEditText"
                         android:text="@={vm.user.email}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:background="@color/white" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginFragmentPasswordTextField"
-                    style="@style/textInputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
@@ -76,18 +76,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginFragmentLoginButton"
                     android:onClick="@{() -> vm.login()}"
-                    style="@style/wideBlueButton"
+                    android:background="@drawable/app_background"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/login_fragment_login_button_string"
+                    app:backgroundTint="@null"
                     app:icon="@drawable/ic_baseline_login_24"
                     app:iconGravity="textStart"
                     android:layout_gravity="center" />

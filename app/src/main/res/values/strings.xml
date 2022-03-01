@@ -9,13 +9,13 @@
     <string name="login_fragment_user_email_hint">Email</string>
     <string name="login_fragment_registration_string">Registrieren</string>
     <string name="login_fragment_no_account">Noch kein Account?</string>
-    <string name="login_fragment_title_string">Unser Hörsaal</string>
+    <string name="login_fragment_title_string">Login</string>
     <string name="registration_fragment_password_hint">Passwort</string>
     <string name="registration_fragment_repeat_password_hint">Passwort wiederholen</string>
     <string name="registration_fragment_user_email_hint">Email</string>
-    <string name="registration_fragment_title">Account erstellen</string>
+    <string name="registration_fragment_title">Registration</string>
     <string name="registration_fragment_checkbox_string">Eingeloggt bleiben</string>
-    <string name="registration_fragment_registrate_button_string">Registrieren</string>
+    <string name="registration_fragment_registrate_button_string">Account erstellen</string>
     <string name="enter_course_string">Kurs beitreten</string>
     <string name="enter_course_caption">Bestehendem Kurs beitreten, um Fragen zu stellen, Antworten zu senden, etc.</string>
     <string name="create_course_string">Kurs erstellen</string>
