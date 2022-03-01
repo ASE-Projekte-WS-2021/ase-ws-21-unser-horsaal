@@ -33,7 +33,7 @@ public class NavUtil {
     CourseHistoryViewModel courseHistoryViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseHistoryViewModel.class);
     courseHistoryViewModel.init();
-    courseHistoryViewModel.setCourseId(model.getKey());
+    courseHistoryViewModel.setCourse(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);

@@ -52,7 +52,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/courseHistoryFragmentEnterOverview"
-            android:onClick="@{(view) -> NavUtil.navigateToDescription(view, vm.courseId)}"
+            android:onClick="@{(view) -> NavUtil.navigateToDescription(view, vm.course.key)}"
             style="@style/wideOrangeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -207,7 +207,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:visibility="@{vm.course.creatorId.equals(vm.userId) ? View.VISIBLE : View.GONE}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

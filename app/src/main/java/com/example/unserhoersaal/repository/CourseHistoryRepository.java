@@ -3,9 +3,11 @@ package com.example.unserhoersaal.repository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,8 +27,9 @@ public class CourseHistoryRepository {
 
   private ArrayList<MeetingsModel> meetingsModelList = new ArrayList<>();
   private MutableLiveData<List<MeetingsModel>> meetings = new MutableLiveData<>();
-  private MutableLiveData<String> courseId = new MutableLiveData<>();
+  private MutableLiveData<CourseModel> course = new MutableLiveData<>();
   private MutableLiveData<MeetingsModel> meetingsModelMutableLiveData = new MutableLiveData<>();
+  private MutableLiveData<String> userId = new MutableLiveData<>();
   private ValueEventListener listener;
 
   public CourseHistoryRepository() {
@@ -52,8 +55,12 @@ public class CourseHistoryRepository {
     return this.meetings;
   }
 
-  public MutableLiveData<String> getCourseId() {
-    return this.courseId;
+  public MutableLiveData<CourseModel> getCourse() {
+    return this.course;
+  }
+
+  public MutableLiveData<String> getUserId() {
+    return this.userId;
   }
 
   public MutableLiveData<MeetingsModel> getMeetingsModelMutableLiveData() {
@@ -61,21 +68,27 @@ public class CourseHistoryRepository {
   }
 
   /** Setts the Id of the course. */
-  public void setCourseId(String courseId) {
+  public void setCourse(CourseModel courseModel) {
+    String courseId = courseModel.getKey();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    if (this.courseId.getValue() != null) {
-      reference.child(Config.CHILD_MEETINGS).child(this.courseId.getValue())
+    if (this.course.getValue() != null) {
+      reference.child(Config.CHILD_MEETINGS).child(this.course.getValue().getKey())
               .removeEventListener(this.listener);
     }
     reference.child(Config.CHILD_MEETINGS).child(courseId).addValueEventListener(this.listener);
-    this.courseId.postValue(courseId);
+    this.course.postValue(courseModel);
+  }
+
+  public void setUserId() {
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    this.userId.postValue(uid);
   }
 
   /** Loads all meetings of the course. */
   //Query veraltert
   public void loadMeetings() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Query query = reference.child(Config.CHILD_COURSES).child(courseId.getValue())
+    Query query = reference.child(Config.CHILD_COURSES).child(course.getValue().getKey())
             .child(Config.CHILD_MEETINGS);
     query.addValueEventListener(this.listener);
   }
@@ -89,7 +102,7 @@ public class CourseHistoryRepository {
     meetingsModel.setCreatorId(uid);
     meetingsModel.setCreationTime(System.currentTimeMillis());
     String meetingId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_MEETINGS).child(this.courseId.getValue()).child(meetingId)
+    reference.child(Config.CHILD_MEETINGS).child(this.course.getValue().getKey()).child(meetingId)
             .setValue(meetingsModel)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
