@@ -46,9 +46,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     viewHolder.getAuthor().setText(this.localDataSet.get(position).getCreatorName());
     viewHolder.getLikes().setText(Integer.toString(this.localDataSet.get(position).getLikes()));
     if(this.localDataSet.get(position).getTopAnswer()) {
-      viewHolder.answeredButton.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+      viewHolder.getAnsweredButton().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
     } else {
-      viewHolder.answeredButton.clearColorFilter();
+      viewHolder.getAnsweredButton().clearColorFilter();
     }
   }
 

@@ -40,6 +40,7 @@ public class CourseHistoryViewModel extends ViewModel {
 
   public void resetMeetingData() {
     this.newMeeting.setValue(new MeetingsModel());
+    this.meetingsModelMutableLiveData.setValue(null);
   }
 
   public LiveData<List<MeetingsModel>> getMeetings() {
@@ -69,6 +70,8 @@ public class CourseHistoryViewModel extends ViewModel {
     if (meetingsModel.getCreationTimeInput() == null) return;
     if (meetingsModel.getEventTimeInput() == null) return;
 
+    //TODO set to real eventtime
+    meetingsModel.setEventTime(Long.parseLong(meetingsModel.getEventTimeInput()));
     this.courseHistoryRepository.createMeeting(meetingsModel);
   }
 
