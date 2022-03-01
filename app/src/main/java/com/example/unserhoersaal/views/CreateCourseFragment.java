@@ -85,7 +85,7 @@ public class CreateCourseFragment extends Fragment {
   /** Signs the creator in the course. */
   public void courseCreated(CourseModel course) {
     String key = course.getKey();
-    this.courseHistoryViewModel.setCourseId(key);
+    this.courseHistoryViewModel.setCourse(course);
     this.createCourseViewModel.resetCourseModelInput();
     this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
   }

@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.EnterCourseRepository;
 
-import java.util.Locale;
-
 /**Class EnterCourseViewModel.**/
 public class EnterCourseViewModel extends ViewModel {
 
@@ -15,7 +13,7 @@ public class EnterCourseViewModel extends ViewModel {
 
   private EnterCourseRepository enterCourseRepository;
   private MutableLiveData<CourseModel> courseModel;
-  private MutableLiveData<String> courseId;
+  private MutableLiveData<CourseModel> enteredCourse;
   public MutableLiveData<String> enteredCourseId;
 
   /** Initialize the EnterCourseViewModel. */
@@ -25,7 +23,7 @@ public class EnterCourseViewModel extends ViewModel {
     }
     this.enterCourseRepository = EnterCourseRepository.getInstance();
     this.courseModel = this.enterCourseRepository.getCourse();
-    this.courseId = this.enterCourseRepository.getCourseId();
+    this.enteredCourse = this.enterCourseRepository.getEnteredCourse();
     this.enteredCourseId = new MutableLiveData<>();
   }
 
@@ -33,15 +31,15 @@ public class EnterCourseViewModel extends ViewModel {
     return this.courseModel;
   }
 
-  public LiveData<String> getCourseId() {
-    return this.courseId;
+  public LiveData<CourseModel> getEnteredCourse() {
+    return this.enteredCourse;
   }
 
   /** Reset the entered data after joining the course. */
   public void resetEnterCourseId() {
     this.enteredCourseId.setValue(null);
     this.courseModel.setValue(null);
-    this.courseId.setValue(null);
+    this.enteredCourse.setValue(null);
   }
 
   public void checkCode() {
@@ -59,7 +57,7 @@ public class EnterCourseViewModel extends ViewModel {
     //TODO: send status data back to view on error
     if (courseModel.getValue() == null) return;
     if (courseModel.getValue().getKey() == null) return;
-    this.enterCourseRepository.isUserInCourse(courseModel.getValue().getKey());
+    this.enterCourseRepository.isUserInCourse(courseModel.getValue());
   }
 
 }
