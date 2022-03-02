@@ -18,6 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/app_background"
         tools:context=".views.CourseMeetingFragment">
 
         <TextView
@@ -39,82 +40,66 @@
             android:id="@+id/courseMeetingFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_blue"
-            app:title="Meeting-Name"
-            app:titleTextColor="@color/white"
+            android:background="@drawable/app_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <TextView
+                android:id="@+id/courseMeetingFragmentToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/course_meeting_toolbar_title"
+                style="@style/toolbarTitleStyle"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/courseMeetingFragmentGeneralThreadContainer"
+            android:id="@+id/courseMeetingFragmentSubtitleContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@color/white"
+            android:padding="8dp"
+            android:background="@drawable/app_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentToolbar">
 
             <TextView
-                android:id="@+id/courseMeetingFragmentGeneralThreadContributions"
+                style="@style/toolbarSubtitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_meeting_fragment_contributions_example"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/courseMeetingFragmentGeneralThreadContributionsTextView"
-                app:layout_constraintStart_toStartOf="@id/courseMeetingFragmentGeneralThreadContributionsTextView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/courseMeetingFragmentGeneralThreadContributionsTextView" />
-
-            <TextView
-                android:id="@+id/courseMeetingFragmentGeneralThreadContributionsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/course_meeting_fragment_contributions_string"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentGeneralThreadContributions" />
-
-            <TextView
-                android:id="@+id/courseMeetingFragmentGeneralThreadHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_meeting_general_thread_heading"
-                android:textColor="@color/app_blue"
-                android:textStyle="bold"
+                android:text="@string/course_meeting_subtitle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/courseMeetingFragmentGeneralThreadContributionsTextView"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/courseMeetingFragmentThreadRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
             android:adapter="@{adapter}"
             app:initLayoutManager="@{R.id.courseMeetingFragmentThreadRecycler}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseMeetingFragmentGeneralThreadContainer"
+            app:layout_constraintTop_toBottomOf="@+id/courseMeetingFragmentSubtitleContainer"
             tools:listitem="@layout/thread_item" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/courseMeetingFragmentFab"
             android:onClick="@{(view) -> VisibilityAdapter.openCreationLayout(view, courseMeetingFragmentCreateThreadContainer)}"
-            style="@style/fabStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_baseline_add_24"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/course_meeting_create_button"
+            android:backgroundTint="@color/app_blue"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
             app:tint="@color/white" />
 
         <ScrollView
