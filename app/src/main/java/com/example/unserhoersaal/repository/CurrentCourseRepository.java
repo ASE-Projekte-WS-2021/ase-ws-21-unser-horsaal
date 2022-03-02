@@ -18,11 +18,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 
 /**Class communicates with Firebase for getting current course data.**/
 public class CurrentCourseRepository {
@@ -35,7 +32,9 @@ public class CurrentCourseRepository {
   private MutableLiveData<List<MessageModel>> messages = new MutableLiveData<>();
   private MutableLiveData<String> threadId = new MutableLiveData<>();
   private MutableLiveData<String> meetingId = new MutableLiveData<>();
-  private ValueEventListener listener;
+  private MutableLiveData<ThreadModel> thread = new MutableLiveData<>();
+  private ValueEventListener messageListener;
+  private ValueEventListener threadListener;
 
   public CurrentCourseRepository() {
     initListener();
@@ -71,6 +70,10 @@ public class CurrentCourseRepository {
     return this.meetingId;
   }
 
+  public MutableLiveData<ThreadModel> getThread() {
+    return this.thread;
+  }
+
   /**
    * Loading all messages from the database.
    */
@@ -78,7 +81,7 @@ public class CurrentCourseRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_THREADS).child(this.threadId.getValue())
             .child(Config.CHILD_MESSAGES);
-    query.addValueEventListener(this.listener);
+    query.addValueEventListener(this.messageListener);
   }
 
   /**
@@ -123,9 +126,14 @@ public class CurrentCourseRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.threadId.getValue() != null) {
       reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue())
-              .removeEventListener(this.listener);
+              .removeEventListener(this.messageListener);
+      reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue())
+              .child(this.threadId.getValue()).removeEventListener(this.threadListener);
     }
-    reference.child(Config.CHILD_MESSAGES).child(threadId).addValueEventListener(this.listener);
+    reference.child(Config.CHILD_MESSAGES).child(threadId)
+            .addValueEventListener(this.messageListener);
+    reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue()).child(threadId)
+            .addValueEventListener(this.threadListener);
     this.threadId.postValue(threadId);
   }
 
@@ -156,7 +164,7 @@ public class CurrentCourseRepository {
    * Initialise the listener for the database access.
    */
   public void initListener() {
-    this.listener = new ValueEventListener() {
+    this.messageListener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         List<MessageModel> mesList = new ArrayList<>();
@@ -171,6 +179,26 @@ public class CurrentCourseRepository {
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.d(TAG, "onCancelled: " + error.getMessage());
+      }
+    };
+    this.threadListener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        ThreadModel threadModel = snapshot.getValue(ThreadModel.class);
+        threadModel.setKey(snapshot.getKey());
+        Task<DataSnapshot> task = getAuthorName(threadModel.creatorId);
+        task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+          @Override
+          public void onSuccess(DataSnapshot dataSnapshot) {
+            threadModel.setCreatorName(task.getResult().getValue(String.class));
+            thread.postValue(threadModel);
+          }
+        });
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
       }
     };
   }

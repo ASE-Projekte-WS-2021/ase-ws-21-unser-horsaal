@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.MessageModel;
+import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class CurrentCourseViewModel extends ViewModel {
   private MutableLiveData<List<MessageModel>> messages;
   private MutableLiveData<String> threadId = new MutableLiveData<>();
   private MutableLiveData<String> meetingId = new MutableLiveData<>();
+  private MutableLiveData<ThreadModel> thread = new MutableLiveData<>();
 
   /** This method initializes the database access. */
   public void init() {
@@ -27,6 +29,7 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
     this.threadId = this.currentCourseRepository.getThreadId();
     this.meetingId = this.currentCourseRepository.getMeetingId();
+    this.thread = this.currentCourseRepository.getThread();
 
     // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
     // the messages and only set the courseId can init the CurrentCourseViewModel
@@ -45,6 +48,10 @@ public class CurrentCourseViewModel extends ViewModel {
 
   public LiveData<String> getMeetingId() {
     return this.meetingId;
+  }
+
+  public LiveData<ThreadModel> getThread() {
+    return  this.thread;
   }
 
   /** Send a new message in a thread. */

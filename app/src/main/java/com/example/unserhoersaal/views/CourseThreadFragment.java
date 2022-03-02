@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
@@ -37,6 +38,7 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
   private MaterialToolbar toolbar;
   private NavController navController;
   private EditText questionEditText;
+  private TextView threadText;
   private FloatingActionButton sendQuestionButton;
   private RecyclerView recyclerView;
 
@@ -84,12 +86,16 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
                 chatAdapter.notifyDataSetChanged();
               }
             });
+    this.currentCourseViewModel.getThread().observe(getViewLifecycleOwner(), threadModel -> {
+      this.threadText.setText(threadModel.getText());
+    });
   }
 
   private void initUI(View view) {
     this.questionEditText = view.findViewById(R.id.courseThreadFragmentEditText);
     this.sendQuestionButton = view.findViewById(R.id.courseThreadFragmentSendFab);
     this.recyclerView = view.findViewById(R.id.courseThreadFragmentRecycler);
+    this.threadText = view.findViewById(R.id.courseThreadFragmentQuestionTitle);
 
     this.sendQuestionButton.setOnClickListener(new View.OnClickListener() {
       @Override
