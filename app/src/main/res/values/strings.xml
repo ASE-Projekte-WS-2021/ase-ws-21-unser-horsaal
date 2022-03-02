@@ -115,7 +115,6 @@
     <string name="kurs_beitreten">Kurs beitreten</string>
     <string name="kurs_erstellen">Kurs erstellen</string>
     <string name="du_bist_noch_keinem_kurs_beigetreten">Du bist noch keinem Kurs beigetreten.</string>
-<<<<<<< HEAD
     <string name="unregister_from_course_message">Möchten Sie sich wirklich aus dem Kurs ausschreiben?</string>
     <string name="unregister_from_course_title">Kurs verlassen</string>
     <string name="abbrechen">Abbrechen</string>
@@ -125,27 +124,4 @@
     <string name="no_course_found_fragment_text">Leider konnte kein entsprechender Kurs gefunden werden</string>
     <string name="no_course_found_fragment_button_back">Zurück</string>
     <string name="enter_course_detail_fragment_quit_button">Abbrechen</string>
-    <string name="course_history_fragment_toolbar_title">Kurstitel</string>
-    <string name="create_course_meeting_toolbar_title">Meeting erstellen</string>
-    <string name="create_course_meeting_subtitle">Ein Meeting ist ein einmalig stattfindendes Treffen innerhalb des Kurses</string>
-    <string name="create_course_meeting_meeting_title">Meeting-Titel</string>
-    <string name="create_course_meeting_meeting_date">Datum</string>
-    <string name="create_course_meeting_meeting_time">Uhrzeit</string>
-    <string name="create_course_meeting_meeting_button">Erstellen</string>
-    <string name="course_meeting_subtitle">Fragenübersicht</string>
-    <string name="course_meeting_toolbar_title">Meeting-Titel</string>
-    <string name="course_meeting_create_button">Erstellen</string>
-    <string name="current_course_fragment_subtitle">Frage</string>
-    <string name="current_course_fragment_answers_text">Antworten</string>
-    <string name="current_course_fragment_no_answers">Für diese Frage gibt es noch keine Antworten</string>
-    <string name="edit_profile_name">Nutzername bearbeiten</string>
-    <string name="edit_profile_institution">Institution bearbeiten</string>
-    <string name="edit_profile_password">Password bearbeiten</string>
-    <string name="course_description_fragment_description">Kursbeschreibung</string>
-    <string name="course_participants_fragment_title">Teilnehmer:innen</string>
-    <string name="course_history_fragment_subtitle">Meetings</string>
-=======
-    <string name="edit_profile_name_hint">Nutzername</string>
-    <string name="current_course_fragment_question_title">Dies ist ein beispielhafter Titel für eine Frage</string>
->>>>>>> dev
 </resources>
