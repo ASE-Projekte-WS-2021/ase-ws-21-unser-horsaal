@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
-import com.example.unserhoersaal.enums.LogRegToastEnum;
+import com.example.unserhoersaal.enums.EmailVerificationEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
@@ -26,7 +26,7 @@ public class RegistrationViewModel extends ViewModel {
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegEmail;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegPassword;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegProcess;
-  public MutableLiveData<LogRegToastEnum> regToastMessages;
+  public MutableLiveData<EmailVerificationEnum> verificationStatus;
   //public MutableLiveData<Boolean> emailVerificationRequest;
 
   /**
@@ -42,14 +42,14 @@ public class RegistrationViewModel extends ViewModel {
     this.errorMessageRegEmail = new MutableLiveData<>();
     this.errorMessageRegPassword = new MutableLiveData<>();
     this.errorMessageRegProcess = new MutableLiveData<>();
-    this.regToastMessages = new MutableLiveData<>();
+    this.verificationStatus = new MutableLiveData<>();
     //this.emailVerificationRequest = new MutableLiveData<>();
     this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageRegProcess.setValue(LogRegErrorMessEnum.NONE);
     //this.emailVerificationRequest.setValue(false);
-    this.regToastMessages.setValue(LogRegToastEnum.NONE);
+    this.verificationStatus.setValue(EmailVerificationEnum.NONE);
 
     //Databinding containers
     this.user = new MutableLiveData<>();
@@ -111,7 +111,11 @@ public class RegistrationViewModel extends ViewModel {
             !Validation.emptyEmail(email) && Validation.emailHasPattern(email) &&
             !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
       this.authAppRepository.register(userName,email, password, errorMessageRegProcess,
-              regToastMessages);
+              verificationStatus);
     }
+  }
+
+  public void sendEmailVerification() {
+    authAppRepository.sendEmailVerification(verificationStatus);
   }
 }

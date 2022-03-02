@@ -38,13 +38,17 @@ public class Config {
           "mind. 3 und max. 15 Zeichen lang sein.";
 
   /** Toast Messages. */
-  public static final String REG_VERIFY_EMAIL = "Eine Verifizierungsnachricht wurde an die von " +
-          "Ihnen angegebene Email geschickt. Sollten Sie es nicht im Posteingang finden, " +
-          "kontrollieren Sie bitte Ihren Spam-Ordner.";
+  public static final String REG_VERIFY_EMAIL = "Verifizierungsemail versandt";
   public static final String REG_VERIFICATION_EMAIL_ALREADY_SEND = "Ein Konto für die angegebene " +
           "Emailadresse existiert bereits und wurde noch nicht von Ihnen verifiziert";
   public static final String REG_REQUEST_EMAIL_VERIFICATION = "Sie haben Ihre Email noch " +
           "nicht verifiziert";
+
+  public static final String DIALOG_VERIFICATION_TITLE = "Emailverifizierung";
+  public static final String DIALOG_VERIFICATION_MESSAGE = "Eine Email mit dem Verifizierungscode" +
+          "wurde an die von Ihnen angegebene Email versandt.";
+  public static final String DIALOG_SEND_BUTTON = "Erneut senden";
+  public static final String DIALOG_CANCEL_BUTTON = "Schließen";
 
   /** Regex */
   /* reference: https://ihateregex.io/expr/username/ */

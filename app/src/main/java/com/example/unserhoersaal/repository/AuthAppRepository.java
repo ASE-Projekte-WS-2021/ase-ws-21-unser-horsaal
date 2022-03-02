@@ -4,8 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
-import com.example.unserhoersaal.enums.LogRegToastEnum;
-import com.example.unserhoersaal.model.UserCourse;
+import com.example.unserhoersaal.enums.EmailVerificationEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,15 +59,15 @@ public class AuthAppRepository {
    * if login process fails show error message
    */
   public void login(String email, String password, MutableLiveData<LogRegErrorMessEnum>
-          errorMessageLogin, MutableLiveData<LogRegToastEnum> logToastMessages) {
+          errorMessageLogin, MutableLiveData<EmailVerificationEnum> logToastMessages) {
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 if (this.firebaseAuth.getCurrentUser().isEmailVerified()) {
                   this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
-                  logToastMessages.setValue(LogRegToastEnum.NONE);
+                  logToastMessages.setValue(EmailVerificationEnum.NONE);
                 } else {
-                  logToastMessages.setValue(LogRegToastEnum.REQUEST_EMAIL_VERIFICATION);
+                  logToastMessages.setValue(EmailVerificationEnum.REQUEST_EMAIL_VERIFICATION);
                 }
                 //this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
                 errorMessageLogin.setValue(LogRegErrorMessEnum.NONE);
@@ -83,25 +82,13 @@ public class AuthAppRepository {
    */
   public void register(String username, String email, String password,
                        MutableLiveData<LogRegErrorMessEnum> errorMessageRegistration,
-                       MutableLiveData<LogRegToastEnum> toastMessages) {
+                       MutableLiveData<EmailVerificationEnum> verificationStatus) {
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 createNewUser(username, this.firebaseAuth.getCurrentUser());
                 errorMessageRegistration.setValue(LogRegErrorMessEnum.NONE);
-
-                this.firebaseAuth.getCurrentUser().sendEmailVerification()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                          @Override
-                          public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                              toastMessages.setValue(LogRegToastEnum.SEND_EMAIL_VERIFICATION);
-                              logOut();
-                            } 
-                          }
-                        });
-              } else {
-                errorMessageRegistration.setValue(LogRegErrorMessEnum.REGISTRATION_PROCESS_FAIL);
+                sendEmailVerification(verificationStatus);
               }
             });
   }
@@ -121,7 +108,19 @@ public class AuthAppRepository {
               }
             }
     );
+  }
 
+  public void sendEmailVerification(MutableLiveData<EmailVerificationEnum> verificationStatus) {
+    this.firebaseAuth.getCurrentUser().sendEmailVerification()
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+              @Override
+              public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                  verificationStatus.setValue(EmailVerificationEnum.SEND_EMAIL_VERIFICATION);
+                  logOut();
+                }
+              }
+            });
   }
 
   /** Logging out the current user. */

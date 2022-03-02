@@ -16,7 +16,7 @@ import androidx.navigation.Navigation;
 
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.enums.LogRegToastEnum;
+import com.example.unserhoersaal.enums.EmailVerificationEnum;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 
@@ -72,7 +72,7 @@ public class LoginFragment extends Fragment {
             });
     this.loginViewModel
             .logToastMessages.observe(getViewLifecycleOwner(), toastMessage -> {
-      if (toastMessage == LogRegToastEnum.REQUEST_EMAIL_VERIFICATION) {
+      if (toastMessage == EmailVerificationEnum.REQUEST_EMAIL_VERIFICATION) {
         Toast.makeText(getContext(), Config.REG_REQUEST_EMAIL_VERIFICATION, Toast.LENGTH_LONG).show();
       }});
   }
