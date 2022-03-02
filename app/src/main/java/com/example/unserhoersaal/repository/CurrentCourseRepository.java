@@ -34,6 +34,7 @@ public class CurrentCourseRepository {
   private ArrayList<MessageModel> messagesList = new ArrayList<MessageModel>();
   private MutableLiveData<List<MessageModel>> messages = new MutableLiveData<>();
   private MutableLiveData<String> threadId = new MutableLiveData<>();
+  private MutableLiveData<String> meetingId = new MutableLiveData<>();
   private ValueEventListener listener;
 
   public CurrentCourseRepository() {
@@ -66,6 +67,10 @@ public class CurrentCourseRepository {
     return this.threadId;
   }
 
+  public MutableLiveData<String> getMeetingId() {
+    return this.meetingId;
+  }
+
   /**
    * Loading all messages from the database.
    */
@@ -92,11 +97,23 @@ public class CurrentCourseRepository {
             .addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
               public void onSuccess(Void unused) {
-                //todo needed?
+                updateAnswerCount();
                 message.setKey(messageId);
               }
             });
 
+  }
+
+  //TODO Meeting id needed instead of threadId
+  public void updateAnswerCount() {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue())
+            .child(this.threadId.getValue()).child(Config.CHILD_ANSWER_COUNT)
+            .setValue(ServerValue.increment(1));
+  }
+
+  public void setMeetingId(String meetingId) {
+    this.meetingId.postValue(meetingId);
   }
 
   /**

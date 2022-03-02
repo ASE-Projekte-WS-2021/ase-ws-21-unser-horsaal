@@ -47,6 +47,10 @@ public class NavUtil {
             .get(CourseMeetingViewModel.class);
     courseMeetingViewModel.init();
     courseMeetingViewModel.setMeetingId(model.getKey());
+    CurrentCourseViewModel currentCourseViewModel = new ViewModelProvider((ViewModelStoreOwner)
+            view.getContext()).get(CurrentCourseViewModel.class);
+    currentCourseViewModel.init();
+    currentCourseViewModel.setMeetingId(model.getKey());
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_courseMeetingFragment);

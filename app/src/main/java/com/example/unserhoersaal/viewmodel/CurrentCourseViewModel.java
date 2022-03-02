@@ -17,6 +17,7 @@ public class CurrentCourseViewModel extends ViewModel {
 
   private MutableLiveData<List<MessageModel>> messages;
   private MutableLiveData<String> threadId = new MutableLiveData<>();
+  private MutableLiveData<String> meetingId = new MutableLiveData<>();
 
   /** This method initializes the database access. */
   public void init() {
@@ -25,6 +26,7 @@ public class CurrentCourseViewModel extends ViewModel {
     }
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
     this.threadId = this.currentCourseRepository.getThreadId();
+    this.meetingId = this.currentCourseRepository.getMeetingId();
 
     // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
     // the messages and only set the courseId can init the CurrentCourseViewModel
@@ -41,6 +43,10 @@ public class CurrentCourseViewModel extends ViewModel {
     return this.threadId;
   }
 
+  public LiveData<String> getMeetingId() {
+    return this.meetingId;
+  }
+
   /** Send a new message in a thread. */
   public void sendMessage(String messageText) {
     MessageModel messageModel = new MessageModel();
@@ -50,6 +56,10 @@ public class CurrentCourseViewModel extends ViewModel {
 
   public void setThreadId(String threadId) {
     this.currentCourseRepository.setThreadId(threadId);
+  }
+
+  public void setMeetingId(String meetingId) {
+    this.currentCourseRepository.setMeetingId(meetingId);
   }
 
   public void like(String messageId) {
