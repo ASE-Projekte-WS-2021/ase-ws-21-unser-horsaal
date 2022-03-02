@@ -45,7 +45,6 @@ public class CourseDescriptionRepository {
     return this.courseModel;
   }
 
-  //TODO get whole CourseModel from ViewModel
   /** Sets the current course. */
   public void setCourseId(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -64,6 +63,7 @@ public class CourseDescriptionRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
+        model.setKey(snapshot.getKey());
         getAuthorName(model);
       }
 
@@ -106,7 +106,4 @@ public class CourseDescriptionRepository {
             });
   }
 
-  /*public void generateCourseModel() {
-    this.courseModel.postValue(new CourseModel());
-  }*/
 }

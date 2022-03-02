@@ -15,6 +15,7 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
+import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
@@ -114,5 +115,5 @@ public class NavUtil {
     AlertDialog dialog = builder.create();
     dialog.show();
   }
-  
+
 }

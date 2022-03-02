@@ -24,7 +24,6 @@ public class CourseDescriptionViewModel extends ViewModel {
 
     this.courseDescriptionRepository = CourseDescriptionRepository.getInstance();
     this.courseId = this.courseDescriptionRepository.getCourseId();
-    //this.courseDescriptionRepository.generateCourseModel();
     this.courseModel = this.courseDescriptionRepository.getCourseModel();
   }
 
