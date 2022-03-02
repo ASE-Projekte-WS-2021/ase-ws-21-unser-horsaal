@@ -24,6 +24,7 @@ public class CourseDescriptionViewModel extends ViewModel {
 
     this.courseDescriptionRepository = CourseDescriptionRepository.getInstance();
     this.courseId = this.courseDescriptionRepository.getCourseId();
+    //this.courseDescriptionRepository.generateCourseModel();
     this.courseModel = this.courseDescriptionRepository.getCourseModel();
   }
 
@@ -40,7 +41,7 @@ public class CourseDescriptionViewModel extends ViewModel {
   }
 
   public void unregisterFromCourse() {
-    //TODO: unregister user from course
-    //TODO: check observable in coursedescriptionfragment:61
+    String id = courseId.getValue();
+    this.courseDescriptionRepository.unregisterFromCourse(id);
   }
 }
