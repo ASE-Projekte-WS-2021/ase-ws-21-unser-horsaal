@@ -152,6 +152,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_courseHistoryFragment_to_createCourseMeetingFragment"
+            app:destination="@id/createCourseMeetingFragment" />
     </fragment>
     <fragment
         android:id="@+id/courseDescriptionFragment"
@@ -288,6 +291,17 @@
             android:id="@+id/action_noCourseFoundFragment_to_enterCourseFragment"
             app:destination="@id/enterCourseFragment"
             app:popUpTo="@id/enterCourseFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/createCourseMeetingFragment"
+        android:name="com.example.unserhoersaal.views.CreateCourseMeetingFragment"
+        android:label="fragment_create_course_meeting"
+        tools:layout="@layout/fragment_create_course_meeting" >
+        <action
+            android:id="@+id/action_createCourseMeetingFragment_to_courseHistoryFragment"
+            app:destination="@id/courseHistoryFragment"
+            app:popUpTo="@id/courseHistoryFragment"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>
