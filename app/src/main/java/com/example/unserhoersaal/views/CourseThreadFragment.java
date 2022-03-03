@@ -21,6 +21,7 @@ import com.example.unserhoersaal.adapter.ChatAdapter;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
   private MaterialToolbar toolbar;
   private NavController navController;
   private EditText questionEditText;
-  private FloatingActionButton sendQuestionButton;
+  private MaterialButton sendQuestionButton;
   private RecyclerView recyclerView;
 
   private ChatAdapter chatAdapter;
@@ -59,7 +60,7 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    this.toolbar = view.findViewById(R.id.courseThreadFragmentToolbar);
+    this.toolbar = view.findViewById(R.id.currentCourseFragmentToolbar);
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
@@ -83,9 +84,9 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
   }
 
   private void initUI(View view) {
-    this.questionEditText = view.findViewById(R.id.courseThreadFragmentEditText);
-    this.sendQuestionButton = view.findViewById(R.id.courseThreadFragmentSendFab);
-    this.recyclerView = view.findViewById(R.id.courseThreadFragmentRecycler);
+    this.questionEditText = view.findViewById(R.id.currentCourseFragmentQuestionEditText);
+    this.sendQuestionButton = view.findViewById(R.id.currentCourseFragmentSendQuestionButton);
+    this.recyclerView = view.findViewById(R.id.chatRecyclerView);
 
     this.sendQuestionButton.setOnClickListener(new View.OnClickListener() {
       @Override

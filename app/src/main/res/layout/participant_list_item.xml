@@ -10,7 +10,6 @@
         <import type="com.example.unserhoersaal.utils.ImageAdapter"/>
     </data>
 
-<<<<<<< HEAD
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/participantListItem"
         android:layout_width="match_parent"
@@ -40,18 +39,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/participantListItemProfileIcon"
             app:layout_constraintTop_toTopOf="parent" />
-=======
-    <TextView
-        android:id="@+id/participantListItemName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:text="@string/participant_list_item_example_name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/participantListItemProfileIcon"
-        app:layout_constraintTop_toTopOf="parent" />
->>>>>>> dev
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
