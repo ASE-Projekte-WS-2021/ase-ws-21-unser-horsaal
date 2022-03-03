@@ -137,4 +137,7 @@
     <string name="current_course_fragment_subtitle">Frage</string>
     <string name="current_course_fragment_answers_text">Antworten</string>
     <string name="current_course_fragment_no_answers">Für diese Frage gibt es noch keine Antworten</string>
+    <string name="edit_profile_name">Nutzername bearbeiten</string>
+    <string name="edit_profile_institution">Institution bearbeiten</string>
+    <string name="edit_profile_password">Password bearbeiten</string>
 </resources>
