@@ -205,9 +205,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:nestedScrollingEnabled="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
                         tools:listitem="@layout/answer_item" />
                 </RelativeLayout>
 
