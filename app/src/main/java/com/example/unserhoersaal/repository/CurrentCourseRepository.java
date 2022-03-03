@@ -1,9 +1,12 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
+import android.widget.Switch;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.LikeStatus;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +36,7 @@ public class CurrentCourseRepository {
   private MutableLiveData<String> threadId = new MutableLiveData<>();
   private MutableLiveData<String> meetingId = new MutableLiveData<>();
   private MutableLiveData<ThreadModel> thread = new MutableLiveData<>();
+  private MutableLiveData<String> userId = new MutableLiveData<>();
   private ValueEventListener messageListener;
   private ValueEventListener threadListener;
 
@@ -74,6 +78,10 @@ public class CurrentCourseRepository {
     return this.thread;
   }
 
+  public MutableLiveData<String> getUserId() {
+    return this.userId;
+  }
+
   /**
    * Loading all messages from the database.
    */
@@ -107,12 +115,16 @@ public class CurrentCourseRepository {
 
   }
 
-  //TODO Meeting id needed instead of threadId
   public void updateAnswerCount() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue())
             .child(this.threadId.getValue()).child(Config.CHILD_ANSWER_COUNT)
             .setValue(ServerValue.increment(1));
+  }
+
+  public void setUserId() {
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    this.userId.postValue(uid);
   }
 
   public void setMeetingId(String meetingId) {
@@ -137,6 +149,35 @@ public class CurrentCourseRepository {
     this.threadId.postValue(threadId);
   }
 
+  public Task<DataSnapshot> getLikeStatusMessage(String messageId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    return reference.child(Config.CHILD_USER_LIKE).child(userId.getValue()).child(messageId).get();
+  }
+
+  public void getLikeStatus(List<MessageModel> mesList) {
+    List<Task<DataSnapshot>> likeList = new ArrayList<>();
+    for (MessageModel message : mesList) {
+      likeList.add(getLikeStatusMessage(message.getKey()));
+    }
+    Tasks.whenAll(likeList).addOnSuccessListener(new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void unused) {
+        for (int i = 0; i < likeList.size(); i++) {
+          if (!likeList.get(i).getResult().exists()) {
+            mesList.get(i).setLikeStatus(LikeStatus.NEUTRAL);
+          } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.LIKE){
+            mesList.get(i).setLikeStatus(LikeStatus.LIKE);
+          } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.DISLIKE){
+            mesList.get(i).setLikeStatus(LikeStatus.DISLIKE);
+          }
+        }
+        messagesList.clear();
+        messagesList.addAll(mesList);
+        messages.postValue(messagesList);
+      }
+    });
+  }
+
   public void getAuthor(List<MessageModel> mesList) {
     List<Task<DataSnapshot>> authorNames = new ArrayList<>();
     for (MessageModel message : mesList) {
@@ -148,9 +189,7 @@ public class CurrentCourseRepository {
         for (int i = 0; i < authorNames.size(); i++) {
           mesList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
         }
-        messagesList.clear();
-        messagesList.addAll(mesList);
-        messages.postValue(messagesList);
+        getLikeStatus(mesList);
       }
     });
   }
@@ -203,24 +242,65 @@ public class CurrentCourseRepository {
     };
   }
 
-  public void like(String messageId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
-            .child(Config.CHILD_LIKE).setValue(ServerValue.increment(1));
+  //TODO auslagern in extra methoden
+  public void like(MessageModel message) {
+    String messageId = message.getKey();
+    LikeStatus likeStatus = message.getLikeStatus();
+    switch(likeStatus){
+      case LIKE:
+        handleLikeEvent(messageId,-1,LikeStatus.NEUTRAL);
+        break;
+      case DISLIKE:
+        handleLikeEvent(messageId,2,LikeStatus.LIKE);
+        break;
+      case NEUTRAL:
+        handleLikeEvent(messageId,1,LikeStatus.LIKE);
+        break;
+      default:
+        break;
+    }
+
   }
 
-  public void dislike(String messageId) {
+  public void dislike(MessageModel message) {
+    String messageId = message.getKey();
+    LikeStatus likeStatus = message.getLikeStatus();
+    switch(likeStatus) {
+      case LIKE:
+        handleLikeEvent(messageId,-2,LikeStatus.DISLIKE);
+        break;
+      case DISLIKE:
+        handleLikeEvent(messageId,1,LikeStatus.NEUTRAL);
+        break;
+      case NEUTRAL:
+        handleLikeEvent(messageId,-1,LikeStatus.DISLIKE);
+        break;
+      default:
+        break;
+    }
+  }
+
+  public void handleLikeEvent(String messageId, int deltaCount, LikeStatus status) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    if (status == LikeStatus.NEUTRAL) {
+      reference.child(Config.CHILD_USER_LIKE).child(userId.getValue()).child(messageId)
+              .removeValue();
+      reference.child(Config.CHILD_LIKE_USER).child(messageId).child(userId.getValue())
+              .removeValue();
+    } else {
+      reference.child(Config.CHILD_USER_LIKE).child(userId.getValue()).child(messageId)
+              .setValue(status);
+      reference.child(Config.CHILD_LIKE_USER).child(messageId).child(userId.getValue())
+              .setValue(status);
+    }
     reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
-            .child(Config.CHILD_LIKE).setValue(ServerValue.increment(-1));
+            .child(Config.CHILD_LIKE).setValue(ServerValue.increment(deltaCount));
   }
 
   public void solved(String messageId) {
     boolean threadAnswered = this.thread.getValue().getAnswered();
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    //TODO get uid auslagern auch für like/dislike benötigt
-    if (uid.equals(thread.getValue().getCreatorId())) {
+    if (userId.getValue().equals(thread.getValue().getCreatorId())) {
       reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
               .child(Config.CHILD_TOP_ANSWER).addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
@@ -235,7 +315,7 @@ public class CurrentCourseRepository {
           } else if (!topAnswer && threadAnswered) {
             //Thread is answered and the message is not marked as answer
             Log.d(TAG, "onDataChange: " + "an message is already marked");
-            //TODO userfeadback
+            //TODO user feedback
 
           } else if (!topAnswer && !threadAnswered) {
             //Thread is not  answered and the message is not marked as answer

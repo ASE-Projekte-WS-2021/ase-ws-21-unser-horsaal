@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,14 +129,14 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
 
   @Override
   public void onLikeClicked(int position) {
-    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
-    this.currentCourseViewModel.like(id);
+    MessageModel message = this.currentCourseViewModel.getMessages().getValue().get(position);
+    this.currentCourseViewModel.like(message);
   }
 
   @Override
   public void onDislikeClicked(int position) {
-    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
-    this.currentCourseViewModel.dislike(id);
+    MessageModel message = this.currentCourseViewModel.getMessages().getValue().get(position);
+    this.currentCourseViewModel.dislike(message);
   }
 
   @Override
