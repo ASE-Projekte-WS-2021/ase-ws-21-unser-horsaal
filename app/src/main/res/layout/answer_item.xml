@@ -65,21 +65,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/answerItemHorizontalLine">
-
-        <TextView
-            android:id="@+id/answerItemLikeCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/answer_item_like_example"
-            />
 
         <ImageView
             android:id="@+id/answerItemLikeIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:clickable="true"
             android:src="@drawable/ic_baseline_thumb_up_24" />
 
@@ -94,9 +87,9 @@
             android:id="@+id/answerItemDislikeIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_thumb_down_24"
             android:layout_marginStart="16dp"
-            android:clickable="true" />
+            android:clickable="true"
+            android:src="@drawable/ic_baseline_thumb_down_24" />
 
     </LinearLayout>
 
