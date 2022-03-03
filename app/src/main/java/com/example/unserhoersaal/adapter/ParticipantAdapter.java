@@ -16,6 +16,10 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
 
   private List<UserModel> localDataSet;
 
+  public ParticipantAdapter(List<UserModel> dataSet) {
+    this.localDataSet = dataSet;
+  }
+
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {

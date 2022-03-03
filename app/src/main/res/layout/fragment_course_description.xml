@@ -24,49 +24,30 @@
             android:id="@+id/courseDescriptionFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_blue"
+            android:background="@drawable/app_background"
             app:titleTextColor="@color/white"
-            app:title="Kursbeschreibung"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/courseDescriptionFragmentConstraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:background="@color/app_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentToolbar">
-
-            <ImageView
-                android:id="@+id/profileFragmentProfileImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/ic_baseline_library_books_24"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/courseDescriptionCourseTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
+            app:layout_constraintTop_toTopOf="parent" >
 
             <TextView
-                android:id="@+id/courseDescriptionCourseTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{vm.courseModel.title}"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/profileFragmentProfileImage"
-                app:layout_constraintStart_toStartOf="@+id/profileFragmentProfileImage" />
+                android:text="@string/course_description_fragment_description"
+                style="@style/toolbarTitleStyle"/>
+        </com.google.android.material.appbar.MaterialToolbar>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/courseDescriptionCourseTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{vm.courseModel.title}"
+            android:background="@drawable/app_background"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentToolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/toolbarSubtitleStyle"/>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -76,7 +57,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseDescriptionFragmentConstraintLayout">
+            app:layout_constraintTop_toBottomOf="@+id/courseDescriptionCourseTitle">
 
             <TableRow
                 android:layout_width="match_parent"
@@ -104,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:text="@{vm.courseModel.creatorId}"
+                    android:text="@{vm.courseModel.creatorName}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold"
                     android:layout_marginEnd="8dp"
@@ -149,7 +130,8 @@
                 android:id="@+id/courseDescriptionFragmentCourseDescriptionContainer"
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:onClick="@{(view) -> NavUtil.showDescription(view, vm)}">
 
                 <ImageView
                     android:id="@+id/courseDescriptionFragmentCourseDescriptionIcon"
@@ -184,7 +166,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseHistoryFragment)}"
+                    android:onClick="@{(view) -> NavUtil.showDescription(view, vm)}"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                     android:layout_column="3"
                     android:layout_marginEnd="8dp"
@@ -196,7 +178,8 @@
             <TableRow
                 android:id="@+id/courseDescriptionFragmentCourseParticipantsContainer"
                 android:background="@color/white"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseParticipantsFragment)}">
 
                 <ImageView
                     android:id="@+id/courseDescriptionFragmentParticipantsIcon"
@@ -218,7 +201,6 @@
                     android:id="@+id/courseDescriptionFragmentExpandParticipantsIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseParticipantsFragment)}"
                     android:layout_column="3"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
@@ -261,4 +243,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-

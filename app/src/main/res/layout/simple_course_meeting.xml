@@ -8,6 +8,7 @@
             name="model"
             type="com.example.unserhoersaal.model.MeetingsModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.utils.Format"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,11 +21,13 @@
 
         <TextView
             android:id="@+id/courseMeetingTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/app_blue"
             android:textStyle="bold"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/courseMeetingDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@{model.title}" />
@@ -36,7 +39,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@{Long.toString(model.eventTime)}" />
+            tools:text="@{Format.getFormatedDate(courseMeetingDate, model.eventTime)}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

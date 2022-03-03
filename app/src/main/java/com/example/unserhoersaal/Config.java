@@ -1,6 +1,7 @@
 package com.example.unserhoersaal;
 
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 
 /** Config Class. */
 public class Config {
@@ -8,6 +9,8 @@ public class Config {
   /** ChatAdapter. */
   public static final SimpleDateFormat RECENT_FORMAT = new SimpleDateFormat("HH:mm");
   public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");
+  public static final SimpleDateFormat DATE_TIME_FORMAT
+          = new SimpleDateFormat("dd. MMMM, HH:mm");
 
   /** Database Children. */
   public static final String CHILD_USER = "users";
@@ -18,6 +21,13 @@ public class Config {
   public static final String CHILD_THREADS = "threads";
   public static final String CHILD_USER_COURSES = "usersCourses";
   public static final String CHILD_COURSES_USER = "coursesUsers";
+  public static final String CHILD_USER_NAME = "displayName";
+  public static final String CHILD_LIKE = "likes";
+  public static final String CHILD_TOP_ANSWER = "topAnswer";
+  public static final String CHILD_ANSWER_COUNT = "answersCount";
+  public static final String CHILD_ANSWERED = "answered";
+  public static final String CHILD_USER_LIKE = "userLike";
+  public static final String CHILD_LIKE_USER = "likeUser";
 
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;

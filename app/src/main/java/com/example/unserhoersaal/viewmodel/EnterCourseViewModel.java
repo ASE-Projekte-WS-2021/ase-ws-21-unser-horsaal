@@ -13,8 +13,10 @@ public class EnterCourseViewModel extends ViewModel {
 
   private EnterCourseRepository enterCourseRepository;
   private MutableLiveData<CourseModel> courseModel;
+
   private MutableLiveData<String> courseId;
   public MutableLiveData<String> dataBindingCourseIdInput;
+  private MutableLiveData<CourseModel> enteredCourse;
 
   /** Initialize the EnterCourseViewModel. */
   public void init() {
@@ -25,35 +27,41 @@ public class EnterCourseViewModel extends ViewModel {
     this.courseModel = this.enterCourseRepository.getCourse();
     this.courseId = this.enterCourseRepository.getCourseId();
     this.dataBindingCourseIdInput = new MutableLiveData<>();
+    this.enteredCourse = this.enterCourseRepository.getEnteredCourse();
+
   }
 
   public LiveData<CourseModel> getCourse() {
     return this.courseModel;
   }
 
-  public LiveData<String> getCourseId() {
-    return this.courseId;
+  public LiveData<CourseModel> getEnteredCourse() {
+    return this.enteredCourse;
   }
 
   /** Reset the entered data after joining the course. */
   public void resetEnterCourseId() {
     this.dataBindingCourseIdInput.setValue(null);
     this.courseModel.setValue(null);
-    this.courseId.setValue(null);
+    this.enteredCourse.setValue(null);
   }
 
   public void checkCode() {
+
     String id = dataBindingCourseIdInput.getValue();
-    //TODO: send status data back to view on error
-    if (id == null) return;
-    this.enterCourseRepository.checkCode(id);
+    if (id != null) {
+      id = id.toUpperCase();
+      id = id.replace(" ", "");
+      id = id.replace("-", "");
+      this.enterCourseRepository.checkCode(id);
+    }
   }
 
   public void enterCourse() {
     //TODO: send status data back to view on error
     if (courseModel.getValue() == null) return;
     if (courseModel.getValue().getKey() == null) return;
-    this.enterCourseRepository.isUserInCourse(courseModel.getValue().getKey());
+    this.enterCourseRepository.isUserInCourse(courseModel.getValue());
   }
 
 }

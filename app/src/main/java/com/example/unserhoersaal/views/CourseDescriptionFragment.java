@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCourseDescriptionBinding;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
+import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 
 /** Course-Description.*/
 public class CourseDescriptionFragment extends Fragment {
@@ -22,6 +23,7 @@ public class CourseDescriptionFragment extends Fragment {
 
   private NavController navController;
   private CourseDescriptionViewModel courseDescriptionViewModel;
+  private CourseParticipantsViewModel courseParticipantsViewModel;
   private FragmentCourseDescriptionBinding binding;
 
   public CourseDescriptionFragment() {
@@ -55,15 +57,20 @@ public class CourseDescriptionFragment extends Fragment {
   private void initViewModel() {
     this.courseDescriptionViewModel = new ViewModelProvider(requireActivity())
             .get(CourseDescriptionViewModel.class);
+    this.courseParticipantsViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseParticipantsViewModel.class);
     this.courseDescriptionViewModel.init();
+    this.courseParticipantsViewModel.init();
     this.courseDescriptionViewModel.getCourseModel()
             .observe(getViewLifecycleOwner(), courseModel -> {
-              /*
-              use to navigate the user out of the fragment / course navigate back to course history
+
+              //use to navigate the user out of the fragment / course navigate back to course history
               if (courseModel == null) {
-                navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment);
+                navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
+              } else if (courseModel.getKey() != null) {
+                courseParticipantsViewModel.setCourseId(courseModel.getKey());
               }
-              */
+
             });
   }
 

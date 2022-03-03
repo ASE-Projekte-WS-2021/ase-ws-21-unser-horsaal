@@ -13,8 +13,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
+
 import com.example.unserhoersaal.utils.DeepLinkEnum;
 import com.example.unserhoersaal.utils.DeepLinkMode;
+
+import com.example.unserhoersaal.model.CourseModel;
+
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
@@ -79,9 +83,9 @@ public class EnterCourseFragment extends Fragment {
                 this.binding.enterCourseFragmentConfirmationDialog.setVisibility(View.VISIBLE);
               }
             });
-    this.enterCourseViewModel.getCourseId().observe(getViewLifecycleOwner(), id -> {
-      if (id != null) {
-        openNewCourse(id);
+    this.enterCourseViewModel.getEnteredCourse().observe(getViewLifecycleOwner(), model -> {
+      if (model != null) {
+        openNewCourse(model);
       }
     });
   }
@@ -92,9 +96,9 @@ public class EnterCourseFragment extends Fragment {
   }
 
   /** Creates a new course if the code is correct. */
-  public void openNewCourse(String id) {
+  public void openNewCourse(CourseModel model) {
     KeyboardUtil.hideKeyboard(getActivity());
-    this.courseHistoryViewModel.setCourseId(id);
+    this.courseHistoryViewModel.setCourse(model);
     this.enterCourseViewModel.resetEnterCourseId();
     this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
     this.navController.navigate(R.id.action_enterCourseFragment_to_courseHistoryFragment);

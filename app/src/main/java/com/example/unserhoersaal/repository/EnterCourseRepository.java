@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +26,7 @@ public class EnterCourseRepository {
   private FirebaseAuth firebaseAuth;
 
   private MutableLiveData<CourseModel> courseModel = new MutableLiveData<>();
-  private MutableLiveData<String> courseId = new MutableLiveData<>();
+  private MutableLiveData<CourseModel> enteredCourse = new MutableLiveData<>();
 
   /** Generates an Instance of the EnterCourseRepository. */
   public static EnterCourseRepository getInstance() {
@@ -46,8 +47,8 @@ public class EnterCourseRepository {
   }
 
   /** Gives back the current course id. */
-  public MutableLiveData<String> getCourseId() {
-    return this.courseId;
+  public MutableLiveData<CourseModel> getEnteredCourse() {
+    return this.enteredCourse;
   }
 
   /** Checks if the course exists. */
@@ -78,7 +79,7 @@ public class EnterCourseRepository {
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel course = snapshot.getValue(CourseModel.class);
         course.setKey(snapshot.getKey());
-        courseModel.postValue(course);
+        getAuthorName(course);
       }
 
       @Override
@@ -88,16 +89,30 @@ public class EnterCourseRepository {
     });
   }
 
+  public void getAuthorName(CourseModel course) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    Task<DataSnapshot> task = reference.child(Config.CHILD_USER).child(course.getCreatorId())
+            .child(Config.CHILD_USER_NAME).get();
+
+    task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(DataSnapshot dataSnapshot) {
+        course.setCreatorName(dataSnapshot.getValue(String.class));
+        courseModel.postValue(course);
+      }
+    });
+  }
+
   /** Checks if user is in course. */
-  public void isUserInCourse(String id) {
+  public void isUserInCourse(CourseModel course) {
     ValueEventListener eventListener = new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (!dataSnapshot.exists()) {
-          saveCourseInUser(id);
+          saveCourseInUser(course);
         } else {
           //if user has already entered the course just open it
-          courseId.postValue(id);
+          enteredCourse.postValue(course);
         }
       }
 
@@ -108,23 +123,23 @@ public class EnterCourseRepository {
     };
 
     this.databaseReference.child(Config.CHILD_USER_COURSES)
-            .child(this.firebaseAuth.getCurrentUser().getUid()).child(id)
+            .child(this.firebaseAuth.getCurrentUser().getUid()).child(course.getKey())
             .addListenerForSingleValueEvent(eventListener);
   }
 
   /** Saves a entered course for a user. */
-  public void saveCourseInUser(String id) {
+  public void saveCourseInUser(CourseModel course) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.databaseReference.child(Config.CHILD_USER_COURSES).child(uid).child(id)
+    this.databaseReference.child(Config.CHILD_USER_COURSES).child(uid).child(course.getKey())
             .setValue(Boolean.TRUE).addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
               public void onSuccess(Void unused) {
-                databaseReference.child(Config.CHILD_COURSES_USER).child(id).child(uid)
+                databaseReference.child(Config.CHILD_COURSES_USER).child(course.getKey()).child(uid)
                         .setValue(Boolean.TRUE)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                           @Override
                           public void onSuccess(Void unused) {
-                            courseId.postValue(id);
+                            enteredCourse.postValue(course);
                           }
                         });
               }

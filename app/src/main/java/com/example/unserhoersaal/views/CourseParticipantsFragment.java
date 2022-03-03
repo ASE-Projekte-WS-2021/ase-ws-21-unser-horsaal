@@ -14,7 +14,11 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ParticipantAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseParticipantsBinding;
+import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
+
+import java.util.ArrayList;
 
 /** Course-Participants.*/
 public class CourseParticipantsFragment extends Fragment {
@@ -59,10 +63,14 @@ public class CourseParticipantsFragment extends Fragment {
     this.courseParticipantsViewModel = new ViewModelProvider(requireActivity())
             .get(CourseParticipantsViewModel.class);
     this.courseParticipantsViewModel.init();
+    this.courseParticipantsViewModel.getUserList().observe(getViewLifecycleOwner(), userList -> {
+      participantAdapter.notifyDataSetChanged();
+    });
   }
 
   private void connectAdapter() {
-    this.participantAdapter = new ParticipantAdapter();
+    this.participantAdapter =
+            new ParticipantAdapter(this.courseParticipantsViewModel.getUserList().getValue());
   }
 
   private void connectBinding() {

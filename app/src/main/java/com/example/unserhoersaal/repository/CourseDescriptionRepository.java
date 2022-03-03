@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +45,6 @@ public class CourseDescriptionRepository {
     return this.courseModel;
   }
 
-  //TODO get whole CourseModel from ViewModel
   /** Sets the current course. */
   public void setCourseId(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -51,6 +53,7 @@ public class CourseDescriptionRepository {
               .removeEventListener(this.listener);
     }
     reference.child(Config.CHILD_COURSES).child(courseId).addValueEventListener(this.listener);
+    this.courseModel.postValue(new CourseModel());
     this.courseId.postValue(courseId);
   }
 
@@ -60,7 +63,8 @@ public class CourseDescriptionRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
-        courseModel.postValue(model);
+        model.setKey(snapshot.getKey());
+        getAuthorName(model);
       }
 
       @Override
@@ -69,4 +73,37 @@ public class CourseDescriptionRepository {
       }
     };
   }
+
+  private void getAuthorName(CourseModel course) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    Task<DataSnapshot> task = reference.child(Config.CHILD_USER).child(course.getCreatorId())
+            .child(Config.CHILD_USER_NAME).get();
+
+    task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(DataSnapshot dataSnapshot) {
+        course.setCreatorName(dataSnapshot.getValue(String.class));
+        courseModel.postValue(course);
+      }
+    });
+  }
+
+  public void unregisterFromCourse(String id) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    reference.child(Config.CHILD_USER_COURSES).child(uid).child(id).removeValue()
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                reference.child(Config.CHILD_COURSES_USER).child(id).child(uid).removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                          @Override
+                          public void onSuccess(Void unused) {
+                            courseModel.postValue(null);
+                          }
+                        });
+              }
+            });
+  }
+
 }

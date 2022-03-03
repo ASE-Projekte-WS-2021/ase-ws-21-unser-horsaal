@@ -63,7 +63,11 @@ public class CreateCourseFragment extends Fragment {
     this.createCourseViewModel.init();
     this.courseHistoryViewModel.init();
     this.createCourseViewModel
-            .getCourseModel().observe(getViewLifecycleOwner(), this::courseCreated);
+            .getCourseModel().observe(getViewLifecycleOwner(), courseModel -> {
+              if (courseModel != null) {
+                courseCreated(courseModel);
+              }
+    });
   }
 
   private void connectBinding() {
@@ -81,7 +85,7 @@ public class CreateCourseFragment extends Fragment {
   /** Signs the creator in the course. */
   public void courseCreated(CourseModel course) {
     String key = course.getKey();
-    this.courseHistoryViewModel.setCourseId(key);
+    this.courseHistoryViewModel.setCourse(course);
     this.createCourseViewModel.resetCourseModelInput();
     this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
   }

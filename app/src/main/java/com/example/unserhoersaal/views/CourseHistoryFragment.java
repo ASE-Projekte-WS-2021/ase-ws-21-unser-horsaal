@@ -111,4 +111,9 @@ public class CourseHistoryFragment extends Fragment {
             navController.navigate(R.id.action_courseHistoryFragment_to_coursesFragment));
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    courseHistoryViewModel.resetMeetingData();
+  }
 }

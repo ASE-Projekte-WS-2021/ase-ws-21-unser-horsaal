@@ -9,6 +9,7 @@ public class UserModel {
   private String email;
   private String institution;
   private String photoUrl;
+  private String key;
 
   public UserModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
@@ -31,6 +32,10 @@ public class UserModel {
     return this.photoUrl;
   }
 
+  public String getKey() {
+    return this.key;
+  }
+
   /** Setter. */
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
@@ -46,6 +51,10 @@ public class UserModel {
 
   public void setPhotoUrl(String photoUrl) {
     this.photoUrl = photoUrl;
+  }
+
+  public void setKey(String key) {
+    this.key = key;
   }
   
 }

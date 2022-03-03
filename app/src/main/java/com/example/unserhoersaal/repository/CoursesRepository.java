@@ -1,10 +1,16 @@
 package com.example.unserhoersaal.repository;
 
+import android.app.Activity;
+import android.provider.ContactsContract;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.compose.runtime.snapshots.Snapshot;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,8 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /** This class manages the database access for the overview of the courses of a user. */
@@ -45,7 +49,6 @@ public class CoursesRepository {
     return this.courses;
   }
 
-  //TODO set up pipeline
   /** This method loads all courses in which the user is signed in. */
   public void loadUserCourses() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -57,29 +60,22 @@ public class CoursesRepository {
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        HashSet<String> courseIds = new HashSet<>();
-        userCoursesList.clear();
+        ArrayList<Task<DataSnapshot>> taskList = new ArrayList<>();
+        ArrayList<CourseModel> authorList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          courseIds.add(snapshot.getKey());
+          taskList.add(getCourseTask(snapshot.getKey()));
         }
-        for (String key : courseIds) {
-          reference.child(Config.CHILD_COURSES).child(key)
-                  .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      CourseModel model = snapshot.getValue(CourseModel.class);
-                      model.setKey(snapshot.getKey());
-                      userCoursesList.add(model);
-                      //TODO: update after loading
-                      courses.postValue(userCoursesList);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                  });
-        }
+        Tasks.whenAll(taskList).addOnSuccessListener(new OnSuccessListener<Void>() {
+          @Override
+          public void onSuccess(Void unused) {
+            for (Task<DataSnapshot> task : taskList) {
+              CourseModel model = task.getResult().getValue(CourseModel.class);
+              model.setKey(task.getResult().getKey());
+              authorList.add(model);
+            }
+            getAuthor(authorList);
+          }
+        });
       }
 
       @Override
@@ -89,4 +85,34 @@ public class CoursesRepository {
     });
   }
 
+  public Task<DataSnapshot> getCourseTask(String courseId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    return reference.child(Config.CHILD_COURSES).child(courseId).get();
+  }
+
+  public void getAuthor(List<CourseModel> authorList) {
+    List<Task<DataSnapshot>> authorNames = new ArrayList<>();
+    for (CourseModel course : authorList) {
+      authorNames.add(getAuthorName(course.getCreatorId()));
+    }
+    Tasks.whenAll(authorNames).addOnSuccessListener(new OnSuccessListener<Void>() {
+      @Override
+      public void onSuccess(Void unused) {
+        for (int i = 0; i < authorList.size(); i++) {
+          /*CourseModel model = authorList.get(i);
+          model.setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+          authorList.set(i, model);*/
+          authorList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+        }
+        userCoursesList.clear();
+        userCoursesList.addAll(authorList);
+        courses.postValue(userCoursesList);
+      }
+    });
+  }
+
+  public Task<DataSnapshot> getAuthorName(String authorId) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    return reference.child(Config.CHILD_USER).child(authorId).child(Config.CHILD_USER_NAME).get();
+  }
 }
