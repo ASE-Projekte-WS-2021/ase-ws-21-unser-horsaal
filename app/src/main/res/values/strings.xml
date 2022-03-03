@@ -141,5 +141,6 @@
     <string name="edit_profile_institution">Institution bearbeiten</string>
     <string name="edit_profile_password">Password bearbeiten</string>
     <string name="course_description_fragment_description">Kursbeschreibung</string>
-    <style name="course_participants_fragment_title">Teilnehmer:innen</style>
+    <string name="course_participants_fragment_title">Teilnehmer:innen</string>
+    <string name="course_history_fragment_subtitle">Meetings</string>
 </resources>
