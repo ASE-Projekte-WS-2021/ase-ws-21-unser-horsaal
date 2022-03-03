@@ -15,7 +15,7 @@ public class CreateCourseViewModel extends ViewModel {
 
   private CreateCourseRepository createCourseRepository;
   private MutableLiveData<CourseModel> courseModel;
-  public MutableLiveData<CourseModel> courseModelInput;
+  public MutableLiveData<CourseModel> dataBindingCourseModelInput;
 
   /** Initialization of the CreatCourseViewModel. */
   public void init() {
@@ -24,7 +24,7 @@ public class CreateCourseViewModel extends ViewModel {
     }
     this.createCourseRepository = CreateCourseRepository.getInstance();
     this.courseModel = this.createCourseRepository.getUserCourse();
-    this.courseModelInput = new MutableLiveData<>(new CourseModel());
+    this.dataBindingCourseModelInput = new MutableLiveData<>(new CourseModel());
   }
 
   public LiveData<CourseModel> getCourseModel() {
@@ -32,15 +32,15 @@ public class CreateCourseViewModel extends ViewModel {
   }
 
   public void resetCourseModelInput() {
-    this.courseModelInput.setValue(new CourseModel());
+    this.dataBindingCourseModelInput.setValue(new CourseModel());
   }
 
   /** Create a new course. */
   public void createCourse() {
     //TODO: status data to view
-    if (this.courseModelInput.getValue() == null) return;
+    if (this.dataBindingCourseModelInput.getValue() == null) return;
 
-    CourseModel courseModel = this.courseModelInput.getValue();
+    CourseModel courseModel = this.dataBindingCourseModelInput.getValue();
     String codeMapping = this.getCodeMapping();
     courseModel.setCodeMapping(codeMapping);
 

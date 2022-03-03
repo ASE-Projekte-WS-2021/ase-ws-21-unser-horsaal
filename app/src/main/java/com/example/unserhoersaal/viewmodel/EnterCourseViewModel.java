@@ -14,7 +14,7 @@ public class EnterCourseViewModel extends ViewModel {
   private EnterCourseRepository enterCourseRepository;
   private MutableLiveData<CourseModel> courseModel;
   private MutableLiveData<String> courseId;
-  public MutableLiveData<String> enteredCourseId;
+  public MutableLiveData<String> dataBindingCourseIdInput;
 
   /** Initialize the EnterCourseViewModel. */
   public void init() {
@@ -24,7 +24,7 @@ public class EnterCourseViewModel extends ViewModel {
     this.enterCourseRepository = EnterCourseRepository.getInstance();
     this.courseModel = this.enterCourseRepository.getCourse();
     this.courseId = this.enterCourseRepository.getCourseId();
-    this.enteredCourseId = new MutableLiveData<>();
+    this.dataBindingCourseIdInput = new MutableLiveData<>();
   }
 
   public LiveData<CourseModel> getCourse() {
@@ -37,13 +37,13 @@ public class EnterCourseViewModel extends ViewModel {
 
   /** Reset the entered data after joining the course. */
   public void resetEnterCourseId() {
-    this.enteredCourseId.setValue(null);
+    this.dataBindingCourseIdInput.setValue(null);
     this.courseModel.setValue(null);
     this.courseId.setValue(null);
   }
 
   public void checkCode() {
-    String id = enteredCourseId.getValue();
+    String id = dataBindingCourseIdInput.getValue();
     //TODO: send status data back to view on error
     if (id == null) return;
     this.enterCourseRepository.checkCode(id);

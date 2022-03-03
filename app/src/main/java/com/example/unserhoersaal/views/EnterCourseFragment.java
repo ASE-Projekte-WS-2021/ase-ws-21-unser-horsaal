@@ -1,9 +1,12 @@
 package com.example.unserhoersaal.views;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -11,6 +14,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.budiyev.android.codescanner.CodeScanner;
+import com.budiyev.android.codescanner.CodeScannerView;
+import com.budiyev.android.codescanner.DecodeCallback;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
 import com.example.unserhoersaal.utils.DeepLinkEnum;
@@ -18,6 +25,7 @@ import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
+import com.google.zxing.Result;
 
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
@@ -29,6 +37,7 @@ public class EnterCourseFragment extends Fragment {
   private NavController navController;
   private FragmentEnterCourseBinding binding;
   private DeepLinkMode deepLinkMode;
+  private CodeScanner codeScanner;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -57,9 +66,10 @@ public class EnterCourseFragment extends Fragment {
     this.initViewModel();
     this.connectBinding();
     this.setupToolbar();
+    //this.initQrCodeScanner(view);
 
     if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
-      this.enterCourseViewModel.enteredCourseId.setValue(this.deepLinkMode.getCodeMapping());
+      this.enterCourseViewModel.dataBindingCourseIdInput.setValue(this.deepLinkMode.getCodeMapping());
       this.enterCourseViewModel.checkCode();
       this.binding.enterCourseFragmentConfirmationDialog.setVisibility(View.VISIBLE);
     }
@@ -107,4 +117,26 @@ public class EnterCourseFragment extends Fragment {
     });
   }
 
+  //https://github.com/yuriy-budiyev/code-scanner
+  private void initQrCodeScanner(View view) {
+    //TODO: @micha; need exit button!!! --> extra fragment?
+    this.binding.enterCourseFragmentQrImage.setOnClickListener(v -> {
+      this.binding.enterCourseFragmentCodeScannerView.setVisibility(View.VISIBLE);
+      final Activity activity = getActivity();
+      CodeScannerView scannerView = view.findViewById(R.id.scanner_view);
+      assert activity != null;
+      codeScanner = new CodeScanner(activity, scannerView);
+      codeScanner.setDecodeCallback(result
+              -> activity.runOnUiThread(()
+              -> Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show()));
+      scannerView.setOnClickListener(view1
+              -> codeScanner.startPreview());
+    });
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.codeScanner.releaseResources();
+  }
 }

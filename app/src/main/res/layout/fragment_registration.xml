@@ -54,7 +54,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentUserNameEditText"
-                        android:text="@={vm.user.displayName}"
+                        android:text="@={vm.dataBindingUserInput.displayName}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true" />
@@ -72,7 +72,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentUserEmailEditText"
-                        android:text="@={vm.user.email}"
+                        android:text="@={vm.dataBindingUserInput.email}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true" />
@@ -91,7 +91,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentPasswordEditText"
-                        android:text="@={vm.password}"
+                        android:text="@={vm.dataBindingPasswordInput}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"

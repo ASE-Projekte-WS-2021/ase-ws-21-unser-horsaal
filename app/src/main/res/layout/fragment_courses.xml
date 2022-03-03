@@ -14,6 +14,7 @@
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
+        <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,7 +101,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
             android:translationY="-140dp"
-            android:visibility="@{vm.toggle ? View.GONE : View.VISIBLE}">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -131,7 +132,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
             android:translationY="-70dp"
-            android:visibility="@{vm.toggle ? View.GONE : View.VISIBLE}">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -159,7 +160,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
             android:src="@drawable/ic_baseline_add_24"
-            android:onClick="@{() -> vm.toggle()}"
+            android:onClick="@{() -> VisibilityAdapter.toggleFloatingButtons(coursesFragmentEnterCourseFabLayout, coursesFragmentCreateCourseFabLayout)}"
             app:tint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

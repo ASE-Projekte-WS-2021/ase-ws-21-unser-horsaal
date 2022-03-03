@@ -17,8 +17,8 @@ public class LoginViewModel extends ViewModel {
 
   private AuthAppRepository authAppRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
-  public MutableLiveData<UserModel> user;
-  public MutableLiveData<String> password;
+  public MutableLiveData<UserModel> dataBindingUserInput;
+  public MutableLiveData<String> dataBindingPasswordInput;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
@@ -29,8 +29,8 @@ public class LoginViewModel extends ViewModel {
     this.userLiveData = this.authAppRepository.getUserLiveData();
 
     //Databinding containers
-    this.user = new MutableLiveData<>();
-    this.password = new MutableLiveData<>();
+    this.dataBindingUserInput = new MutableLiveData<>();
+    this.dataBindingPasswordInput = new MutableLiveData<>();
     this.resetDatabindingData();
   }
 
@@ -44,18 +44,18 @@ public class LoginViewModel extends ViewModel {
   }
 
   private void resetDatabindingData() {
-    this.user.setValue(new UserModel());
-    this.password.setValue("");
+    this.dataBindingUserInput.setValue(new UserModel());
+    this.dataBindingPasswordInput.setValue("");
   }
 
   /** Login the user. */
   public void login() {
-    if (this.user.getValue() == null) {
+    if (this.dataBindingUserInput.getValue() == null) {
       return;
     }
 
-    String email = this.user.getValue().getEmail();
-    String password = this.password.getValue();
+    String email = this.dataBindingUserInput.getValue().getEmail();
+    String password = this.dataBindingPasswordInput.getValue();
 
     if (Validation.emptyEmail(email)) {
       //TODO: change ENUM livedata to email may not be empty -> view get changes by observing

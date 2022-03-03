@@ -73,7 +73,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseTitleEditText"
-                        android:text="@={vm.courseModelInput.title}"
+                        android:text="@={vm.dataBindingCourseModelInput.title}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true" />
@@ -90,7 +90,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseDescriptionEditText"
-                        android:text="@={vm.courseModelInput.description}"
+                        android:text="@={vm.dataBindingCourseModelInput.description}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
@@ -108,7 +108,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseInstitutionEditText"
-                        android:text="@={vm.courseModelInput.institution}"
+                        android:text="@={vm.dataBindingCourseModelInput.institution}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"

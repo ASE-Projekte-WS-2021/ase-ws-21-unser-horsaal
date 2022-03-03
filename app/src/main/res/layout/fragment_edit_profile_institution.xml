@@ -7,9 +7,6 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.ProfileViewModel"/>
-        <import type="com.example.unserhoersaal.utils.ImageAdapter"/>
-        <import type="com.example.unserhoersaal.utils.NavUtil"/>
-        <import type="com.example.unserhoersaal.R"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,6 +41,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editProfileInstitutionFragmentEditText"
+                android:text="@={vm.dataBindingProfileInput.institution}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true" />
@@ -52,6 +50,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editProfileInstitutionFragmentSaveFab"
+            android:onClick="@{(view) -> vm.changeInstitution()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
