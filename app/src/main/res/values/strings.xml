@@ -124,4 +124,17 @@
     <string name="no_course_found_fragment_text">Leider konnte kein entsprechender Kurs gefunden werden</string>
     <string name="no_course_found_fragment_button_back">Zurück</string>
     <string name="enter_course_detail_fragment_quit_button">Abbrechen</string>
+    <string name="course_history_fragment_toolbar_title">Kurstitel</string>
+    <string name="create_course_meeting_toolbar_title">Meeting erstellen</string>
+    <string name="create_course_meeting_subtitle">Ein Meeting ist ein einmalig stattfindendes Treffen innerhalb des Kurses</string>
+    <string name="create_course_meeting_meeting_title">Meeting-Titel</string>
+    <string name="create_course_meeting_meeting_date">Datum</string>
+    <string name="create_course_meeting_meeting_time">Uhrzeit</string>
+    <string name="create_course_meeting_meeting_button">Erstellen</string>
+    <string name="course_meeting_subtitle">Fragenübersicht</string>
+    <string name="course_meeting_toolbar_title">Meeting-Titel</string>
+    <string name="course_meeting_create_button">Erstellen</string>
+    <string name="current_course_fragment_subtitle">Frage</string>
+    <string name="current_course_fragment_answers_text">Antworten</string>
+    <string name="current_course_fragment_no_answers">Für diese Frage gibt es noch keine Antworten</string>
 </resources>
