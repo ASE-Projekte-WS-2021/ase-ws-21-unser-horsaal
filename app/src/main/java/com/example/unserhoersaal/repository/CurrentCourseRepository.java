@@ -242,44 +242,6 @@ public class CurrentCourseRepository {
     };
   }
 
-  //TODO auslagern in extra methoden
-  public void like(MessageModel message) {
-    String messageId = message.getKey();
-    LikeStatus likeStatus = message.getLikeStatus();
-    switch(likeStatus){
-      case LIKE:
-        handleLikeEvent(messageId,-1,LikeStatus.NEUTRAL);
-        break;
-      case DISLIKE:
-        handleLikeEvent(messageId,2,LikeStatus.LIKE);
-        break;
-      case NEUTRAL:
-        handleLikeEvent(messageId,1,LikeStatus.LIKE);
-        break;
-      default:
-        break;
-    }
-
-  }
-
-  public void dislike(MessageModel message) {
-    String messageId = message.getKey();
-    LikeStatus likeStatus = message.getLikeStatus();
-    switch(likeStatus) {
-      case LIKE:
-        handleLikeEvent(messageId,-2,LikeStatus.DISLIKE);
-        break;
-      case DISLIKE:
-        handleLikeEvent(messageId,1,LikeStatus.NEUTRAL);
-        break;
-      case NEUTRAL:
-        handleLikeEvent(messageId,-1,LikeStatus.DISLIKE);
-        break;
-      default:
-        break;
-    }
-  }
-
   public void handleLikeEvent(String messageId, int deltaCount, LikeStatus status) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (status == LikeStatus.NEUTRAL) {

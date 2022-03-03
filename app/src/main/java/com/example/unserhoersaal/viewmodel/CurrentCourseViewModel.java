@@ -4,6 +4,8 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.unserhoersaal.LikeStatus;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
@@ -74,11 +76,39 @@ public class CurrentCourseViewModel extends ViewModel {
   }
 
   public void like(MessageModel message) {
-    this.currentCourseRepository.like(message);
+    String messageId = message.getKey();
+    LikeStatus likeStatus = message.getLikeStatus();
+    switch(likeStatus){
+      case LIKE:
+        this.currentCourseRepository.handleLikeEvent(messageId,-1,LikeStatus.NEUTRAL);
+        break;
+      case DISLIKE:
+        this.currentCourseRepository.handleLikeEvent(messageId,2,LikeStatus.LIKE);
+        break;
+      case NEUTRAL:
+        this.currentCourseRepository.handleLikeEvent(messageId,1,LikeStatus.LIKE);
+        break;
+      default:
+        break;
+    }
   }
 
   public void dislike(MessageModel message) {
-    this.currentCourseRepository.dislike(message);
+    String messageId = message.getKey();
+    LikeStatus likeStatus = message.getLikeStatus();
+    switch(likeStatus) {
+      case LIKE:
+        this.currentCourseRepository.handleLikeEvent(messageId,-2,LikeStatus.DISLIKE);
+        break;
+      case DISLIKE:
+        this.currentCourseRepository.handleLikeEvent(messageId,1,LikeStatus.NEUTRAL);
+        break;
+      case NEUTRAL:
+        this.currentCourseRepository.handleLikeEvent(messageId,-1,LikeStatus.DISLIKE);
+        break;
+      default:
+        break;
+    }
   }
 
   public void solved(String messageId) {
