@@ -134,4 +134,7 @@
     <string name="course_meeting_subtitle">Fragenübersicht</string>
     <string name="course_meeting_toolbar_title">Meeting-Titel</string>
     <string name="course_meeting_create_button">Erstellen</string>
+    <string name="current_course_fragment_subtitle">Frage</string>
+    <string name="current_course_fragment_answers_text">Antworten</string>
+    <string name="current_course_fragment_no_answers">Für diese Frage gibt es noch keine Antworten</string>
 </resources>

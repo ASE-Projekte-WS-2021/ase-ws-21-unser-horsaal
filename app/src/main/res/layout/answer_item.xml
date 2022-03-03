@@ -52,7 +52,7 @@
     <View
         android:id="@+id/answerItemHorizontalLine"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:background="@color/grey"
