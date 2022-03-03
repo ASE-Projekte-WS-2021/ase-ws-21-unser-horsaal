@@ -23,34 +23,40 @@
             android:id="@+id/enterCourseFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_blue"
+            android:background="@drawable/app_background"
             app:titleTextColor="@color/white"
-            app:title="Kurs beitreten"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <TextView
+                android:id="@+id/enterCourseFragmentToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_course_string"
+                style="@style/toolbarTitleStyle"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/enterCourseFragmentLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="@color/app_blue"
+            android:background="@drawable/app_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/enterCourseFragmentToolbar">
 
-            <ImageView
-                android:id="@+id/enterCourseFragmentEnterImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_login_24"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_course_fragment_information_string"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
+                style="@style/toolbarSubtitleStyle"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -65,14 +71,19 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_margin="32dp"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="260dp"
+                    android:layout_height="160dp"
+                    android:src="@drawable/enter_course_image"
+                    android:layout_gravity="center"/>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/enterCourseFragmentCourseNumberEditField"
-                    style="@style/textInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
@@ -83,7 +94,8 @@
                         android:text="@={vm.enteredCourseId}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,12 +108,7 @@
                     android:layout_marginTop="32dp"
                     android:text="@string/enter_course_fragment_button_string" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/enter_course_fragment_or_string"
-                    android:textAlignment="center" />
+
 
                 <ImageView
                     android:id="@+id/enterCourseFragmentQrImage"
@@ -117,7 +124,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/enter_course_fragment_enter_via_qr_code"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:layout_marginBottom="64dp"/>
 
             </LinearLayout>
 

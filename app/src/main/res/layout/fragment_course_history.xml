@@ -43,27 +43,31 @@
             android:id="@+id/courseHistoryFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_blue"
+            android:background="@drawable/app_background"
             app:titleTextColor="@color/white"
-            app:title="Kurs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/courseHistoryFragmentEnterOverview"
-            android:onClick="@{(view) -> NavUtil.navigateToDescription(view, vm.course.key)}"
-            style="@style/wideOrangeButton"
+            <TextView
+                android:id="@+id/courseHistoryFragmentToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/course_history_fragment_toolbar_title"
+                style="@style/toolbarTitleStyle"/>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <TextView
+            android:id="@+id/courseHistoryFragmentSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
-            android:text="course description -- replace"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/course_history_fragment_subtitle"
+            android:padding="8dp"
+            android:background="@drawable/app_background"
+            style="@style/toolbarSubtitleStyle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentToolbar"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/courseHistoryFragmentCoursesRecyclerView"
@@ -74,7 +78,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseHistoryFragmentToolbar"
+            app:layout_constraintTop_toBottomOf="@+id/courseHistoryFragmentSubtitle"
             tools:listitem="@layout/simple_course_meeting" />
 
         <ScrollView
@@ -197,16 +201,29 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/courseHistoryFragmentFab"
-            android:onClick="@{() -> VisibilityAdapter.openCreationLayout(courseHistoryFragmentFab, courseHistoryFragmentCreateMeetingContainer)}"
+            android:id="@+id/courseHistoryFragmentCourseDescriptionFab"
             style="@style/fabStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_baseline_description_24"
+            android:onClick="@{(view) -> NavUtil.navigateToDescription(view, vm.courseId)}"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/courseHistoryFragmentFab"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/courseHistoryFragmentFab"
+            style="@style/fabStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
+            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseHistoryFragment_to_createCourseMeetingFragment)}"
             android:src="@drawable/ic_baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:tint="@color/white"
             android:visibility="@{vm.course.creatorId.equals(vm.userId) ? View.VISIBLE : View.GONE}"/>
 

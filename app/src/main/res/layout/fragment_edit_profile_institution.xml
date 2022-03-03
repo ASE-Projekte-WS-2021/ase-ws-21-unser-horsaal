@@ -23,6 +23,23 @@
             android:id="@+id/editProfileInstitutionFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
+            android:background="@drawable/app_background"
+            app:titleTextColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_profile_institution"
+                style="@style/toolbarTitleStyle"/>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editProfileInstitutionFragmentTextField"
+=======
             android:background="@color/app_blue"
             app:titleTextColor="@color/white"
             app:title="Institution bearbeiten"
@@ -33,6 +50,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editProfileInstitutionFragmentTextField"
             style="@style/textInputField"
+>>>>>>> dev
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/edit_profile_fragment_institution"
@@ -46,7 +64,12 @@
                 android:id="@+id/editProfileInstitutionFragmentEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
+                android:singleLine="true"
+                android:background="@color/white"/>
+=======
                 android:singleLine="true" />
+>>>>>>> dev
 
         </com.google.android.material.textfield.TextInputLayout>
 

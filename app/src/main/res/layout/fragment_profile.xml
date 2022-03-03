@@ -24,19 +24,27 @@
             android:id="@+id/profileFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_blue"
+            android:background="@drawable/app_background"
             app:titleTextColor="@color/white"
-            app:title="Profil"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <TextView
+                android:id="@+id/profileFragmentToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_fragment_title_string"
+                style="@style/toolbarTitleStyle"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/profileFragmentImageConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="@color/app_blue"
+            android:background="@drawable/app_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profileFragmentToolbar">
@@ -86,13 +94,13 @@
                     android:id="@+id/profileFragmentNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="1"
+                    android:text="@string/profile_fragment_name_string"
                     android:layout_marginStart="16dp"
-                    android:text="@string/profile_fragment_name_string" />
+                    android:layout_column="1" />
 
                 <TextView
                     android:id="@+id/profileFragmentUserName"
-                    android:layout_width="234dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:text="@={vm.profileLiveData.displayName}"
@@ -122,21 +130,21 @@
                     android:id="@+id/profileFragmentInstitutionIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="0"
                     android:src="@drawable/ic_baseline_institution_24"
+                    android:layout_column="0"
                     app:tint="@color/app_blue" />
 
                 <TextView
                     android:id="@+id/profileFragmentInstitutionTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="1"
                     android:layout_marginStart="16dp"
-                    android:text="@string/profile_fragment_institution_string" />
+                    android:text="@string/profile_fragment_institution_string"
+                    android:layout_column="1" />
 
                 <TextView
                     android:id="@+id/profileFragmentInstitution"
-                    android:layout_width="234dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginEnd="16dp"
@@ -159,24 +167,23 @@
                 android:id="@+id/profileFragmentEmailTableRow"
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
-                android:padding="8dp"
-                >
+                android:padding="8dp">
 
                 <ImageView
                     android:id="@+id/profileFragmentEmailIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="0"
                     android:src="@drawable/ic_baseline_email_24"
+                    android:layout_column="0"
                     app:tint="@color/app_blue" />
 
                 <TextView
                     android:id="@+id/profileFragmentEmailTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_column="1"
                     android:layout_marginStart="16dp"
-                    android:text="@string/profile_fragment_email_title" />
+                    android:text="@string/profile_fragment_email_title"
+                    android:layout_column="1" />
 
                 <TextView
                     android:id="@+id/profileFragmentUserEmail"
@@ -214,38 +221,6 @@
                     android:text="@string/profile_fragment_password_title"
                     android:layout_column="1"
                     android:layout_gravity="center_vertical"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="end">
-
-                    <ImageView
-                        android:id="@+id/profileFragmentTogglePasswordIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_remove_red_eye_24"
-                        android:layout_marginEnd="16dp"
-                        app:tint="@color/grey"
-                        app:layout_constraintBottom_toBottomOf="@+id/profileFragmentPassword"
-                        app:layout_constraintEnd_toStartOf="@+id/profileFragmentPassword"
-                        app:layout_constraintTop_toTopOf="@+id/profileFragmentPassword"
-                        android:layout_gravity="center"/>
-
-                    <EditText
-                        android:id="@+id/profileFragmentPassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile_fragment_example_password"
-                        android:textAlignment="viewEnd"
-                        android:inputType="textPassword"
-                        android:focusable="false"
-                        android:clickable="false"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"

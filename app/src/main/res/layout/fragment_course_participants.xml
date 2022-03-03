@@ -23,11 +23,17 @@
             android:id="@+id/courseParticipantsFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_blue"
+            android:background="@drawable/app_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="Teilnehmer:innen" />
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/course_description_fragment_participants_textview"
+                style="@style/toolbarTitleStyle"/>
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/courseParticipantsParticipantsRecycler"
