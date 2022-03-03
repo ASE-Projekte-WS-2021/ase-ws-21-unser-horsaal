@@ -9,19 +9,31 @@
         android:id="@+id/loginFragment"
         android:name="com.example.unserhoersaal.views.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
         <action
             android:id="@+id/action_loginFragment_to_coursesFragment"
             app:destination="@id/coursesFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_enterCourseFragment"
+            app:destination="@+id/enterCourseFragment" />
+        <argument
+            android:name="codeMapping"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <deepLink
+            android:id="@+id/deeplink"
+            app:uri="https://app.vairasza.dev/unserhoersaal/{codeMapping}"
+            android:autoVerify="true" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.example.unserhoersaal.views.RegistrationFragment"
         android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" >
+        tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_registrationFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -30,12 +42,15 @@
         <action
             android:id="@+id/action_registrationFragment_to_coursesFragment"
             app:destination="@id/coursesFragment" />
+        <action
+            android:id="@+id/action_registrationFragment_to_enterCourseFragment"
+            app:destination="@+id/enterCourseFragment" />
     </fragment>
     <fragment
         android:id="@+id/enterCourseFragment"
         android:name="com.example.unserhoersaal.views.EnterCourseFragment"
         android:label="fragment_enter_course"
-        tools:layout="@layout/fragment_enter_course" >
+        tools:layout="@layout/fragment_enter_course">
         <action
             android:id="@+id/action_enterCourseFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
@@ -49,7 +64,7 @@
         android:id="@+id/createCourseFragment"
         android:name="com.example.unserhoersaal.views.CreateCourseFragment"
         android:label="fragment_create_course"
-        tools:layout="@layout/fragment_create_course" >
+        tools:layout="@layout/fragment_create_course">
         <action
             android:id="@+id/action_createCourseFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
@@ -63,7 +78,7 @@
         android:id="@+id/currentCourseFragment"
         android:name="com.example.unserhoersaal.views.CurrentCourseFragment"
         android:label="fragment_current_course"
-        tools:layout="@layout/fragment_current_course" >
+        tools:layout="@layout/fragment_current_course">
         <action
             android:id="@+id/action_currentCourseFragment_to_courseMeetingFragment"
             app:destination="@id/courseMeetingFragment"
@@ -76,7 +91,7 @@
         android:id="@+id/profileFragment"
         android:name="com.example.unserhoersaal.views.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -130,7 +145,7 @@
         android:id="@+id/courseHistoryFragment"
         android:name="com.example.unserhoersaal.views.CourseHistoryFragment"
         android:label="fragment_course_history"
-        tools:layout="@layout/fragment_course_history" >
+        tools:layout="@layout/fragment_course_history">
         <action
             android:id="@+id/action_courseHistoryFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
@@ -151,7 +166,7 @@
         android:id="@+id/courseDescriptionFragment"
         android:name="com.example.unserhoersaal.views.CourseDescriptionFragment"
         android:label="fragment_course_description"
-        tools:layout="@layout/fragment_course_description" >
+        tools:layout="@layout/fragment_course_description">
         <action
             android:id="@+id/action_courseDescriptionFragment_to_courseHistoryFragment"
             app:destination="@id/courseHistoryFragment"
@@ -165,7 +180,7 @@
         android:id="@+id/courseParticipantsFragment"
         android:name="com.example.unserhoersaal.views.CourseParticipantsFragment"
         android:label="fragment_course_participants"
-        tools:layout="@layout/fragment_course_participants" >
+        tools:layout="@layout/fragment_course_participants">
         <action
             android:id="@+id/action_courseParticipantsFragment_to_courseDescriptionFragment"
             app:destination="@id/courseDescriptionFragment"
@@ -176,7 +191,7 @@
         android:id="@+id/courseMeetingFragment"
         android:name="com.example.unserhoersaal.views.CourseMeetingFragment"
         android:label="fragment_course_meeting"
-        tools:layout="@layout/fragment_course_meeting" >
+        tools:layout="@layout/fragment_course_meeting">
         <action
             android:id="@+id/action_courseMeetingFragment_to_currentCourseFragment"
             app:destination="@id/currentCourseFragment"
@@ -220,7 +235,7 @@
         android:id="@+id/editProfileInstitutionFragment"
         android:name="com.example.unserhoersaal.views.EditProfileInstitutionFragment"
         android:label="fragment_edit_profile_institution"
-        tools:layout="@layout/fragment_edit_profile_institution" >
+        tools:layout="@layout/fragment_edit_profile_institution">
         <action
             android:id="@+id/action_editProfileInstitutionFragment_to_profileFragment"
             app:destination="@id/profileFragment"
@@ -235,7 +250,7 @@
         android:id="@+id/editProfilePasswordFragment"
         android:name="com.example.unserhoersaal.views.EditProfilePasswordFragment"
         android:label="fragment_edit_profile_password"
-        tools:layout="@layout/fragment_edit_profile_password" >
+        tools:layout="@layout/fragment_edit_profile_password">
         <action
             android:id="@+id/action_editProfilePasswordFragment_to_profileFragment"
             app:destination="@id/profileFragment"
@@ -250,7 +265,7 @@
         android:id="@+id/courseThreadFragment"
         android:name="com.example.unserhoersaal.views.CourseThreadFragment"
         android:label="fragment_course_thread"
-        tools:layout="@layout/fragment_course_thread" >
+        tools:layout="@layout/fragment_course_thread">
         <action
             android:id="@+id/action_courseThreadFragment_to_courseMeetingFragment"
             app:destination="@id/courseMeetingFragment"

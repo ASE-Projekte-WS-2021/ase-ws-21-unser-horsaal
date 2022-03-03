@@ -23,6 +23,7 @@ public class NavUtil {
 
   @BindingAdapter("navigate")
   public static void navigate(View view, int navAction) {
+
     NavController navController = Navigation.findNavController(view);
     navController.navigate(navAction);
   }

@@ -13,6 +13,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
+import com.example.unserhoersaal.utils.DeepLinkEnum;
+import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 
 /**
@@ -26,6 +28,7 @@ public class RegistrationFragment extends Fragment {
   private FragmentRegistrationBinding binding;
   private RegistrationViewModel registrationViewModel;
   private NavController navController;
+  private DeepLinkMode deepLinkMode;
 
   public RegistrationFragment() {
       // Required empty public constructor
@@ -49,6 +52,7 @@ public class RegistrationFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
+    this.deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
@@ -60,6 +64,9 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel.init();
     this.registrationViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
+              if (firebaseUser != null && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+                navController.navigate(R.id.action_registrationFragment_to_enterCourseFragment);
+              }
               if (firebaseUser != null) {
                 navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
               }

@@ -14,7 +14,6 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ParticipantAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseParticipantsBinding;
-import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 
 /** Course-Participants.*/

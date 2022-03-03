@@ -13,6 +13,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
+import com.example.unserhoersaal.utils.DeepLinkEnum;
+import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
@@ -26,6 +28,7 @@ public class EnterCourseFragment extends Fragment {
   private CourseHistoryViewModel courseHistoryViewModel;
   private NavController navController;
   private FragmentEnterCourseBinding binding;
+  private DeepLinkMode deepLinkMode;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -49,10 +52,17 @@ public class EnterCourseFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
+    this.deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
     this.setupToolbar();
+
+    if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+      this.enterCourseViewModel.enteredCourseId.setValue(this.deepLinkMode.getCodeMapping());
+      this.enterCourseViewModel.checkCode();
+      this.binding.enterCourseFragmentConfirmationDialog.setVisibility(View.VISIBLE);
+    }
   }
 
   private void initViewModel() {
@@ -86,6 +96,7 @@ public class EnterCourseFragment extends Fragment {
     KeyboardUtil.hideKeyboard(getActivity());
     this.courseHistoryViewModel.setCourseId(id);
     this.enterCourseViewModel.resetEnterCourseId();
+    this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
     this.navController.navigate(R.id.action_enterCourseFragment_to_courseHistoryFragment);
   }
 

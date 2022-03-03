@@ -10,6 +10,7 @@
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -190,7 +191,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/enterCourseDialogDeclineButton"
-                        android:onClick="@{() -> enterCourseFragmentConfirmationDialog.setVisibility(View.GONE)}"
+                        android:onClick="@{() -> VisibilityAdapter.closeConfirmationDialog(enterCourseFragmentConfirmationDialog, 1)}"
                         style="@style/wideOrangeButton"
                         android:backgroundTint="@color/red"
                         android:layout_width="0dp"

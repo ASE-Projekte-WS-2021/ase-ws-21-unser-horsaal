@@ -16,4 +16,11 @@ public class VisibilityAdapter {
     floatButton.setVisibility(View.VISIBLE);
     creationLayout.setVisibility(View.GONE);
   }
+
+  @BindingAdapter("closeConfirmationDialog")
+  public static void closeConfirmationDialog(View view, int a) {
+    DeepLinkMode deepLinkMode = DeepLinkMode.getInstance();
+    deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
+    view.setVisibility(View.GONE);
+  }
 }
