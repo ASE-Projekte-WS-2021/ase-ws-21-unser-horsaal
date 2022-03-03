@@ -86,7 +86,7 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
               }
             });
     this.currentCourseViewModel.getThread().observe(getViewLifecycleOwner(), threadModel -> {
-      this.threadText.setText(threadModel.getText());
+      //todo enter thread information to ui
     });
   }
 

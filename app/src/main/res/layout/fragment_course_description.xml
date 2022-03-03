@@ -130,7 +130,7 @@
                 android:layout_marginTop="2dp"
                 android:background="@color/white"
                 android:padding="8dp"
-                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseDescriptionDetailFragment)}">
+                android:onClick="@{(view) -> NavUtil.showDescription(view, vm)}">
 
                 <ImageView
                     android:id="@+id/courseDescriptionFragmentCourseDescriptionIcon"
