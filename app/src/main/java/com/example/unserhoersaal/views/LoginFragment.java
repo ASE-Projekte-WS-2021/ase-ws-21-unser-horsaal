@@ -62,7 +62,7 @@ public class LoginFragment extends Fragment {
   private void initDeepLinkMode() {
     this.deepLinkMode = DeepLinkMode.getInstance();
 
-    if (getArguments() != null) {
+    if (getArguments() != null && getArguments().getString(Config.CODE_MAPPING_DEEP_LINK_KEY) != null) {
       String key = getArguments().getString(Config.CODE_MAPPING_DEEP_LINK_KEY);
       this.deepLinkMode.setCodeMapping(key);
       this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.ENTER_COURSE);

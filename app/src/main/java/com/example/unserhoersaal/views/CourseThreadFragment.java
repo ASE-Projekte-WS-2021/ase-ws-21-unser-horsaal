@@ -72,8 +72,6 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
 
 
     this.navController = Navigation.findNavController(view);
-
-    this.recyclerView = view.findViewById(R.id.chatRecyclerView);
     
     this.initViewModel();
     this.connectBinding();
@@ -109,20 +107,20 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
     this.chatAdapter =
             new ChatAdapter(this.currentCourseViewModel.getMessages().getValue(), this);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    this. recyclerView.setLayoutManager(layoutManager);
-    this.recyclerView.setItemAnimator(new DefaultItemAnimator());
-    this.recyclerView.setAdapter(this.chatAdapter);
+    //this. recyclerView.setLayoutManager(layoutManager);
+    //this.recyclerView.setItemAnimator(new DefaultItemAnimator());
+    //this.recyclerView.setAdapter(this.chatAdapter);
   }
 
   private void initToolbar() {
-    this.binding.courseThreadFragmentToolbar
+    /*this.binding.courseThreadFragmentToolbar
             .inflateMenu(R.menu.course_thread_fragment_toolbar);
     this.binding.courseThreadFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseThreadFragmentToolbar
             .setNavigationOnClickListener(v ->
       navController.navigate(R.id.action_courseThreadFragment_to_courseMeetingFragment)
-    );
+    );*/
   }
 
   @Override

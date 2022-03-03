@@ -14,7 +14,6 @@ public class EnterCourseViewModel extends ViewModel {
   private EnterCourseRepository enterCourseRepository;
   private MutableLiveData<CourseModel> courseModel;
 
-  private MutableLiveData<String> courseId;
   public MutableLiveData<String> dataBindingCourseIdInput;
   private MutableLiveData<CourseModel> enteredCourse;
 
@@ -25,7 +24,6 @@ public class EnterCourseViewModel extends ViewModel {
     }
     this.enterCourseRepository = EnterCourseRepository.getInstance();
     this.courseModel = this.enterCourseRepository.getCourse();
-    this.courseId = this.enterCourseRepository.getCourseId();
     this.dataBindingCourseIdInput = new MutableLiveData<>();
     this.enteredCourse = this.enterCourseRepository.getEnteredCourse();
 
