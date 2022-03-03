@@ -40,7 +40,7 @@ public class CourseDescriptionViewModel extends ViewModel {
   }
 
   public void unregisterFromCourse() {
-    //TODO: unregister user from course
-    //TODO: check observable in coursedescriptionfragment:61
+    String id = courseId.getValue();
+    this.courseDescriptionRepository.unregisterFromCourse(id);
   }
 }

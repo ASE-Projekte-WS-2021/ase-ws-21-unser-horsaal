@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.model;
 
+import com.example.unserhoersaal.LikeStatus;
+
 /**Class represent the message model.**/
 public class MessageModel {
 
@@ -12,6 +14,7 @@ public class MessageModel {
   private boolean topAnswer;
   private String key;
   private String creatorName;
+  private LikeStatus likeStatus;
 
   /**Default class constructor.**/
   public MessageModel() {
@@ -72,5 +75,13 @@ public class MessageModel {
 
   public void setCreatorName(String creatorName) {
     this.creatorName = creatorName;
+  }
+
+  public LikeStatus getLikeStatus() {
+    return this.likeStatus;
+  }
+
+  public void setLikeStatus(LikeStatus likeStatus) {
+    this.likeStatus = likeStatus;
   }
 }

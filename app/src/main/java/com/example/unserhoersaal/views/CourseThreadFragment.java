@@ -12,10 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
 import com.example.unserhoersaal.model.MessageModel;
@@ -81,6 +85,9 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
                 chatAdapter.notifyDataSetChanged();
               }
             });
+    this.currentCourseViewModel.getThread().observe(getViewLifecycleOwner(), threadModel -> {
+      this.threadText.setText(threadModel.getText());
+    });
   }
 
   private void initUI(View view) {
@@ -119,14 +126,14 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
 
   @Override
   public void onLikeClicked(int position) {
-    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
-    this.currentCourseViewModel.like(id);
+    MessageModel message = this.currentCourseViewModel.getMessages().getValue().get(position);
+    this.currentCourseViewModel.like(message);
   }
 
   @Override
   public void onDislikeClicked(int position) {
-    String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
-    this.currentCourseViewModel.dislike(id);
+    MessageModel message = this.currentCourseViewModel.getMessages().getValue().get(position);
+    this.currentCourseViewModel.dislike(message);
   }
 
   @Override

@@ -6,6 +6,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +45,6 @@ public class CourseDescriptionRepository {
     return this.courseModel;
   }
 
-  //TODO get whole CourseModel from ViewModel
   /** Sets the current course. */
   public void setCourseId(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -53,6 +53,7 @@ public class CourseDescriptionRepository {
               .removeEventListener(this.listener);
     }
     reference.child(Config.CHILD_COURSES).child(courseId).addValueEventListener(this.listener);
+    this.courseModel.postValue(new CourseModel());
     this.courseId.postValue(courseId);
   }
 
@@ -62,6 +63,7 @@ public class CourseDescriptionRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
+        model.setKey(snapshot.getKey());
         getAuthorName(model);
       }
 
@@ -85,4 +87,23 @@ public class CourseDescriptionRepository {
       }
     });
   }
+
+  public void unregisterFromCourse(String id) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    reference.child(Config.CHILD_USER_COURSES).child(uid).child(id).removeValue()
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                reference.child(Config.CHILD_COURSES_USER).child(id).child(uid).removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                          @Override
+                          public void onSuccess(Void unused) {
+                            courseModel.postValue(null);
+                          }
+                        });
+              }
+            });
+  }
+
 }

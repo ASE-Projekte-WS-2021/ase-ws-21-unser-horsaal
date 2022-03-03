@@ -157,8 +157,10 @@
             android:id="@+id/action_courseDescriptionFragment_to_courseParticipantsFragment"
             app:destination="@id/courseParticipantsFragment" />
         <action
-            android:id="@+id/action_courseDescriptionFragment_to_courseDescriptionDetailFragment"
-            app:destination="@id/courseDescriptionDetailFragment" />
+            android:id="@+id/action_courseDescriptionFragment_to_coursesFragment"
+            app:destination="@id/coursesFragment"
+            app:popUpTo="@id/courseDescriptionFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/courseParticipantsFragment"

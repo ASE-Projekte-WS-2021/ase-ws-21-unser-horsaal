@@ -15,6 +15,7 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
+import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
@@ -46,6 +47,10 @@ public class NavUtil {
             .get(CourseMeetingViewModel.class);
     courseMeetingViewModel.init();
     courseMeetingViewModel.setMeetingId(model.getKey());
+    CurrentCourseViewModel currentCourseViewModel = new ViewModelProvider((ViewModelStoreOwner)
+            view.getContext()).get(CurrentCourseViewModel.class);
+    currentCourseViewModel.init();
+    currentCourseViewModel.setMeetingId(model.getKey());
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_courseMeetingFragment);
@@ -114,5 +119,16 @@ public class NavUtil {
     AlertDialog dialog = builder.create();
     dialog.show();
   }
-  
+
+  @BindingAdapter("showDescription")
+  public static void showDescription(View view, CourseDescriptionViewModel viewModel) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+    builder.setMessage(viewModel.getCourseModel().getValue().getDescription())
+            .setTitle("Kursbeschreibung")
+            .setPositiveButton("OK", (DialogInterface.OnClickListener) (dialog, which) -> {
+              dialog.dismiss();
+            });
+    AlertDialog dialog = builder.create();
+    dialog.show();
+  }
 }

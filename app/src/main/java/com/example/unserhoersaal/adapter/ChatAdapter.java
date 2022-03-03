@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.LikeStatus;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.MessageModel;
 import java.util.ArrayList;
@@ -49,6 +50,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
       viewHolder.getAnsweredButton().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
     } else {
       viewHolder.getAnsweredButton().clearColorFilter();
+    }
+    switch (this.localDataSet.get(position).getLikeStatus()) {
+      case LIKE:
+        viewHolder.getLikeButton().setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
+        viewHolder.getDislikeButton().clearColorFilter();
+        break;
+      case DISLIKE:
+        viewHolder.getLikeButton().clearColorFilter();
+        viewHolder.getDislikeButton().setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
+        break;
+      case NEUTRAL:
+        viewHolder.getLikeButton().clearColorFilter();
+        viewHolder.getDislikeButton().clearColorFilter();
+        break;
+      default:
+        break;
     }
   }
 
@@ -121,6 +138,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public ImageView getAnsweredButton() {
       return this.answeredButton;
+    }
+
+    public ImageView getLikeButton() {
+      return this.likeButton;
+    }
+
+    public ImageView getDislikeButton() {
+      return this.dislikeButton;
     }
 
     @Override
