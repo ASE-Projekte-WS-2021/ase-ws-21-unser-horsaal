@@ -25,6 +25,7 @@ public class Config {
   public static final String CHILD_LIKE = "likes";
   public static final String CHILD_TOP_ANSWER = "topAnswer";
   public static final String CHILD_ANSWER_COUNT = "answersCount";
+  public static final String CHILD_ANSWERED = "answered";
 
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;

@@ -216,20 +216,42 @@ public class CurrentCourseRepository {
   }
 
   public void solved(String messageId) {
+    boolean threadAnswered = this.thread.getValue().getAnswered();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
-            .child(Config.CHILD_TOP_ANSWER).addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        boolean topAnswer = snapshot.getValue(Boolean.class) ? Boolean.FALSE : Boolean.TRUE;
-        reference.child(Config.CHILD_MESSAGES).child(threadId.getValue()).child(messageId)
-                .child(Config.CHILD_TOP_ANSWER).setValue(topAnswer);
-      }
+    //TODO get uid auslagern auch für like/dislike benötigt
+    if (uid.equals(thread.getValue().getCreatorId())) {
+      reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue()).child(messageId)
+              .child(Config.CHILD_TOP_ANSWER).addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+          boolean topAnswer = snapshot.getValue(Boolean.class);
+          if (topAnswer && threadAnswered) {
+            //Thread is answered and the message is marked as answer
+            reference.child(Config.CHILD_MESSAGES).child(threadId.getValue()).child(messageId)
+                    .child(Config.CHILD_TOP_ANSWER).setValue(Boolean.FALSE);
+            reference.child(Config.CHILD_THREADS).child(meetingId.getValue())
+                    .child(threadId.getValue()).child(Config.CHILD_ANSWERED).setValue(Boolean.FALSE);
+          } else if (!topAnswer && threadAnswered) {
+            //Thread is answered and the message is not marked as answer
+            Log.d(TAG, "onDataChange: " + "an message is already marked");
+            //TODO userfeadback
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
+          } else if (!topAnswer && !threadAnswered) {
+            //Thread is not  answered and the message is not marked as answer
+            reference.child(Config.CHILD_MESSAGES).child(threadId.getValue()).child(messageId)
+                    .child(Config.CHILD_TOP_ANSWER).setValue(Boolean.TRUE);
+            reference.child(Config.CHILD_THREADS).child(meetingId.getValue())
+                    .child(threadId.getValue()).child(Config.CHILD_ANSWERED).setValue(Boolean.TRUE);
+          }
 
-      }
-    });
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+      });
+    }
   }
 }
