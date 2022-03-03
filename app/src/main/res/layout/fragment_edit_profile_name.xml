@@ -23,6 +23,7 @@
             android:id="@+id/editProfileNameFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:background="@drawable/app_background"
             app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,6 +39,18 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editProfileNameFragmentTextInput"
+=======
+            android:background="@color/app_blue"
+            app:titleTextColor="@color/white"
+            app:title="Nutzername bearbeiten"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editProfileNameFragmentTextInput"
+            style="@style/textInputField"
+>>>>>>> dev
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/edit_profile_name_hint"
@@ -51,8 +64,12 @@
                 android:id="@+id/editProfileNameFragmentEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:singleLine="true"
                 android:background="@color/white"/>
+=======
+                android:singleLine="true" />
+>>>>>>> dev
 
         </com.google.android.material.textfield.TextInputLayout>
 

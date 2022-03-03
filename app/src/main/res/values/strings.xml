@@ -115,6 +115,7 @@
     <string name="kurs_beitreten">Kurs beitreten</string>
     <string name="kurs_erstellen">Kurs erstellen</string>
     <string name="du_bist_noch_keinem_kurs_beigetreten">Du bist noch keinem Kurs beigetreten.</string>
+<<<<<<< HEAD
     <string name="unregister_from_course_message">Möchten Sie sich wirklich aus dem Kurs ausschreiben?</string>
     <string name="unregister_from_course_title">Kurs verlassen</string>
     <string name="abbrechen">Abbrechen</string>
@@ -143,4 +144,8 @@
     <string name="course_description_fragment_description">Kursbeschreibung</string>
     <string name="course_participants_fragment_title">Teilnehmer:innen</string>
     <string name="course_history_fragment_subtitle">Meetings</string>
+=======
+    <string name="edit_profile_name_hint">Nutzername</string>
+    <string name="current_course_fragment_question_title">Dies ist ein beispielhafter Titel für eine Frage</string>
+>>>>>>> dev
 </resources>

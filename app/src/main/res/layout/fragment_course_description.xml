@@ -241,3 +241,195 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
+<<<<<<< HEAD
+=======
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:stretchColumns="2"
+        android:shrinkColumns="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseDescriptionFragmentConstraintLayout">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/courseDescriptionFragmentCreatorIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:src="@drawable/ic_baseline_account_circle_24"
+                app:tint="@color/app_blue" />
+
+            <TextView
+                android:id="@+id/courseDescriptionFragmentCreatorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="@string/course_description_fragment_creator"
+                android:layout_marginStart="16dp"/>
+
+            <TextView
+                android:id="@+id/courseDescriptionCreator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:text="@string/profile_fragment_name_string"
+                android:textAlignment="viewEnd"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:background="@color/white"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/courseDescriptionFragmentInstitutionIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:src="@drawable/ic_baseline_institution_24"
+                app:tint="@color/app_blue" />
+
+            <TextView
+                android:id="@+id/courseDescriptionFragmentInstitutionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="@string/course_description_fragment_institution_textview"
+                android:layout_marginStart="16dp"/>
+
+            <TextView
+                android:id="@+id/courseDescriptionFragmentInstitution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:text="@string/profile_fragment_name_string"
+                android:textAlignment="viewEnd"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/courseDescriptionFragmentCourseDescriptionContainer"
+            android:layout_marginTop="2dp"
+            android:background="@color/white"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/courseDescriptionFragmentCourseDescriptionIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:src="@drawable/ic_baseline_description_24"
+                app:tint="@color/app_blue"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/courseDescriptionFragmentCourseDescriptionTextViewTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="@string/course_description_fragment_description_textview"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/courseDescriptionFragmentCourseDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/course_description_fragment_example_description"
+                android:textAlignment="viewEnd"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                android:layout_column="3"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center_vertical"
+                app:tint="@color/black" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/courseDescriptionFragmentCourseParticipantsContainer"
+            android:background="@color/white"
+            android:padding="8dp"
+            >
+
+            <ImageView
+                android:id="@+id/courseDescriptionFragmentParticipantsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:src="@drawable/ic_baseline_people_24"
+                app:tint="@color/app_blue" />
+
+            <TextView
+                android:id="@+id/courseDescriptionFragmentParticipantsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="@string/course_description_fragment_participants_textview"
+                android:layout_marginStart="16dp"/>
+
+            <ImageView
+                android:id="@+id/courseDescriptionFragmentExpandParticipantsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                app:tint="@color/black" />
+
+        </TableRow>
+
+        <TableRow
+            android:background="@color/white"
+            android:padding="8dp"
+            android:layout_marginTop="2dp">
+
+            <TextView
+                android:id="@+id/courseDescriptionFragmentUnsubscribeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="4"
+                android:text="@string/course_description_unsubscribe_from_course"
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/courseDescriptionFragmentShareCourseFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_share_24"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white"
+        style="@style/fabStyle"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+>>>>>>> dev

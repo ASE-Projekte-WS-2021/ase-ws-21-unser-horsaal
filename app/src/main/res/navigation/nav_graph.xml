@@ -37,6 +37,11 @@
         android:label="fragment_enter_course"
         tools:layout="@layout/fragment_enter_course" >
         <action
+            android:id="@+id/action_enterCourseFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment"
+            app:popUpTo="@id/enterCourseFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_enterCourseFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
             app:popUpTo="@id/coursesFragment"
@@ -56,6 +61,11 @@
         android:name="com.example.unserhoersaal.views.CreateCourseFragment"
         android:label="fragment_create_course"
         tools:layout="@layout/fragment_create_course" >
+        <action
+            android:id="@+id/action_createCourseFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment"
+            app:popUpTo="@id/createCourseFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_createCourseFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
@@ -112,7 +122,10 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
     </fragment>
     <fragment
         android:id="@+id/coursesFragment"
@@ -128,6 +141,9 @@
         <action
             android:id="@+id/action_coursesFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_coursesFragment_to_currentCourseFragment"
+            app:destination="@id/currentCourseFragment" />
         <action
             android:id="@+id/action_coursesFragment_to_courseHistoryFragment"
             app:destination="@id/courseHistoryFragment" />
@@ -152,9 +168,12 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+<<<<<<< HEAD
         <action
             android:id="@+id/action_courseHistoryFragment_to_createCourseMeetingFragment"
             app:destination="@id/createCourseMeetingFragment" />
+=======
+>>>>>>> dev
     </fragment>
     <fragment
         android:id="@+id/courseDescriptionFragment"
@@ -270,6 +289,7 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+<<<<<<< HEAD
     </fragment>
     <fragment
         android:id="@+id/enterCourseDetailFragment"
@@ -317,5 +337,7 @@
             app:destination="@id/courseDescriptionFragment"
             app:popUpTo="@id/courseDescriptionFragment"
             app:popUpToInclusive="true" />
+=======
+>>>>>>> dev
     </fragment>
 </navigation>

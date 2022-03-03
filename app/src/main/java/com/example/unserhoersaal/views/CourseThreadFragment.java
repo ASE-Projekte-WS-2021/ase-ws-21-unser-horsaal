@@ -1,11 +1,15 @@
 package com.example.unserhoersaal.views;
 
+<<<<<<< HEAD
 import android.annotation.SuppressLint;
+=======
+>>>>>>> dev
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+<<<<<<< HEAD
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -13,10 +17,15 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+=======
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+>>>>>>> dev
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< HEAD
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -43,6 +52,17 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
   private ChatAdapter chatAdapter;
 
   private CurrentCourseViewModel currentCourseViewModel;
+=======
+
+import com.example.unserhoersaal.R;
+import com.google.android.material.appbar.MaterialToolbar;
+
+/**Course Thread.*/
+public class CourseThreadFragment extends Fragment {
+
+  private MaterialToolbar toolbar;
+  private NavController navController;
+>>>>>>> dev
 
   public CourseThreadFragment() {
     // Required empty public constructor
@@ -66,6 +86,7 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
     this.toolbar = view.findViewById(R.id.courseThreadFragmentToolbar);
     this.navController = Navigation.findNavController(view);
 
+<<<<<<< HEAD
     this.initViewModel();
     this.initUI(view);
     this.initRecyclerView();
@@ -112,6 +133,11 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
     this.recyclerView.setAdapter(this.chatAdapter);
   }
 
+=======
+    this.initToolbar();
+  }
+
+>>>>>>> dev
   private void initToolbar() {
     this.toolbar.inflateMenu(R.menu.course_thread_fragment_toolbar);
     this.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
@@ -119,6 +145,7 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
       this.navController.navigate(R.id.action_courseThreadFragment_to_courseMeetingFragment);
     });
   }
+<<<<<<< HEAD
 
   @Override
   public void onLikeClicked(int position) {
@@ -137,4 +164,6 @@ public class CourseThreadFragment extends Fragment implements ChatAdapter.OnNote
     String id = this.currentCourseViewModel.getMessages().getValue().get(position).getKey();
     this.currentCourseViewModel.solved(id);
   }
+=======
+>>>>>>> dev
 }
