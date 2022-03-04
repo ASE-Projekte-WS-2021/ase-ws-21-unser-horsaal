@@ -1,19 +1,18 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentNoCourseFoundBinding;
+import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
 /**When no course found.*/
@@ -21,6 +20,7 @@ public class NoCourseFoundFragment extends Fragment {
 
   private FragmentNoCourseFoundBinding binding;
   private EnterCourseViewModel enterCourseViewModel;
+  private DeepLinkMode deepLinkMode;
 
   public NoCourseFoundFragment() {
     // Required empty public constructor
@@ -42,6 +42,9 @@ public class NoCourseFoundFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+
+    this.deepLinkMode = DeepLinkMode.getInstance();
+
     this.initViewModel();
     this.connectBinding();
   }
@@ -60,5 +63,6 @@ public class NoCourseFoundFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.enterCourseViewModel.resetEnterCourse();
+    this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
   }
 }

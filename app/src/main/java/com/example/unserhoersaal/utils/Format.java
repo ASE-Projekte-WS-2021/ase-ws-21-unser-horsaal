@@ -10,6 +10,7 @@ import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.LikeStatus;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Format {
@@ -36,9 +37,13 @@ public class Format {
     return date;
   }
 
+  @BindingAdapter("currentFormatedTime")
+  public static void currentFormatedTime(TextView textView, SimpleDateFormat format) {
+    textView.setText(format.format(new Date().getTime()));
+  }
+
   @BindingAdapter("setColor")
   public static void setColor(ImageView view, boolean answered) {
-    System.out.println(answered);
     if (answered) {
       view.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
     } else {

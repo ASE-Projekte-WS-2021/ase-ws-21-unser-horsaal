@@ -11,6 +11,7 @@ public class Config {
   public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");
   public static final SimpleDateFormat DATE_TIME_FORMAT
           = new SimpleDateFormat("dd. MMMM, HH:mm");
+  public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd. MM. yyyy");
 
   /** Database Children. */
   public static final String CHILD_USER = "users";

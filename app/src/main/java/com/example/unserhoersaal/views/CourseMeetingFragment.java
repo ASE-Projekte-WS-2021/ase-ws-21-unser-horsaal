@@ -66,9 +66,9 @@ public class CourseMeetingFragment extends Fragment {
             .get(CourseMeetingViewModel.class);
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
-    courseMeetingViewModel.init();
-    currentCourseViewModel.init();
-    courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
+    this.courseMeetingViewModel.init();
+    this.currentCourseViewModel.init();
+    this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
       threadAdapter.notifyDataSetChanged();
       if (messageList.size() == 0) {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);

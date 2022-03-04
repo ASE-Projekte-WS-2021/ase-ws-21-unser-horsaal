@@ -86,8 +86,6 @@ public class CourseHistoryFragment extends Fragment {
             .observe(getViewLifecycleOwner(), meetingsModel -> {
               if (meetingsModel != null) {
                 KeyboardUtil.hideKeyboard(getActivity());
-                this.binding.courseHistoryFragmentCreateMeetingContainer.setVisibility(View.GONE);
-                this.binding.courseHistoryFragmentFab.setVisibility(View.VISIBLE);
                 this.courseHistoryViewModel.resetMeetingData();
               }
             });
