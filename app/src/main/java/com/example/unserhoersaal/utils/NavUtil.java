@@ -120,15 +120,4 @@ public class NavUtil {
     dialog.show();
   }
 
-  @BindingAdapter("showDescription")
-  public static void showDescription(View view, CourseDescriptionViewModel viewModel) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-    builder.setMessage(viewModel.getCourseModel().getValue().getDescription())
-            .setTitle("Kursbeschreibung")
-            .setPositiveButton("OK", (DialogInterface.OnClickListener) (dialog, which) -> {
-              dialog.dismiss();
-            });
-    AlertDialog dialog = builder.create();
-    dialog.show();
-  }
 }

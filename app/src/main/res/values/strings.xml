@@ -142,6 +142,9 @@
     <string name="edit_profile_password">Password bearbeiten</string>
     <string name="course_description_fragment_description">Kursbeschreibung</string>
     <string name="course_history_fragment_subtitle">Meetings</string>
+    <string name="keine_threads_verf_gbar">Keine Threads verfügbar!</string>
+    <string name="current_time_placeholder">Current Time Placeholder</string>
+    <string name="current_date_placeholder">Current Date Placeholder</string>
 
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
 </resources>

@@ -3,9 +3,11 @@ package com.example.unserhoersaal.model;
 /** Model for a meeting. */
 public class MeetingsModel {
 
-
-  private String creationTimeInput;
-  private String eventTimeInput;
+  private int yearInput;
+  private int monthInput;
+  private int dayOfMonthInput;
+  private int hourInput;
+  private int minuteInput;
   private Long creationTime;
   private String creatorId;
   private String description;
@@ -17,20 +19,44 @@ public class MeetingsModel {
     //needed for Firebase
   }
 
-  public String getCreationTimeInput() {
-    return creationTimeInput;
+  public int getYearInput() {
+    return yearInput;
   }
 
-  public void setCreationTimeInput(String creationTimeInput) {
-    this.creationTimeInput = creationTimeInput;
+  public void setYearInput(int yearInput) {
+    this.yearInput = yearInput;
   }
 
-  public String getEventTimeInput() {
-    return eventTimeInput;
+  public int getMonthInput() {
+    return monthInput;
   }
 
-  public void setEventTimeInput(String eventTimeInput) {
-    this.eventTimeInput = eventTimeInput;
+  public void setMonthInput(int monthInput) {
+    this.monthInput = monthInput;
+  }
+
+  public int getDayOfMonthInput() {
+    return dayOfMonthInput;
+  }
+
+  public void setDayOfMonthInput(int dayOfMonthInput) {
+    this.dayOfMonthInput = dayOfMonthInput;
+  }
+
+  public int getHourInput() {
+    return hourInput;
+  }
+
+  public void setHourInput(int hourInput) {
+    this.hourInput = hourInput;
+  }
+
+  public int getMinuteInput() {
+    return minuteInput;
+  }
+
+  public void setMinuteInput(int minuteInput) {
+    this.minuteInput = minuteInput;
   }
 
   public Long getCreationTime() {
@@ -80,4 +106,6 @@ public class MeetingsModel {
   public void setKey(String key) {
     this.key = key;
   }
+
 }
+

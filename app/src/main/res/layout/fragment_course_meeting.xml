@@ -25,7 +25,7 @@
             android:id="@+id/coursesMeetingFragmentTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/du_bist_noch_keinem_kurs_beigetreten"
+            android:text="@string/keine_threads_verf_gbar"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"

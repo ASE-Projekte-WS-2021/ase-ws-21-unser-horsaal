@@ -18,6 +18,7 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseDetailBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
@@ -29,6 +30,7 @@ public class EnterCourseDetailFragment extends Fragment {
   private EnterCourseViewModel enterCourseViewModel;
   private CourseHistoryViewModel courseHistoryViewModel;
   private FragmentEnterCourseDetailBinding binding;
+  private DeepLinkMode deepLinkMode;
 
   public EnterCourseDetailFragment() {
     // Required empty public constructor
@@ -51,6 +53,7 @@ public class EnterCourseDetailFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
+    this.deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
@@ -81,7 +84,7 @@ public class EnterCourseDetailFragment extends Fragment {
     KeyboardUtil.hideKeyboard(getActivity());
     this.courseHistoryViewModel.setCourse(model);
     this.enterCourseViewModel.resetEnterCourseId();
-    //this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
+    this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
     this.navController.navigate(R.id.action_enterCourseDetailFragment_to_courseHistoryFragment);
   }
 
@@ -89,5 +92,6 @@ public class EnterCourseDetailFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.enterCourseViewModel.resetEnterCourse();
+    this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
   }
 }

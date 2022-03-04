@@ -13,14 +13,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
-
 import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.utils.DeepLinkMode;
-
-import com.example.unserhoersaal.model.CourseModel;
-
 import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
 /** Fragment for entering a course.*/
@@ -29,7 +24,6 @@ public class EnterCourseFragment extends Fragment {
   private static final String TAG = "EnterCourseFragment";
 
   private EnterCourseViewModel enterCourseViewModel;
-  //private CourseHistoryViewModel courseHistoryViewModel;
   private NavController navController;
   private FragmentEnterCourseBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -65,7 +59,6 @@ public class EnterCourseFragment extends Fragment {
     if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
       this.enterCourseViewModel.dataBindingCourseIdInput.setValue(this.deepLinkMode.getCodeMapping());
       this.enterCourseViewModel.checkCode();
-      this.binding.enterCourseFragmentConfirmationDialog.setVisibility(View.VISIBLE);
     }
   }
 
@@ -82,7 +75,6 @@ public class EnterCourseFragment extends Fragment {
                 } else {
                   navController.navigate(R.id.action_enterCourseFragment_to_noCourseFoundFragment);
                 }
-
               }
             });
   }
@@ -91,8 +83,6 @@ public class EnterCourseFragment extends Fragment {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.enterCourseViewModel);
   }
-
-
 
   private void setupToolbar() {
     this.binding.enterCourseFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);

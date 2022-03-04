@@ -190,6 +190,9 @@
             app:destination="@id/coursesFragment"
             app:popUpTo="@id/courseDescriptionFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_courseDescriptionFragment_to_courseDescriptionDetailFragment"
+            app:destination="@+id/courseDescriptionDetailFragment"/>
     </fragment>
     <fragment
         android:id="@+id/courseParticipantsFragment"
