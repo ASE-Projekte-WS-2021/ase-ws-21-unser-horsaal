@@ -1,10 +1,8 @@
 package com.example.unserhoersaal.viewmodel;
 
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.LikeStatus;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
@@ -17,13 +15,12 @@ public class CurrentCourseViewModel extends ViewModel {
   private static final String TAG = "CurrentCourseViewModel";
 
   private CurrentCourseRepository currentCourseRepository;
-
   private MutableLiveData<List<MessageModel>> messages;
   private MutableLiveData<String> threadId = new MutableLiveData<>();
   private MutableLiveData<String> meetingId = new MutableLiveData<>();
   private MutableLiveData<ThreadModel> thread = new MutableLiveData<>();
-
   public MutableLiveData<String> userId;
+  public MutableLiveData<MessageModel> dataBindingMessageInput;
 
   /** This method initializes the database access. */
   public void init() {
@@ -36,6 +33,7 @@ public class CurrentCourseViewModel extends ViewModel {
     this.thread = this.currentCourseRepository.getThread();
     this.currentCourseRepository.setUserId();
     this.userId = this.currentCourseRepository.getUserId();
+    this.dataBindingMessageInput = new MutableLiveData<>(new MessageModel());
 
     // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
     // the messages and only set the courseId can init the CurrentCourseViewModel
@@ -61,9 +59,13 @@ public class CurrentCourseViewModel extends ViewModel {
   }
 
   /** Send a new message in a thread. */
-  public void sendMessage(String messageText) {
-    MessageModel messageModel = new MessageModel();
-    messageModel.setText(messageText);
+  public void sendMessage() {
+    //TODO: handle status to view
+    if (this.dataBindingMessageInput.getValue() == null) return;
+    //no empty messages
+    if (this.dataBindingMessageInput.getValue().getText() == null) return;
+
+    MessageModel messageModel = this.dataBindingMessageInput.getValue();
     this.currentCourseRepository.sendMessage(messageModel);
   }
 

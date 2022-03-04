@@ -15,10 +15,19 @@ public class MessageModel {
   private String key;
   private String creatorName;
   private LikeStatus likeStatus;
+  private String photoUrl;
 
   /**Default class constructor.**/
   public MessageModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
+  }
+
+  public String getPhotoUrl() {
+    return photoUrl;
+  }
+
+  public void setPhotoUrl(String photoUrl) {
+    this.photoUrl = photoUrl;
   }
 
   public Long getCreationTime() {
