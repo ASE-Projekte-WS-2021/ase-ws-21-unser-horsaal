@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.utils;
 
+import com.example.unserhoersaal.enums.DeepLinkEnum;
+
 public class DeepLinkMode {
 
   private static DeepLinkMode instance;

@@ -40,6 +40,9 @@ public class EnterCourseViewModel extends ViewModel {
   /** Reset the entered data after joining the course. */
   public void resetEnterCourseId() {
     this.dataBindingCourseIdInput.setValue(null);
+  }
+
+  public void resetEnterCourse() {
     this.courseModel.setValue(null);
     this.enteredCourse.setValue(null);
   }

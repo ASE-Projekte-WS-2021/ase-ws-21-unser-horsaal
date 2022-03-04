@@ -3,6 +3,8 @@ package com.example.unserhoersaal.utils;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
 
+import com.example.unserhoersaal.enums.DeepLinkEnum;
+
 public class VisibilityAdapter {
 
   @BindingAdapter("openCreationLayout")

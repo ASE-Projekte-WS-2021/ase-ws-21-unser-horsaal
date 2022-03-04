@@ -2,16 +2,33 @@ package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.databinding.FragmentEnterCourseDetailBinding;
+import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
+import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
 /**Detail Screen when course found.*/
 public class EnterCourseDetailFragment extends Fragment {
+
+  private NavController navController;
+  private EnterCourseViewModel enterCourseViewModel;
+  private CourseHistoryViewModel courseHistoryViewModel;
+  private FragmentEnterCourseDetailBinding binding;
 
   public EnterCourseDetailFragment() {
     // Required empty public constructor
@@ -23,9 +40,54 @@ public class EnterCourseDetailFragment extends Fragment {
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_enter_course_detail, container, false);
+    this.binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_enter_course_detail, container, false);
+    return this.binding.getRoot();
+  }
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
+    this.navController = Navigation.findNavController(view);
+
+    this.initViewModel();
+    this.connectBinding();
+  }
+
+  private void initViewModel() {
+    this.enterCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(EnterCourseViewModel.class);
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
+    this.enterCourseViewModel.init();
+    this.courseHistoryViewModel.init();
+    this.enterCourseViewModel.getEnteredCourse().observe(getViewLifecycleOwner(), model -> {
+      if (model != null) {
+        openNewCourse(model);
+      }
+    });
+  }
+
+  private void connectBinding() {
+    this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.enterCourseViewModel);
+  }
+
+
+  /** Creates a new course if the code is correct. */
+  public void openNewCourse(CourseModel model) {
+    KeyboardUtil.hideKeyboard(getActivity());
+    this.courseHistoryViewModel.setCourse(model);
+    this.enterCourseViewModel.resetEnterCourseId();
+    //this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
+    this.navController.navigate(R.id.action_enterCourseDetailFragment_to_courseHistoryFragment);
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.enterCourseViewModel.resetEnterCourse();
   }
 }

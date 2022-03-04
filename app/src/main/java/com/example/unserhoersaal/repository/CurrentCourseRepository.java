@@ -1,12 +1,11 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
-import com.example.unserhoersaal.LikeStatus;
+import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.google.android.gms.tasks.OnSuccessListener;

@@ -53,7 +53,7 @@
                 android:id="@+id/courseHistoryFragmentToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_history_fragment_toolbar_title"
+                android:text="@{vm.course.title}"
                 style="@style/toolbarTitleStyle"/>
         </com.google.android.material.appbar.MaterialToolbar>
 

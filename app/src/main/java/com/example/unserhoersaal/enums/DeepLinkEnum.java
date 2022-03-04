@@ -1,4 +1,4 @@
-package com.example.unserhoersaal.utils;
+package com.example.unserhoersaal.enums;
 
 public enum DeepLinkEnum {
     DEFAULT,

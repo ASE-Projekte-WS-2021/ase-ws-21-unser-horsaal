@@ -14,7 +14,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
 
-import com.example.unserhoersaal.utils.DeepLinkEnum;
+import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 
 import com.example.unserhoersaal.model.CourseModel;
@@ -29,7 +29,7 @@ public class EnterCourseFragment extends Fragment {
   private static final String TAG = "EnterCourseFragment";
 
   private EnterCourseViewModel enterCourseViewModel;
-  private CourseHistoryViewModel courseHistoryViewModel;
+  //private CourseHistoryViewModel courseHistoryViewModel;
   private NavController navController;
   private FragmentEnterCourseBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -72,22 +72,14 @@ public class EnterCourseFragment extends Fragment {
   private void initViewModel() {
     this.enterCourseViewModel = new ViewModelProvider(requireActivity())
             .get(EnterCourseViewModel.class);
-    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
-            .get(CourseHistoryViewModel.class);
     this.enterCourseViewModel.init();
-    this.courseHistoryViewModel.init();
     this.enterCourseViewModel.getCourse()
             .observe(getViewLifecycleOwner(), model -> {
               if (model != null) {
                 KeyboardUtil.hideKeyboard(getActivity());
-                this.binding.enterCourseFragmentConfirmationDialog.setVisibility(View.VISIBLE);
+                navController.navigate(R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
               }
             });
-    this.enterCourseViewModel.getEnteredCourse().observe(getViewLifecycleOwner(), model -> {
-      if (model != null) {
-        openNewCourse(model);
-      }
-    });
   }
 
   private void connectBinding() {
@@ -95,14 +87,7 @@ public class EnterCourseFragment extends Fragment {
     this.binding.setVm(this.enterCourseViewModel);
   }
 
-  /** Creates a new course if the code is correct. */
-  public void openNewCourse(CourseModel model) {
-    KeyboardUtil.hideKeyboard(getActivity());
-    this.courseHistoryViewModel.setCourse(model);
-    this.enterCourseViewModel.resetEnterCourseId();
-    this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
-    this.navController.navigate(R.id.action_enterCourseFragment_to_courseHistoryFragment);
-  }
+
 
   private void setupToolbar() {
     this.binding.enterCourseFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
@@ -111,4 +96,9 @@ public class EnterCourseFragment extends Fragment {
     });
   }
 
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.enterCourseViewModel.resetEnterCourseId();
+  }
 }

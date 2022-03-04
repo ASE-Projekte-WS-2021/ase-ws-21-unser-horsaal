@@ -13,7 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
-import com.example.unserhoersaal.utils.DeepLinkEnum;
+import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 

@@ -1,6 +1,6 @@
 package com.example.unserhoersaal.model;
 
-import com.example.unserhoersaal.LikeStatus;
+import com.example.unserhoersaal.enums.LikeStatus;
 
 /**Class represent the message model.**/
 public class MessageModel {
