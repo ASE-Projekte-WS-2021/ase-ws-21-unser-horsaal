@@ -78,11 +78,11 @@ public class RegistrationViewModel extends ViewModel {
    */
   public void register() {
     if (this.user.getValue() == null) return;
-  // get username, email and password input
+    /** User input*/
     String userName = this.user.getValue().getDisplayName();
     String email = this.user.getValue().getEmail();
     String password = this.password.getValue();
-  // check if username input is empty or has wrong pattern
+    /** Check if username input is empty or has wrong pattern.*/
     if (Validation.emptyUserName(userName)) {
       this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.USERNAME_EMPTY);
     } else if (!Validation.userNameHasPattern(userName)) {
@@ -90,7 +90,7 @@ public class RegistrationViewModel extends ViewModel {
     } else {
       this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.NONE);
     }
-  // check if email input is empty or has wrong pattern
+  /** Check if email input is empty or has wrong pattern.*/
     if (Validation.emptyEmail(email)) {
       this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.EMAIL_EMPTY);
     } else if (!Validation.emailHasPattern(email)) {
@@ -98,7 +98,7 @@ public class RegistrationViewModel extends ViewModel {
     } else {
       this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.NONE);
     }
-  // check if password input is empty or has wrong pattern
+  /** Check if password input is empty or has wrong pattern.*/
     if (Validation.emptyPassword(password)) {
       this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.PASSWORD_EMPTY);
     } else if (!Validation.passwordHasPattern(password)) {
@@ -106,7 +106,7 @@ public class RegistrationViewModel extends ViewModel {
     } else {
       this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.NONE);
     }
-  // register new user or throw error message if it fails
+  /** Register new user or throw error message if it fails.*/
     if (!Validation.emptyUserName(userName) && Validation.userNameHasPattern(userName) &&
             !Validation.emptyEmail(email) && Validation.emailHasPattern(email) &&
             !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
@@ -115,7 +115,14 @@ public class RegistrationViewModel extends ViewModel {
     }
   }
 
-  public void sendEmailVerification() {
-    authAppRepository.sendEmailVerification(verificationStatus);
+  /** Set email verification status on completed.*/
+  public void setVerificationStatusOnNull() {
+    verificationStatus.setValue(EmailVerificationEnum.NONE);
   }
+
+  /** Resend email verification email.*/
+  public void resendEmailVerification() {
+    authAppRepository.resendEmailVerification();
+  }
+
 }

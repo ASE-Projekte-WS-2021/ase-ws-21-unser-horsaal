@@ -1,5 +1,9 @@
 package com.example.unserhoersaal.enums;
 
+/**
+ * Enum used error messages in the login and registration screen
+ */
+
 public enum LogRegErrorMessEnum {
   NONE,
   EMAIL_EMPTY,

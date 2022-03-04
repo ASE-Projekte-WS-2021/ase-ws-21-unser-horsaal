@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
@@ -25,7 +26,8 @@ public class LoginViewModel extends ViewModel {
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogEmail;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogPassword;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogProcess;
-  public MutableLiveData<EmailVerificationEnum> logToastMessages;
+  public MutableLiveData<EmailVerificationEnum> verificationStatus;
+  public MutableLiveData<ResetPasswordEnum> resetPasswordStatus;
 
   /**
    * Initialize the LoginRegisterViewModel.
@@ -39,11 +41,13 @@ public class LoginViewModel extends ViewModel {
     this.errorMessageLogEmail = new MutableLiveData<>();
     this.errorMessageLogPassword = new MutableLiveData<>();
     this.errorMessageLogProcess = new MutableLiveData<>();
-    this.logToastMessages = new MutableLiveData<>();
+    this.verificationStatus = new MutableLiveData<>();
+    this.resetPasswordStatus = new MutableLiveData<>();
     this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageLogProcess.setValue(LogRegErrorMessEnum.NONE);
-    this.logToastMessages.setValue(EmailVerificationEnum.NONE);
+    this.verificationStatus.setValue(EmailVerificationEnum.NONE);
+    this.resetPasswordStatus.setValue(ResetPasswordEnum.RESET_PASSWORD_NO);
 
     //Databinding containers
     this.user = new MutableLiveData<>();
@@ -73,10 +77,12 @@ public class LoginViewModel extends ViewModel {
    */
   public void login() {
     if (this.user.getValue() == null) return;
-  // get email and password input
+
+    /** User input */
     String email = this.user.getValue().getEmail();
     String password = this.password.getValue();
-  //check if email input is empty or has wrong pattern
+
+  /** Check if email input is empty or has wrong pattern.*/
     if (Validation.emptyEmail(email)) {
       this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.EMAIL_EMPTY);
     } else if (!Validation.emailHasPattern(email)) {
@@ -84,7 +90,7 @@ public class LoginViewModel extends ViewModel {
     } else {
       this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
     }
-  // check if password is empty or has wrong pattern
+  /** Check if password is empty or has wrong pattern.*/
     if (Validation.emptyPassword(password)) {
       this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.PASSWORD_EMPTY);
     } else if (!Validation.passwordHasPattern(password)) {
@@ -92,10 +98,31 @@ public class LoginViewModel extends ViewModel {
     } else {
       this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
     }
-  // log in or throw error message if login process fails
+  /** Log in or throw error message if login process fails.*/
     if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email) &&
             !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
-      this.authAppRepository.login(email, password, errorMessageLogProcess, logToastMessages);
+      this.authAppRepository.login(email, password, errorMessageLogProcess, verificationStatus);
     }
   }
+
+  /** Set reset password status active.*/
+  public void resetPassword() {
+    this.resetPasswordStatus.setValue(ResetPasswordEnum.RESET_PASSWORD_YES);
+  }
+
+  /** Send reset password email.*/
+  public void sendPasswordResetMail(String mail) {
+    authAppRepository.resetPassword(mail);
+  }
+
+  /** Set email verification status on completed.*/
+  public void setVerificationStatusOnNull() {
+    verificationStatus.setValue(EmailVerificationEnum.NONE);
+  }
+
+  /** Resend email verification email.*/
+  public void resendEmailVerification() {
+    authAppRepository.resendEmailVerification();
+  }
+
 }

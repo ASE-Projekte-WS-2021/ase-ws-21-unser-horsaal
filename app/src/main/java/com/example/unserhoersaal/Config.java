@@ -1,5 +1,14 @@
 package com.example.unserhoersaal;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.databinding.BindingAdapter;
+
+import com.example.unserhoersaal.viewmodel.LoginViewModel;
+
 import java.text.SimpleDateFormat;
 
 /** Config Class. */
@@ -39,16 +48,30 @@ public class Config {
 
   /** Toast Messages. */
   public static final String REG_VERIFY_EMAIL = "Verifizierungsemail versandt";
-  public static final String REG_VERIFICATION_EMAIL_ALREADY_SEND = "Ein Konto für die angegebene " +
-          "Emailadresse existiert bereits und wurde noch nicht von Ihnen verifiziert";
-  public static final String REG_REQUEST_EMAIL_VERIFICATION = "Sie haben Ihre Email noch " +
-          "nicht verifiziert";
+  public static final String LOG_PASSWORD_RESET_EMAIL = "Email zur Passwordzurücksetzung wurde" +
+          " versandt";
 
+  /** Alert Dialog Registration. */
   public static final String DIALOG_VERIFICATION_TITLE = "Emailverifizierung";
   public static final String DIALOG_VERIFICATION_MESSAGE = "Eine Email mit dem Verifizierungscode" +
-          "wurde an die von Ihnen angegebene Email versandt.";
+          " wurde an die von Ihnen angegebene Email versandt.";
   public static final String DIALOG_SEND_BUTTON = "Erneut senden";
   public static final String DIALOG_CANCEL_BUTTON = "Schließen";
+
+  /** Alert Dialog Login. */
+  public static final String DIALOG_VERIFICATION_MESSAGE_LOGIIN = "Sie haben Ihre Email noch " +
+          "nicht verifiziert. Verifizierungsmail erneut senden?";
+
+  /** Alert Dialog Password Reset. */
+  public static final String DIALOG_RESET_PASSWORD_TITLE = "Passwort zurücksetzen";
+  public static final String DIALOG_RESET_PASSWORD_MESSAGE = "Sie erhalten eine Mail zum " +
+          "Zurücksetzen des Passwords. Bitte geben Sie die zum Account zugehörige Email an: ";
+  public static final String DIALOG_PASSWORD_RESET_BUTTON = "Passwort zurücksetzen";
+  public static final String DIALOG_PASSWORD_RESET_CANCEL_BUTTON = "Abbrechen";
+  public static final String DIALOG_PASSWORD_RESET_HINT = "Hier eingeben";
+  public static final String DIALOG_EMAIL_PATTERN_WRONG = "Die eingegebene Email wurde falsch " +
+          "eingegeben oder es existiert kein Account zu dieser Email Adresse";
+  public static final String DIALOG_PASSWORD_RESET_ERROR = "Passwortrücksetzung gescheitert";
 
   /** Regex */
   /* reference: https://ihateregex.io/expr/username/ */

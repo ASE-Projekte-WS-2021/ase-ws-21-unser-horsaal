@@ -1,8 +1,10 @@
 package com.example.unserhoersaal.views;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.utils.DialogBuilder;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 
 /**
@@ -64,30 +67,34 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel = new ViewModelProvider(requireActivity())
             .get(RegistrationViewModel.class);
     this.registrationViewModel.init();
+
+    //Todo: automatic redirect to the course page after verification.
+    /*
     this.registrationViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser != null) {
+              if (firebaseUser != null && firebaseUser.isEmailVerified()) {
                 navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
               }
             });
+     */
+
+    /** Open email-verify-dialog (with resend option) after registration input.*/
     this.registrationViewModel
             .verificationStatus.observe(getViewLifecycleOwner(), status -> {
               if (status == EmailVerificationEnum.SEND_EMAIL_VERIFICATION) {
-                AlertDialog.Builder emailVerificationDialog = new AlertDialog.Builder(getContext(),
-                        AlertDialog.THEME_HOLO_DARK);
-                emailVerificationDialog.setTitle(Config.DIALOG_VERIFICATION_TITLE);
-                emailVerificationDialog.setMessage(Config.DIALOG_VERIFICATION_MESSAGE);
-                emailVerificationDialog.setCancelable(false);
-                emailVerificationDialog.setPositiveButton(Config.DIALOG_SEND_BUTTON,
+                DialogBuilder dialog = new DialogBuilder();
+                AlertDialog.Builder verificationDialog =
+                        dialog.verifyEmailDialogRegistration(getView(), registrationViewModel);
+                /** If user don`t want to resend verification email switch to the login screen.*/
+                verificationDialog.setNegativeButton(Config.DIALOG_CANCEL_BUTTON,
                         new DialogInterface.OnClickListener() {
                   @Override
-                  public void onClick(DialogInterface dialogInterface, int arg1) {
-                    registrationViewModel.sendEmailVerification();
-                    Toast.makeText(getContext(), Config.REG_VERIFY_EMAIL, Toast.LENGTH_LONG).show();
-                    emailVerificationDialog.show();
+                  public void onClick(DialogInterface dialogInterface, int i) {
+                    registrationViewModel.setVerificationStatusOnNull();
+                    navController.navigate(R.id.action_registrationFragment_to_loginFragment);
                   }
                 });
-                emailVerificationDialog.show();
+                verificationDialog.show();
               }
     });
   }
