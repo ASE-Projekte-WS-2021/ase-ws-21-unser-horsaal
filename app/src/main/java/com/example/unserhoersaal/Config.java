@@ -52,4 +52,8 @@ public class Config {
   /** CodeMapping. */
   public static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   public static final int CODE_LENGTH = 9;
+  public static final String CODE_MAPPING_DEEP_LINK_KEY = "codeMapping";
+  public static final String COURSE_CODE_MAPPING_CLIPBOARD = "Code_Mapping_Clip_Data";
+  public static final String COURSE_CODE_MAPPING_CLIPBOARD_TOAST_TEXT = "Copied!";
+  public static final String DEEP_LINK_URL = "https://app.vairasza.dev/unserhoersaal/";
 }

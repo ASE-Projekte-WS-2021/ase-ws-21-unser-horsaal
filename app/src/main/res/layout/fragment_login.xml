@@ -53,7 +53,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentUserEmailEditText"
-                        android:text="@={vm.user.email}"
+                        android:text="@={vm.dataBindingUserInput.email}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
@@ -72,7 +72,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentPasswordEditText"
-                        android:text="@={vm.password}"
+                        android:text="@={vm.dataBindingPasswordInput}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"

@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.repository;
 
-import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -27,7 +26,9 @@ public class ProfileRepository {
     this.loadUser();
   }
 
-  /** Generate an instance of the class. */
+  /**
+   * Generate an instance of the class.
+   */
   public static ProfileRepository getInstance() {
     if (instance == null) {
       instance = new ProfileRepository();
@@ -40,7 +41,9 @@ public class ProfileRepository {
   }
 
 
-  /** Loads an user from the database. */
+  /**
+   * Loads an user from the database.
+   */
   public void loadUser() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -61,21 +64,10 @@ public class ProfileRepository {
     });
   }
 
-  public void changePhotoUrl(Uri file) {
-    //TODO: https://firebase.google.com/docs/storage/android/upload-files#upload_from_a_local_file
-    //TODO: upload local file to firebase storage -> save URL to UserModel -> update UserModel
-    // -> update liveData -> BindingAdapter loads picture from storage (caching?)
-  }
+  //TODO: @Julian -> see EditProfileNameFragment & ProfileViewModel
+  public void changeDisplayName(String displayName) {}
 
-  public void changeProfileData(UserModel profileChanges) {
-    //TODO: save updated profile data to database and inform user about success
-    // -> return to profile fragment
-    //TODO: Things to change: displayName, institution, email
-    //duplicate data saved to firebase auth!!!
-  }
+  //TODO: @Julian -> see EditProfileInstitutionFragment & ProfileViewModel
+  public void changeInstitution(String institution) {}
 
-  public void changeAuthData(UserModel profileChanges, String password) {
-    //TODO: change the password of logged in user; separated
-    //TODO: Things to change: email, displayName, password
-  }
 }

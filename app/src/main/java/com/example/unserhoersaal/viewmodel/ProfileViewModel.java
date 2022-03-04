@@ -18,9 +18,9 @@ public class ProfileViewModel extends ViewModel {
   private ProfileRepository profileRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
   private MutableLiveData<UserModel> profileLiveData;
-  public MutableLiveData<String> oldPassword;
-  public MutableLiveData<String> newPassword;
-  public MutableLiveData<Boolean> changing;
+  public MutableLiveData<UserModel> dataBindingProfileInput;
+  public MutableLiveData<String> dataBindingOldPasswordInput;
+  public MutableLiveData<String> dataBindingNewPasswordInput;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
@@ -33,10 +33,10 @@ public class ProfileViewModel extends ViewModel {
     //this live data loads profile data into the text views
     this.profileRepository = ProfileRepository.getInstance();
     this.profileLiveData = this.profileRepository.getUser();
-    this.oldPassword = new MutableLiveData<>();
-    this.newPassword = new MutableLiveData<>();
-    this.changing = new MutableLiveData<>();
-    this.changing.setValue(true);
+
+    this.dataBindingProfileInput = new MutableLiveData<>(new UserModel());
+    this.dataBindingOldPasswordInput = new MutableLiveData<>();
+    this.dataBindingNewPasswordInput = new MutableLiveData<>();
   }
 
   /** Give back the user data. */
@@ -48,26 +48,6 @@ public class ProfileViewModel extends ViewModel {
     return this.profileLiveData;
   }
 
-  /** Save the userprofile data. */
-  public void saveNewProfileData() {
-    UserModel userModel = this.profileLiveData.getValue();
-    if (userModel == null) {
-      return;
-    }
-
-    this.profileRepository.changeProfileData(userModel);
-
-    if (Validation.emptyPassword(newPassword.getValue())
-            || Validation.passwordHasPattern(newPassword.getValue())) {
-      String password =
-              Validation.emptyPassword(newPassword.getValue()) ? newPassword.getValue() : null;
-      this.profileRepository.changeAuthData(userModel, password);
-    } else {
-      //TODO: propagate error message to databinding
-    }
-
-  }
-
   public void logout() {
     this.authAppRepository.logOut();
   }
@@ -76,13 +56,29 @@ public class ProfileViewModel extends ViewModel {
     this.authAppRepository.deleteAccount();
   }
 
-  /** Toggle. */
-  public void toggle() {
-    if (this.changing == null || this.changing.getValue() == null) {
-      return;
-    }
-    boolean b = this.changing.getValue();
-    this.changing.setValue(!b);
+  public void changeDisplayName() {
+    if (this.dataBindingProfileInput.getValue() == null) return;
+    String displayName = this.dataBindingProfileInput.getValue().getDisplayName();
+    //TODO: check if displayName matches our policy
+
+    this.profileRepository.changeDisplayName(displayName);
   }
-  
+
+  public void changeInstitution() {
+    if (this.dataBindingProfileInput.getValue() == null) return;
+    String institution = this.dataBindingProfileInput.getValue().getInstitution();
+    //TODO: check if institution matches our policy
+
+    this.profileRepository.changeInstitution(institution);
+  }
+
+  public void changePassword() {
+    if (this.dataBindingOldPasswordInput.getValue() == null || this.dataBindingNewPasswordInput.getValue() == null) return;
+    String oldPassword = this.dataBindingOldPasswordInput.getValue();
+    String newPassword = this.dataBindingNewPasswordInput.getValue();
+    //TODO: check if they match our policy; comparing password is handled by firebase
+
+    this.authAppRepository.changePassword(oldPassword, newPassword);
+  }
+
 }

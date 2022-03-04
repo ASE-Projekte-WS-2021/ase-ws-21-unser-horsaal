@@ -10,6 +10,7 @@
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.utils.Clipboard" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -229,6 +230,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/courseDescriptionFragmentShareCourseFab"
+            android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.codeMapping)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_share_24"

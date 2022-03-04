@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentLoginBinding;
+import com.example.unserhoersaal.utils.DeepLinkEnum;
+import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 
 /**
@@ -27,6 +29,7 @@ public class LoginFragment extends Fragment {
   private LoginViewModel loginViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
+  private DeepLinkMode deepLinkMode;
 
   public LoginFragment() {
     // Required empty public constructor
@@ -51,8 +54,19 @@ public class LoginFragment extends Fragment {
 
     this.navController = Navigation.findNavController(view);
 
+    this.initDeepLinkMode();
     this.initViewModel();
     this.connectBinding();
+  }
+
+  private void initDeepLinkMode() {
+    this.deepLinkMode = DeepLinkMode.getInstance();
+
+    if (getArguments() != null && getArguments().getString(Config.CODE_MAPPING_DEEP_LINK_KEY) != null) {
+      String key = getArguments().getString(Config.CODE_MAPPING_DEEP_LINK_KEY);
+      this.deepLinkMode.setCodeMapping(key);
+      this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.ENTER_COURSE);
+    }
   }
 
   private void initViewModel() {
@@ -61,7 +75,10 @@ public class LoginFragment extends Fragment {
     this.loginViewModel.init();
     this.loginViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser != null) {
+              if (firebaseUser != null && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE ) {
+                navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
+              }
+              else if (firebaseUser != null) {
                 navController.navigate(R.id.action_loginFragment_to_coursesFragment);
               }
             });

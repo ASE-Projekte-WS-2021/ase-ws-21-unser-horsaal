@@ -77,4 +77,7 @@ public class AuthAppRepository {
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
     this.userLiveData.postValue(null);
   }
+
+  //TODO: @Julian -> see EditProfilePasswordFragment & ProfileViewModel
+  public void changePassword(String oldPassword, String newPassword) {}
 }

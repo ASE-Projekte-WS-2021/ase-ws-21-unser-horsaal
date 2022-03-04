@@ -75,7 +75,8 @@ public class CoursesFragment extends Fragment {
   }
 
   private void connectAdapter() {
-    this.coursesAdapter = new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue());
+    this.coursesAdapter = new CoursesAdapter(
+            this.coursesViewModel.getUserCourses().getValue());
   }
 
   private void connectBinding() {
@@ -86,15 +87,19 @@ public class CoursesFragment extends Fragment {
 
   private void initToolbar() {
     this.binding.coursesFragmentToolbar.inflateMenu(R.menu.courses_fragment_toolbar);
-    this.binding.coursesFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
-    this.binding.coursesFragmentToolbar.setNavigationOnClickListener(v ->
+    this.binding.coursesFragmentToolbar
+            .setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
+    this.binding.coursesFragmentToolbar
+            .setNavigationOnClickListener(v ->
             navController.navigate(R.id.action_coursesFragment_to_profileFragment));
   }
 
-  //For closing the Floating Action Buttons when returning to this Fragment and the Buttons were not closed before.
+  //For closing the Floating Action Buttons when returning to
+  //this Fragment and the Buttons were not closed before.
   @Override
   public void onResume() {
     super.onResume();
-    this.coursesViewModel.toggle.setValue(true);
+    this.binding.coursesFragmentEnterCourseFabLayout.setVisibility(View.GONE);
+    this.binding.coursesFragmentCreateCourseFabLayout.setVisibility(View.GONE);
   }
 }

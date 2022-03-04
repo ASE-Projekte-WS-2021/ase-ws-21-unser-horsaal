@@ -11,15 +11,12 @@ public class ThreadModel {
   public int likes;
   public String text;
   public String title;
-
   public String key;
   public String creatorName;
   public int answersCount;
 
 
-  public ThreadModel() {
-
-  }
+  public ThreadModel() {}
 
   public int getAnswersCount() {
     return answersCount;
