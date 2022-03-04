@@ -59,8 +59,10 @@ public class EnterCourseRepository {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         if (dataSnapshot.exists()) {
           loadCourse((String) dataSnapshot.getValue());
+        } else {
+          //TODO use status live data
+          courseModel.postValue(new CourseModel());
         }
-        //TODO: Wrong Code
       }
 
       @Override

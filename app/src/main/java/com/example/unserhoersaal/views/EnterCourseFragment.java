@@ -76,8 +76,13 @@ public class EnterCourseFragment extends Fragment {
     this.enterCourseViewModel.getCourse()
             .observe(getViewLifecycleOwner(), model -> {
               if (model != null) {
-                KeyboardUtil.hideKeyboard(getActivity());
-                navController.navigate(R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
+                if (model.getKey() != null) {
+                  KeyboardUtil.hideKeyboard(getActivity());
+                  navController.navigate(R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
+                } else {
+                  navController.navigate(R.id.action_enterCourseFragment_to_noCourseFoundFragment);
+                }
+
               }
             });
   }
