@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.LikeStatus;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.model.UserModel;
@@ -34,7 +35,7 @@ public class CurrentCourseRepository {
   private ArrayList<MessageModel> messagesList = new ArrayList<MessageModel>();
   private MutableLiveData<List<MessageModel>> messages = new MutableLiveData<>();
   private MutableLiveData<String> threadId = new MutableLiveData<>();
-  private MutableLiveData<String> meetingId = new MutableLiveData<>();
+  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
   private MutableLiveData<ThreadModel> thread = new MutableLiveData<>();
   private MutableLiveData<String> userId = new MutableLiveData<>();
   private ValueEventListener messageListener;
@@ -70,8 +71,8 @@ public class CurrentCourseRepository {
     return this.threadId;
   }
 
-  public MutableLiveData<String> getMeetingId() {
-    return this.meetingId;
+  public MutableLiveData<MeetingsModel> getMeeting() {
+    return this.meeting;
   }
 
   public MutableLiveData<ThreadModel> getThread() {
@@ -117,7 +118,7 @@ public class CurrentCourseRepository {
 
   public void updateAnswerCount() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue())
+    reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey())
             .child(this.threadId.getValue()).child(Config.CHILD_ANSWER_COUNT)
             .setValue(ServerValue.increment(1));
   }
@@ -127,8 +128,8 @@ public class CurrentCourseRepository {
     this.userId.postValue(uid);
   }
 
-  public void setMeetingId(String meetingId) {
-    this.meetingId.postValue(meetingId);
+  public void setMeetingId(MeetingsModel meeting) {
+    this.meeting.postValue(meeting);
   }
 
   /**
@@ -139,12 +140,12 @@ public class CurrentCourseRepository {
     if (this.threadId.getValue() != null) {
       reference.child(Config.CHILD_MESSAGES).child(this.threadId.getValue())
               .removeEventListener(this.messageListener);
-      reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue())
+      reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey())
               .child(this.threadId.getValue()).removeEventListener(this.threadListener);
     }
     reference.child(Config.CHILD_MESSAGES).child(threadId)
             .addValueEventListener(this.messageListener);
-    reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue()).child(threadId)
+    reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey()).child(threadId)
             .addValueEventListener(this.threadListener);
     this.threadId.postValue(threadId);
   }
@@ -294,7 +295,7 @@ public class CurrentCourseRepository {
       reference.child(Config.CHILD_LIKE_USER).child(threadId).child(userId.getValue())
               .setValue(status);
     }
-    reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue()).child(threadId)
+    reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey()).child(threadId)
             .child(Config.CHILD_LIKE).setValue(ServerValue.increment(deltaCount));
   }
 
@@ -311,7 +312,7 @@ public class CurrentCourseRepository {
             //Thread is answered and the message is marked as answer
             reference.child(Config.CHILD_MESSAGES).child(threadId.getValue()).child(messageId)
                     .child(Config.CHILD_TOP_ANSWER).setValue(Boolean.FALSE);
-            reference.child(Config.CHILD_THREADS).child(meetingId.getValue())
+            reference.child(Config.CHILD_THREADS).child(meeting.getValue().getKey())
                     .child(threadId.getValue()).child(Config.CHILD_ANSWERED).setValue(Boolean.FALSE);
           } else if (!topAnswer && threadAnswered) {
             //Thread is answered and the message is not marked as answer
@@ -322,7 +323,7 @@ public class CurrentCourseRepository {
             //Thread is not  answered and the message is not marked as answer
             reference.child(Config.CHILD_MESSAGES).child(threadId.getValue()).child(messageId)
                     .child(Config.CHILD_TOP_ANSWER).setValue(Boolean.TRUE);
-            reference.child(Config.CHILD_THREADS).child(meetingId.getValue())
+            reference.child(Config.CHILD_THREADS).child(meeting.getValue().getKey())
                     .child(threadId.getValue()).child(Config.CHILD_ANSWERED).setValue(Boolean.TRUE);
           }
 

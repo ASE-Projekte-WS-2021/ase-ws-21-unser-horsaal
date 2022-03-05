@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.enums.LikeStatus;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
@@ -17,7 +18,7 @@ public class CurrentCourseViewModel extends ViewModel {
   private CurrentCourseRepository currentCourseRepository;
   private MutableLiveData<List<MessageModel>> messages;
   private MutableLiveData<String> threadId = new MutableLiveData<>();
-  private MutableLiveData<String> meetingId = new MutableLiveData<>();
+  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
   private MutableLiveData<ThreadModel> thread = new MutableLiveData<>();
   public MutableLiveData<String> userId;
   public MutableLiveData<MessageModel> dataBindingMessageInput;
@@ -29,7 +30,7 @@ public class CurrentCourseViewModel extends ViewModel {
     }
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
     this.threadId = this.currentCourseRepository.getThreadId();
-    this.meetingId = this.currentCourseRepository.getMeetingId();
+    this.meeting = this.currentCourseRepository.getMeeting();
     this.thread = this.currentCourseRepository.getThread();
     this.currentCourseRepository.setUserId();
     this.userId = this.currentCourseRepository.getUserId();
@@ -50,8 +51,8 @@ public class CurrentCourseViewModel extends ViewModel {
     return this.threadId;
   }
 
-  public LiveData<String> getMeetingId() {
-    return this.meetingId;
+  public LiveData<MeetingsModel> getMeeting() {
+    return this.meeting;
   }
 
   public LiveData<ThreadModel> getThread() {
@@ -73,8 +74,8 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository.setThreadId(threadId);
   }
 
-  public void setMeetingId(String meetingId) {
-    this.currentCourseRepository.setMeetingId(meetingId);
+  public void setMeeting(MeetingsModel meeting) {
+    this.currentCourseRepository.setMeetingId(meeting);
   }
 
   public void like(MessageModel message) {
