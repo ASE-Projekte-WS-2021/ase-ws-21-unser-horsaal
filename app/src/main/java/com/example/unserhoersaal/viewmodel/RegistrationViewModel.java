@@ -66,7 +66,9 @@ public class RegistrationViewModel extends ViewModel {
   }
 
   public void resetDatabindingData() {
+
     this.user.setValue(new UserModel());
+    this.password.setValue("");
   }
 
   public void resetErrorMessageLiveData() {
