@@ -78,6 +78,4 @@ public class AuthAppRepository {
     this.userLiveData.postValue(null);
   }
 
-  //TODO: @Julian -> see EditProfilePasswordFragment & ProfileViewModel
-  public void changePassword(String oldPassword, String newPassword) {}
 }
