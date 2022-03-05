@@ -55,6 +55,11 @@ public class EditProfileInstitutionFragment extends Fragment {
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
     //TODO: @Julian onDisplayNameChanged -> navigate back to profile
+    this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(), change -> {
+      if (change) {
+        navController.navigate(R.id.action_editProfileInstitutionFragment_to_profileFragment);
+      }
+    });
   }
 
   private void connectBinding() {
@@ -68,5 +73,11 @@ public class EditProfileInstitutionFragment extends Fragment {
     this.binding.editProfileInstitutionFragmentToolbar.setNavigationOnClickListener(v -> {
       navController.navigate(R.id.action_editProfileInstitutionFragment_to_profileFragment);
     });
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.profileViewModel.resetProfileInput();
   }
 }

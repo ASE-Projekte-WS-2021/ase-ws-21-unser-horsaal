@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.repository.ProfileRepository;
-import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 
 /** Class Description. */
@@ -21,6 +20,7 @@ public class ProfileViewModel extends ViewModel {
   public MutableLiveData<UserModel> dataBindingProfileInput;
   public MutableLiveData<String> dataBindingOldPasswordInput;
   public MutableLiveData<String> dataBindingNewPasswordInput;
+  public MutableLiveData<Boolean> profileChanged;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
@@ -37,6 +37,8 @@ public class ProfileViewModel extends ViewModel {
     this.dataBindingProfileInput = new MutableLiveData<>(new UserModel());
     this.dataBindingOldPasswordInput = new MutableLiveData<>();
     this.dataBindingNewPasswordInput = new MutableLiveData<>();
+
+    this.profileChanged = this.profileRepository.getProfileChanged();
   }
 
   /** Give back the user data. */
@@ -46,6 +48,10 @@ public class ProfileViewModel extends ViewModel {
 
   public LiveData<UserModel> getProfileLiveData() {
     return this.profileLiveData;
+  }
+
+  public LiveData<Boolean> getProfileChanged() {
+    return this.profileChanged;
   }
 
   public void logout() {
@@ -81,4 +87,8 @@ public class ProfileViewModel extends ViewModel {
     this.authAppRepository.changePassword(oldPassword, newPassword);
   }
 
+  public void resetProfileInput() {
+    this.dataBindingProfileInput.setValue(new UserModel());
+    this.profileChanged.setValue(Boolean.FALSE);
+  }
 }

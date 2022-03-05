@@ -55,6 +55,11 @@ public class EditProfileNameFragment extends Fragment {
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
     //TODO: @Julian onDisplayNameChanged -> navigate back to profile
+    this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(), change -> {
+      if (change) {
+        navController.navigate(R.id.action_editProfileNameFragment_to_profileFragment);
+      }
+    });
   }
 
   private void connectBinding() {
@@ -67,5 +72,11 @@ public class EditProfileNameFragment extends Fragment {
     this.binding.editProfileNameFragmentToolbar.setNavigationOnClickListener(v ->
       navController.navigate(R.id.action_editProfileNameFragment_to_profileFragment)
     );
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.profileViewModel.resetProfileInput();
   }
 }
