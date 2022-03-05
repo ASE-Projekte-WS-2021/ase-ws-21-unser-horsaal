@@ -113,6 +113,42 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
+  public void likeThread(ThreadModel threadModel) {
+    String threadId  = threadModel.getKey();
+    LikeStatus likeStatus = threadModel.getLikeStatus();
+    switch(likeStatus){
+      case LIKE:
+        this.currentCourseRepository.handleLikeEventThread(threadId,-1,LikeStatus.NEUTRAL);
+        break;
+      case DISLIKE:
+        this.currentCourseRepository.handleLikeEventThread(threadId,2,LikeStatus.LIKE);
+        break;
+      case NEUTRAL:
+        this.currentCourseRepository.handleLikeEventThread(threadId,1,LikeStatus.LIKE);
+        break;
+      default:
+        break;
+    }
+  }
+
+  public void dislikeThread(ThreadModel threadModel) {
+    String threadId = threadModel.getKey();
+    LikeStatus likeStatus = threadModel.getLikeStatus();
+    switch(likeStatus) {
+      case LIKE:
+        this.currentCourseRepository.handleLikeEventThread(threadId,-2,LikeStatus.DISLIKE);
+        break;
+      case DISLIKE:
+        this.currentCourseRepository.handleLikeEventThread(threadId,1,LikeStatus.NEUTRAL);
+        break;
+      case NEUTRAL:
+        this.currentCourseRepository.handleLikeEventThread(threadId,-1,LikeStatus.DISLIKE);
+        break;
+      default:
+        break;
+    }
+  }
+
   public void solved(String messageId) {
     this.currentCourseRepository.solved(messageId);
   }

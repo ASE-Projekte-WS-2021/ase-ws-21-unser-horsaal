@@ -51,7 +51,7 @@
                 style="@style/toolbarSubtitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/current_course_fragment_subtitle"
+                android:text="@{vm.thread.title}"
                 android:background="@drawable/app_background"
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,81 +109,104 @@
                         android:layout_margin="16dp"
                         android:padding="8dp">
 
-                        <TextView
-                            android:id="@+id/currentCourseFragmentQuestionTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.thread.title}"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/currentCourseFragmentQuestionTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{Format.getFormatedDateTime(currentCourseFragmentQuestionTime, vm.thread.creationTime)}"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/currentCourseFragmentQuestionText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@{vm.thread.text}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentQuestionTitle" />
-
-                        <View
-                            android:id="@+id/currentCourseFragmentQuestionHorizontalLine"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:background="@color/grey"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentQuestionText" />
-
-                        <TextView
-                            android:id="@+id/currentCourseFragmentQuestionCreator"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@{vm.thread.creatorName}"
-                            android:textColor="@color/app_blue"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentQuestionHorizontalLine" />
-
                         <ImageView
-                            android:id="@+id/currentCourseFragmentQuestionLikeButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="16dp"
-                            android:src="@drawable/ic_baseline_thumb_up_24"
-                            app:layout_constraintEnd_toStartOf="@id/currentCourseFragmentQuestionLikeCount"
-                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentQuestionHorizontalLine" />
+                            android:id="@+id/currentCourseFragmentItemUserImage"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:maxWidth="50dp"
+                            android:maxHeight="50dp"
+                            setImage="@{vm.thread.photoUrl}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/currentCourseFragmentAuthor"
+                            app:tint="@color/black" />
 
-                        <ImageView
-                            android:id="@+id/currentCourseFragmentQuestionDislikeButton"
+                        <TextView
+                            android:id="@+id/currentCourseFragmentAuthor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:src="@drawable/ic_baseline_thumb_down_24"
-                            app:layout_constraintStart_toEndOf="@id/currentCourseFragmentQuestionLikeCount"
-                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentQuestionHorizontalLine" />
+                            android:layout_marginTop="16dp"
+                            android:text="@{vm.thread.creatorName}"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/currentCourseFragmentItemUserImage"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/currentCourseFragmentQuestionLikeCount"
+                            android:id="@+id/currentCourseFragmentTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{Format.getFormatedDateTime(currentCourseFragmentTime, vm.thread.creationTime)}"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/currentCourseFragmentAnswerText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.thread.text}"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintStart_toStartOf="@+id/currentCourseFragmentAuthor"
+                            app:layout_constraintTop_toBottomOf="@+id/currentCourseFragmentAuthor"
+                            app:layout_constraintEnd_toEndOf="@+id/currentCourseFragmentTime" />
+
+                        <View
+                            android:id="@+id/currentCourseFragmentHorizontalLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@color/grey"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentAnswerText" />
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="@{Integer.toString(vm.thread.likes)}"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentQuestionHorizontalLine" />
+                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentHorizontalLine">
+
+                            <ImageView
+                                android:id="@+id/currentCourseFragmentLikeIcon"
+                                android:onClick="@{(view) -> vm.likeThread(vm.thread)}"
+                                setLikeStatus="@{vm.thread.likeStatus}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:src="@drawable/ic_baseline_thumb_up_24" />
+
+                            <TextView
+                                android:id="@+id/currentCourseFragmentDislikeCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="@{Integer.toString(vm.thread.likes)}" />
+
+                            <ImageView
+                                android:id="@+id/currentCourseFragmentDislikeIcon"
+                                android:onClick="@{(view) -> vm.dislikeThread(vm.thread)}"
+                                setDisLikeStatus="@{vm.thread.likeStatus}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:clickable="true"
+                                android:src="@drawable/ic_baseline_thumb_down_24" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/currentCourseFragmentSolvedIcon"
+                            setColor="@{vm.thread.answered}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_check_24"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
