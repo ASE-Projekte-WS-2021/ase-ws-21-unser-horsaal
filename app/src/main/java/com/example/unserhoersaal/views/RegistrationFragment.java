@@ -22,6 +22,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.utils.DialogBuilder;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 
@@ -67,6 +68,8 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel = new ViewModelProvider(requireActivity())
             .get(RegistrationViewModel.class);
     this.registrationViewModel.init();
+    this.registrationViewModel.resetErrorMessageLiveData();
+    this.registrationViewModel.resetDatabindingData();
 
     //Todo: automatic redirect to the course page after verification.
     /*

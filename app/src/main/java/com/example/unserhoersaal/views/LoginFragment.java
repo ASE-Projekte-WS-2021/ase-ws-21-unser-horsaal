@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.utils.DialogBuilder;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
@@ -42,9 +43,7 @@ public class LoginFragment extends Fragment {
   }
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-  }
+  public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);}
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -68,6 +67,7 @@ public class LoginFragment extends Fragment {
     this.loginViewModel = new ViewModelProvider(requireActivity())
             .get(LoginViewModel.class);
     this.loginViewModel.init();
+    this.loginViewModel.resetErrorMessageLiveData();
     /**
      * If user successfully logged in (login input correct and email is verified)
      *  navigate to the course screen.

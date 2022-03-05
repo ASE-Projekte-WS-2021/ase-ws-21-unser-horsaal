@@ -68,6 +68,12 @@ public class LoginViewModel extends ViewModel {
     this.password.setValue("");
   }
 
+  public void resetErrorMessageLiveData() {
+    this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
+    this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
+    this.errorMessageLogProcess.setValue(LogRegErrorMessEnum.NONE);
+  }
+
   /** login process
    *
    * check email and password input

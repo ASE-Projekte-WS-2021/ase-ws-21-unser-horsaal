@@ -65,8 +65,15 @@ public class RegistrationViewModel extends ViewModel {
     return this.userLiveData;
   }
 
-  private void resetDatabindingData() {
+  public void resetDatabindingData() {
     this.user.setValue(new UserModel());
+  }
+
+  public void resetErrorMessageLiveData() {
+    this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.NONE);
+    this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.NONE);
+    this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.NONE);
+    this.errorMessageRegProcess.setValue(LogRegErrorMessEnum.NONE);
   }
 
   /** registration process
