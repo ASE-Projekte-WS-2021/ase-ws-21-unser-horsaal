@@ -3,6 +3,7 @@ package com.example.unserhoersaal.repository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +30,7 @@ public class CourseMeetingRepository {
 
   private ArrayList<ThreadModel> threadModelList = new ArrayList<>();
   private MutableLiveData<List<ThreadModel>> threads = new MutableLiveData<>();
-  private MutableLiveData<String> meetingId = new MutableLiveData<>();
+  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
   private MutableLiveData<ThreadModel> threadModelMutableLiveData = new MutableLiveData<>();
   private ValueEventListener listener;
 
@@ -55,8 +56,8 @@ public class CourseMeetingRepository {
     return this.threads;
   }
 
-  public MutableLiveData<String> getMeetingId() {
-    return this.meetingId;
+  public MutableLiveData<MeetingsModel> getMeeting() {
+    return this.meeting;
   }
 
   public MutableLiveData<ThreadModel> getThreadModelMutableLiveData() {
@@ -64,21 +65,21 @@ public class CourseMeetingRepository {
   }
 
   /** Set the id of the current meeting. */
-  public void setMeetingId(String meetingId) {
+  public void setMeeting(MeetingsModel meeting) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    if (this.meetingId.getValue() != null) {
-      reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue())
+    if (this.meeting.getValue() != null) {
+      reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey())
               .removeEventListener(this.listener);
     }
-    reference.child(Config.CHILD_THREADS).child(meetingId).addValueEventListener(this.listener);
-    this.meetingId.postValue(meetingId);
+    reference.child(Config.CHILD_THREADS).child(meeting.getKey()).addValueEventListener(this.listener);
+    this.meeting.postValue(meeting);
   }
 
   /** Loads all threads of the current meeting from the database. */
   //Query is not updated
   public void loadThreads() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Query query = reference.child(Config.CHILD_MEETINGS).child(this.meetingId.getValue())
+    Query query = reference.child(Config.CHILD_MEETINGS).child(this.meeting.getValue().getKey())
             .child(Config.CHILD_THREADS);
     query.addValueEventListener(this.listener);
   }
@@ -92,7 +93,7 @@ public class CourseMeetingRepository {
     threadModel.setCreatorId(uid);
     threadModel.setCreationTime(System.currentTimeMillis());
     String threadId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_THREADS).child(this.meetingId.getValue()).child(threadId)
+    reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey()).child(threadId)
             .setValue(threadModel)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
               @Override
