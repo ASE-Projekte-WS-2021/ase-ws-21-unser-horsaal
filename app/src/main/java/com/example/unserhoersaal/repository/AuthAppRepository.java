@@ -105,6 +105,7 @@ public class AuthAppRepository {
                             // Todo: Automatic forwarding to the course page when email is verified
                               //this.userLiveData.postValue(firebaseAuth.getCurrentUser());
                             }
+                            //Todo: onAuthStateListener??
                           }
                         });
               }

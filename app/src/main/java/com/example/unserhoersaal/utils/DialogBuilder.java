@@ -115,15 +115,14 @@ public class DialogBuilder {
                 if (Validation.emptyEmail(email)) {
                   Toast.makeText(view.getContext(), Config.EMAIL_EMPTY,
                           Toast.LENGTH_LONG).show();
-                  dialog.show();
                 }
                 /** Error-Case 2: email not empty but pattern is wrong */
                 else if (!Validation.emptyEmail(email) && !Validation.emailHasPattern(email)) {
                   Toast.makeText(view.getContext(), Config.DIALOG_EMAIL_PATTERN_WRONG,
                           Toast.LENGTH_LONG).show();
-                  dialog.show();
                 /** Success: send password reset mail */
-                } else if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email)) {
+                }
+                else if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email)) {
                   viewModel.sendPasswordResetMail(emailInput.getText().toString());
                   Toast.makeText(view.getContext(), Config.LOG_PASSWORD_RESET_EMAIL,
                           Toast.LENGTH_LONG).show();
