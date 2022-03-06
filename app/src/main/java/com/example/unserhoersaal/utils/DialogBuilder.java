@@ -126,9 +126,9 @@ public class DialogBuilder {
                   Toast.makeText(view.getContext(), Config.DIALOG_EMAIL_PATTERN_WRONG,
                           Toast.LENGTH_LONG).show();
                   passwordResetDialog(view, viewModel);
-                /** Success: send password reset mail */
                 }
                 else if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email)) {
+                  /** check if email exists in database (belongs to a account) */
                   viewModel.getFirebaseAuth().fetchSignInMethodsForEmail(email)
                           .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                     @Override
@@ -139,6 +139,7 @@ public class DialogBuilder {
                                 Config.DIALOG_PASSWORD_RESET_EMAIL_NOT_EXIST_ERROR,
                                 Toast.LENGTH_LONG).show();
                         passwordResetDialog(view, viewModel);
+                        /** Success: send password reset mail */
                       } else {
                         viewModel.sendPasswordResetMail(emailInput.getText().toString());
                         Toast.makeText(view.getContext(), Config.LOG_PASSWORD_RESET_EMAIL,
