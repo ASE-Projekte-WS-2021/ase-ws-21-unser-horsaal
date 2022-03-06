@@ -9,12 +9,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.SignInMethodQueryResult;
 
 /**
  * Utility class for alert dialogs
@@ -115,18 +119,34 @@ public class DialogBuilder {
                 if (Validation.emptyEmail(email)) {
                   Toast.makeText(view.getContext(), Config.EMAIL_EMPTY,
                           Toast.LENGTH_LONG).show();
+                  passwordResetDialog(view, viewModel);
                 }
                 /** Error-Case 2: email not empty but pattern is wrong */
                 else if (!Validation.emptyEmail(email) && !Validation.emailHasPattern(email)) {
                   Toast.makeText(view.getContext(), Config.DIALOG_EMAIL_PATTERN_WRONG,
                           Toast.LENGTH_LONG).show();
+                  passwordResetDialog(view, viewModel);
                 /** Success: send password reset mail */
                 }
                 else if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email)) {
-                  viewModel.sendPasswordResetMail(emailInput.getText().toString());
-                  Toast.makeText(view.getContext(), Config.LOG_PASSWORD_RESET_EMAIL,
-                          Toast.LENGTH_LONG).show();
-                  viewModel.resetPasswordStatus.setValue(ResetPasswordEnum.RESET_PASSWORD_NO);
+                  viewModel.getFirebaseAuth().fetchSignInMethodsForEmail(email)
+                          .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                      boolean emailNotExists = task.getResult().getSignInMethods().isEmpty();
+                      if (emailNotExists) {
+                        Toast.makeText(view.getContext(),
+                                Config.DIALOG_PASSWORD_RESET_EMAIL_NOT_EXIST_ERROR,
+                                Toast.LENGTH_LONG).show();
+                        passwordResetDialog(view, viewModel);
+                      } else {
+                        viewModel.sendPasswordResetMail(emailInput.getText().toString());
+                        Toast.makeText(view.getContext(), Config.LOG_PASSWORD_RESET_EMAIL,
+                                Toast.LENGTH_LONG).show();
+                        viewModel.resetPasswordStatus.setValue(ResetPasswordEnum.RESET_PASSWORD_NO);
+                      }
+                    }
+                  });
                 } else {
                 /** Error-Case 3: unknown problem */
                   Toast.makeText(view.getContext(), Config.DIALOG_PASSWORD_RESET_ERROR,

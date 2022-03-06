@@ -145,5 +145,9 @@ public class AuthAppRepository {
     this.userLiveData.postValue(null);
   }
 
+  public FirebaseAuth getFirebaseAuth() {
+    return this.firebaseAuth;
+  }
+
 }
 

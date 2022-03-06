@@ -72,6 +72,8 @@ public class Config {
   public static final String DIALOG_EMAIL_PATTERN_WRONG = "Die eingegebene Email wurde falsch " +
           "eingegeben oder es existiert kein Account zu dieser Email Adresse";
   public static final String DIALOG_PASSWORD_RESET_ERROR = "Passwortrücksetzung gescheitert";
+  public static final String DIALOG_PASSWORD_RESET_EMAIL_NOT_EXIST_ERROR =
+          "Zu dieser Email existiert kein Account";
 
   /** Regex */
   /* reference: https://ihateregex.io/expr/username/ */

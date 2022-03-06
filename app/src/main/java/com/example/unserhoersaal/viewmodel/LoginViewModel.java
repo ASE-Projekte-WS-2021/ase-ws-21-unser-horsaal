@@ -10,6 +10,7 @@ import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 //source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/blob/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/view/LoginRegisterFragment.java [30.12.2021]
@@ -129,6 +130,10 @@ public class LoginViewModel extends ViewModel {
   /** Resend email verification email.*/
   public void resendEmailVerification() {
     authAppRepository.resendEmailVerification();
+  }
+
+  public FirebaseAuth getFirebaseAuth() {
+    return authAppRepository.getFirebaseAuth();
   }
 
 }
