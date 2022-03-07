@@ -49,7 +49,7 @@
                 android:id="@+id/courseMeetingFragmentToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_meeting_toolbar_title"
+                android:text="@={vm.meeting.title}"
                 style="@style/toolbarTitleStyle"/>
 
         </com.google.android.material.appbar.MaterialToolbar>

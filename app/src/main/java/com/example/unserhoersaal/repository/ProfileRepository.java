@@ -5,7 +5,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.UserModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +28,7 @@ public class ProfileRepository {
   private static ProfileRepository instance;
   private UserModel userModel;
   private MutableLiveData<UserModel> user = new MutableLiveData<>();
+  private MutableLiveData<Boolean> profileChanged = new MutableLiveData<>();
 
   public ProfileRepository() {
     this.loadUser();
@@ -40,6 +48,9 @@ public class ProfileRepository {
     return this.user;
   }
 
+  public MutableLiveData<Boolean> getProfileChanged() {
+    return this.profileChanged;
+  }
 
   /**
    * Loads an user from the database.
@@ -54,6 +65,7 @@ public class ProfileRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         userModel = snapshot.getValue(UserModel.class);
+        userModel.setKey(snapshot.getKey());
         user.postValue(userModel);
       }
 
@@ -64,10 +76,57 @@ public class ProfileRepository {
     });
   }
 
-  //TODO: @Julian -> see EditProfileNameFragment & ProfileViewModel
-  public void changeDisplayName(String displayName) {}
+  public void changeDisplayName(String displayName) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    reference.child(Config.CHILD_USER).child(uid).child(Config.CHILD_DISPLAY_NAME)
+            .setValue(displayName).addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                profileChanged.postValue(Boolean.TRUE);
+              }
+            });
+  }
 
-  //TODO: @Julian -> see EditProfileInstitutionFragment & ProfileViewModel
-  public void changeInstitution(String institution) {}
+  public void changeInstitution(String institution) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    reference.child(Config.CHILD_USER).child(uid).child(Config.CHILD_INSTITUTION)
+            .setValue(institution).addOnSuccessListener(new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void unused) {
+                profileChanged.postValue(Boolean.TRUE);
+              }
+            });
+  }
+
+  public void changePassword(String oldPassword, String newPassword) {
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String email = user.getEmail();
+    AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
+
+    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+      @Override
+      public void onComplete(@NonNull Task<Void> task) {
+        if (task.isSuccessful()){
+          user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+              if (task.isSuccessful()) {
+                profileChanged.postValue(Boolean.TRUE);
+              } else {
+                //todo password reset failed
+                Log.d(TAG, "onComplete: " + "reset failed");
+              }
+            }
+          });
+        } else {
+          //todo old password wrong
+          Log.d(TAG, "onComplete: " + "old password wrong");
+        }
+      }
+    });
+
+  }
 
 }

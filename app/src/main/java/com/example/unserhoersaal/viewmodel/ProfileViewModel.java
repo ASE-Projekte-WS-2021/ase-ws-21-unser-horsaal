@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 /** Class Description. */
 public class ProfileViewModel extends ViewModel {
 
-  private static final String TAG = "LoginRegisterViewModel";
+  private static final String TAG = "ProfileViewModel";
 
   private AuthAppRepository authAppRepository;
   private ProfileRepository profileRepository;
@@ -21,6 +23,7 @@ public class ProfileViewModel extends ViewModel {
   public MutableLiveData<UserModel> dataBindingProfileInput;
   public MutableLiveData<String> dataBindingOldPasswordInput;
   public MutableLiveData<String> dataBindingNewPasswordInput;
+  public MutableLiveData<Boolean> profileChanged;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
@@ -37,6 +40,8 @@ public class ProfileViewModel extends ViewModel {
     this.dataBindingProfileInput = new MutableLiveData<>(new UserModel());
     this.dataBindingOldPasswordInput = new MutableLiveData<>();
     this.dataBindingNewPasswordInput = new MutableLiveData<>();
+
+    this.profileChanged = this.profileRepository.getProfileChanged();
   }
 
   /** Give back the user data. */
@@ -46,6 +51,10 @@ public class ProfileViewModel extends ViewModel {
 
   public LiveData<UserModel> getProfileLiveData() {
     return this.profileLiveData;
+  }
+
+  public LiveData<Boolean> getProfileChanged() {
+    return this.profileChanged;
   }
 
   public void logout() {
@@ -76,9 +85,23 @@ public class ProfileViewModel extends ViewModel {
     if (this.dataBindingOldPasswordInput.getValue() == null || this.dataBindingNewPasswordInput.getValue() == null) return;
     String oldPassword = this.dataBindingOldPasswordInput.getValue();
     String newPassword = this.dataBindingNewPasswordInput.getValue();
-    //TODO: check if they match our policy; comparing password is handled by firebase
-
-    this.authAppRepository.changePassword(oldPassword, newPassword);
+    //TODO: check if they match our policy; Feedback
+    if (Validation.passwordHasPattern(oldPassword) && Validation.passwordHasPattern(newPassword)) {
+      this.profileRepository.changePassword(oldPassword, newPassword);
+    } else {
+      //TODO: check if they match our policy; Feedback
+      Log.d(TAG, "changePassword: " + "password doesn't match pattern");
+    }
   }
 
+  public void resetProfileInput() {
+    this.dataBindingProfileInput.setValue(new UserModel());
+    this.profileChanged.setValue(Boolean.FALSE);
+  }
+
+  public void resetPasswordInput() {
+    this.dataBindingNewPasswordInput.setValue(null);
+    this.dataBindingOldPasswordInput.setValue(null);
+    this.profileChanged.setValue(Boolean.FALSE);
+  }
 }
