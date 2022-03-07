@@ -3,6 +3,7 @@ package com.example.unserhoersaal.utils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+//code reference: https://stackoverflow.com/a/53420462/13620136
 public class StateData<T> {
 
   @NonNull
