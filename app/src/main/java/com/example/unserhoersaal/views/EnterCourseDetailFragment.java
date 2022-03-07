@@ -1,7 +1,9 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -9,11 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseDetailBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
@@ -48,6 +45,7 @@ public class EnterCourseDetailFragment extends Fragment {
             R.layout.fragment_enter_course_detail, container, false);
     return this.binding.getRoot();
   }
+
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -94,4 +92,5 @@ public class EnterCourseDetailFragment extends Fragment {
     this.enterCourseViewModel.resetEnterCourse();
     this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
   }
+
 }

@@ -5,11 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.UserModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,57 +72,49 @@ public class ProfileRepository {
     });
   }
 
+  /** TODO. */
   public void changeDisplayName(String displayName) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    reference.child(Config.CHILD_USER).child(uid).child(Config.CHILD_DISPLAY_NAME)
-            .setValue(displayName).addOnSuccessListener(new OnSuccessListener<Void>() {
-              @Override
-              public void onSuccess(Void unused) {
-                profileChanged.postValue(Boolean.TRUE);
-              }
-            });
+    reference.child(Config.CHILD_USER)
+            .child(uid)
+            .child(Config.CHILD_DISPLAY_NAME)
+            .setValue(displayName)
+            .addOnSuccessListener(unused -> profileChanged.postValue(Boolean.TRUE));
   }
 
+  /** TODO. */
   public void changeInstitution(String institution) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    reference.child(Config.CHILD_USER).child(uid).child(Config.CHILD_INSTITUTION)
-            .setValue(institution).addOnSuccessListener(new OnSuccessListener<Void>() {
-              @Override
-              public void onSuccess(Void unused) {
-                profileChanged.postValue(Boolean.TRUE);
-              }
-            });
+    reference.child(Config.CHILD_USER)
+            .child(uid)
+            .child(Config.CHILD_INSTITUTION)
+            .setValue(institution)
+            .addOnSuccessListener(unused -> profileChanged.postValue(Boolean.TRUE));
   }
 
+  /** TODO. */
   public void changePassword(String oldPassword, String newPassword) {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String email = user.getEmail();
     AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
 
-    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-      @Override
-      public void onComplete(@NonNull Task<Void> task) {
-        if (task.isSuccessful()){
-          user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-              if (task.isSuccessful()) {
-                profileChanged.postValue(Boolean.TRUE);
-              } else {
-                //todo password reset failed
-                Log.d(TAG, "onComplete: " + "reset failed");
-              }
-            }
-          });
-        } else {
-          //todo old password wrong
-          Log.d(TAG, "onComplete: " + "old password wrong");
-        }
+    user.reauthenticate(credential).addOnCompleteListener(task -> {
+      if (task.isSuccessful()) {
+        user.updatePassword(newPassword).addOnCompleteListener(task1 -> {
+          if (task1.isSuccessful()) {
+            profileChanged.postValue(Boolean.TRUE);
+          } else {
+            //todo password reset failed
+            Log.d(TAG, "onComplete: " + "reset failed");
+          }
+        });
+      } else {
+        //todo old password wrong
+        Log.d(TAG, "onComplete: " + "old password wrong");
       }
     });
-
   }
 
 }

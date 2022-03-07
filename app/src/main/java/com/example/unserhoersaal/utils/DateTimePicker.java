@@ -4,21 +4,23 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
-
-import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import java.util.Calendar;
 import java.util.Date;
 
+/** BindingAdapters used in CreateMeetingFragment that lets the user choose a date and time. */
 public class DateTimePicker {
 
+  /** opens a date picker dialog. */
   //code reference: https://github.com/codeWithCal/DatePickerTutorial/blob/master/app/src/main/java/codewithcal/au/datepickertutorial/MainActivity.java
   @BindingAdapter("datePicker")
   public static void datePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
       //TODO: handle error to view!
-      if (courseHistoryViewModel.dataBindingMeetingInput.getValue() == null) return;
+      if (courseHistoryViewModel.dataBindingMeetingInput.getValue() == null) {
+        return;
+      }
 
       courseHistoryViewModel.dataBindingMeetingInput.getValue().setYearInput(year);
       courseHistoryViewModel.dataBindingMeetingInput.getValue().setMonthInput(month);
@@ -39,11 +41,14 @@ public class DateTimePicker {
     dialog.show();
   }
 
+  /** opens a time picker dialog. */
   @BindingAdapter("timePicker")
   public static void timePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     TimePickerDialog.OnTimeSetListener timeSetListener = (datePicker, hour, minute) -> {
       //TODO: handle error to view!
-      if (courseHistoryViewModel.dataBindingMeetingInput.getValue() == null) return;
+      if (courseHistoryViewModel.dataBindingMeetingInput.getValue() == null) {
+        return;
+      }
 
       courseHistoryViewModel.dataBindingMeetingInput.getValue().setHourInput(hour);
       courseHistoryViewModel.dataBindingMeetingInput.getValue().setMinuteInput(minute);
@@ -61,4 +66,5 @@ public class DateTimePicker {
             );
     timePickerDialog.show();
   }
+
 }

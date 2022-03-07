@@ -1,6 +1,9 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -8,9 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEditProfileInstitutionBinding;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
@@ -79,4 +79,5 @@ public class EditProfileInstitutionFragment extends Fragment {
     super.onPause();
     this.profileViewModel.resetProfileInput();
   }
+
 }

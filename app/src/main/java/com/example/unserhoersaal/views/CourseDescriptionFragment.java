@@ -39,7 +39,7 @@ public class CourseDescriptionFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding =  DataBindingUtil.inflate(inflater,
-            R.layout.fragment_course_description, container,false);
+            R.layout.fragment_course_description, container, false);
     return this.binding.getRoot();
   }
 
@@ -64,7 +64,8 @@ public class CourseDescriptionFragment extends Fragment {
     this.courseDescriptionViewModel.getCourseModel()
             .observe(getViewLifecycleOwner(), courseModel -> {
 
-              //use to navigate the user out of the fragment / course navigate back to course history
+              //use to navigate the user out of the fragment
+              //course navigate back to course history
               if (courseModel == null) {
                 navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
               } else if (courseModel.getKey() != null) {

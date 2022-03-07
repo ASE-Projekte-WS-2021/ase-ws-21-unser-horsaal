@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -79,31 +78,25 @@ public class CourseDescriptionRepository {
     Task<DataSnapshot> task = reference.child(Config.CHILD_USER).child(course.getCreatorId())
             .child(Config.CHILD_USER_NAME).get();
 
-    task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-      @Override
-      public void onSuccess(DataSnapshot dataSnapshot) {
-        course.setCreatorName(dataSnapshot.getValue(String.class));
-        courseModel.postValue(course);
-      }
+    task.addOnSuccessListener(dataSnapshot -> {
+      course.setCreatorName(dataSnapshot.getValue(String.class));
+      courseModel.postValue(course);
     });
   }
 
+  /** unregisters a user from a course in real time database. */
   public void unregisterFromCourse(String id) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    reference.child(Config.CHILD_USER_COURSES).child(uid).child(id).removeValue()
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-              @Override
-              public void onSuccess(Void unused) {
-                reference.child(Config.CHILD_COURSES_USER).child(id).child(uid).removeValue()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                          @Override
-                          public void onSuccess(Void unused) {
-                            courseModel.postValue(null);
-                          }
-                        });
-              }
-            });
+    reference.child(Config.CHILD_USER_COURSES)
+            .child(uid).child(id)
+            .removeValue()
+            .addOnSuccessListener(unused ->
+                    reference.child(Config.CHILD_COURSES_USER)
+                            .child(id)
+                            .child(uid)
+                            .removeValue()
+                            .addOnSuccessListener(unused1 -> courseModel.postValue(null)));
   }
 
 }

@@ -3,9 +3,8 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
@@ -20,7 +19,6 @@ public class RegistrationViewModel extends ViewModel {
 
   private AuthAppRepository authAppRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
-
 
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegUserName;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegEmail;
@@ -76,6 +74,7 @@ public class RegistrationViewModel extends ViewModel {
     this.dataBindingPasswordInput.setValue("");
   }
 
+  /** JavaDoc for this method. */
   public void resetErrorMessageLiveData() {
     this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.NONE);
@@ -83,20 +82,24 @@ public class RegistrationViewModel extends ViewModel {
     this.errorMessageRegProcess.setValue(LogRegErrorMessEnum.NONE);
   }
 
-  /** registration process
+  /* registration process
    *
    * check username, email and password input
    * show error message if a input is empty or the pattern is wrong
    * if not -> register new user -> if registration fails-> show error message
    *
    */
+
+  /** JavaDoc for this method. */
   public void register() {
-    if (this.dataBindingPasswordInput.getValue() == null) return;
-    /** User input*/
+    if (this.dataBindingPasswordInput.getValue() == null) {
+      return;
+    }
+    /* User input*/
     String userName = this.dataBindingUserInput.getValue().getDisplayName();
     String email = this.dataBindingUserInput.getValue().getEmail();
     String password = this.dataBindingPasswordInput.getValue();
-    /** Check if username input is empty or has wrong pattern.*/
+    /* Check if username input is empty or has wrong pattern.*/
     if (Validation.emptyUserName(userName)) {
       this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.USERNAME_EMPTY);
     } else if (!Validation.userNameHasPattern(userName)) {
@@ -104,7 +107,7 @@ public class RegistrationViewModel extends ViewModel {
     } else {
       this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.NONE);
     }
-  /** Check if email input is empty or has wrong pattern.*/
+    /* Check if email input is empty or has wrong pattern.*/
     if (Validation.emptyEmail(email)) {
       this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.EMAIL_EMPTY);
     } else if (!Validation.emailHasPattern(email)) {
@@ -112,7 +115,7 @@ public class RegistrationViewModel extends ViewModel {
     } else {
       this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.NONE);
     }
-  /** Check if password input is empty or has wrong pattern.*/
+    /* Check if password input is empty or has wrong pattern.*/
     if (Validation.emptyPassword(password)) {
       this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.PASSWORD_EMPTY);
     } else if (!Validation.passwordHasPattern(password)) {
@@ -120,11 +123,11 @@ public class RegistrationViewModel extends ViewModel {
     } else {
       this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.NONE);
     }
-  /** Register new user or throw error message if it fails.*/
-    if (!Validation.emptyUserName(userName) && Validation.userNameHasPattern(userName) &&
-            !Validation.emptyEmail(email) && Validation.emailHasPattern(email) &&
-            !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
-      this.authAppRepository.register(userName,email, password, errorMessageRegProcess,
+    /* Register new user or throw error message if it fails.*/
+    if (!Validation.emptyUserName(userName) && Validation.userNameHasPattern(userName)
+            && !Validation.emptyEmail(email) && Validation.emailHasPattern(email)
+            && !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
+      this.authAppRepository.register(userName, email, password, errorMessageRegProcess,
               verificationStatus);
     }
   }

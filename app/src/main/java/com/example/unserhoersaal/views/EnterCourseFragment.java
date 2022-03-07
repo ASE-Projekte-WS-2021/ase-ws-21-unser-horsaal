@@ -57,7 +57,8 @@ public class EnterCourseFragment extends Fragment {
     this.setupToolbar();
 
     if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
-      this.enterCourseViewModel.dataBindingCourseIdInput.setValue(this.deepLinkMode.getCodeMapping());
+      this.enterCourseViewModel
+              .dataBindingCourseIdInput.setValue(this.deepLinkMode.getCodeMapping());
       this.enterCourseViewModel.checkCode();
     }
   }
@@ -71,9 +72,11 @@ public class EnterCourseFragment extends Fragment {
               if (model != null) {
                 if (model.getKey() != null) {
                   KeyboardUtil.hideKeyboard(getActivity());
-                  navController.navigate(R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
+                  navController.navigate(
+                          R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
                 } else {
-                  navController.navigate(R.id.action_enterCourseFragment_to_noCourseFoundFragment);
+                  navController.navigate(
+                          R.id.action_enterCourseFragment_to_noCourseFoundFragment);
                 }
               }
             });
@@ -85,10 +88,12 @@ public class EnterCourseFragment extends Fragment {
   }
 
   private void setupToolbar() {
-    this.binding.enterCourseFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    this.binding.enterCourseFragmentToolbar.setNavigationOnClickListener(v -> {
-      this.navController.navigate(R.id.action_enterCourseFragment_to_coursesFragment);
-    });
+    this.binding.enterCourseFragmentToolbar
+            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.enterCourseFragmentToolbar
+            .setNavigationOnClickListener(v ->
+                    this.navController.navigate(
+                            R.id.action_enterCourseFragment_to_coursesFragment));
   }
 
   @Override
@@ -96,4 +101,5 @@ public class EnterCourseFragment extends Fragment {
     super.onPause();
     this.enterCourseViewModel.resetEnterCourseId();
   }
+
 }

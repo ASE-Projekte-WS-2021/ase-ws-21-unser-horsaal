@@ -1,18 +1,14 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.utils.Validation;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 //source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/blob/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/view/LoginRegisterFragment.java [30.12.2021]
@@ -77,19 +73,22 @@ public class LoginViewModel extends ViewModel {
     this.dataBindingPasswordInput.setValue("");
   }
 
+  /** JavaDoc for this method. */
   public void resetErrorMessageLiveData() {
     this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageLogProcess.setValue(LogRegErrorMessEnum.NONE);
   }
 
-  /** login process
+  /* login process
    *
    * check email and password input
    * show error message if a input is empty or the pattern is wrong
    * if not -> log in -> if login process fails -> show error message
    *
    */
+
+  /** JavaDoc for this method. */
   public void login() {
     if (this.dataBindingUserInput.getValue() == null) {
       return;
@@ -98,7 +97,7 @@ public class LoginViewModel extends ViewModel {
     String email = this.dataBindingUserInput.getValue().getEmail();
     String password = this.dataBindingPasswordInput.getValue();
 
-  /** Check if email input is empty or has wrong pattern.*/
+    /* Check if email input is empty or has wrong pattern.*/
     if (Validation.emptyEmail(email)) {
       this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.EMAIL_EMPTY);
     } else if (!Validation.emailHasPattern(email)) {
@@ -106,7 +105,7 @@ public class LoginViewModel extends ViewModel {
     } else {
       this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
     }
-  /** Check if password is empty or has wrong pattern.*/
+    /* Check if password is empty or has wrong pattern.*/
     if (Validation.emptyPassword(password)) {
       this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.PASSWORD_EMPTY);
     } else if (!Validation.passwordHasPattern(password)) {
@@ -114,9 +113,9 @@ public class LoginViewModel extends ViewModel {
     } else {
       this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
     }
-  /** Log in or throw error message if login process fails.*/
-    if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email) &&
-            !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
+    /* Log in or throw error message if login process fails.*/
+    if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email)
+            && !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
       this.authAppRepository.login(email, password, errorMessageLogProcess, verificationStatus);
     }
   }
@@ -128,12 +127,13 @@ public class LoginViewModel extends ViewModel {
 
   }
 
+  /** JavaDoc for this method. */
   public void checkEmailExists() {
     String email = this.dataBindingUserInput.getValue().getEmail();
     if (email == null) {
       return;
     }
-    if (Validation.emailHasPattern(email)){
+    if (Validation.emailHasPattern(email)) {
       this.authAppRepository.emailExist(email);
     } else {
       this.emailExistency.setValue(ResetPasswordEnum.ERROR);

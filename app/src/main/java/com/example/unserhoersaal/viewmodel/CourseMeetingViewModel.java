@@ -3,7 +3,6 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
@@ -62,12 +61,18 @@ public class CourseMeetingViewModel extends ViewModel {
   /** Create a new Thread. */
   public void createThread() {
     //TODO: error -> view
-    if (this.threadModelInput.getValue() == null) return;
+    if (this.threadModelInput.getValue() == null) {
+      return;
+    }
 
     //TODO: error -> view
     ThreadModel threadModel = this.threadModelInput.getValue();
-    if (threadModel.getTitle() == null) return;
-    if (threadModel.getText() == null) return;
+    if (threadModel.getTitle() == null) {
+      return;
+    }
+    if (threadModel.getText() == null) {
+      return;
+    }
 
     this.courseMeetingRepository.createThread(threadModel);
   }
