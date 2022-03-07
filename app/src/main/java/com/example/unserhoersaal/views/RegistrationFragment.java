@@ -21,9 +21,14 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
+
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.utils.DialogBuilder;
+
+import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.utils.DeepLinkMode;
+
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 
 /**
@@ -34,9 +39,10 @@ public class RegistrationFragment extends Fragment {
 
   private static final String TAG = "RegistrationFragment";
 
+  private FragmentRegistrationBinding binding;
   private RegistrationViewModel registrationViewModel;
   private NavController navController;
-  private FragmentRegistrationBinding binding;
+  private DeepLinkMode deepLinkMode;
 
   public RegistrationFragment() {
       // Required empty public constructor
@@ -59,6 +65,7 @@ public class RegistrationFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
+    this.deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
@@ -70,14 +77,22 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel.init();
 
     //Todo: automatic redirect to the course page after verification.
-    /*
+    
     this.registrationViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser != null && firebaseUser.isEmailVerified()) {
+
+              //TODO @michi add verification check
+              //if (firebaseUser != null && firebaseUser.isEmailVerified()) {
+
+              if (firebaseUser != null && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+                navController.navigate(R.id.action_registrationFragment_to_enterCourseFragment);
+              }
+              if (firebaseUser != null) {
+
                 navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
               }
             });
-     */
+     
 
     /** Open email-verify-dialog (with resend option) after registration input.*/
     this.registrationViewModel

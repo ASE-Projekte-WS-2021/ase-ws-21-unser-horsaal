@@ -42,13 +42,12 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="64dp"
                     android:text="@string/registration_fragment_title"
                     android:textAlignment="center" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/registrationFragmentUserNameEditField"
-                    style="@style/textInputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -57,10 +56,11 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentUserNameEditText"
-                        android:text="@={vm.user.displayName}"
+                        android:text="@={vm.dataBindingUserInput.displayName}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
                     <TextView
                         android:text="@{vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_EMPTY ? Config.REG_USERNAME_EMPTY : Config.REG_USERNAME_WRONG_PATTERN}"
@@ -73,7 +73,6 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/registrationFragmentUserEmailEditField"
-                    style="@style/textInputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -82,10 +81,11 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentUserEmailEditText"
-                        android:text="@={vm.user.email}"
+                        android:text="@={vm.dataBindingUserInput.email}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
                     <TextView
                         android:text="@{vm.errorMessageRegEmail == LogRegErrorMessEnum.EMAIL_EMPTY ? Config.EMAIL_EMPTY : Config.REG_EMAIL_PATTERN_WRONG}"
@@ -98,7 +98,6 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/registrationFragmentPasswordEditField"
-                    style="@style/textInputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -108,12 +107,13 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentPasswordEditText"
-                        android:text="@={vm.password}"
+                        android:text="@={vm.dataBindingPasswordInput}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
                     <TextView
                         android:text="@{vm.errorMessageRegPassword == LogRegErrorMessEnum.PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.REG_PASSWORD_PATTERN_WRONG}"
@@ -127,12 +127,13 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/registrationFragmentRegistrationButton"
                     android:onClick="@{() -> vm.register()}"
-                    style="@style/wideBlueButton"
+                    android:background="@drawable/app_background"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="32dp"
-                    android:text="@string/registration_fragment_registrate_button_string" />
+                    android:text="@string/registration_fragment_registrate_button_string"
+                    app:backgroundTint="@null"/>
 
                 <TextView
                     android:text="@string/registration_fragment_registration_fail_string"

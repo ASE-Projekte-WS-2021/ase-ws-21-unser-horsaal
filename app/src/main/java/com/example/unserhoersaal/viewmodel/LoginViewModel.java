@@ -24,14 +24,17 @@ public class LoginViewModel extends ViewModel {
 
   private AuthAppRepository authAppRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
-  public MutableLiveData<UserModel> user;
-  public MutableLiveData<String> password;
+
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogEmail;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogPassword;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogProcess;
   public MutableLiveData<EmailVerificationEnum> verificationStatus;
   public MutableLiveData<ResetPasswordEnum> resetPasswordStatus;
   public MutableLiveData<ResetPasswordEnum> emailExistency;
+
+  public MutableLiveData<UserModel> dataBindingUserInput;
+  public MutableLiveData<String> dataBindingPasswordInput;
+
 
   /**
    * Initialize the LoginRegisterViewModel.
@@ -55,10 +58,12 @@ public class LoginViewModel extends ViewModel {
     this.emailExistency = this.authAppRepository.getExistency();
 
     //Databinding containers
-    this.user = new MutableLiveData<>(new UserModel());
-    this.password = new MutableLiveData<>();
+    this.dataBindingUserInput = new MutableLiveData<>();
+    this.dataBindingPasswordInput = new MutableLiveData<>();
+    this.resetDatabindingData();
   }
 
+  /** Give Back the current user. */
   public LiveData<FirebaseUser> getUserLiveData() {
     //remove user data from mutablelivedata after successful firebase interaction
     //TODO: is this best practice?
@@ -68,8 +73,8 @@ public class LoginViewModel extends ViewModel {
   }
 
   private void resetDatabindingData() {
-    this.user.setValue(new UserModel());
-    this.password.setValue("");
+    this.dataBindingUserInput.setValue(new UserModel());
+    this.dataBindingPasswordInput.setValue("");
   }
 
   public void resetErrorMessageLiveData() {
@@ -86,11 +91,12 @@ public class LoginViewModel extends ViewModel {
    *
    */
   public void login() {
-    if (this.user.getValue() == null) return;
+    if (this.dataBindingUserInput.getValue() == null) {
+      return;
+    }
 
-    /** User input */
-    String email = this.user.getValue().getEmail();
-    String password = this.password.getValue();
+    String email = this.dataBindingUserInput.getValue().getEmail();
+    String password = this.dataBindingPasswordInput.getValue();
 
   /** Check if email input is empty or has wrong pattern.*/
     if (Validation.emptyEmail(email)) {
@@ -131,6 +137,7 @@ public class LoginViewModel extends ViewModel {
       this.authAppRepository.emailExist(email);
     } else {
       this.emailExistency.setValue(ResetPasswordEnum.ERROR);
+
     }
   }
 

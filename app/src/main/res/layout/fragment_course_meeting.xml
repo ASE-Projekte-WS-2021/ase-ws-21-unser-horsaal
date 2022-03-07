@@ -1,174 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.CourseMeetingFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/courseMeetingFragmentToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/app_blue"
-        app:title="Meeting-Name"
-        app:titleTextColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CourseMeetingViewModel" />
+        <variable
+            name="adapter"
+            type="com.example.unserhoersaal.adapter.ThreadAdapter" />
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/courseMeetingFragmentGeneralThreadContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentToolbar">
-
-        <TextView
-            android:id="@+id/courseMeetingFragmentGeneralThreadContributions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/course_meeting_fragment_contributions_example"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/courseMeetingFragmentGeneralThreadContributionsTextView"
-            app:layout_constraintStart_toStartOf="@id/courseMeetingFragmentGeneralThreadContributionsTextView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/courseMeetingFragmentGeneralThreadContributionsTextView"/>
-
-        <TextView
-            android:id="@+id/courseMeetingFragmentGeneralThreadContributionsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/course_meeting_fragment_contributions_string"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentGeneralThreadContributions" />
-
-        <TextView
-            android:id="@+id/courseMeetingFragmentGeneralThreadHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/course_meeting_general_thread_heading"
-            android:textColor="@color/app_blue"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/courseMeetingFragmentGeneralThreadContributionsTextView"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/courseMeetingFragmentThreadRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseMeetingFragmentGeneralThreadContainer"
-        tools:listitem="@layout/thread_item"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/courseMeetingFragmentFab"
-        style="@style/fabStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_baseline_add_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/white" />
-
-    <ScrollView
-        android:id="@+id/courseMeetingFragmentCreateThreadContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="64dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/courseMeetingFragmentFab"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        android:background="@color/app_background"
+        tools:context=".views.CourseMeetingFragment">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/coursesMeetingFragmentTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:background="@color/white"
-            android:elevation="20dp"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:text="@string/keine_threads_verf_gbar"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/courseMeetingFragmentToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/app_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
 
             <TextView
-                android:id="@+id/courseMeetingFragmentCreateThreadTitle"
+                android:id="@+id/courseMeetingFragmentToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={vm.meeting.title}"
+                style="@style/toolbarTitleStyle"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/courseMeetingFragmentSubtitleContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@drawable/app_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentToolbar">
+
+            <TextView
+                style="@style/toolbarSubtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/course_meeting_subtitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/courseMeetingFragmentThreadRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adapter="@{adapter}"
+            app:initLayoutManager="@{R.id.courseMeetingFragmentThreadRecycler}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/courseMeetingFragmentSubtitleContainer"
+            tools:listitem="@layout/thread_item" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/courseMeetingFragmentFab"
+            android:onClick="@{(view) -> VisibilityAdapter.openCreationLayout(view, courseMeetingFragmentCreateThreadContainer)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/course_meeting_create_button"
+            android:backgroundTint="@color/app_blue"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+        <ScrollView
+            android:id="@+id/courseMeetingFragmentCreateThreadContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="32dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/courseMeetingFragmentFab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="@string/create_thread_title"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/courseMeetingFragmentQuestionTitleTextInput"
-                style="@style/textInputField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:hint="@string/create_thread_screen_question_title_hing">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/courseMeetingFragmentQuestionTitleEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/courseMeetingFragmentQuestionTextTextInput"
-                style="@style/textInputField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:hint="@string/create_thread_screen_question_text_hint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/courseMeetingFragmentQuestionTextEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="6"
-                    android:singleLine="false" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/courseMeetingFragmentSendThreadButton"
-                style="@style/wideOrangeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
-                android:text="@string/create_thread_send_message" />
+                android:background="@color/app_background"
+                android:elevation="20dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/courseMeetingFragmentCreateThreadTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/create_thread_title"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/app_blue"/>
 
-    </ScrollView>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/courseMeetingFragmentQuestionTitleTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="@string/create_thread_screen_question_title_hing">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/courseMeetingFragmentQuestionTitleEditText"
+                        android:text="@={vm.threadModelInput.title}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:background="@color/white"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/courseMeetingFragmentQuestionTextTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="@string/create_thread_screen_question_text_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/courseMeetingFragmentQuestionTextEditText"
+                        android:text="@={vm.threadModelInput.text}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="6"
+                        android:singleLine="false"
+                        android:background="@color/white"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/courseMeetingFragmentSendThreadButton"
+                    android:onClick="@{() -> vm.createThread()}"
+                    style="@style/wideOrangeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/create_thread_send_message" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/courseMeetingFragmentCancelButton"
+                    android:onClick="@{(view) -> VisibilityAdapter.closeCreationLayout(courseMeetingFragmentFab, courseMeetingFragmentCreateThreadContainer)}"
+                    style="@style/wideRedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="32dp"
+                    android:text="@string/abbrechen" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

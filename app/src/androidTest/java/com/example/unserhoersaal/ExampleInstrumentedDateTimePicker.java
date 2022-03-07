@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class ExampleInstrumentedDateTimePicker {
   @Test
   public void useAppContext() {
     // Context of the app under test.

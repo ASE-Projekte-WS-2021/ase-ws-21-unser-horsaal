@@ -20,14 +20,18 @@ public class RegistrationViewModel extends ViewModel {
 
   private AuthAppRepository authAppRepository;
   private MutableLiveData<FirebaseUser> userLiveData;
-  public MutableLiveData<UserModel> user;
-  public MutableLiveData<String> password;
+
+
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegUserName;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegEmail;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegPassword;
   public MutableLiveData<LogRegErrorMessEnum> errorMessageRegProcess;
   public MutableLiveData<EmailVerificationEnum> verificationStatus;
   //public MutableLiveData<Boolean> emailVerificationRequest;
+
+  public MutableLiveData<UserModel> dataBindingUserInput;
+  public MutableLiveData<String> dataBindingPasswordInput;
+
 
   /**
    * Initialize the LoginRegisterViewModel.
@@ -51,11 +55,13 @@ public class RegistrationViewModel extends ViewModel {
     //this.emailVerificationRequest.setValue(false);
     this.verificationStatus.setValue(EmailVerificationEnum.NONE);
 
-    //Databinding containers
-    this.user = new MutableLiveData<>(new UserModel());
-    this.password = new MutableLiveData<>();
+    this.dataBindingUserInput = new MutableLiveData<>();
+    this.dataBindingPasswordInput = new MutableLiveData<>();
+    this.resetDatabindingData();
+
   }
 
+  /** Give back all user data. */
   public LiveData<FirebaseUser> getUserLiveData() {
     //remove user data from mutablelivedata after successful firebase interaction
     //TODO: is this best practice?
@@ -64,9 +70,10 @@ public class RegistrationViewModel extends ViewModel {
     return this.userLiveData;
   }
 
+
   public void resetDatabindingData() {
-    this.user.setValue(new UserModel());
-    this.password.setValue("");
+    this.dataBindingUserInput.setValue(new UserModel());
+    this.dataBindingPasswordInput.setValue("");
   }
 
   public void resetErrorMessageLiveData() {

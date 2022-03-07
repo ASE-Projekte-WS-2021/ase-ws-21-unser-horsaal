@@ -7,28 +7,29 @@ public class CourseModel {
 
   private static final String TAG = "CourseModel";
 
-  private HashMap<String, Boolean> blocked;
   private String codeMapping;
   private Long creationTime;
   private String creatorId;
   private String description;
   private String groupIcon;
   private String institution;
-  private HashMap<String, Boolean> meetings;
   private String title;
-  private HashMap<String, Boolean> users;
 
   private String key;
+  private String creatorName;
 
   public CourseModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
 
-  /** Getter. */
-  public HashMap<String, Boolean> getBlocked() {
-    return this.blocked;
+  /** Constructor. */
+  public CourseModel(String title, String description, String institution) {
+    this.title = title;
+    this.description = description;
+    this.institution = institution;
   }
 
+  /** Getter. */
   public String getCodeMapping() {
     return this.codeMapping;
   }
@@ -53,27 +54,19 @@ public class CourseModel {
     return this.institution;
   }
 
-  public HashMap<String, Boolean> getMeetings() {
-    return this.meetings;
-  }
-
   public String getTitle() {
     return this.title;
   }
 
-  public HashMap<String, Boolean> getUsers() {
-    return this.users;
-  }
-
-  public String getKey(){
+  public String getKey() {
     return this.key;
   }
 
-  /** Setter. */
-  public void setBlocked(HashMap<String, Boolean> blocked) {
-    this.blocked = blocked;
+  public String getCreatorName() {
+    return this.creatorName;
   }
 
+  /** Setter. */
   public void setCodeMapping(String codeMapping) {
     this.codeMapping = codeMapping;
   }
@@ -98,19 +91,16 @@ public class CourseModel {
     this.institution = institution;
   }
 
-  public void setMeetings(HashMap<String, Boolean> meetings) {
-    this.meetings = meetings;
-  }
-
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public void setUsers(HashMap<String, Boolean> users) {
-    this.users = users;
   }
 
   public void setKey(String key) {
     this.key = key;
   }
+
+  public void setCreatorName(String creatorName) {
+    this.creatorName = creatorName;
+  }
+
 }

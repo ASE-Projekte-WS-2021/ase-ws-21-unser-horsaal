@@ -1,16 +1,14 @@
 package com.example.unserhoersaal.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.Message;
-import java.util.ArrayList;
-import java.util.Date;
+import com.example.unserhoersaal.databinding.AnswerItemBinding;
+import com.example.unserhoersaal.model.MessageModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.List;
 
 /** Chatadapter. */
@@ -18,24 +16,25 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
   private static final String TAG = "ChatAdapter";
 
-  private List<Message> localDataSet = new ArrayList<>();
+  private final List<MessageModel> localDataSet;
+  private final CurrentCourseViewModel currentCourseViewModel;
 
-  public ChatAdapter(List<Message> dataSet) {
+  public ChatAdapter(List<MessageModel> dataSet, CurrentCourseViewModel currentCourseViewModel) {
     this.localDataSet = dataSet;
+    this.currentCourseViewModel = currentCourseViewModel;
   }
 
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    View view = LayoutInflater.from(viewGroup.getContext())
-            .inflate(R.layout.simple_question_item, viewGroup, false);
-    return new ViewHolder(view);
+    AnswerItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.answer_item, viewGroup, false);
+    return new ViewHolder(binding);
   }
 
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
-    viewHolder.getMessage().setText(this.localDataSet.get(position).getMessageText());
-    viewHolder.getDate().setText(calculateDate(this.localDataSet.get(position).getTime()));
+    MessageModel messageModel = this.localDataSet.get(position);
+    viewHolder.connect(messageModel, currentCourseViewModel);
   }
 
   @Override
@@ -43,37 +42,24 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     return this.localDataSet.size();
   }
 
-  private String calculateDate(Long timeInMillis) {
-    String date;
-    if (System.currentTimeMillis() - timeInMillis < 1000 * 3600 * 24) {
-      date = Config.RECENT_FORMAT.format(new Date(timeInMillis));
-    } else {
-      date = Config.OLD_FORMAT.format(new Date(timeInMillis));
-    }
-    return date;
-  }
-
   /** Viewholder. */
   public class ViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView message;
-    private TextView date;
+    private final AnswerItemBinding binding;
 
     /** Constructor. */
-    public ViewHolder(View view) {
-      super(view);
-
-      this.message = (TextView) view.findViewById(R.id.questionTextTextView);
-      this.date = (TextView) view.findViewById(R.id.questionDateTextView);
+    public ViewHolder(AnswerItemBinding binding) {
+      super(binding.getRoot());
+      this.binding = binding;
     }
 
-    public TextView getMessage() {
-      return this.message;
+    public void connect(MessageModel messageModel, CurrentCourseViewModel currentCourseViewModel) {
+      this.binding.setModel(messageModel);
+      this.binding.setVm(currentCourseViewModel);
+      this.binding.executePendingBindings();
     }
 
-    public TextView getDate() {
-      return this.date;
-    }
   }
+
 }
 

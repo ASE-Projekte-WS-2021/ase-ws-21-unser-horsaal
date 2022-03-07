@@ -1,0 +1,299 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CurrentCourseViewModel" />
+        <variable
+            name="adapter"
+            type="com.example.unserhoersaal.adapter.ChatAdapter" />
+        <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.Format"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="views.CourseThreadFragment"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/app_background">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/currentCourseFragmentToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/currentCourseFragmentTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.meeting.title}"
+                    style="@style/toolbarTitleStyle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <TextView
+                android:id="@+id/currentCourseFragmentSubtitle"
+                style="@style/toolbarSubtitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{vm.thread.title}"
+                android:background="@drawable/app_background"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar" />
+
+
+            <LinearLayout
+                android:id="@+id/currentCourseFragmentLinearLayoutEnterNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/current_course_textview_enter_number"
+                    android:gravity="center|end"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/courseKeyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|start"
+                    tools:text="123456789" />
+
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toTopOf="@+id/currentCourseFragmentQuestionEditField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentSubtitle">
+
+                <LinearLayout
+                    android:id="@+id/currentCourseFragmentContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/currentCourseFragmentQuestionContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:layout_margin="16dp"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/currentCourseFragmentItemUserImage"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:maxWidth="50dp"
+                            android:maxHeight="50dp"
+                            setImage="@{vm.thread.photoUrl}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/currentCourseFragmentAuthor"
+                            app:tint="@color/black" />
+
+                        <TextView
+                            android:id="@+id/currentCourseFragmentAuthor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@{vm.thread.creatorName}"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/currentCourseFragmentItemUserImage"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/currentCourseFragmentTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{Format.getFormatedDateTime(currentCourseFragmentTime, vm.thread.creationTime)}"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/currentCourseFragmentAnswerText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.thread.text}"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintStart_toStartOf="@+id/currentCourseFragmentAuthor"
+                            app:layout_constraintTop_toBottomOf="@+id/currentCourseFragmentAuthor"
+                            app:layout_constraintEnd_toEndOf="@+id/currentCourseFragmentTime" />
+
+                        <View
+                            android:id="@+id/currentCourseFragmentHorizontalLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@color/grey"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentAnswerText" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentHorizontalLine">
+
+                            <ImageView
+                                android:id="@+id/currentCourseFragmentLikeIcon"
+                                android:onClick="@{(view) -> vm.likeThread(vm.thread)}"
+                                setLikeStatus="@{vm.thread.likeStatus}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:src="@drawable/ic_baseline_thumb_up_24" />
+
+                            <TextView
+                                android:id="@+id/currentCourseFragmentDislikeCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="@{Integer.toString(vm.thread.likes)}" />
+
+                            <ImageView
+                                android:id="@+id/currentCourseFragmentDislikeIcon"
+                                android:onClick="@{(view) -> vm.dislikeThread(vm.thread)}"
+                                setDisLikeStatus="@{vm.thread.likeStatus}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:clickable="true"
+                                android:src="@drawable/ic_baseline_thumb_down_24" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/currentCourseFragmentSolvedIcon"
+                            setColor="@{vm.thread.answered}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_check_24"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/currentCourseFragmentAnswersTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/current_course_fragment_answers_text"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/currentCourseFragmentNoAnswersTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/current_course_fragment_no_answers"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/chatRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginBottom="8dp"
+                            android:adapter="@{adapter}"
+                            android:nestedScrollingEnabled="false"
+                            app:initLayoutManager="@{R.id.chatRecyclerView}"
+                            tools:listitem="@layout/answer_item" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/currentCourseFragmentQuestionEditField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/white"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                app:hintEnabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/currentCourseFragmentSendQuestionButton"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/currentCourseFragmentQuestionEditText"
+                    android:text="@={vm.dataBindingMessageInput.text}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corners"
+                    android:hint="@string/current_course_edit_text_hint" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/currentCourseFragmentSendQuestionButton"
+                android:onClick="@{(view) -> vm.sendMessage()}"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:cornerRadius="30dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:insetTop="0dp"
+                app:icon="@drawable/ic_baseline_send_24" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

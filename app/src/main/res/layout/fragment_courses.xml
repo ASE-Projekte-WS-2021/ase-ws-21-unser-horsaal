@@ -1,147 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="views.CoursesFragment"
-    android:background="@color/app_background">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/coursesFragmentTitleTextView"
+    <data>
+        <variable
+            name="adapter"
+            type="com.example.unserhoersaal.adapter.CoursesAdapter" />
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CoursesViewModel" />
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
+        <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/courses_fragment_title_string"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/coursesFragmentToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/app_blue"
-        app:titleTextColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Meine Kurse" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/coursesFragmentTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/app_blue"
-        style="@style/coursesTabItem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/coursesFragmentToolbar">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/coursesFragmentLiveTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/courses_fragment_live_tab_string" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/coursesFragmentAllTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/courses_fragment_all_tab_string" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/coursesFragmentCreatedTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/courses_fragment_created_tab_string"/>
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/coursesFragmentRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coursesFragmentTabLayout"
-        tools:listitem="@layout/simple_course_item" />
-
-    <LinearLayout
-        android:id="@+id/coursesFragmentCreateCourseFabLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:visibility="invisible">
+        android:layout_height="match_parent"
+        tools:context="views.CoursesFragment"
+        android:background="@color/app_background">
 
         <TextView
+            android:id="@+id/coursesFragmentTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/du_bist_noch_keinem_kurs_beigetreten"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/coursesFragmentToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/app_background"
+            app:titleTextColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/coursesFragmentToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/courses_fragment_title_string"
+                style="@style/toolbarTitleStyle"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/coursesFragmentTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/app_background"
+            style="@style/coursesTabItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coursesFragmentToolbar">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/coursesFragmentLiveTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/courses_fragment_live_tab_string" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/coursesFragmentAllTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/courses_fragment_all_tab_string" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/coursesFragmentCreatedTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/courses_fragment_created_tab_string" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/coursesFragmentRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adapter="@{adapter}"
+            app:initLayoutManager="@{R.id.coursesFragmentRecyclerView}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coursesFragmentTabLayout"
+            tools:listitem="@layout/simple_course_item" />
+
+        <LinearLayout
+            android:id="@+id/coursesFragmentCreateCourseFabLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kurs erstellen"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"/>
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:translationY="-140dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kurs_erstellen"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/coursesFragmentFabCreateCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_create_24"
+                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_coursesFragment_to_createCourseFragment)}"
+                android:text="@string/kurs_erstellen"
+                app:tint="@color/white"
+                style="@style/fabStyle" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/coursesFragmentEnterCourseFabLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:translationY="-70dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kurs_beitreten"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/coursesFragmentFabEnterCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_login_24"
+                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_coursesFragment_to_enterCourseFragment)}"
+                android:text="@string/kurs_beitreten"
+                app:tint="@color/white"
+                style="@style/fabStyle" />
+
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/coursesFragmentFabCreateCourse"
+            android:id="@+id/coursesFragmentFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_create_24"
-            android:text="Kurs erstellen"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/ic_baseline_add_24"
+            android:onClick="@{() -> VisibilityAdapter.toggleFloatingButtons(coursesFragmentEnterCourseFabLayout, coursesFragmentCreateCourseFabLayout)}"
             app:tint="@color/white"
-            style="@style/fabStyle"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/fabStyle" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/coursesFragmentEnterCourseFabLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:visibility="invisible">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Kurs beitreten"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/coursesFragmentFabEnterCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_login_24"
-            android:text="Kurs erstellen"
-            app:tint="@color/white"
-            style="@style/fabStyle"
-            />
-
-    </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/coursesFragmentFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:src="@drawable/ic_baseline_add_24"
-        app:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/fabStyle"/>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

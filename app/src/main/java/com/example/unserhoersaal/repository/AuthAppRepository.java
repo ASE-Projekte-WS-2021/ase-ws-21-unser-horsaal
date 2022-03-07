@@ -1,10 +1,8 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
 import com.example.unserhoersaal.enums.ResetPasswordEnum;
@@ -146,15 +144,12 @@ public class AuthAppRepository {
     this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
   }
 
+  /** Method to delete an useraccount. */
   public void deleteAccount() {
     //TODO: delete Account in real time database and firebase authentication
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
     this.userLiveData.postValue(null);
   }
-/*
-  public FirebaseAuth getFirebaseAuth() {
-    return this.firebaseAuth;
-  }*/
 
   public void emailExist(String email) {
     this.firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener
