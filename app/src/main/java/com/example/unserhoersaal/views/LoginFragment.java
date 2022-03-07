@@ -67,7 +67,6 @@ public class LoginFragment extends Fragment {
     this.loginViewModel = new ViewModelProvider(requireActivity())
             .get(LoginViewModel.class);
     this.loginViewModel.init();
-    this.loginViewModel.resetErrorMessageLiveData();
     /**
      * If user successfully logged in (login input correct and email is verified)
      *  navigate to the course screen.
@@ -98,5 +97,10 @@ public class LoginFragment extends Fragment {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.loginViewModel);
   }
-
+  
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.loginViewModel.resetErrorMessageLiveData();
+  }
 }

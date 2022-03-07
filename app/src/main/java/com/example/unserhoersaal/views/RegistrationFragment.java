@@ -68,8 +68,6 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel = new ViewModelProvider(requireActivity())
             .get(RegistrationViewModel.class);
     this.registrationViewModel.init();
-    this.registrationViewModel.resetErrorMessageLiveData();
-    this.registrationViewModel.resetDatabindingData();
 
     //Todo: automatic redirect to the course page after verification.
     /*
@@ -107,4 +105,10 @@ public class RegistrationFragment extends Fragment {
     this.binding.setVm(this.registrationViewModel);
   }
 
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.registrationViewModel.resetErrorMessageLiveData();
+    this.registrationViewModel.resetDatabindingData();
+  }
 }

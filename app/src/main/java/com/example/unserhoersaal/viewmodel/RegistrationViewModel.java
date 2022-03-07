@@ -52,9 +52,8 @@ public class RegistrationViewModel extends ViewModel {
     this.verificationStatus.setValue(EmailVerificationEnum.NONE);
 
     //Databinding containers
-    this.user = new MutableLiveData<>();
+    this.user = new MutableLiveData<>(new UserModel());
     this.password = new MutableLiveData<>();
-    this.resetDatabindingData();
   }
 
   public LiveData<FirebaseUser> getUserLiveData() {
@@ -66,7 +65,6 @@ public class RegistrationViewModel extends ViewModel {
   }
 
   public void resetDatabindingData() {
-
     this.user.setValue(new UserModel());
     this.password.setValue("");
   }

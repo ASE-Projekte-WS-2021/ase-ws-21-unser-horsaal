@@ -51,9 +51,8 @@ public class LoginViewModel extends ViewModel {
     this.resetPasswordStatus.setValue(ResetPasswordEnum.RESET_PASSWORD_NO);
 
     //Databinding containers
-    this.user = new MutableLiveData<>();
+    this.user = new MutableLiveData<>(new UserModel());
     this.password = new MutableLiveData<>();
-    this.resetDatabindingData();
   }
 
   public LiveData<FirebaseUser> getUserLiveData() {
