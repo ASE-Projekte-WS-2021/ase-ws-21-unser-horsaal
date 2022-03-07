@@ -62,18 +62,9 @@ public class Config {
   public static final String DIALOG_VERIFICATION_MESSAGE_LOGIIN = "Sie haben Ihre Email noch " +
           "nicht verifiziert. Verifizierungsmail erneut senden?";
 
-  /** Alert Dialog Password Reset. */
-  public static final String DIALOG_RESET_PASSWORD_TITLE = "Passwort zurücksetzen";
-  public static final String DIALOG_RESET_PASSWORD_MESSAGE = "Sie erhalten eine Mail zum " +
-          "Zurücksetzen des Passwords. Bitte geben Sie die zum Account zugehörige Email an: ";
-  public static final String DIALOG_PASSWORD_RESET_BUTTON = "Passwort zurücksetzen";
-  public static final String DIALOG_PASSWORD_RESET_CANCEL_BUTTON = "Abbrechen";
-  public static final String DIALOG_PASSWORD_RESET_HINT = "Hier eingeben";
+  /** Dialog Password Reset. */
   public static final String DIALOG_EMAIL_PATTERN_WRONG = "Die eingegebene Email wurde falsch " +
           "eingegeben oder es existiert kein Account zu dieser Email Adresse";
-  public static final String DIALOG_PASSWORD_RESET_ERROR = "Passwortrücksetzung gescheitert";
-  public static final String DIALOG_PASSWORD_RESET_EMAIL_NOT_EXIST_ERROR =
-          "Zu dieser Email existiert kein Account";
   public static final String DIALOG_PASSWORD_RESET_SUCCESS = "Email mit einem Link zur " +
           "Passwortzurücksetzung wurde versandt";
 
