@@ -123,13 +123,13 @@ public class LoginViewModel extends ViewModel {
 
   /** Send reset password email.*/
   public void sendPasswordResetMail() {
-    String email = this.user.getValue().getEmail();
+    String email = this.dataBindingUserInput.getValue().getEmail();
     this.authAppRepository.sendPasswordResetMail(email);
 
   }
 
   public void checkEmailExists() {
-    String email = this.user.getValue().getEmail();
+    String email = this.dataBindingUserInput.getValue().getEmail();
     if (email == null) {
       return;
     }
@@ -157,7 +157,7 @@ public class LoginViewModel extends ViewModel {
 
   public void resetPasswordReseter() {
     this.emailExistency.setValue(ResetPasswordEnum.DEFAULT);
-    this.user.setValue(new UserModel());
+    this.dataBindingUserInput.setValue(new UserModel());
   }
 
 }

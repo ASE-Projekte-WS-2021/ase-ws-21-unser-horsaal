@@ -91,11 +91,11 @@ public class RegistrationViewModel extends ViewModel {
    *
    */
   public void register() {
-    if (this.user.getValue() == null) return;
+    if (this.dataBindingPasswordInput.getValue() == null) return;
     /** User input*/
-    String userName = this.user.getValue().getDisplayName();
-    String email = this.user.getValue().getEmail();
-    String password = this.password.getValue();
+    String userName = this.dataBindingUserInput.getValue().getDisplayName();
+    String email = this.dataBindingUserInput.getValue().getEmail();
+    String password = this.dataBindingPasswordInput.getValue();
     /** Check if username input is empty or has wrong pattern.*/
     if (Validation.emptyUserName(userName)) {
       this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.USERNAME_EMPTY);
