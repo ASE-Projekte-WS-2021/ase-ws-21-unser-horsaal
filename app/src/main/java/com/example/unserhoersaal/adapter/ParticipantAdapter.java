@@ -10,6 +10,7 @@ import com.example.unserhoersaal.databinding.ParticipantListItemBinding;
 import com.example.unserhoersaal.model.UserModel;
 import java.util.List;
 
+/** Adapter for Participants View in Description Fragment. */
 public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.ViewHolder> {
 
   private static final String TAG = "ParticipantAdapter";
@@ -23,7 +24,11 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    ParticipantListItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.participant_list_item, viewGroup, false);
+    ParticipantListItemBinding binding = DataBindingUtil
+            .inflate(LayoutInflater.from(viewGroup.getContext()),
+                    R.layout.participant_list_item,
+                    viewGroup,
+                    false);
     return new ViewHolder(binding);
   }
 
@@ -54,4 +59,5 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     }
 
   }
+
 }

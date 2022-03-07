@@ -5,26 +5,32 @@ import android.graphics.PorterDuff;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.LikeStatus;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/** Binding Aadapter Class that formats unix timestamp (milliseconds) in long datatype
+ * and colours text. */
 public class Format {
+
+  /** time formater. */
   @BindingAdapter("getFormatedDate")
   public static String getFormatedDate(View view, Long time) {
     return Config.OLD_FORMAT.format(new Date(time));
   }
 
+  /** datetime formater. */
   @BindingAdapter("getFormatedDateTime")
   public static String getFormatedDateTime(View view, Long time) {
-    if (time == null) return "";
+    if (time == null) {
+      return "";
+    }
     return Config.DATE_TIME_FORMAT.format(new Date(time));
   }
 
+  /** datetime formater that formats to date after 24h passed. */
   @BindingAdapter("calculateDate")
   public static String calculateDate(TextView view, Long timeInMillis) {
     String date;
@@ -37,11 +43,13 @@ public class Format {
     return date;
   }
 
+  /** sets the view to current time. */
   @BindingAdapter("currentFormatedTime")
   public static void currentFormatedTime(TextView textView, SimpleDateFormat format) {
     textView.setText(format.format(new Date().getTime()));
   }
 
+  /** colours the like button depending on if the user has interacted with it. */
   @BindingAdapter("setColor")
   public static void setColor(ImageView view, boolean answered) {
     if (answered) {
@@ -51,24 +59,24 @@ public class Format {
     }
   }
 
+  /** colours the like button depending on if the user has interacted with it. */
   @BindingAdapter("setLikeStatus")
   public static void setLikeStatus(ImageView button, LikeStatus likeStatus) {
-    System.out.println(button);
     if (likeStatus == LikeStatus.LIKE) {
       button.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
-    }
-    else {
+    } else {
       button.clearColorFilter();
     }
   }
 
+  /** colours the like button depending on if the user has interacted with it. */
   @BindingAdapter("setDisLikeStatus")
   public static void setDisLikeStatus(ImageView button, LikeStatus likeStatus) {
     if (likeStatus == LikeStatus.DISLIKE) {
       button.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
-    }
-    else {
+    } else {
       button.clearColorFilter();
     }
   }
+
 }

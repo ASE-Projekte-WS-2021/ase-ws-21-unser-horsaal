@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -65,24 +64,34 @@ public class ProfileViewModel extends ViewModel {
     this.authAppRepository.deleteAccount();
   }
 
+  /** JavaDoc for this method. */
   public void changeDisplayName() {
-    if (this.dataBindingProfileInput.getValue() == null) return;
+    if (this.dataBindingProfileInput.getValue() == null) {
+      return;
+    }
     String displayName = this.dataBindingProfileInput.getValue().getDisplayName();
     //TODO: check if displayName matches our policy
 
     this.profileRepository.changeDisplayName(displayName);
   }
 
+  /** JavaDoc for this method. */
   public void changeInstitution() {
-    if (this.dataBindingProfileInput.getValue() == null) return;
+    if (this.dataBindingProfileInput.getValue() == null) {
+      return;
+    }
     String institution = this.dataBindingProfileInput.getValue().getInstitution();
     //TODO: check if institution matches our policy
 
     this.profileRepository.changeInstitution(institution);
   }
 
+  /** JavaDoc for this method. */
   public void changePassword() {
-    if (this.dataBindingOldPasswordInput.getValue() == null || this.dataBindingNewPasswordInput.getValue() == null) return;
+    if (this.dataBindingOldPasswordInput.getValue() == null
+            || this.dataBindingNewPasswordInput.getValue() == null) {
+      return;
+    }
     String oldPassword = this.dataBindingOldPasswordInput.getValue();
     String newPassword = this.dataBindingNewPasswordInput.getValue();
     //TODO: check if they match our policy; Feedback
@@ -99,9 +108,11 @@ public class ProfileViewModel extends ViewModel {
     this.profileChanged.setValue(Boolean.FALSE);
   }
 
+  /** JavaDoc for this method. */
   public void resetPasswordInput() {
     this.dataBindingNewPasswordInput.setValue(null);
     this.dataBindingOldPasswordInput.setValue(null);
     this.profileChanged.setValue(Boolean.FALSE);
   }
+
 }

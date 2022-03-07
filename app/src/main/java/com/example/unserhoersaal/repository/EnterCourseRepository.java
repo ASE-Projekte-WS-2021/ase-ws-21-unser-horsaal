@@ -91,17 +91,15 @@ public class EnterCourseRepository {
     });
   }
 
+  /** TODO. */
   public void getAuthorName(CourseModel course) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Task<DataSnapshot> task = reference.child(Config.CHILD_USER).child(course.getCreatorId())
             .child(Config.CHILD_USER_NAME).get();
 
-    task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-      @Override
-      public void onSuccess(DataSnapshot dataSnapshot) {
-        course.setCreatorName(dataSnapshot.getValue(String.class));
-        courseModel.postValue(course);
-      }
+    task.addOnSuccessListener(dataSnapshot -> {
+      course.setCreatorName(dataSnapshot.getValue(String.class));
+      courseModel.postValue(course);
     });
   }
 
@@ -132,20 +130,18 @@ public class EnterCourseRepository {
   /** Saves a entered course for a user. */
   public void saveCourseInUser(CourseModel course) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.databaseReference.child(Config.CHILD_USER_COURSES).child(uid).child(course.getKey())
-            .setValue(Boolean.TRUE).addOnSuccessListener(new OnSuccessListener<Void>() {
-              @Override
-              public void onSuccess(Void unused) {
-                databaseReference.child(Config.CHILD_COURSES_USER).child(course.getKey()).child(uid)
-                        .setValue(Boolean.TRUE)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                          @Override
-                          public void onSuccess(Void unused) {
-                            enteredCourse.postValue(course);
-                          }
-                        });
-              }
-            });
+    this.databaseReference
+            .child(Config.CHILD_USER_COURSES)
+            .child(uid)
+            .child(course.getKey())
+            .setValue(Boolean.TRUE)
+            .addOnSuccessListener(unused ->
+                    databaseReference
+                            .child(Config.CHILD_COURSES_USER)
+                            .child(course.getKey())
+                            .child(uid)
+                    .setValue(Boolean.TRUE)
+                    .addOnSuccessListener(unused1 -> enteredCourse.postValue(course)));
 
   }
 

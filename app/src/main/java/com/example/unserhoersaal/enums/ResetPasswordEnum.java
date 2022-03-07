@@ -1,7 +1,7 @@
 package com.example.unserhoersaal.enums;
 
 /**
- * Enum used for password reset
+ * Enum used for password reset.
  */
 
 public enum ResetPasswordEnum {

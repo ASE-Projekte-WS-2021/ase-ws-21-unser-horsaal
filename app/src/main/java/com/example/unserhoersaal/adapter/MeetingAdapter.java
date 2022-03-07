@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -25,7 +24,11 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    SimpleCourseMeetingBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.simple_course_meeting, viewGroup, false);
+    SimpleCourseMeetingBinding binding = DataBindingUtil
+            .inflate(LayoutInflater.from(viewGroup.getContext()),
+                    R.layout.simple_course_meeting,
+                    viewGroup,
+                    false);
     return new ViewHolder(binding);
   }
 

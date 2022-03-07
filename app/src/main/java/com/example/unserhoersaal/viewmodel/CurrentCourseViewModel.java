@@ -62,9 +62,13 @@ public class CurrentCourseViewModel extends ViewModel {
   /** Send a new message in a thread. */
   public void sendMessage() {
     //TODO: handle status to view
-    if (this.dataBindingMessageInput.getValue() == null) return;
+    if (this.dataBindingMessageInput.getValue() == null) {
+      return;
+    }
     //no empty messages
-    if (this.dataBindingMessageInput.getValue().getText() == null) return;
+    if (this.dataBindingMessageInput.getValue().getText() == null) {
+      return;
+    }
 
     MessageModel messageModel = this.dataBindingMessageInput.getValue();
     this.currentCourseRepository.sendMessage(messageModel);
@@ -78,72 +82,76 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository.setMeetingId(meeting);
   }
 
+  /** JavaDoc for this method. */
   public void like(MessageModel message) {
     String messageId = message.getKey();
     LikeStatus likeStatus = message.getLikeStatus();
-    switch(likeStatus){
+    switch (likeStatus) {
       case LIKE:
-        this.currentCourseRepository.handleLikeEvent(messageId,-1,LikeStatus.NEUTRAL);
+        this.currentCourseRepository.handleLikeEvent(messageId, -1, LikeStatus.NEUTRAL);
         break;
       case DISLIKE:
-        this.currentCourseRepository.handleLikeEvent(messageId,2,LikeStatus.LIKE);
+        this.currentCourseRepository.handleLikeEvent(messageId, 2, LikeStatus.LIKE);
         break;
       case NEUTRAL:
-        this.currentCourseRepository.handleLikeEvent(messageId,1,LikeStatus.LIKE);
+        this.currentCourseRepository.handleLikeEvent(messageId, 1, LikeStatus.LIKE);
         break;
       default:
         break;
     }
   }
 
+  /** JavaDoc for this method. */
   public void dislike(MessageModel message) {
     String messageId = message.getKey();
     LikeStatus likeStatus = message.getLikeStatus();
-    switch(likeStatus) {
+    switch (likeStatus) {
       case LIKE:
-        this.currentCourseRepository.handleLikeEvent(messageId,-2,LikeStatus.DISLIKE);
+        this.currentCourseRepository.handleLikeEvent(messageId, -2, LikeStatus.DISLIKE);
         break;
       case DISLIKE:
-        this.currentCourseRepository.handleLikeEvent(messageId,1,LikeStatus.NEUTRAL);
+        this.currentCourseRepository.handleLikeEvent(messageId, 1, LikeStatus.NEUTRAL);
         break;
       case NEUTRAL:
-        this.currentCourseRepository.handleLikeEvent(messageId,-1,LikeStatus.DISLIKE);
+        this.currentCourseRepository.handleLikeEvent(messageId, -1, LikeStatus.DISLIKE);
         break;
       default:
         break;
     }
   }
 
+  /** JavaDoc for this method. */
   public void likeThread(ThreadModel threadModel) {
     String threadId  = threadModel.getKey();
     LikeStatus likeStatus = threadModel.getLikeStatus();
-    switch(likeStatus){
+    switch (likeStatus) {
       case LIKE:
-        this.currentCourseRepository.handleLikeEventThread(threadId,-1,LikeStatus.NEUTRAL);
+        this.currentCourseRepository.handleLikeEventThread(threadId, -1, LikeStatus.NEUTRAL);
         break;
       case DISLIKE:
-        this.currentCourseRepository.handleLikeEventThread(threadId,2,LikeStatus.LIKE);
+        this.currentCourseRepository.handleLikeEventThread(threadId, 2, LikeStatus.LIKE);
         break;
       case NEUTRAL:
-        this.currentCourseRepository.handleLikeEventThread(threadId,1,LikeStatus.LIKE);
+        this.currentCourseRepository.handleLikeEventThread(threadId, 1, LikeStatus.LIKE);
         break;
       default:
         break;
     }
   }
 
+  /** JavaDoc for this method. */
   public void dislikeThread(ThreadModel threadModel) {
     String threadId = threadModel.getKey();
     LikeStatus likeStatus = threadModel.getLikeStatus();
-    switch(likeStatus) {
+    switch (likeStatus) {
       case LIKE:
-        this.currentCourseRepository.handleLikeEventThread(threadId,-2,LikeStatus.DISLIKE);
+        this.currentCourseRepository.handleLikeEventThread(threadId, -2, LikeStatus.DISLIKE);
         break;
       case DISLIKE:
-        this.currentCourseRepository.handleLikeEventThread(threadId,1,LikeStatus.NEUTRAL);
+        this.currentCourseRepository.handleLikeEventThread(threadId, 1, LikeStatus.NEUTRAL);
         break;
       case NEUTRAL:
-        this.currentCourseRepository.handleLikeEventThread(threadId,-1,LikeStatus.DISLIKE);
+        this.currentCourseRepository.handleLikeEventThread(threadId, -1, LikeStatus.DISLIKE);
         break;
       default:
         break;
@@ -153,4 +161,5 @@ public class CurrentCourseViewModel extends ViewModel {
   public void solved(String messageId) {
     this.currentCourseRepository.solved(messageId);
   }
+
 }

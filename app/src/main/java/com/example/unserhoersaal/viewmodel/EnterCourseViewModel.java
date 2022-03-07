@@ -46,6 +46,7 @@ public class EnterCourseViewModel extends ViewModel {
     this.enteredCourse.setValue(null);
   }
 
+  /** JavaDoc for this method. */
   public void checkCode() {
 
     String id = dataBindingCourseIdInput.getValue();
@@ -57,10 +58,15 @@ public class EnterCourseViewModel extends ViewModel {
     }
   }
 
+  /** JavaDoc for this method. */
   public void enterCourse() {
     //TODO: send status data back to view on error
-    if (courseModel.getValue() == null) return;
-    if (courseModel.getValue().getKey() == null) return;
+    if (courseModel.getValue() == null) {
+      return;
+    }
+    if (courseModel.getValue().getKey() == null) {
+      return;
+    }
     this.enterCourseRepository.isUserInCourse(courseModel.getValue());
   }
 

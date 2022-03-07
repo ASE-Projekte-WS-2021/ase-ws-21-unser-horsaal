@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,10 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /** Repository for the CourseMeetingViewModel. */
@@ -71,7 +67,9 @@ public class CourseMeetingRepository {
       reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey())
               .removeEventListener(this.listener);
     }
-    reference.child(Config.CHILD_THREADS).child(meeting.getKey()).addValueEventListener(this.listener);
+    reference.child(Config.CHILD_THREADS)
+            .child(meeting.getKey())
+            .addValueEventListener(this.listener);
     this.meeting.postValue(meeting);
   }
 
@@ -95,30 +93,25 @@ public class CourseMeetingRepository {
     String threadId = reference.getRoot().push().getKey();
     reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey()).child(threadId)
             .setValue(threadModel)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-              @Override
-              public void onSuccess(Void unused) {
-                threadModel.setKey(threadId);
-                threadModelMutableLiveData.postValue(threadModel);
-              }
+            .addOnSuccessListener(unused -> {
+              threadModel.setKey(threadId);
+              threadModelMutableLiveData.postValue(threadModel);
             });
   }
 
+  /** get the author for each thread in the provided list. */
   public void getAuthor(List<ThreadModel> threadList) {
     List<Task<DataSnapshot>> authorNames = new ArrayList<>();
     for (ThreadModel thread : threadList) {
       authorNames.add(getAuthorName(thread.getCreatorId()));
     }
-    Tasks.whenAll(authorNames).addOnSuccessListener(new OnSuccessListener<Void>() {
-      @Override
-      public void onSuccess(Void unused) {
-        for (int i = 0; i < threadList.size(); i++) {
-          threadList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
-        }
-        threadModelList.clear();
-        threadModelList.addAll(threadList);
-        threads.postValue(threadModelList);
+    Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
+      for (int i = 0; i < threadList.size(); i++) {
+        threadList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
       }
+      threadModelList.clear();
+      threadModelList.addAll(threadList);
+      threads.postValue(threadModelList);
     });
   }
 
@@ -147,4 +140,5 @@ public class CourseMeetingRepository {
       }
     };
   }
+
 }

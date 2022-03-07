@@ -1,7 +1,10 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -9,17 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentResetPasswordBinding;
 import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 
+/** JavaDoc for this Fragment. */
 public class ResetPasswordFragment extends Fragment {
 
   private static final String TAG = "ResetPasswordFragment";
@@ -33,7 +32,9 @@ public class ResetPasswordFragment extends Fragment {
   }
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);}
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,11 +65,11 @@ public class ResetPasswordFragment extends Fragment {
                 loginViewModel.sendPasswordResetMail();
                 Toast.makeText(getContext(), Config.DIALOG_PASSWORD_RESET_SUCCESS,
                         Toast.LENGTH_LONG).show();
-              } else if (existency == ResetPasswordEnum.ERROR){
+              } else if (existency == ResetPasswordEnum.ERROR) {
                 Toast.makeText(getContext(), Config.DIALOG_EMAIL_PATTERN_WRONG, Toast.LENGTH_LONG)
                         .show();
               }
-    });
+            });
   }
 
   private void connectBinding() {
@@ -81,4 +82,5 @@ public class ResetPasswordFragment extends Fragment {
     super.onPause();
     this.loginViewModel.resetPasswordReseter();
   }
+
 }

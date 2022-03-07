@@ -24,7 +24,11 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    SimpleCourseItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.simple_course_item, viewGroup, false);
+    SimpleCourseItemBinding binding = DataBindingUtil
+            .inflate(LayoutInflater.from(viewGroup.getContext()),
+                    R.layout.simple_course_item,
+                    viewGroup,
+                    false);
     return new ViewHolder(binding);
   }
 

@@ -15,11 +15,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ParticipantAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseParticipantsBinding;
-import com.example.unserhoersaal.model.UserModel;
-import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
-
-import java.util.ArrayList;
 
 /** Course-Participants.*/
 public class CourseParticipantsFragment extends Fragment {
@@ -44,7 +40,7 @@ public class CourseParticipantsFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding =  DataBindingUtil.inflate(inflater,
-            R.layout.fragment_course_participants, container,false);
+            R.layout.fragment_course_participants, container, false);
     return this.binding.getRoot();
   }
 
@@ -88,4 +84,5 @@ public class CourseParticipantsFragment extends Fragment {
             .setNavigationOnClickListener(v -> navController
             .navigate(R.id.action_courseParticipantsFragment_to_courseDescriptionFragment));
   }
+
 }

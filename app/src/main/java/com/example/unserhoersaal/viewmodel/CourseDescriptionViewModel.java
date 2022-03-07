@@ -43,4 +43,5 @@ public class CourseDescriptionViewModel extends ViewModel {
     String id = courseId.getValue();
     this.courseDescriptionRepository.unregisterFromCourse(id);
   }
+
 }
