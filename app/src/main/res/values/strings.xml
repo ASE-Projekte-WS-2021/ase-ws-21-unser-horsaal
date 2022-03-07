@@ -9,12 +9,14 @@
     <string name="login_fragment_user_email_hint">Email</string>
     <string name="login_fragment_registration_string">Registrieren</string>
     <string name="login_fragment_no_account">Noch kein Account?</string>
+    <string name="login_fragment_login_failure">Eingegebene Email oder Passwort ist falsch</string>
     <string name="login_fragment_title_string">Login</string>
     <string name="registration_fragment_password_hint">Passwort</string>
     <string name="registration_fragment_repeat_password_hint">Passwort wiederholen</string>
     <string name="registration_fragment_user_email_hint">Email</string>
     <string name="registration_fragment_title">Registration</string>
     <string name="registration_fragment_checkbox_string">Eingeloggt bleiben</string>
+    <string name="registration_fragment_registration_fail_string">Registrierung fehlgeschlagen</string>
     <string name="registration_fragment_registrate_button_string">Account erstellen</string>
     <string name="enter_course_string">Kurs beitreten</string>
     <string name="enter_course_caption">Bestehendem Kurs beitreten, um Fragen zu stellen, Antworten zu senden, etc.</string>
@@ -110,6 +112,11 @@
     <string name="dialog_delete_account_message">Möchten Sie Ihren Account wirklich löschen?</string>
     <string name="dialog_delete_account_true">OK</string>
     <string name="dialog_delete_account_false">Abbrechen</string>
+    <string name="dialog_password_reset_title">"Passwort zurücksetzen"</string>
+    <string name="dialog_password_reset_cancel_button">"Abbrechen"</string>
+    <string name="dialog_password_reset_reset_button">"Passwort zurücksetzen"</string>
+    <string name="dialog_password_reset_message">Sie erhalten eine Mail zum Zurücksetzen des Passwords. Bitte geben Sie die zum Account zugehörige Email an: "</string>
+    <string name="dialog_password_reset_hint">Email eingeben</string>
     <string name="edit_profile_name_hint">Nutzername</string>
     <string name="current_course_fragment_question_title">Dies ist ein beispielhafter Titel für eine Frage</string>
     <string name="kurs_beitreten">Kurs beitreten</string>
@@ -145,6 +152,6 @@
     <string name="keine_threads_verf_gbar">Keine Threads verfügbar!</string>
     <string name="current_time_placeholder">Current Time Placeholder</string>
     <string name="current_date_placeholder">Current Date Placeholder</string>
-
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
+
 </resources>

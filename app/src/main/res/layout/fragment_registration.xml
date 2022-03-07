@@ -9,6 +9,9 @@
             type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.enums.LogRegErrorMessEnum" />
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,6 +62,13 @@
                         android:singleLine="true"
                         android:background="@color/white"/>
 
+                    <TextView
+                        android:text="@{vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_EMPTY ? Config.REG_USERNAME_EMPTY : Config.REG_USERNAME_WRONG_PATTERN}"
+                        android:visibility="@{vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_EMPTY || vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -76,6 +86,13 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:background="@color/white"/>
+
+                    <TextView
+                        android:text="@{vm.errorMessageRegEmail == LogRegErrorMessEnum.EMAIL_EMPTY ? Config.EMAIL_EMPTY : Config.REG_EMAIL_PATTERN_WRONG}"
+                        android:visibility="@{vm.errorMessageRegEmail == LogRegErrorMessEnum.EMAIL_EMPTY || vm.errorMessageRegEmail == LogRegErrorMessEnum.EMAIL_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,6 +115,13 @@
                         android:singleLine="true"
                         android:background="@color/white"/>
 
+                    <TextView
+                        android:text="@{vm.errorMessageRegPassword == LogRegErrorMessEnum.PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.REG_PASSWORD_PATTERN_WRONG}"
+                        android:visibility="@{vm.errorMessageRegPassword == LogRegErrorMessEnum.PASSWORD_EMPTY || vm.errorMessageRegPassword == LogRegErrorMessEnum.PASSWORD_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -110,6 +134,16 @@
                     android:layout_marginTop="32dp"
                     android:text="@string/registration_fragment_registrate_button_string"
                     app:backgroundTint="@null"/>
+
+                <TextView
+                    android:text="@string/registration_fragment_registration_fail_string"
+                    android:visibility="@{vm.errorMessageRegProcess == LogRegErrorMessEnum.REGISTRATION_PROCESS_FAIL ? View.VISIBLE : View.GONE}"
+                    android:textColor="@color/red"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"

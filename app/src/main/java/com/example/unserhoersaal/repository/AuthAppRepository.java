@@ -1,8 +1,22 @@
 package com.example.unserhoersaal.repository;
 
+import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
+import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.enums.ResetPasswordEnum;
+import com.example.unserhoersaal.model.UserModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 // source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/tree/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/model [30.12.2021]
 
@@ -15,8 +29,11 @@ public class AuthAppRepository {
 
   private FirebaseAuth firebaseAuth;
   private FirebaseUser user = null;
+  private UserModel newUser = new UserModel();
 
   private MutableLiveData<FirebaseUser> userLiveData = new MutableLiveData<>();
+  private MutableLiveData<ResetPasswordEnum> existency = new MutableLiveData<>();
+
 
   /** Gives back an Instance of AuthAppRepository. */
   public static AuthAppRepository getInstance() {
@@ -44,24 +61,80 @@ public class AuthAppRepository {
     return this.userLiveData;
   }
 
-  /** This method is logging in the user. */
-  public void login(String email, String password) {
+  /** This method is logging in the user.*/
+  public void login(String email, String password, MutableLiveData<LogRegErrorMessEnum>
+          errorMessageLogin, MutableLiveData<EmailVerificationEnum> verificationStatus) {
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
-                this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
+                /** Check if email is verified. If yes log in.*/
+                if (this.firebaseAuth.getCurrentUser().isEmailVerified()) {
+                  this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
+                  verificationStatus.setValue(EmailVerificationEnum.NONE);
+                } else {
+                  /** If not initiate resend-verification-email-process.*/
+                  verificationStatus.setValue(EmailVerificationEnum.REQUEST_EMAIL_VERIFICATION);
+                }
+                errorMessageLogin.setValue(LogRegErrorMessEnum.NONE);
+              } else {
+                /** Wrong input (empty or false pattern).*/
+                errorMessageLogin.setValue(LogRegErrorMessEnum.WRONG_LOGIN_INPUT);
               }
             });
   }
 
-  /** This method registers a new user. */
-  public void register(String email, String password) {
+  /** This method registers a new user.*/
+  public void register(String username, String email, String password,
+                       MutableLiveData<LogRegErrorMessEnum> errorMessageRegistration,
+                       MutableLiveData<EmailVerificationEnum> verificationStatus) {
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
-                this.userLiveData.postValue(this.firebaseAuth.getCurrentUser());
+                /** if succeeded save new user in database.*/
+                createNewUser(username, this.firebaseAuth.getCurrentUser());
+                errorMessageRegistration.setValue(LogRegErrorMessEnum.NONE);
+
+                /** if registration process succeeded initiate email verification process */
+                this.firebaseAuth.getCurrentUser().sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                          @Override
+                          public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                              /** Initiate resend-verification-email-option.*/
+                              verificationStatus.setValue(
+                                      EmailVerificationEnum.SEND_EMAIL_VERIFICATION);
+                            // Todo: Automatic forwarding to the course page when email is verified
+                              //this.userLiveData.postValue(firebaseAuth.getCurrentUser());
+                            }
+                            //Todo: onAuthStateListener??
+                          }
+                        });
               }
             });
+  }
+
+  /** Method to reset the password via password reset email.*/
+  public void resetPassword(String mail) {
+    this.firebaseAuth.sendPasswordResetEmail(mail);
+  }
+
+  /**Method creates a new user.**/
+  private void createNewUser(String username, FirebaseUser regUser) {
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+    newUser.setDisplayName(username);
+    newUser.setEmail(regUser.getEmail());
+
+    databaseReference.child("users").child(regUser.getUid()).setValue(newUser);
+  }
+
+  /** Method to (re)send a email verification.*/
+  public void resendEmailVerification() {
+    Objects.requireNonNull(this.firebaseAuth.getCurrentUser()).sendEmailVerification();
+  }
+
+  public void sendPasswordResetMail(String email) {
+    this.firebaseAuth.sendPasswordResetEmail(email);
   }
 
   /** Logging out the current user. */
@@ -78,4 +151,24 @@ public class AuthAppRepository {
     this.userLiveData.postValue(null);
   }
 
+  public void emailExist(String email) {
+    this.firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener
+            (new OnCompleteListener<SignInMethodQueryResult>() {
+      @Override
+      public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+        boolean emailNotExists = task.getResult().getSignInMethods().isEmpty();
+        if (emailNotExists) {
+          existency.setValue(ResetPasswordEnum.ERROR);
+        } else {
+          existency.setValue(ResetPasswordEnum.SUCCESS);
+        }
+      }
+    });
+  }
+
+  public MutableLiveData<ResetPasswordEnum> getExistency() {
+    return this.existency;
+  }
+
 }
+
