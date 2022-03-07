@@ -7,12 +7,14 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -32,6 +34,7 @@ public class AuthAppRepository {
   private UserModel newUser = new UserModel();
 
   private MutableLiveData<FirebaseUser> userLiveData = new MutableLiveData<>();
+  private MutableLiveData<ResetPasswordEnum> existency = new MutableLiveData<>();
 
 
   /** Gives back an Instance of AuthAppRepository. */
@@ -132,6 +135,10 @@ public class AuthAppRepository {
     Objects.requireNonNull(this.firebaseAuth.getCurrentUser()).sendEmailVerification();
   }
 
+  public void sendPasswordResetMail(String email) {
+    this.firebaseAuth.sendPasswordResetEmail(email);
+  }
+
   /** Logging out the current user. */
   public void logOut() {
     this.firebaseAuth.signOut();
@@ -144,9 +151,28 @@ public class AuthAppRepository {
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
     this.userLiveData.postValue(null);
   }
-
+/*
   public FirebaseAuth getFirebaseAuth() {
     return this.firebaseAuth;
+  }*/
+
+  public void emailExist(String email) {
+    this.firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener
+            (new OnCompleteListener<SignInMethodQueryResult>() {
+      @Override
+      public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+        boolean emailNotExists = task.getResult().getSignInMethods().isEmpty();
+        if (emailNotExists) {
+          existency.setValue(ResetPasswordEnum.ERROR);
+        } else {
+          existency.setValue(ResetPasswordEnum.SUCCESS);
+        }
+      }
+    });
+  }
+
+  public MutableLiveData<ResetPasswordEnum> getExistency() {
+    return this.existency;
   }
 
 }

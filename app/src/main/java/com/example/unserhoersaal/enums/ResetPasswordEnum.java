@@ -5,6 +5,7 @@ package com.example.unserhoersaal.enums;
  */
 
 public enum ResetPasswordEnum {
-  RESET_PASSWORD_NO,
-  RESET_PASSWORD_YES
+  DEFAULT,
+  ERROR,
+  SUCCESS
 }

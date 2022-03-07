@@ -74,6 +74,8 @@ public class Config {
   public static final String DIALOG_PASSWORD_RESET_ERROR = "Passwortrücksetzung gescheitert";
   public static final String DIALOG_PASSWORD_RESET_EMAIL_NOT_EXIST_ERROR =
           "Zu dieser Email existiert kein Account";
+  public static final String DIALOG_PASSWORD_RESET_SUCCESS = "Email mit einem Link zur " +
+          "Passwortzurücksetzung wurde versandt";
 
   /** Regex */
   /* reference: https://ihateregex.io/expr/username/ */

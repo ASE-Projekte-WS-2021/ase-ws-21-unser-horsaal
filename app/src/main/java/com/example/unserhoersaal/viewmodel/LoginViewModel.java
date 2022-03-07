@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -29,6 +31,7 @@ public class LoginViewModel extends ViewModel {
   public MutableLiveData<LogRegErrorMessEnum> errorMessageLogProcess;
   public MutableLiveData<EmailVerificationEnum> verificationStatus;
   public MutableLiveData<ResetPasswordEnum> resetPasswordStatus;
+  public MutableLiveData<ResetPasswordEnum> emailExistency;
 
   /**
    * Initialize the LoginRegisterViewModel.
@@ -44,11 +47,12 @@ public class LoginViewModel extends ViewModel {
     this.errorMessageLogProcess = new MutableLiveData<>();
     this.verificationStatus = new MutableLiveData<>();
     this.resetPasswordStatus = new MutableLiveData<>();
+    this.emailExistency = new MutableLiveData<>();
     this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
     this.errorMessageLogProcess.setValue(LogRegErrorMessEnum.NONE);
     this.verificationStatus.setValue(EmailVerificationEnum.NONE);
-    this.resetPasswordStatus.setValue(ResetPasswordEnum.RESET_PASSWORD_NO);
+    this.emailExistency = this.authAppRepository.getExistency();
 
     //Databinding containers
     this.user = new MutableLiveData<>(new UserModel());
@@ -111,14 +115,23 @@ public class LoginViewModel extends ViewModel {
     }
   }
 
-  /** Set reset password status active.*/
-  public void resetPassword() {
-    this.resetPasswordStatus.setValue(ResetPasswordEnum.RESET_PASSWORD_YES);
+  /** Send reset password email.*/
+  public void sendPasswordResetMail() {
+    String email = this.user.getValue().getEmail();
+    this.authAppRepository.sendPasswordResetMail(email);
+
   }
 
-  /** Send reset password email.*/
-  public void sendPasswordResetMail(String mail) {
-    authAppRepository.resetPassword(mail);
+  public void checkEmailExists() {
+    String email = this.user.getValue().getEmail();
+    if (email == null) {
+      return;
+    }
+    if (Validation.emailHasPattern(email)){
+      this.authAppRepository.emailExist(email);
+    } else {
+      this.emailExistency.setValue(ResetPasswordEnum.ERROR);
+    }
   }
 
   /** Set email verification status on completed.*/
@@ -131,8 +144,13 @@ public class LoginViewModel extends ViewModel {
     authAppRepository.resendEmailVerification();
   }
 
-  public FirebaseAuth getFirebaseAuth() {
-    return authAppRepository.getFirebaseAuth();
+  public LiveData<ResetPasswordEnum> getEmailExistency() {
+    return emailExistency;
+  }
+
+  public void resetPasswordReseter() {
+    this.emailExistency.setValue(ResetPasswordEnum.DEFAULT);
+    this.user.setValue(new UserModel());
   }
 
 }

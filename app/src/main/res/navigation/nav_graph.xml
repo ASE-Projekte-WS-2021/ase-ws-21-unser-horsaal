@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginFragment_to_coursesFragment"
             app:destination="@id/coursesFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -162,4 +165,13 @@
         android:name="com.example.unserhoersaal.views.CourseMeetingFragment"
         android:label="fragment_course_meeting"
         tools:layout="@layout/fragment_course_meeting" />
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.example.unserhoersaal.views.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password">
+    <action
+        android:id="@+id/action_reset_password_fragment_to_login_fragment"
+        app:destination="@id/loginFragment"/>
+    </fragment>
 </navigation>

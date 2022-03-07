@@ -84,20 +84,13 @@ public class LoginFragment extends Fragment {
         DialogBuilder verificationDialog = new DialogBuilder();
         verificationDialog.verifyEmailDialogLogin(getView(), loginViewModel);
       }});
-    /** If user requests password reset open password-reset-dialog.*/
-    this.loginViewModel.resetPasswordStatus.observe(getViewLifecycleOwner(), status ->{
-      if (status == ResetPasswordEnum.RESET_PASSWORD_YES) {
-        DialogBuilder passwordResetDialog = new DialogBuilder();
-        passwordResetDialog.passwordResetDialog(getView(), loginViewModel);
-      }
-    });
   }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.loginViewModel);
   }
-  
+
   @Override
   public void onPause() {
     super.onPause();
