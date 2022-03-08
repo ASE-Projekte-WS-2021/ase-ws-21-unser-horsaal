@@ -28,4 +28,8 @@ public class CoursesViewModel extends ViewModel {
     return this.userCourses;
   }
 
+  public void loadCourses() {
+    this.coursesRepository.loadUserCourses();
+  }
+
 }

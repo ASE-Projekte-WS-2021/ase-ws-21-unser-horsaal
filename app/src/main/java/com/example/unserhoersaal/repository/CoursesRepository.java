@@ -50,7 +50,8 @@ public class CoursesRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
     String id = auth.getCurrentUser().getUid();
-
+    this.userCoursesList.clear();
+    this.courses.postValue(userCoursesList);
 
     Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
