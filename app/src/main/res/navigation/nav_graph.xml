@@ -81,7 +81,9 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_createCourseFragment_to_courseHistoryFragment"
-            app:destination="@id/courseHistoryFragment" />
+            app:destination="@id/courseHistoryFragment"
+            app:popUpTo="@id/courseHistoryFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
 

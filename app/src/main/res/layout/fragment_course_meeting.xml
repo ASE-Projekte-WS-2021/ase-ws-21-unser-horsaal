@@ -98,6 +98,8 @@
             android:text="@string/course_meeting_create_button"
             android:backgroundTint="@color/app_blue"
             android:textColor="@color/white"
+            app:icon="@drawable/ic_baseline_create_24"
+            app:iconTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/white" />

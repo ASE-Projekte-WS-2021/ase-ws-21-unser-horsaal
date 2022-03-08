@@ -109,23 +109,23 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/threadItemTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{Format.getFormatedDateTime(threadItemTime, model.creationTime)}"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@id/threadItemAuthor"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <TextView
             android:id="@+id/threadItemAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{model.creatorName}"
             android:textColor="@color/app_blue"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/threadItemTime"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/threadItemTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Format.getFormatedDateTime(threadItemTime, model.creationTime)}"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
