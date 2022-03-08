@@ -175,6 +175,50 @@
             </TableRow>
 
             <TableRow
+                android:background="@color/white"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/courseDescriptionFragmentEnterKeyIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:src="@drawable/ic_baseline_vpn_key_24"
+                    app:tint="@color/app_blue" />
+
+                <TextView
+                    android:id="@+id/courseDescriptionFragmentEnterKeyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:text="@string/course_description_fragment_enter_key"
+                    android:layout_marginStart="16dp" />
+
+                <TextView
+                    android:id="@+id/courseDescriptionFragmentEnterKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:text="@{vm.courseModel.key}"
+                    android:textAlignment="viewEnd"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp" />
+
+                <ImageView
+                    android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.codeMapping)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_share_24"
+                    android:layout_column="3"
+                    android:layout_marginEnd="8dp"
+                    android:padding="6dp"
+                    android:layout_gravity="center_vertical"
+                    app:tint="@color/black" />
+
+            </TableRow>
+
+            <TableRow
                 android:id="@+id/courseDescriptionFragmentCourseParticipantsContainer"
                 android:background="@color/white"
                 android:padding="8dp"
@@ -226,19 +270,6 @@
             </TableRow>
 
         </TableLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/courseDescriptionFragmentShareCourseFab"
-            android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.codeMapping)}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_share_24"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/white"
-            style="@style/fabStyle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

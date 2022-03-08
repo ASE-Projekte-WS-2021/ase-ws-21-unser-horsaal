@@ -28,7 +28,7 @@
     <string name="create_course_generate_number">Nummer generieren</string>
     <string name="create_course_create_button">Erstellen</string>
     <string name="create_course_fragment_title_hint">Kurstitel</string>
-    <string name="current_course_edit_text_hint">Frage eingeben</string>
+    <string name="current_course_edit_text_hint">Nachricht</string>
     <string name="current_course_textview_enter_number">Beitrittsnummer: </string>
     <string name="login_fragment_user_name_hint">Email</string>
     <string name="profile_fragment_title_string">Profil</string>
@@ -150,8 +150,11 @@
     <string name="course_description_fragment_description">Kursbeschreibung</string>
     <string name="course_history_fragment_subtitle">Meetings</string>
     <string name="keine_threads_verf_gbar">Keine Threads verfügbar!</string>
-    <string name="current_time_placeholder">Current Time Placeholder</string>
-    <string name="current_date_placeholder">Current Date Placeholder</string>
+    <string name="current_time_placeholder">Uhrzeit</string>
+    <string name="current_date_placeholder">Datum</string>
+    <string name="course_description_fragment_enter_key">Beitrittscode</string>
+    <string name="course_history_fragment_subtitle_information">Für Informationen klicken</string>
+
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
 
 </resources>
