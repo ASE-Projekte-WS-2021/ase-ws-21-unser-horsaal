@@ -1,14 +1,19 @@
 package com.example.unserhoersaal.repository;
 
 import androidx.lifecycle.MutableLiveData;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
 import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
 import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.model.UserModel;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 // source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/tree/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/model [30.12.2021]
@@ -137,9 +142,59 @@ public class AuthAppRepository {
 
   /** Method to delete an useraccount. */
   public void deleteAccount() {
-    //TODO: delete Account in real time database and firebase authentication
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
-    this.userLiveData.postValue(null);
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_USER)
+            .child(uid)
+            .removeValue()
+            .addOnSuccessListener(unused -> removeCourses(uid));
+    //TODO: maybe remove user data in likes and blocked
+  }
+
+  /** Delete all connections between a user and his courses. */
+  private void removeCourses(String uid) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    List<String> courseIdList = new ArrayList<>();
+
+    reference.child(Config.CHILD_USER_COURSES)
+            .child(uid)
+            .get()
+            .addOnSuccessListener(dataSnapshot -> {
+              for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                courseIdList.add(snapshot.getKey());
+              }
+              reference.child(Config.CHILD_USER_COURSES)
+                      .child(uid)
+                      .removeValue()
+                      .addOnSuccessListener(unused -> removeUserFromCourses(courseIdList, uid));
+            });
+
+  }
+
+  /** Remove the user from all courses the user is signed in. */
+  private void removeUserFromCourses(List<String> courseIdList, String uid) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    for (String courseId : courseIdList) {
+      reference.child(Config.CHILD_COURSES_USER)
+              .child(courseId)
+              .child(uid)
+              .removeValue();
+    }
+    //TODO wait for removing the user from courses
+    deleteUser();
+
+  }
+
+  /** Delete the user data in firebase auth. */
+  private void deleteUser() {
+    FirebaseUser user = this.firebaseAuth.getCurrentUser();
+    this.firebaseAuth.signOut();
+    user.delete().addOnCompleteListener(task -> {
+      if (task.isSuccessful()) {
+        this.userLiveData.postValue(null);
+      }
+    });
   }
 
   /** Checks FirebaseAuth if the email that the user tries to register with exists. */

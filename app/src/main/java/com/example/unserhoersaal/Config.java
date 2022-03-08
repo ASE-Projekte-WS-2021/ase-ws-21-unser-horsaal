@@ -31,6 +31,9 @@ public class Config {
   public static final String CHILD_DISPLAY_NAME = "displayName";
   public static final String CHILD_INSTITUTION = "institution";
 
+  /** Firebase deleted user. */
+  public static final String UNKNOWN_USER = "<gelöschter Nutzer>";
+
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;
   public static final int ERROR_PROFILE_AVATAR = R.drawable.ic_baseline_account_circle_24;

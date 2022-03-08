@@ -60,9 +60,11 @@ public class ProfileRepository {
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        userModel = snapshot.getValue(UserModel.class);
-        userModel.setKey(snapshot.getKey());
-        user.postValue(userModel);
+        if (snapshot.exists()) {
+          userModel = snapshot.getValue(UserModel.class);
+          userModel.setKey(snapshot.getKey());
+          user.postValue(userModel);
+        }
       }
 
       @Override

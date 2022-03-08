@@ -79,7 +79,11 @@ public class CourseDescriptionRepository {
             .child(Config.CHILD_USER_NAME).get();
 
     task.addOnSuccessListener(dataSnapshot -> {
-      course.setCreatorName(dataSnapshot.getValue(String.class));
+      if (dataSnapshot.exists()) {
+        course.setCreatorName(dataSnapshot.getValue(String.class));
+      } else {
+        course.setCreatorName(Config.UNKNOWN_USER);
+      }
       courseModel.postValue(course);
     });
   }

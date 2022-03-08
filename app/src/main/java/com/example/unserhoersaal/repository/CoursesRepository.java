@@ -91,10 +91,12 @@ public class CoursesRepository {
     }
     Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
       for (int i = 0; i < authorList.size(); i++) {
-        /*CourseModel model = authorList.get(i);
-        model.setCreatorName(authorNames.get(i).getResult().getValue(String.class));
-        authorList.set(i, model);*/
-        authorList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+        String name = authorNames.get(i).getResult().getValue(String.class);
+        if (name == null) {
+          authorList.get(i).setCreatorName(Config.UNKNOWN_USER);
+        } else {
+          authorList.get(i).setCreatorName(name);
+        }
       }
       userCoursesList.clear();
       userCoursesList.addAll(authorList);
