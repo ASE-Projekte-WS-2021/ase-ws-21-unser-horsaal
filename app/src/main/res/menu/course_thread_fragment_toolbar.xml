@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--
     <item
         android:id="@+id/courseThreadToolbarSearch"
         android:icon="@drawable/ic_baseline_search_24"
@@ -12,4 +13,5 @@
         android:title="@string/toolbar_filter_string"
         android:icon="@drawable/ic_baseline_filter_list_24"
         app:showAsAction="always"/>
+    -->
 </menu>

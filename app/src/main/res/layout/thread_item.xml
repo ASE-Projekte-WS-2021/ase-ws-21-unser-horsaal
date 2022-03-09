@@ -17,7 +17,7 @@
         android:maxHeight="150dp"
         android:layout_marginTop="2dp"
         android:onClick="@{(view) -> NavUtil.navigateToThread(view, model)}"
-        android:background="@color/white"
+        android:background="@drawable/custom_ripple"
         android:paddingTop="8dp"
         android:paddingBottom="8dp">
 

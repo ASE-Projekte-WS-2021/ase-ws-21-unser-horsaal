@@ -22,7 +22,7 @@
     <string name="enter_course_caption">Bestehendem Kurs beitreten, um Fragen zu stellen, Antworten zu senden, etc.</string>
     <string name="create_course_string">Kurs erstellen</string>
     <string name="create_course_caption">Kurs, dem andere Nutzer über einen generierten Code beitreten können, erstellen</string>
-    <string name="enter_course_fragment_edit_text">Kursnummer eingeben</string>
+    <string name="enter_course_fragment_edit_text">Kurs-Code eingeben</string>
     <string name="enter_course_fragment_button_string">Kurs suchen</string>
     <string name="create_course_fragment_caption_string">Hier können Sie ganz einfach einen Kurs erstellen, dem über die generierte Nummer beigetreten werden kann</string>
     <string name="create_course_generate_number">Nummer generieren</string>
@@ -154,6 +154,7 @@
     <string name="current_date_placeholder">Datum</string>
     <string name="course_description_fragment_enter_key">Beitrittscode</string>
     <string name="course_history_fragment_subtitle_information">Für Informationen klicken</string>
+    <string name="course_thread_fragment_title">Frage</string>
 
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
 
