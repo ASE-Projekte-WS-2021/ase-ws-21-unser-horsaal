@@ -44,7 +44,7 @@ public class CourseParticipantsFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding =  DataBindingUtil.inflate(inflater,
-            R.layout.fragment_course_participants, container,false);
+            R.layout.fragment_course_participants, container, false);
     return this.binding.getRoot();
   }
 
@@ -88,4 +88,5 @@ public class CourseParticipantsFragment extends Fragment {
             .setNavigationOnClickListener(v -> navController
             .navigate(R.id.action_courseParticipantsFragment_to_courseDescriptionFragment));
   }
+
 }

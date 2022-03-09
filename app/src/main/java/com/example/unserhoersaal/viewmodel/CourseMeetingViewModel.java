@@ -3,6 +3,7 @@ package com.example.unserhoersaal.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
 import java.util.List;
@@ -14,7 +15,7 @@ public class CourseMeetingViewModel extends ViewModel {
 
   private CourseMeetingRepository courseMeetingRepository;
 
-  private MutableLiveData<String> meetingId = new MutableLiveData<>();
+  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
   private MutableLiveData<List<ThreadModel>> threads;
   private MutableLiveData<ThreadModel> threadModelMutableLiveData;
   public MutableLiveData<ThreadModel> threadModelInput;
@@ -26,11 +27,11 @@ public class CourseMeetingViewModel extends ViewModel {
     }
 
     this.courseMeetingRepository = CourseMeetingRepository.getInstance();
-    this.meetingId = this.courseMeetingRepository.getMeetingId();
+    this.meeting = this.courseMeetingRepository.getMeeting();
     this.threadModelMutableLiveData =
             this.courseMeetingRepository.getThreadModelMutableLiveData();
 
-    if (this.meetingId.getValue() != null) {
+    if (this.meeting.getValue() != null) {
       this.threads = this.courseMeetingRepository.getThreads();
     }
     this.threadModelInput = new MutableLiveData<>(new ThreadModel());
@@ -40,8 +41,8 @@ public class CourseMeetingViewModel extends ViewModel {
     return this.threads;
   }
 
-  public LiveData<String> getMeetingId() {
-    return this.meetingId;
+  public LiveData<MeetingsModel> getMeeting() {
+    return this.meeting;
   }
 
   public LiveData<ThreadModel> getThreadModel() {
@@ -53,19 +54,25 @@ public class CourseMeetingViewModel extends ViewModel {
     this.threadModelMutableLiveData.setValue(null);
   }
 
-  public void setMeetingId(String meetingId) {
-    this.courseMeetingRepository.setMeetingId(meetingId);
+  public void setMeeting(MeetingsModel meeting) {
+    this.courseMeetingRepository.setMeeting(meeting);
   }
 
   /** Create a new Thread. */
   public void createThread() {
     //TODO: error -> view
-    if (this.threadModelInput.getValue() == null) return;
+    if (this.threadModelInput.getValue() == null) {
+      return;
+    }
 
     //TODO: error -> view
     ThreadModel threadModel = this.threadModelInput.getValue();
-    if (threadModel.getTitle() == null) return;
-    if (threadModel.getText() == null) return;
+    if (threadModel.getTitle() == null) {
+      return;
+    }
+    if (threadModel.getText() == null) {
+      return;
+    }
 
     this.courseMeetingRepository.createThread(threadModel);
   }

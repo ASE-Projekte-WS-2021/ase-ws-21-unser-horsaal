@@ -1,14 +1,15 @@
 package com.example.unserhoersaal.utils;
 
 import android.view.View;
-
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/** LayoutManager for Adapters. */
 public class ViewAdapter {
 
+  /** LayoutManager for Adapters. */
   @BindingAdapter("initLayoutManager")
   public static void initLayoutManager(View view, int id) {
     RecyclerView courseListRecycler = view.findViewById(id);
@@ -16,4 +17,5 @@ public class ViewAdapter {
     courseListRecycler.setLayoutManager(layoutManager);
     courseListRecycler.setItemAnimator(new DefaultItemAnimator());
   }
+
 }

@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.utils;
 
+import android.util.Log;
 import android.util.Patterns;
 import com.example.unserhoersaal.Config;
 import java.util.regex.Matcher;
@@ -36,6 +37,20 @@ public class Validation {
     Pattern pattern = Pattern.compile(Config.PASSWORD_PATTERN);
     Matcher matcher = pattern.matcher(password);
     return matcher.matches();
+  }
+
+  /** When access StateLiveData in ViewModels, check if the StateData and/or Model exists. Also
+   * returns the blank data. */
+  public static <T> T checkStateLiveData(StateLiveData<T> data, String debugTag)  {
+    if (data.getValue() == null) {
+      Log.e(debugTag, Config.STATE_LIVE_DATA_NULL);
+      return null;
+    } else if (data.getValue().getData() == null) {
+      Log.e(debugTag, Config.STATE_LIVE_DATA_NULL);
+      return null;
+    } else {
+      return data.getValue().getData();
+    }
   }
 
 }

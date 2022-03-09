@@ -2,10 +2,14 @@ package com.example.unserhoersaal.repository;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,8 +23,8 @@ public class ProfileRepository {
   private static final String TAG = "ProfileRepo";
 
   private static ProfileRepository instance;
-  private UserModel userModel;
-  private MutableLiveData<UserModel> user = new MutableLiveData<>();
+  private StateLiveData<UserModel> user = new StateLiveData<>();
+  private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
 
   public ProfileRepository() {
     this.loadUser();
@@ -36,15 +40,19 @@ public class ProfileRepository {
     return instance;
   }
 
-  public MutableLiveData<UserModel> getUser() {
+  public StateLiveData<UserModel> getUser() {
     return this.user;
   }
 
+  public StateLiveData<Boolean> getProfileChanged() {
+    return this.profileChanged;
+  }
 
   /**
    * Loads an user from the database.
    */
   public void loadUser() {
+    this.user.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
     String id = auth.getCurrentUser().getUid();
@@ -53,21 +61,64 @@ public class ProfileRepository {
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        userModel = snapshot.getValue(UserModel.class);
-        user.postValue(userModel);
+        UserModel userModel = snapshot.getValue(UserModel.class);
+        userModel.setKey(snapshot.getKey());
+        user.postSuccess(userModel);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.d(TAG, "onCancelled: " + error.getMessage());
+        user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
       }
     });
   }
 
-  //TODO: @Julian -> see EditProfileNameFragment & ProfileViewModel
-  public void changeDisplayName(String displayName) {}
+  /** TODO. */
+  public void changeDisplayName(String displayName) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    reference.child(Config.CHILD_USER)
+            .child(uid)
+            .child(Config.CHILD_DISPLAY_NAME)
+            .setValue(displayName)
+            .addOnSuccessListener(unused -> profileChanged.postSuccess(Boolean.TRUE));
+  }
 
-  //TODO: @Julian -> see EditProfileInstitutionFragment & ProfileViewModel
-  public void changeInstitution(String institution) {}
+  /** TODO. */
+  public void changeInstitution(String institution) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    reference.child(Config.CHILD_USER)
+            .child(uid)
+            .child(Config.CHILD_INSTITUTION)
+            .setValue(institution)
+            .addOnSuccessListener(unused -> profileChanged.postSuccess(Boolean.TRUE));
+  }
+
+  /** TODO. */
+  public void changePassword(String oldPassword, String newPassword) {
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String email = user.getEmail();
+    AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
+
+    user.reauthenticate(credential).addOnCompleteListener(task -> {
+      if (task.isSuccessful()) {
+        user.updatePassword(newPassword).addOnCompleteListener(task1 -> {
+          if (task1.isSuccessful()) {
+            profileChanged.postSuccess(Boolean.TRUE);
+          } else {
+            //todo password reset failed
+            Log.d(TAG, "onComplete: " + "reset failed");
+            profileChanged.postError(new Error(Config.PROFILE_FAILED_TO_CHANGE_PASSWORD), ErrorTag.REPO);
+          }
+        });
+      } else {
+        //todo old password wrong
+        Log.d(TAG, "onComplete: " + "old password wrong");
+        profileChanged.postError(new Error(Config.PROFILE_FAILED_TO_CHANGE_PASSWORD), ErrorTag.REPO);
+      }
+    });
+  }
 
 }

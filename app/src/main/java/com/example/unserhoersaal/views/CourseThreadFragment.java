@@ -2,6 +2,9 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -9,12 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.databinding.FragmentCourseThreadBinding;
 import com.example.unserhoersaal.adapter.ChatAdapter;
+import com.example.unserhoersaal.databinding.FragmentCourseThreadBinding;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
@@ -89,7 +89,8 @@ public class CourseThreadFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.currentCourseFragmentToolbar
             .setNavigationOnClickListener(v ->
-      navController.navigate(R.id.action_courseThreadFragment_to_courseMeetingFragment)
+                    navController.navigate(
+                            R.id.action_courseThreadFragment_to_courseMeetingFragment)
     );
   }
 

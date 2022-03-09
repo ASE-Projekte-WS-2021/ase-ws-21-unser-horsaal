@@ -28,10 +28,14 @@ public class NavUtil {
     navController.navigate(navAction);
   }
 
+  /** Navigates to CourseHistory. */
   @BindingAdapter("navigateToCourse")
   public static void navigateToCourse(View view, CourseModel model) {
-    if (model == null) return;
-    CourseHistoryViewModel courseHistoryViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+    if (model == null) {
+      return;
+    }
+    CourseHistoryViewModel courseHistoryViewModel =
+            new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseHistoryViewModel.class);
     courseHistoryViewModel.init();
     courseHistoryViewModel.setCourse(model);
@@ -40,26 +44,35 @@ public class NavUtil {
     navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
   }
 
+  /** Navigates to CourseMeeting. */
   @BindingAdapter("navigateToMeeting")
   public static void navigateToMeeting(View view, MeetingsModel model) {
-    if (model == null) return;
-    CourseMeetingViewModel courseMeetingViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+    if (model == null) {
+      return;
+    }
+    CourseMeetingViewModel courseMeetingViewModel =
+            new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseMeetingViewModel.class);
     courseMeetingViewModel.init();
-    courseMeetingViewModel.setMeetingId(model.getKey());
-    CurrentCourseViewModel currentCourseViewModel = new ViewModelProvider((ViewModelStoreOwner)
+    courseMeetingViewModel.setMeeting(model);
+    CurrentCourseViewModel currentCourseViewModel =
+            new ViewModelProvider((ViewModelStoreOwner)
             view.getContext()).get(CurrentCourseViewModel.class);
     currentCourseViewModel.init();
-    currentCourseViewModel.setMeetingId(model.getKey());
+    currentCourseViewModel.setMeeting(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_courseMeetingFragment);
   }
 
+  /** Navigates to CourseThread. */
   @BindingAdapter("navigateToThread")
   public static void navigateToThread(View view, ThreadModel model) {
-    if (model == null) return;
-    CurrentCourseViewModel currentCourseViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+    if (model == null) {
+      return;
+    }
+    CurrentCourseViewModel currentCourseViewModel =
+            new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CurrentCourseViewModel.class);
     currentCourseViewModel.init();
     currentCourseViewModel.setThreadId(model.getKey());
@@ -68,10 +81,14 @@ public class NavUtil {
     navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
   }
 
+  /** Navigates to CourseDescription. */
   @BindingAdapter("navigateToDescription")
   public static void navigateToDescription(View view, String courseId) {
-    if (courseId == null) return;
-    CourseDescriptionViewModel courseDescriptionViewModel = new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+    if (courseId == null) {
+      return;
+    }
+    CourseDescriptionViewModel courseDescriptionViewModel =
+            new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseDescriptionViewModel.class);
     courseDescriptionViewModel.init();
     courseDescriptionViewModel.setCourseId(courseId);
@@ -80,6 +97,7 @@ public class NavUtil {
     navController.navigate(R.id.action_courseHistoryFragment_to_courseDescriptionFragment);
   }
 
+  /** Shows Confirmation Dialog when User clicks on delete Account in Profile. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter("viewModel")
   public static void deleteAccountDialog(View view, ProfileViewModel viewModel) {
@@ -87,19 +105,18 @@ public class NavUtil {
     builder.setMessage(R.string.dialog_delete_account_message)
             .setTitle(R.string.dialog_delete_account_title)
             .setPositiveButton(R.string.dialog_delete_account_true,
-                    (DialogInterface.OnClickListener) (dialog, which) -> {
+                    (dialog, which) -> {
                       viewModel.deleteAccount();
                       dialog.dismiss();
                     })
             .setNegativeButton(R.string.dialog_delete_account_false,
-                    (DialogInterface.OnClickListener) (dialog, which) -> {
-                      dialog.dismiss();
-                    });
+                    (dialog, which) -> dialog.dismiss());
 
     AlertDialog dialog = builder.create();
     dialog.show();
   }
 
+  /** Navigates to CourseHistory. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter("unregisterFromCourse")
   public static void unregisterFromCourse(View view, CourseDescriptionViewModel viewModel) {
@@ -107,14 +124,12 @@ public class NavUtil {
     builder.setMessage(R.string.unregister_from_course_message)
             .setTitle(R.string.unregister_from_course_title)
             .setPositiveButton(R.string.dialog_delete_account_true,
-                    (DialogInterface.OnClickListener) (dialog, which) -> {
+                    (dialog, which) -> {
                       viewModel.unregisterFromCourse();
                       dialog.dismiss();
                     })
             .setNegativeButton(R.string.dialog_delete_account_false,
-                    (DialogInterface.OnClickListener) (dialog, which) -> {
-                      dialog.dismiss();
-                    });
+                    (dialog, which) -> dialog.dismiss());
 
     AlertDialog dialog = builder.create();
     dialog.show();

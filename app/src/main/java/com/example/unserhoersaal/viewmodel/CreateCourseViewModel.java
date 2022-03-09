@@ -39,16 +39,24 @@ public class CreateCourseViewModel extends ViewModel {
   /** Create a new course. */
   public void createCourse() {
     //TODO: status data to view
-    if (this.dataBindingCourseModelInput.getValue() == null) return;
+    if (this.dataBindingCourseModelInput.getValue() == null) {
+      return;
+    }
 
     CourseModel courseModel = this.dataBindingCourseModelInput.getValue();
     String codeMapping = this.getCodeMapping();
     courseModel.setCodeMapping(codeMapping);
 
     //TODO: status data to view
-    if (courseModel.getTitle() == null) return;
-    if (courseModel.getDescription() == null) return;
-    if (courseModel.getInstitution() == null) return;
+    if (courseModel.getTitle() == null) {
+      return;
+    }
+    if (courseModel.getDescription() == null) {
+      return;
+    }
+    if (courseModel.getInstitution() == null) {
+      return;
+    }
 
     this.createCourseRepository.createNewCourse(courseModel);
   }
@@ -63,4 +71,5 @@ public class CreateCourseViewModel extends ViewModel {
     }
     return sb.toString();
   }
+
 }

@@ -40,7 +40,7 @@ public class CreateCourseFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding =  DataBindingUtil.inflate(inflater,
-            R.layout.fragment_create_course, container,false);
+            R.layout.fragment_create_course, container, false);
     return this.binding.getRoot();
   }
 
@@ -67,7 +67,7 @@ public class CreateCourseFragment extends Fragment {
               if (courseModel != null) {
                 courseCreated(courseModel);
               }
-    });
+            });
   }
 
   private void connectBinding() {
@@ -95,4 +95,5 @@ public class CreateCourseFragment extends Fragment {
     super.onResume();
     this.createCourseViewModel.resetCourseModelInput();
   }
+  
 }

@@ -27,7 +27,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    AnswerItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.answer_item, viewGroup, false);
+    AnswerItemBinding binding = DataBindingUtil
+            .inflate(LayoutInflater.from(viewGroup.getContext()),
+                    R.layout.answer_item,
+                    viewGroup,
+                    false);
     return new ViewHolder(binding);
   }
 
@@ -53,6 +57,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
       this.binding = binding;
     }
 
+    /** connect updated list with adapter child. */
     public void connect(MessageModel messageModel, CurrentCourseViewModel currentCourseViewModel) {
       this.binding.setModel(messageModel);
       this.binding.setVm(currentCourseViewModel);

@@ -40,7 +40,7 @@ public class CoursesFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding =  DataBindingUtil.inflate(inflater,
-            R.layout.fragment_courses, container,false);
+            R.layout.fragment_courses, container, false);
     return this.binding.getRoot();
   }
 
@@ -67,8 +67,7 @@ public class CoursesFragment extends Fragment {
               coursesAdapter.notifyDataSetChanged();
               if (userCourses.size() == 0) {
                 this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
-              }
-              else {
+              } else {
                 this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
               }
             });
@@ -102,4 +101,5 @@ public class CoursesFragment extends Fragment {
     this.binding.coursesFragmentEnterCourseFabLayout.setVisibility(View.GONE);
     this.binding.coursesFragmentCreateCourseFabLayout.setVisibility(View.GONE);
   }
+
 }

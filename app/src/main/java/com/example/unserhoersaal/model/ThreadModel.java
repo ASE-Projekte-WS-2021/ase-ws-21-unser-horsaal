@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.model;
 
+import com.example.unserhoersaal.enums.LikeStatus;
+
 /** Model for a thread. */
 public class ThreadModel {
 
@@ -14,7 +16,8 @@ public class ThreadModel {
   public String key;
   public String creatorName;
   public int answersCount;
-
+  public String photoUrl;
+  public LikeStatus likeStatus;
 
   public ThreadModel() {}
 
@@ -88,5 +91,21 @@ public class ThreadModel {
 
   public void setCreatorName(String creatorName) {
     this.creatorName = creatorName;
+  }
+
+  public String getPhotoUrl() {
+    return this.photoUrl;
+  }
+
+  public void setPhotoUrl(String photoUrl) {
+    this.photoUrl = photoUrl;
+  }
+
+  public LikeStatus getLikeStatus() {
+    return this.likeStatus;
+  }
+
+  public void setLikeStatus(LikeStatus likeStatus) {
+    this.likeStatus = likeStatus;
   }
 }

@@ -1,6 +1,9 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -8,9 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseMeetingBinding;
 import com.example.unserhoersaal.utils.KeyboardUtil;
@@ -36,7 +36,7 @@ public class CreateCourseMeetingFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding =  DataBindingUtil.inflate(inflater,
-            R.layout.fragment_create_course_meeting, container,false);
+            R.layout.fragment_create_course_meeting, container, false);
     return this.binding.getRoot();
   }
 
@@ -55,12 +55,14 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
             .get(CourseHistoryViewModel.class);
     this.courseHistoryViewModel.init();
-    this.courseHistoryViewModel.getMeetingsModel().observe(getViewLifecycleOwner(), meetingsModel -> {
-      if (meetingsModel != null) {
-        KeyboardUtil.hideKeyboard(getActivity());
-        this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
-      }
-    });
+    this.courseHistoryViewModel.getMeetingsModel()
+            .observe(getViewLifecycleOwner(), meetingsModel -> {
+              if (meetingsModel != null) {
+                KeyboardUtil.hideKeyboard(getActivity());
+                this.navController.navigate(
+                        R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
+              }
+            });
   }
 
   private void connectBinding() {
@@ -69,10 +71,12 @@ public class CreateCourseMeetingFragment extends Fragment {
   }
 
   private void initToolbar() {
-    this.binding.createCourseMeetingFragmentToolbar.
-            setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.createCourseMeetingFragmentToolbar
+            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createCourseMeetingFragmentToolbar.setNavigationOnClickListener(v ->
-      this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment)
+            this.navController.navigate(
+                    R.id.action_createCourseMeetingFragment_to_courseHistoryFragment)
     );
   }
+
 }

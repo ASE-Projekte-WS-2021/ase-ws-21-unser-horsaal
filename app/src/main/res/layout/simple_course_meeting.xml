@@ -39,7 +39,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@{Format.getFormatedDate(courseMeetingDate, model.eventTime)}" />
+            tools:text="@{Format.getFormatedDateTime(courseMeetingDate, model.eventTime)}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

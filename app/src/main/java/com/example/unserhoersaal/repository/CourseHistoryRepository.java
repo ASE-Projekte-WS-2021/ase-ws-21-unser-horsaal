@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,7 +13,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /** Repository for the CourseHistoryViewModel. */
@@ -98,18 +95,17 @@ public class CourseHistoryRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String uid = firebaseAuth.getCurrentUser().getUid();
-    //TODO: eventTimeInput -> eventTime umschreiben; startTimeInput -> startTime umschreiben; bzw auf datapicker warten
+    //TODO: eventTimeInput -> eventTime umschreiben;
+    // startTimeInput -> startTime umschreiben; bzw auf datapicker warten
     meetingsModel.setCreatorId(uid);
     meetingsModel.setCreationTime(System.currentTimeMillis());
     String meetingId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_MEETINGS).child(this.course.getValue().getKey()).child(meetingId)
+    reference.child(Config.CHILD_MEETINGS)
+            .child(this.course.getValue().getKey()).child(meetingId)
             .setValue(meetingsModel)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-              @Override
-              public void onSuccess(Void unused) {
-                meetingsModel.setKey(meetingId);
-                meetingsModelMutableLiveData.postValue(meetingsModel);
-              }
+            .addOnSuccessListener(unused -> {
+              meetingsModel.setKey(meetingId);
+              meetingsModelMutableLiveData.postValue(meetingsModel);
             });
   }
 
@@ -133,4 +129,5 @@ public class CourseHistoryRepository {
       }
     };
   }
+
 }

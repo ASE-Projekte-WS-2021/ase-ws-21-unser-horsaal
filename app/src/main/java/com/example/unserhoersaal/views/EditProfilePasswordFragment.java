@@ -1,6 +1,9 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -8,9 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEditProfilePasswordBinding;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
@@ -54,7 +54,11 @@ public class EditProfilePasswordFragment extends Fragment {
     this.profileViewModel
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
-    //TODO: @Julian onDisplayNameChanged -> navigate back to profile
+    this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(), change -> {
+      if (change) {
+        navController.navigate(R.id.action_editProfilePasswordFragment_to_profileFragment);
+      }
+    });
   }
 
   private void connectBinding() {
@@ -63,10 +67,16 @@ public class EditProfilePasswordFragment extends Fragment {
   }
 
   private void initToolbar() {
-    this.binding.editProfilePasswordFragmentToolbar.
-            setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    this.binding.editProfilePasswordFragmentToolbar.setNavigationOnClickListener(v -> {
-      navController.navigate(R.id.action_editProfilePasswordFragment_to_profileFragment);
-    });
+    this.binding.editProfilePasswordFragmentToolbar
+            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.editProfilePasswordFragmentToolbar.setNavigationOnClickListener(v ->
+            navController.navigate(R.id.action_editProfilePasswordFragment_to_profileFragment));
   }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.profileViewModel.resetPasswordInput();
+  }
+
 }

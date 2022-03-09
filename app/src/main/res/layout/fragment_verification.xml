@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.LoginViewModel" />
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.R"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/eine_email_wurde_an_ihre_angegebene_emailadresse_versendet" />
+
+        <TextView
+            android:id="@+id/verificationFragmentErrorText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <ProgressBar
+            android:id="@+id/resetPasswordFragmentSpinner"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verificationFragmentResendEmail"
+            android:text="@string/send_again"
+            android:onClick="@{() -> vm.resendEmailVerification()}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verificationFragmentReturnToLogin"
+            android:text="@string/back_to_login"
+            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_verificationFragment_to_loginFragment)}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.material.button.MaterialButton>
+
+    </LinearLayout>
+</layout>

@@ -14,8 +14,11 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.utils.DeepLinkMode;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Initiates the UI of the registration area, the registration function
@@ -63,12 +66,67 @@ public class RegistrationFragment extends Fragment {
             .get(RegistrationViewModel.class);
     this.registrationViewModel.init();
     this.registrationViewModel
-            .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser != null && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
-                navController.navigate(R.id.action_registrationFragment_to_enterCourseFragment);
+            .getUserStateLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
+              if (firebaseUser.getStatus() == StateData.DataStatus.SUCCESS) {
+                if (firebaseUser.getData() == null) {
+                  return;
+                }
+                this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
+                this.binding.registrationFragmentGeneralErrorText.setVisibility(View.GONE);
+                FirebaseUser firebaseUser1 = firebaseUser.getData();
+
+                if (firebaseUser1.isEmailVerified()
+                        && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+                  navController.navigate(R.id.action_registrationFragment_to_enterCourseFragment);
+                } else if (firebaseUser1.isEmailVerified()) {
+                  navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
+                } else if (!firebaseUser1.isEmailVerified()) {
+                  navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
+                }
               }
-              if (firebaseUser != null) {
-                navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
+              else if (firebaseUser.getStatus() == StateData.DataStatus.LOADING) {
+                this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
+                this.binding.registrationFragmentGeneralErrorText.setVisibility(View.GONE);
+              }
+              else if (firebaseUser.getStatus() == StateData.DataStatus.ERROR) {
+                this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
+                this.binding.registrationFragmentGeneralErrorText.setText(firebaseUser.getError().getMessage());
+                this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
+              }
+            });
+    this.registrationViewModel
+            .getUserInputState()
+            .observe(getViewLifecycleOwner(), userModelStateData -> {
+              if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+                if (userModelStateData.getErrorTag() == ErrorTag.EMAIL) {
+                  this.binding.registrationFragmentUserErrorText
+                          .setText(userModelStateData.getError().getMessage());
+                  this.binding.registrationFragmentUserErrorText
+                          .setVisibility(View.VISIBLE);
+                } else if (userModelStateData.getErrorTag() == ErrorTag.USERNAME) {
+                  this.binding.registrationFragmentUserEmailErrorText
+                          .setText(userModelStateData.getError().getMessage());
+                  this.binding.registrationFragmentUserEmailErrorText
+                          .setVisibility(View.VISIBLE);
+                }
+
+              } else if (userModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
+                this.binding.registrationFragmentUserErrorText
+                        .setVisibility(View.GONE);
+              }
+            });
+    this.registrationViewModel
+            .getPasswordInputState()
+            .observe(getViewLifecycleOwner(), passwordModelStateData -> {
+              if (passwordModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+                this.binding.registrationFragmentPasswordErrorText
+                        .setText(passwordModelStateData.getError().getMessage());
+                this.binding.registrationFragmentPasswordErrorText
+                        .setVisibility(View.VISIBLE);
+              }
+              else if (passwordModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
+                this.binding.registrationFragmentPasswordErrorText
+                        .setVisibility(View.GONE);
               }
             });
   }

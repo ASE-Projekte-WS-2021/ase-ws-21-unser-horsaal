@@ -24,7 +24,11 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    ThreadItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.thread_item, viewGroup, false);
+    ThreadItemBinding binding = DataBindingUtil
+            .inflate(LayoutInflater.from(viewGroup.getContext()),
+                    R.layout.thread_item,
+                    viewGroup,
+                    false);
     return new ViewHolder(binding);
   }
 

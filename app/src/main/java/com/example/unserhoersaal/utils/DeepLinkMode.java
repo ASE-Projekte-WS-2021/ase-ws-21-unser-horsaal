@@ -2,6 +2,8 @@ package com.example.unserhoersaal.utils;
 
 import com.example.unserhoersaal.enums.DeepLinkEnum;
 
+/** Singleton Class -- when the user opens the application with a deeplink. this class helps
+ * to save the status while the user is logging in or registering with the app. */
 public class DeepLinkMode {
 
   private static DeepLinkMode instance;

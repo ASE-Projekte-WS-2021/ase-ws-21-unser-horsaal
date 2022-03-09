@@ -45,7 +45,7 @@ public class CourseHistoryFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding =  DataBindingUtil.inflate(inflater,
-            R.layout.fragment_course_history, container,false);
+            R.layout.fragment_course_history, container, false);
     return this.binding.getRoot();
   }
 
@@ -77,8 +77,7 @@ public class CourseHistoryFragment extends Fragment {
       meetingAdapter.notifyDataSetChanged();
       if (meetingsModels.size() == 0) {
         this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
-      }
-      else {
+      } else {
         this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
       }
     });
@@ -103,8 +102,10 @@ public class CourseHistoryFragment extends Fragment {
   }
 
   private void initToolbar() {
-    this.binding.courseHistoryFragmentToolbar.inflateMenu(R.menu.course_history_fragment_toolbar);
-    this.binding.courseHistoryFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.courseHistoryFragmentToolbar
+            .inflateMenu(R.menu.course_history_fragment_toolbar);
+    this.binding.courseHistoryFragmentToolbar
+            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseHistoryFragmentToolbar.setNavigationOnClickListener(v ->
             navController.navigate(R.id.action_courseHistoryFragment_to_coursesFragment));
   }
@@ -114,4 +115,5 @@ public class CourseHistoryFragment extends Fragment {
     super.onResume();
     courseHistoryViewModel.resetMeetingData();
   }
+
 }

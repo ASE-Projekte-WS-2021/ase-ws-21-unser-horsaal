@@ -17,7 +17,7 @@ public class CourseHistoryViewModel extends ViewModel {
 
   private CourseHistoryRepository courseHistoryRepository;
 
-  private MutableLiveData<CourseModel> course = new MutableLiveData<>();
+  private MutableLiveData<CourseModel> course = new MutableLiveData<>(new CourseModel());
   private MutableLiveData<List<MeetingsModel>> meetings;
   private MutableLiveData<MeetingsModel> meetingsModelMutableLiveData;
   public MutableLiveData<MeetingsModel> dataBindingMeetingInput;
@@ -68,11 +68,15 @@ public class CourseHistoryViewModel extends ViewModel {
   /** Create a new Meeting. */
   public void createMeeting() {
     //TODO: send error back to view
-    if (this.dataBindingMeetingInput.getValue() == null) return;
+    if (this.dataBindingMeetingInput.getValue() == null) {
+      return;
+    }
 
     MeetingsModel meetingsModel = this.dataBindingMeetingInput.getValue();
     //TODO: send error back to view
-    if (meetingsModel.getTitle() == null) return;
+    if (meetingsModel.getTitle() == null) {
+      return;
+    }
     //TODO: handle error if all values are 0
 
     //TODO set to real eventtime

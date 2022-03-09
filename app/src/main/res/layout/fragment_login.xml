@@ -7,8 +7,17 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.LoginViewModel"/>
+
+        <import
+            type="com.example.unserhoersaal.enums.LogRegErrorMessEnum" />
+
+        <import
+            type="com.example.unserhoersaal.Config" />
+
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,11 +62,18 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentUserEmailEditText"
-                        android:text="@={vm.dataBindingUserInput.email}"
+                        android:text="@={vm.userInputState.data.email}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:background="@color/white" />
+
+                    <TextView
+                        android:id="@+id/loginFragmentUserEmailErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,14 +88,37 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentPasswordEditText"
-                        android:text="@={vm.dataBindingPasswordInput}"
+                        android:text="@={vm.passwordInputState.data.currentPassword}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
                         android:singleLine="true"
                         android:background="@color/white"/>
 
+                    <TextView
+                        android:id="@+id/loginFragmentPasswordErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/loginFragmentGeneralErrorMessage"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center" />
+
+                <ProgressBar
+                    android:id="@+id/loginFragmentProgressSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginFragmentLoginButton"
@@ -92,11 +131,11 @@
                     app:backgroundTint="@null"
                     app:icon="@drawable/ic_baseline_login_24"
                     app:iconGravity="textStart"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:id="@+id/loginFragmentForgotPasswortTextView"
-                    android:onClick="@{(view) -> NavUtil.navigate(view, R.id.placeholderFragment)}"
+                    android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_loginFragment_to_resetPasswordFragment)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
