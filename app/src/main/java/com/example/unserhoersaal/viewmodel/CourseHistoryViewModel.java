@@ -1,12 +1,18 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +32,7 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Initialise the ViewModel. */
   public void init() {
+    Log.d(TAG, "init: ");
     if (this.meetings != null) {
       return;
     }
@@ -51,6 +58,17 @@ public class CourseHistoryViewModel extends ViewModel {
 
   public LiveData<List<MeetingsModel>> getMeetings() {
     return this.meetings;
+  }
+
+  /** Sort the meetings list by event time. */
+  public List<MeetingsModel> sortMeetingByEventTime(List<MeetingsModel> meetingsModelList) {
+    Collections.sort(meetingsModelList, new Comparator<MeetingsModel>() {
+      @Override
+      public int compare(MeetingsModel meetingsModel, MeetingsModel t1) {
+        return meetingsModel.getEventTime().compareTo(t1.getEventTime());
+      }
+    });
+    return meetingsModelList;
   }
 
   public LiveData<CourseModel> getCourse() {
