@@ -30,9 +30,7 @@ public class ProfileRepository {
     this.loadUser();
   }
 
-  /**
-   * Generate an instance of the class.
-   */
+  /** Generate an instance of the class. */
   public static ProfileRepository getInstance() {
     if (instance == null) {
       instance = new ProfileRepository();
@@ -48,12 +46,12 @@ public class ProfileRepository {
     return this.profileChanged;
   }
 
-  /**
-   * Loads an user from the database.
-   */
+  /** Loads an user from the database. */
   public void loadUser() {
     this.user.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    //TODO: maybe make firebaseauth to an instance variable?
+    //TODO: assert firebaseuser != null
     FirebaseAuth auth = FirebaseAuth.getInstance();
     String id = auth.getCurrentUser().getUid();
 
@@ -62,6 +60,7 @@ public class ProfileRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         UserModel userModel = snapshot.getValue(UserModel.class);
+        //TODO: assert userModel != null
         userModel.setKey(snapshot.getKey());
         user.postSuccess(userModel);
       }
@@ -76,29 +75,47 @@ public class ProfileRepository {
 
   /** TODO. */
   public void changeDisplayName(String displayName) {
+    this.profileChanged.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    //TODO: maybe make firebaseauth to an instance variable?
+    //TODO: assert firebaseuser == null
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     reference.child(Config.CHILD_USER)
             .child(uid)
             .child(Config.CHILD_DISPLAY_NAME)
             .setValue(displayName)
-            .addOnSuccessListener(unused -> profileChanged.postSuccess(Boolean.TRUE));
+            .addOnSuccessListener(unused ->
+              profileChanged.postSuccess(Boolean.TRUE)
+            )
+            .addOnFailureListener(e -> {
+              Log.e(TAG, e.getMessage());
+              profileChanged.postError(
+                      new Error(Config.PROFILE_FAILED_TO_CHANGE_DISPLAYNAME), ErrorTag.REPO);
+            });
   }
 
   /** TODO. */
   public void changeInstitution(String institution) {
+    this.profileChanged.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    //TODO: assert if firebaseauth.getinstance.getcurrentuser returns null -> this.user.postError
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     reference.child(Config.CHILD_USER)
             .child(uid)
             .child(Config.CHILD_INSTITUTION)
             .setValue(institution)
-            .addOnSuccessListener(unused -> profileChanged.postSuccess(Boolean.TRUE));
+            .addOnSuccessListener(unused -> profileChanged.postSuccess(Boolean.TRUE))
+            .addOnFailureListener(e ->
+                    profileChanged.postError(
+                            new Error(Config.PROFILE_FAILED_TO_CHANGE_INSTITUTION), ErrorTag.REPO));
   }
 
   /** TODO. */
   public void changePassword(String oldPassword, String newPassword) {
+    //TODO: loading for password -> firebaseuser?
+    this.profileChanged.postLoading();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    //TODO: check if user is not null
     String email = user.getEmail();
     AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
 

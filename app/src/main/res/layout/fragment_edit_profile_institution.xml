@@ -46,13 +46,25 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editProfileInstitutionFragmentEditText"
-                android:text="@={vm.dataBindingProfileInput.institution}"
+                android:text="@={vm.userInputState.data.institution}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:background="@color/white"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ProgressBar
+            android:id="@+id/loginFragmentProgressSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentTextField"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editProfileInstitutionFragmentSaveFab"

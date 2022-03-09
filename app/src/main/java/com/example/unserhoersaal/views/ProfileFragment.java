@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
     this.profileViewModel.init();
     this.profileViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser == null) {
+              if (firebaseUser.getData() == null) {
                 navController.navigate(R.id.action_profileFragment_to_loginFragment);
               }
             });

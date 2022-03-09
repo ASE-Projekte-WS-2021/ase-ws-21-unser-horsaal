@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
@@ -33,13 +35,10 @@ public class ProfileViewModel extends ViewModel {
       return;
     }
     this.authAppRepository = AuthAppRepository.getInstance();
-    this.userLiveData = this.authAppRepository.getUserStateLiveData();
-
-    //this live data loads profile data into the text views
     this.profileRepository = ProfileRepository.getInstance();
+    this.userLiveData = this.authAppRepository.getUserStateLiveData();
     this.profileLiveData = this.profileRepository.getUser();
 
-    //this live data retrieves input from the user
     this.userInputState.setValue(new StateData<>(new UserModel()));
     this.passwordInputState.setValue(new StateData<>(new PasswordModel()));
     this.profileChanged = this.profileRepository.getProfileChanged();
@@ -58,6 +57,16 @@ public class ProfileViewModel extends ViewModel {
     return this.profileChanged;
   }
 
+
+  public void resetProfileInput() {
+    this.userInputState.setValue(new StateData<>(new UserModel()));
+  }
+
+  /** JavaDoc for this method. */
+  public void resetPasswordInput() {
+    this.passwordInputState.setValue(new StateData<>(new PasswordModel()));
+  }
+
   public void logout() {
     this.authAppRepository.logOut();
   }
@@ -68,10 +77,13 @@ public class ProfileViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void changeDisplayName() {
-    if (this.userInputState.getValue() == null) {
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    if (userModel == null) {
+      Log.d(TAG, "ProfileViewModel>changeDisplayName userModel is null.");
       return;
     }
-    String displayName = this.userInputState.getValue().getData().getDisplayName();
+
+    String displayName = userModel.getDisplayName();
     //TODO: check if displayName matches our policy
 
     this.profileRepository.changeDisplayName(displayName);
@@ -79,39 +91,38 @@ public class ProfileViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void changeInstitution() {
-    if (this.userInputState.getValue() == null) {
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    if (userModel == null) {
+      Log.d(TAG, "ProfileViewModel>changeInstitution userModel is null.");
       return;
     }
-    String institution = this.userInputState.getValue().getData().getInstitution();
-    //TODO: check if institution matches our policy
 
+    String institution = userModel.getInstitution();
+    //TODO: check if institution matches our policy -> pattern
+
+    this.userInputState.postComplete();
     this.profileRepository.changeInstitution(institution);
   }
 
   /** JavaDoc for this method. */
   public void changePassword() {
-    if (this.dataBindingOldPasswordInput.getValue() == null
-            || this.dataBindingNewPasswordInput.getValue() == null) {
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
+    if (userModel == null || passwordModel == null) {
+      Log.d(TAG, "ProfileViewModel>changePassword userModel or passwordModel is null.");
       return;
     }
-    String oldPassword = this.dataBindingOldPasswordInput.getValue();
-    String newPassword = this.dataBindingNewPasswordInput.getValue();
-    //TODO: check if they match our policy; Feedback
-    if (Validation.passwordHasPattern(oldPassword) && Validation.passwordHasPattern(newPassword)) {
-      this.profileRepository.changePassword(oldPassword, newPassword);
+
+    String oldPassword = passwordModel.getCurrentPassword();
+    String newPassword = passwordModel.getNewPassword();
+
+    if (!Validation.passwordHasPattern(newPassword)) {
+      Log.d(TAG, "ProfileViewModel>changePassword: password doesn't match pattern");
+      this.userInputState.postError(new Error(Config.PASSWORD_RESET_FAILED), ErrorTag.REPO);
     } else {
-      //TODO: check if they match our policy; Feedback
-      Log.d(TAG, "changePassword: " + "password doesn't match pattern");
+      this.userInputState.postComplete();
+      this.profileRepository.changePassword(oldPassword, newPassword);
     }
-  }
-
-  public void resetProfileInput() {
-    this.userInputState.setValue(new StateData<>(new UserModel()));
-  }
-
-  /** JavaDoc for this method. */
-  public void resetPasswordInput() {
-    this.passwordInputState.setValue(new StateData<>(new PasswordModel()));
   }
 
 }

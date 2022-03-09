@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -13,6 +15,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEditProfileNameBindingImpl;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
 /**Edit Name.*/
@@ -55,8 +58,18 @@ public class EditProfileNameFragment extends Fragment {
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
     this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(), change -> {
-      if (change) {
+      if (change.getStatus() == StateData.DataStatus.SUCCESS) {
+        this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
         navController.navigate(R.id.action_editProfileNameFragment_to_profileFragment);
+      } else if (change.getStatus() == StateData.DataStatus.ERROR) {
+        this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
+        Toast.makeText(getContext(),
+                change.getError().getMessage(),
+                Toast.LENGTH_LONG)
+                .show();
+      }
+      else if (change.getStatus() == StateData.DataStatus.LOADING) {
+        this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
       }
     });
   }

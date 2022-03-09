@@ -34,6 +34,8 @@ public class Config {
   /** Profile Error */
   public static final String PROFILE_FAILED_TO_LOAD_USER = "Der Nutzer konnte nicht geladen werden.";
   public static final String PROFILE_FAILED_TO_CHANGE_PASSWORD = "Das Password konnte nicht geändert werden.";
+  public static final String PROFILE_FAILED_TO_CHANGE_INSTITUTION = "Die Institution konnte nicht geändert werden.";
+  public static final String PROFILE_FAILED_TO_CHANGE_DISPLAYNAME = "Der Nutzername konnte nicht geändert werden.";
 
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;

@@ -11,6 +11,8 @@ import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -94,7 +96,8 @@ public class AuthAppRepository {
                   Log.w(TAG, "firebase user is null.");
                 }
                 this.createNewUser(username, email, this.firebaseUser.getUid());
-
+                //TODO: await the result of createNewUser before sending a verification email
+                //TODO: important!!!
                 /* if registration process succeeded initiate email verification process */
                 this.firebaseUser.sendEmailVerification()
                         .addOnCompleteListener(task1 -> {
@@ -125,10 +128,20 @@ public class AuthAppRepository {
     newUser.setDisplayName(username);
     newUser.setEmail(email);
 
-    databaseReference.child(Config.CHILD_USER).child(uid).setValue(newUser);
+    databaseReference
+            .child(Config.CHILD_USER)
+            .child(uid)
+            .setValue(newUser)
+            .addOnSuccessListener(unused -> {
+              //TODO: pass success result to method register
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Could not create a new user!");
+              //TODO: assert! deny access to user! pass result to method register
+            });
   }
 
-  /** listens to changes on firebase user */
+  /** listenr: changes on firebase user status */
   private FirebaseAuth.AuthStateListener authStateListener() {
     return firebaseAuth1 -> {
       this.firebaseUser = firebaseAuth1.getCurrentUser();
@@ -151,6 +164,7 @@ public class AuthAppRepository {
         Log.d(TAG, "password was reset.");
         this.userLiveData.postSuccess(this.firebaseUser);
       } else {
+        Log.d(TAG, "password could not be reset.");
         this.userLiveData.postError(new Error(Config.PASSWORD_RESET_FAILED), ErrorTag.REPO);
       }
     });
@@ -196,7 +210,6 @@ public class AuthAppRepository {
   public void deleteAccount() {
     //TODO: delete Account in real time database and firebase authentication
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
-    this.userLiveData.postSuccess(null);
   }
 
   /** Checks FirebaseAuth if the email that the user tries to register with exists. */
