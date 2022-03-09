@@ -225,7 +225,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_courseDescriptionFragment_to_courseParticipantsFragment"
-            app:destination="@id/courseParticipantsFragment" />
+            app:destination="@id/courseParticipantsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_courseDescriptionFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
@@ -233,7 +237,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_courseDescriptionFragment_to_courseDescriptionDetailFragment"
-            app:destination="@+id/courseDescriptionDetailFragment"/>
+            app:destination="@+id/courseDescriptionDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/courseParticipantsFragment"
@@ -243,6 +251,10 @@
         <action
             android:id="@+id/action_courseParticipantsFragment_to_courseDescriptionFragment"
             app:destination="@id/courseDescriptionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/courseDescriptionFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -392,6 +404,10 @@
         <action
             android:id="@+id/action_courseDescriptionDetailFragment_to_courseDescriptionFragment"
             app:destination="@id/courseDescriptionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/courseDescriptionFragment"
             app:popUpToInclusive="true" />
     </fragment>
