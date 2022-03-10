@@ -17,41 +17,40 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/** This class manages the database access for the overview of the courses of a user. */
-public class CoursesRepository {
+/** Repo to get the owned courses. */
+public class OwnedCoursesRepository {
 
-  private static final String TAG = "CoursesRepo";
+  private static final String TAG = "OwnedCoursesRepo";
 
-  private static CoursesRepository instance;
+  private static OwnedCoursesRepository instance;
 
-  private ArrayList<CourseModel> userCoursesList = new ArrayList<>();
+  private ArrayList<CourseModel> ownedCoursesList = new ArrayList<>();
   private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
 
-  /** This method generates the Instance of the CourseRepository. */
-  public static CoursesRepository getInstance() {
+  /** Generate an instance of the repo. */
+  public static OwnedCoursesRepository getInstance() {
     if (instance == null) {
-      instance = new CoursesRepository();
+      instance = new OwnedCoursesRepository();
     }
     return instance;
   }
 
-  /** This method provides all courses a user has signed up for. */
-  public MutableLiveData<List<CourseModel>> getUserCourses() {
-    if (this.userCoursesList.size() == 0) {
-      this.loadUserCourses();
+  /** Give back the owned courses of the user. */
+  public MutableLiveData<List<CourseModel>> getOwnedCourses() {
+    if (this.ownedCoursesList.size() == 0) {
+      this.loadOwnedCourses();
     }
-
-    this.courses.setValue(userCoursesList);
+    this.courses.setValue(ownedCoursesList);
     return this.courses;
   }
 
-  /** This method loads all courses in which the user is signed in. */
-  public void loadUserCourses() {
+  /** Load all owned courses. */
+  public void loadOwnedCourses() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
     String id = auth.getCurrentUser().getUid();
-    this.userCoursesList.clear();
-    this.courses.postValue(userCoursesList);
+    this.ownedCoursesList.clear();
+    this.courses.postValue(ownedCoursesList);
 
     Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
@@ -65,8 +64,12 @@ public class CoursesRepository {
         Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
           for (Task<DataSnapshot> task : taskList) {
             CourseModel model = task.getResult().getValue(CourseModel.class);
-            model.setKey(task.getResult().getKey());
-            authorList.add(model);
+            if (model != null) {
+              if (model.getCreatorId().equals(id)) {
+                model.setKey(task.getResult().getKey());
+                authorList.add(model);
+              }
+            }
           }
           getAuthor(authorList);
         });
@@ -99,9 +102,9 @@ public class CoursesRepository {
           authorList.get(i).setCreatorName(name);
         }
       }
-      userCoursesList.clear();
-      userCoursesList.addAll(authorList);
-      courses.postValue(userCoursesList);
+      ownedCoursesList.clear();
+      ownedCoursesList.addAll(authorList);
+      courses.postValue(ownedCoursesList);
     });
   }
 

@@ -31,6 +31,15 @@ public class Config {
   public static final String CHILD_DISPLAY_NAME = "displayName";
   public static final String CHILD_INSTITUTION = "institution";
 
+  /** Tabview. */
+  public static final int TAB_TODAY = 0;
+  public static final String TAB_TODAY_NAME = "Heute";
+  public static final int TAB_ALL = 1;
+  public static final String TAB_ALL_NAME = "Alle";
+  public static final int TAB_OWNED = 2;
+  public static final String TAB_OWNED_NAME = "Erstellt";
+  public static final int NUMBER_OF_TABS = 3;
+
   /** Firebase deleted user. */
   public static final String UNKNOWN_USER = "<gelöschter Nutzer>";
 

@@ -78,9 +78,9 @@ public class LoginFragment extends Fragment {
     this.loginViewModel = new ViewModelProvider(requireActivity())
             .get(LoginViewModel.class);
     this.loginViewModel.init();
-    this.coursesViewModel = new ViewModelProvider(requireActivity())
-            .get(CoursesViewModel.class);
-    this.coursesViewModel.init();
+    //this.coursesViewModel = new ViewModelProvider(requireActivity())
+    //        .get(CoursesViewModel.class);
+    //this.coursesViewModel.init();
     /*
      * If user successfully logged in (login input correct and email is verified)
      *  navigate to the course screen.
@@ -94,10 +94,10 @@ public class LoginFragment extends Fragment {
               if (firebaseUser != null
                       && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
                 navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
-                this.coursesViewModel.loadCourses();
+                //this.coursesViewModel.loadCourses();
               } else if (firebaseUser != null) {
                 navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-                this.coursesViewModel.loadCourses();
+                //this.coursesViewModel.loadCourses();
               }
             });
     /* If user tries to log in but its email isn`t verified yet open verify-email-dialog.*/
