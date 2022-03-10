@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,6 +36,8 @@ public class LoginFragment extends Fragment {
 
   public LoginFragment() {
     // Required empty public constructor
+    //TODO: if we are coming from profileframgent (=logout), destroy fragment stack
+    //TODO: disable back nav in this fragment
   }
 
   @Override

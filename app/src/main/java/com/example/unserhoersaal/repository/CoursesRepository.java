@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,8 +26,8 @@ public class CoursesRepository {
 
   private static CoursesRepository instance;
 
-  private ArrayList<CourseModel> userCoursesList = new ArrayList<CourseModel>();
-  private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
+  private ArrayList<CourseModel> userCoursesList = new ArrayList<>();
+  private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
 
   /** This method generates the Instance of the CourseRepository. */
   public static CoursesRepository getInstance() {
@@ -36,12 +38,12 @@ public class CoursesRepository {
   }
 
   /** This method provides all courses a user has signed up for. */
-  public MutableLiveData<List<CourseModel>> getUserCourses() {
+  public StateLiveData<List<CourseModel>> getUserCourses() {
     if (this.userCoursesList.size() == 0) {
       this.loadUserCourses();
     }
 
-    this.courses.setValue(userCoursesList);
+    this.courses.setValue(new StateData<>(userCoursesList));
     return this.courses;
   }
 
@@ -49,6 +51,7 @@ public class CoursesRepository {
   public void loadUserCourses() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    //TODO: assert auth.getcurrentuser != null
     String id = auth.getCurrentUser().getUid();
 
 
@@ -64,6 +67,7 @@ public class CoursesRepository {
         Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
           for (Task<DataSnapshot> task : taskList) {
             CourseModel model = task.getResult().getValue(CourseModel.class);
+            //TODO: assert setKey != null
             model.setKey(task.getResult().getKey());
             authorList.add(model);
           }
@@ -73,7 +77,7 @@ public class CoursesRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.d(TAG, "onCancelled: " + error.getMessage());
+        Log.e(TAG, "onCancelled: " + error.getMessage());
       }
     });
   }
@@ -98,7 +102,7 @@ public class CoursesRepository {
       }
       userCoursesList.clear();
       userCoursesList.addAll(authorList);
-      courses.postValue(userCoursesList);
+      courses.postValue(new StateData<>(userCoursesList));
     });
   }
 

@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
+import com.example.unserhoersaal.model.MessageModel;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.List;
 
@@ -56,16 +59,17 @@ public class CurrentCourseFragment extends Fragment {
     this.initRecyclerView();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
     this.currentCourseViewModel.init();
     this.currentCourseViewModel.getThreadId().observe(getViewLifecycleOwner(), id -> {
-      this.courseKeyTextView.setText(id);
+      this.courseKeyTextView.setText(id.getData());
     });
     this.currentCourseViewModel.getMessages()
             .observe(getViewLifecycleOwner(),
-                    (Observer<List>) list -> chatAdapter.notifyDataSetChanged());
+                    list -> chatAdapter.notifyDataSetChanged());
   }
 
   private void initUi(View view) {
@@ -80,7 +84,8 @@ public class CurrentCourseFragment extends Fragment {
   }
 
   private void initRecyclerView() {
-    this.chatAdapter = new ChatAdapter(this.currentCourseViewModel.getMessages().getValue(),
+    //TODO: assert != null
+    this.chatAdapter = new ChatAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
             this.currentCourseViewModel);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     this. recyclerView.setLayoutManager(layoutManager);

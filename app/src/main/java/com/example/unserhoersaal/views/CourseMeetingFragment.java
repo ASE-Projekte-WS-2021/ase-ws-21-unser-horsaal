@@ -70,7 +70,7 @@ public class CourseMeetingFragment extends Fragment {
     this.currentCourseViewModel.init();
     this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
       threadAdapter.notifyDataSetChanged();
-      if (messageList.size() == 0) {
+      if (messageList.getData().size() == 0) {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
       } else {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
@@ -79,7 +79,7 @@ public class CourseMeetingFragment extends Fragment {
     this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
       if (threadModel != null) {
         KeyboardUtil.hideKeyboard(getActivity());
-        this.currentCourseViewModel.setThreadId(threadModel.getKey());
+        this.currentCourseViewModel.setThreadId(threadModel.getData().getKey());
         this.courseMeetingViewModel.resetThreadModelInput();
         this.binding.courseMeetingFragmentCreateThreadContainer.setVisibility(View.GONE);
         this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
@@ -90,7 +90,8 @@ public class CourseMeetingFragment extends Fragment {
 
   private void connectAdapter() {
     this.threadAdapter =
-            new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue());
+            //TODO: assert != null
+            new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue().getData());
   }
 
   private void connectBinding() {

@@ -1,11 +1,15 @@
 package com.example.unserhoersaal.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.CreateCourseRepository;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
+
 import java.util.Random;
 
 /**Class transfers data from CreateCourseRepository to CreateCourseFragment and viceversa.**/
@@ -14,50 +18,67 @@ public class CreateCourseViewModel extends ViewModel {
   private static final String TAG = "CreateCourseViewModel";
 
   private CreateCourseRepository createCourseRepository;
-  private MutableLiveData<CourseModel> courseModel;
-  public MutableLiveData<CourseModel> dataBindingCourseModelInput;
+  private StateLiveData<CourseModel> courseModel;
+  public StateLiveData<CourseModel> courseModelInputState;
 
-  /** Initialization of the CreatCourseViewModel. */
+  /** Initialization of the CreateCourseViewModel. */
   public void init() {
     if (this.courseModel != null) {
       return;
     }
     this.createCourseRepository = CreateCourseRepository.getInstance();
     this.courseModel = this.createCourseRepository.getUserCourse();
-    this.dataBindingCourseModelInput = new MutableLiveData<>(new CourseModel());
+    this.courseModelInputState.postValue(new StateData<>(new CourseModel()));
   }
 
-  public LiveData<CourseModel> getCourseModel() {
+  public StateLiveData<CourseModel> getCourseModel() {
     return this.courseModel;
   }
 
   public void resetCourseModelInput() {
-    this.dataBindingCourseModelInput.setValue(new CourseModel());
-    this.courseModel.setValue(null);
+    this.courseModelInputState.postValue(new StateData<>(new CourseModel()));
+    this.courseModel.postValue(new StateData<>(null));
   }
 
   /** Create a new course. */
   public void createCourse() {
-    //TODO: status data to view
-    if (this.dataBindingCourseModelInput.getValue() == null) {
+    CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
+    if (courseModel == null) {
+      Log.d(TAG, "CreateCourseVM>createCourse courseModel is null.");
       return;
     }
 
-    CourseModel courseModel = this.dataBindingCourseModelInput.getValue();
-    String codeMapping = this.getCodeMapping();
-    courseModel.setCodeMapping(codeMapping);
-
-    //TODO: status data to view
     if (courseModel.getTitle() == null) {
+      Log.d(TAG, "CreateCourseVM>createCourse: title is null.");
+      this.courseModelInputState.postError(new Error(Config.VM_TITLE_NULL), ErrorTag.VM);
+      return;
+    } else if (!Validation.titleHasPattern(courseModel.getTitle())) {
+      Log.d(TAG, "CreateCourseVM>createCourse: title has wrong pattern.");
+      this.courseModelInputState.postError(new Error(Config.VM_TITLE_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
     if (courseModel.getDescription() == null) {
+      Log.d(TAG, "CreateCourseVM>createCourse: description is null.");
+      this.courseModelInputState.postError(new Error(Config.VM_TEXT_NULL), ErrorTag.VM);
+      return;
+    } else if (!Validation.textHasPattern(courseModel.getDescription())) {
+      Log.d(TAG, "CreateCourseVM>createCourse: description has wrong pattern.");
+      this.courseModelInputState.postError(new Error(Config.VM_TEXT_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
     if (courseModel.getInstitution() == null) {
+      Log.d(TAG, "CreateCourseVM>createCourse: institution is null.");
+      this.courseModelInputState.postError(new Error(Config.VM_INSTITUTION_NULL), ErrorTag.VM);
+      return;
+    } else if (!Validation.institutionHasPattern(courseModel.getInstitution())) {
+      Log.d(TAG, "CreateCourseVM>createCourse: institution has wrong pattern.");
+      this.courseModelInputState.postError(new Error(Config.VM_INSTITUTION_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
 
+    courseModel.setCodeMapping(this.getCodeMapping());
+
+    this.courseModelInputState.postComplete();
     this.createCourseRepository.createNewCourse(courseModel);
   }
 

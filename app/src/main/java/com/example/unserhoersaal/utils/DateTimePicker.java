@@ -18,13 +18,14 @@ public class DateTimePicker {
   public static void datePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
       //TODO: handle error to view!
-      if (courseHistoryViewModel.dataBindingMeetingInput.getValue() == null) {
+      //TODO: assert != null
+      if (courseHistoryViewModel.meetingModelInputState.getValue().getData() == null) {
         return;
       }
 
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setYearInput(year);
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setMonthInput(month);
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setDayOfMonthInput(day);
+      courseHistoryViewModel.meetingModelInputState.getValue().getData().setYearInput(year);
+      courseHistoryViewModel.meetingModelInputState.getValue().getData().setMonthInput(month);
+      courseHistoryViewModel.meetingModelInputState.getValue().getData().setDayOfMonthInput(day);
       String time = day + "." + (month + 1) + "." + year;
       view.setText(time);
     };
@@ -46,12 +47,13 @@ public class DateTimePicker {
   public static void timePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     TimePickerDialog.OnTimeSetListener timeSetListener = (datePicker, hour, minute) -> {
       //TODO: handle error to view!
-      if (courseHistoryViewModel.dataBindingMeetingInput.getValue() == null) {
+      //TODO: assert != null
+      if (courseHistoryViewModel.meetingModelInputState.getValue().getData() == null) {
         return;
       }
 
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setHourInput(hour);
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setMinuteInput(minute);
+      courseHistoryViewModel.meetingModelInputState.getValue().getData().setHourInput(hour);
+      courseHistoryViewModel.meetingModelInputState.getValue().getData().setMinuteInput(minute);
       String time = hour + ":" + minute;
       view.setText(time);
     };

@@ -1,9 +1,12 @@
 package com.example.unserhoersaal.repository;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -18,10 +21,8 @@ public class CourseDescriptionRepository {
   private static final String TAG = "CourseDescriptionRepository";
 
   private static CourseDescriptionRepository instance;
-
-  private MutableLiveData<String> courseId = new MutableLiveData<>();
-  private MutableLiveData<CourseModel> courseModel = new MutableLiveData<>();
-
+  private StateLiveData<String> courseId = new StateLiveData<>();
+  private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
   private ValueEventListener listener;
 
   public CourseDescriptionRepository() {
@@ -36,11 +37,11 @@ public class CourseDescriptionRepository {
     return instance;
   }
 
-  public MutableLiveData<String> getCourseId() {
+  public StateLiveData<String> getCourseId() {
     return this.courseId;
   }
 
-  public MutableLiveData<CourseModel> getCourseModel() {
+  public StateLiveData<CourseModel> getCourseModel() {
     return this.courseModel;
   }
 
@@ -48,12 +49,13 @@ public class CourseDescriptionRepository {
   public void setCourseId(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.courseId.getValue() != null) {
-      reference.child(Config.CHILD_COURSES).child(this.courseId.getValue())
+      //TODO: assert this.courseId.getvalue() != null
+      reference.child(Config.CHILD_COURSES).child(this.courseId.getValue().getData())
               .removeEventListener(this.listener);
     }
     reference.child(Config.CHILD_COURSES).child(courseId).addValueEventListener(this.listener);
-    this.courseModel.postValue(new CourseModel());
-    this.courseId.postValue(courseId);
+    this.courseModel.postValue(new StateData<>(new CourseModel()));
+    this.courseId.postValue(new StateData<>(courseId));
   }
 
   /** Initializes the listener for the database access. */
@@ -62,31 +64,37 @@ public class CourseDescriptionRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
+        //TODO: assert model =! null
         model.setKey(snapshot.getKey());
         getAuthorName(model);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-
+        courseModel.postError(new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
     };
   }
 
   private void getAuthorName(CourseModel course) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Task<DataSnapshot> task = reference.child(Config.CHILD_USER).child(course.getCreatorId())
+    Task<DataSnapshot> task = reference
+            .child(Config.CHILD_USER)
+            .child(course.getCreatorId())
             .child(Config.CHILD_USER_NAME).get();
-
     task.addOnSuccessListener(dataSnapshot -> {
       course.setCreatorName(dataSnapshot.getValue(String.class));
-      courseModel.postValue(course);
-    });
+      this.courseModel.postSuccess(course);
+    }).addOnFailureListener(e ->
+            this.courseModel.postError(new Error(Config.COURSE_DESCRIPTION_COULD_NOT_LOAD_USER), ErrorTag.REPO)
+    );
   }
 
   /** unregisters a user from a course in real time database. */
   public void unregisterFromCourse(String id) {
+    this.courseModel.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    //TODO: Firebaseuser != null
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     reference.child(Config.CHILD_USER_COURSES)
             .child(uid).child(id)
@@ -96,7 +104,18 @@ public class CourseDescriptionRepository {
                             .child(id)
                             .child(uid)
                             .removeValue()
-                            .addOnSuccessListener(unused1 -> courseModel.postValue(null)));
+                            .addOnSuccessListener(unused1 -> courseModel.postSuccess(null))
+                            .addOnFailureListener(e -> {
+                              Log.e(TAG, "Could not unregister User from course");
+                              this.courseModel.postError(
+                                      new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED),
+                                      ErrorTag.REPO);
+                            })
+            ).addOnFailureListener(e -> {
+              Log.e(TAG, "Could not unregister User from course");
+              this.courseModel.postError(
+                      new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
+            });
   }
 
 }

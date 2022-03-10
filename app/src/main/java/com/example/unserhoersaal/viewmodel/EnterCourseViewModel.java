@@ -1,10 +1,14 @@
 package com.example.unserhoersaal.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
 import androidx.lifecycle.ViewModel;
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.EnterCourseRepository;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
 
 /**Class EnterCourseViewModel.**/
 public class EnterCourseViewModel extends ViewModel {
@@ -12,62 +16,89 @@ public class EnterCourseViewModel extends ViewModel {
   private static final String TAG = "EnterCourseViewModel";
 
   private EnterCourseRepository enterCourseRepository;
-  private MutableLiveData<CourseModel> courseModel;
+  private StateLiveData<CourseModel> courseModelStateLiveData;
+  private StateLiveData<CourseModel> enteredCourse;
+  public StateLiveData<CourseModel> courseIdInputState;
 
-  public MutableLiveData<String> dataBindingCourseIdInput;
-  private MutableLiveData<CourseModel> enteredCourse;
 
   /** Initialize the EnterCourseViewModel. */
   public void init() {
-    if (this.courseModel != null) {
+    if (this.courseModelStateLiveData != null) {
       return;
     }
     this.enterCourseRepository = EnterCourseRepository.getInstance();
-    this.courseModel = this.enterCourseRepository.getCourse();
-    this.dataBindingCourseIdInput = new MutableLiveData<>();
+    this.courseModelStateLiveData = this.enterCourseRepository.getCourse();
     this.enteredCourse = this.enterCourseRepository.getEnteredCourse();
+    this.courseIdInputState = new StateLiveData<>();
   }
 
-  public LiveData<CourseModel> getCourse() {
-    return this.courseModel;
+  public StateLiveData<CourseModel> getCourse() {
+    return this.courseModelStateLiveData;
   }
 
-  public LiveData<CourseModel> getEnteredCourse() {
+  public StateLiveData<CourseModel> getEnteredCourse() {
     return this.enteredCourse;
   }
 
   /** Reset the entered data after joining the course. */
   public void resetEnterCourseId() {
-    this.dataBindingCourseIdInput.setValue(null);
+    this.courseIdInputState.postValue(new StateData<>(new CourseModel()));
   }
 
   public void resetEnterCourse() {
-    this.courseModel.setValue(null);
-    this.enteredCourse.setValue(null);
+    this.courseModelStateLiveData.postValue(new StateData<>(null));
+    this.enteredCourse.postValue(new StateData<>(null));
   }
 
   /** JavaDoc for this method. */
   public void checkCode() {
-
-    String id = dataBindingCourseIdInput.getValue();
-    if (id != null) {
-      id = id.toUpperCase();
-      id = id.replace(" ", "");
-      id = id.replace("-", "");
-      this.enterCourseRepository.checkCode(id);
+    CourseModel courseModel = Validation.checkStateLiveData(this.courseIdInputState, TAG);
+    if (courseModel == null) {
+      Log.d(TAG, "ProfileViewModel>checkCode courseModel is null.");
+      return;
     }
+
+    if (courseModel.getCodeMapping()== null) {
+      this.courseIdInputState.postError(new Error(Config.VM_CODEMAPPING_NULL), ErrorTag.VM);
+      Log.d(TAG, "EnterCourseVM>checkCode id is null.");
+      return;
+    } else if (!Validation.codeMappingHasPattern(courseModel.getCodeMapping())) {
+      this.courseIdInputState.postError(new Error(Config.VM_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
+      Log.d(TAG, "EnterCourseVM>checkCode id has wrong pattern.");
+      return;
+    }
+
+    String codeMapping = courseModel.getCodeMapping();
+    codeMapping = codeMapping.toUpperCase();
+    codeMapping = codeMapping.replace(" ", "");
+    codeMapping = codeMapping.replace("-", "");
+
+    this.courseIdInputState.postComplete();
+    this.enterCourseRepository.checkCode(codeMapping);
+
   }
 
   /** JavaDoc for this method. */
   public void enterCourse() {
-    //TODO: send status data back to view on error
-    if (courseModel.getValue() == null) {
+    CourseModel courseModel = Validation.checkStateLiveData(this.courseModelStateLiveData, TAG);
+    if (courseModel == null) {
+      Log.d(TAG, "ProfileViewModel>changeInstitution userModel is null.");
       return;
     }
-    if (courseModel.getValue().getKey() == null) {
+
+    if (courseModel.getCodeMapping() == null) {
+      this.courseIdInputState.postError(new Error(Config.VM_CODEMAPPING_NULL), ErrorTag.VM);
+      Log.d(TAG, "EnterCourseVM>enterCourse codeMapping is null.");
       return;
     }
-    this.enterCourseRepository.isUserInCourse(courseModel.getValue());
+    else if (!Validation.codeMappingHasPattern(courseModel.getCodeMapping())) {
+      this.courseIdInputState.postError(new Error(Config.VM_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
+      Log.d(TAG, "EnterCourseVM>enterCourse codeMapping has wrong pattern.");
+      return;
+    }
+
+    this.courseModelStateLiveData.postComplete();
+    this.enterCourseRepository.isUserInCourse(courseModel);
   }
 
 }

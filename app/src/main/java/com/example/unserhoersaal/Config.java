@@ -31,11 +31,31 @@ public class Config {
   public static final String CHILD_DISPLAY_NAME = "displayName";
   public static final String CHILD_INSTITUTION = "institution";
 
+  /** Repository Errors */
+  public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED = "Das Abmelden vom Kurs war nicht erfolgreich!";
+  public static final String COURSE_DESCRIPTION_SETCOURSEID_FAILED = "Kursid konnte nicht gesetzt werden.";
+  public static final String COURSE_DESCRIPTION_COULD_NOT_LOAD_USER = "Nutzer konnte nicht geladen werden.";
+  public static final String COURSE_HISTORY_MEETING_NOT_CREATED = "Das Meeting konnte nicht erstellt werden.";
+  public static final String COURSE_HISTORY_LISTENER_FAILURE = "Course History Listener Failure";
+  public static final String COURSE_MEETING_THREAD_CREATION_FAILURE = "Der Thread konnte nicht erstellt werden";
+  public static final String COURSE_MEETING_LISTENER_FAILURE = "Course Meeting Listener Failure";
+  public static final String COURSE_PARTICIPANTS_LISTENER_FAILURE = "Course Participants Listener Failure";
+
   /** Profile Error */
   public static final String PROFILE_FAILED_TO_LOAD_USER = "Der Nutzer konnte nicht geladen werden.";
   public static final String PROFILE_FAILED_TO_CHANGE_PASSWORD = "Das Password konnte nicht geändert werden.";
   public static final String PROFILE_FAILED_TO_CHANGE_INSTITUTION = "Die Institution konnte nicht geändert werden.";
   public static final String PROFILE_FAILED_TO_CHANGE_DISPLAYNAME = "Der Nutzername konnte nicht geändert werden.";
+
+  /** ViewModel */
+  public static final String VM_TITLE_NULL = "Der Titel darf nicht null sein.";
+  public static final String VM_TITLE_WRONG_PATTERN = "Der Titel entspricht nicht dem vorgegebenen Pattern.";
+  public static final String VM_TEXT_NULL = "Der Titel darf nicht null sein.";
+  public static final String VM_TEXT_WRONG_PATTERN = "Der Titel entspricht nicht dem vorgegebenen Pattern.";
+  public static final String VM_INSTITUTION_NULL = "Der Text für Institution darf nicht null sein.";
+  public static final String VM_INSTITUTION_WRONG_PATTERN = "Der Text für Institution entspricht nicht dem vorgegebenen Pattern.";
+  public static final String VM_CODEMAPPING_NULL = "Der Beitrittscode darf nicht leer sein.";
+  public static final String VM_CODEMAPPING_WRONG_PATTERN = "Der Beitrittscode hat ein ungültiges Muster.";
 
   /** UI. */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;
@@ -106,6 +126,10 @@ public class Config {
     are checked to complete the whole regex.
   */
   public static final String PASSWORD_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$";
+  //TODO: check if this matches our policy
+  public static final String TITLE_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,64}$";
+  public static final String INSTITUTION_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,30}$";
+  public static final String TEXT_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{1,200}$";
 
   /** CodeMapping. */
   public static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

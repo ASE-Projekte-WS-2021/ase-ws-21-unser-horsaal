@@ -1,10 +1,14 @@
 package com.example.unserhoersaal.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,9 +29,9 @@ public class CourseMeetingRepository {
   private static CourseMeetingRepository instance;
 
   private ArrayList<ThreadModel> threadModelList = new ArrayList<>();
-  private MutableLiveData<List<ThreadModel>> threads = new MutableLiveData<>();
-  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
-  private MutableLiveData<ThreadModel> threadModelMutableLiveData = new MutableLiveData<>();
+  private StateLiveData<List<ThreadModel>> threads = new StateLiveData<>();
+  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
+  private StateLiveData<ThreadModel> threadModelMutableLiveData = new StateLiveData<>();
   private ValueEventListener listener;
 
   public CourseMeetingRepository() {
@@ -43,20 +47,20 @@ public class CourseMeetingRepository {
   }
 
   /** Give back all threads of the Meeting. */
-  public MutableLiveData<List<ThreadModel>> getThreads() {
+  public StateLiveData<List<ThreadModel>> getThreads() {
     /*if (this.threadModelList.size() == 0) {
       loadThreads();
     }*/
 
-    this.threads.setValue(this.threadModelList);
+    this.threads.setValue(new StateData<>(this.threadModelList));
     return this.threads;
   }
 
-  public MutableLiveData<MeetingsModel> getMeeting() {
+  public StateLiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }
 
-  public MutableLiveData<ThreadModel> getThreadModelMutableLiveData() {
+  public StateLiveData<ThreadModel> getThreadModelMutableLiveData() {
     return this.threadModelMutableLiveData;
   }
 
@@ -64,20 +68,22 @@ public class CourseMeetingRepository {
   public void setMeeting(MeetingsModel meeting) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.meeting.getValue() != null) {
-      reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey())
+      //TODO: assert getdata != null
+      reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getData().getKey())
               .removeEventListener(this.listener);
     }
     reference.child(Config.CHILD_THREADS)
             .child(meeting.getKey())
             .addValueEventListener(this.listener);
-    this.meeting.postValue(meeting);
+    this.meeting.postValue(new StateData<>(meeting));
   }
 
   /** Loads all threads of the current meeting from the database. */
   //Query is not updated
   public void loadThreads() {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Query query = reference.child(Config.CHILD_MEETINGS).child(this.meeting.getValue().getKey())
+    //TODO: assert getdata != null
+    Query query = reference.child(Config.CHILD_MEETINGS).child(this.meeting.getValue().getData().getKey())
             .child(Config.CHILD_THREADS);
     query.addValueEventListener(this.listener);
   }
@@ -86,16 +92,26 @@ public class CourseMeetingRepository {
   public void createThread(ThreadModel threadModel) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    //TODO: assert getdata != null
     String uid = firebaseAuth.getCurrentUser().getUid();
 
     threadModel.setCreatorId(uid);
     threadModel.setCreationTime(System.currentTimeMillis());
+    //TODO: assert threadId != null
     String threadId = reference.getRoot().push().getKey();
-    reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getKey()).child(threadId)
+    //TODO: assert getdata != null
+    reference.child(Config.CHILD_THREADS)
+            .child(this.meeting.getValue().getData().getKey())
+            .child(threadId)
             .setValue(threadModel)
             .addOnSuccessListener(unused -> {
               threadModel.setKey(threadId);
-              threadModelMutableLiveData.postValue(threadModel);
+              threadModelMutableLiveData.postSuccess(threadModel);
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, Config.COURSE_MEETING_THREAD_CREATION_FAILURE);
+              threadModelMutableLiveData.postError(
+                      new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
             });
   }
 
@@ -111,7 +127,7 @@ public class CourseMeetingRepository {
       }
       threadModelList.clear();
       threadModelList.addAll(threadList);
-      threads.postValue(threadModelList);
+      threads.postSuccess(threadModelList);
     });
   }
 
@@ -128,6 +144,7 @@ public class CourseMeetingRepository {
         List<ThreadModel> threadList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           ThreadModel model = snapshot.getValue(ThreadModel.class);
+          //TODO: assert setkey != null
           model.setKey(snapshot.getKey());
           threadList.add(model);
         }
@@ -136,7 +153,8 @@ public class CourseMeetingRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-
+        Log.e(TAG, Config.COURSE_MEETING_LISTENER_FAILURE);
+        //TODO: can we set an error on statelivedata to inform the user about errors?
       }
     };
   }

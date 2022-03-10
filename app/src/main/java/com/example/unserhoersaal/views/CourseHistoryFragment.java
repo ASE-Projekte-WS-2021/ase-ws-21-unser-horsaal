@@ -75,7 +75,7 @@ public class CourseHistoryFragment extends Fragment {
 
     this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
       meetingAdapter.notifyDataSetChanged();
-      if (meetingsModels.size() == 0) {
+      if (meetingsModels.getData().size() == 0) {
         this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
       } else {
         this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
@@ -92,7 +92,8 @@ public class CourseHistoryFragment extends Fragment {
 
   private void connectAdapter() {
     this.meetingAdapter =
-            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue());
+            //TODO: assert !=  null
+            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData());
   }
 
   private void connectBinding() {

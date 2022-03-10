@@ -24,7 +24,7 @@ public class StateData<T> {
   @NonNull
   private ErrorTag errorTag;
 
-  public StateData(@NonNull T data) {
+  public StateData(@Nullable T data) {
     this.status = DataStatus.CREATED;
     this.data = data;
     this.error = null;

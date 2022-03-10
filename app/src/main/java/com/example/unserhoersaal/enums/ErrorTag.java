@@ -6,4 +6,5 @@ public enum ErrorTag {
   USERNAME,
   PASSWORD,
   REPO,
+  VM
 }

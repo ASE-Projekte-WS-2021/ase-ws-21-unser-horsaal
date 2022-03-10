@@ -1,11 +1,22 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
+import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.ThreadModel;
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
+
 import java.util.List;
 
 /** ViewModel for the CourseMeetingFragment. */
@@ -15,10 +26,10 @@ public class CourseMeetingViewModel extends ViewModel {
 
   private CourseMeetingRepository courseMeetingRepository;
 
-  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
-  private MutableLiveData<List<ThreadModel>> threads;
-  private MutableLiveData<ThreadModel> threadModelMutableLiveData;
-  public MutableLiveData<ThreadModel> threadModelInput;
+  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
+  private StateLiveData<List<ThreadModel>> threads;
+  private StateLiveData<ThreadModel> threadModelMutableLiveData;
+  public StateLiveData<ThreadModel> threadModelInputState;
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -34,24 +45,24 @@ public class CourseMeetingViewModel extends ViewModel {
     if (this.meeting.getValue() != null) {
       this.threads = this.courseMeetingRepository.getThreads();
     }
-    this.threadModelInput = new MutableLiveData<>(new ThreadModel());
+    this.threadModelInputState.postValue(new StateData<>(new ThreadModel()));
   }
 
-  public LiveData<List<ThreadModel>> getThreads() {
+  public StateLiveData<List<ThreadModel>> getThreads() {
     return this.threads;
   }
 
-  public LiveData<MeetingsModel> getMeeting() {
+  public StateLiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }
 
-  public LiveData<ThreadModel> getThreadModel() {
+  public StateLiveData<ThreadModel> getThreadModel() {
     return this.threadModelMutableLiveData;
   }
 
   public void resetThreadModelInput() {
-    this.threadModelInput.setValue(new ThreadModel());
-    this.threadModelMutableLiveData.setValue(null);
+    this.threadModelInputState.postValue(new StateData<>(new ThreadModel()));
+    this.threadModelMutableLiveData.postValue(new StateData<>(null));
   }
 
   public void setMeeting(MeetingsModel meeting) {
@@ -60,20 +71,32 @@ public class CourseMeetingViewModel extends ViewModel {
 
   /** Create a new Thread. */
   public void createThread() {
-    //TODO: error -> view
-    if (this.threadModelInput.getValue() == null) {
+    ThreadModel threadModel = Validation.checkStateLiveData(this.threadModelInputState, TAG);
+    if (threadModel == null) {
+      Log.d(TAG, "CourseMeetingVM>createThread threadModel is null.");
       return;
     }
 
-    //TODO: error -> view
-    ThreadModel threadModel = this.threadModelInput.getValue();
     if (threadModel.getTitle() == null) {
+      Log.d(TAG, "CourseMeetingVM>createThread: title is null.");
+      this.threadModelInputState.postError(new Error(Config.VM_TITLE_NULL), ErrorTag.VM);
+      return;
+    } else if (!Validation.titleHasPattern(threadModel.getTitle())) {
+      Log.d(TAG, "CourseMeetingVM>createThread: title wrong pattern.");
+      this.threadModelInputState.postError(new Error(Config.VM_TITLE_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
     if (threadModel.getText() == null) {
+      Log.d(TAG, "CourseMeetingVM>createThread: text is null.");
+      this.threadModelInputState.postError(new Error(Config.VM_TEXT_NULL), ErrorTag.VM);
+      return;
+    } else if (!Validation.textHasPattern(threadModel.getText())) {
+      Log.d(TAG, "CourseMeetingVM>createThread: text wrong pattern.");
+      this.threadModelInputState.postError(new Error(Config.VM_TEXT_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
 
+    this.threadModelInputState.postComplete();
     this.courseMeetingRepository.createThread(threadModel);
   }
 }

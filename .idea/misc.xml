@@ -93,7 +93,7 @@
         <entry key="app/src/main/res/layout/fragment_course_history.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_course_meeting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_course_participants.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/fragment_course_thread.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/fragment_course_thread.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_courses.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_create_course.xml" value="0.21829710144927536" />
         <entry key="app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.2341485507246377" />
@@ -104,6 +104,7 @@
         <entry key="app/src/main/res/layout/fragment_edit_profile_password.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_enter_course.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_no_course_found.xml" value="0.2341485507246377" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.2128623188405797" />
         <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.2341485507246377" />

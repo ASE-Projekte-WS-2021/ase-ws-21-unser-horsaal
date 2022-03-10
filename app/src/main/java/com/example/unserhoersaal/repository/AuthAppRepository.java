@@ -1,19 +1,11 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
-import com.example.unserhoersaal.enums.ResetPasswordEnum;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +43,8 @@ public class AuthAppRepository {
 
   /** Gives back the current UserModel. */
   public StateLiveData<FirebaseUser> getUserStateLiveData() {
+    /* TODO: remove completley to remove register issue!!!!
+    //TODO: why 2 times this.firebaseuser === null
     if (this.firebaseUser == null) {
       this.firebaseUser = this.firebaseAuth.getCurrentUser();
     }
@@ -59,7 +53,7 @@ public class AuthAppRepository {
       Log.e(TAG, "user data is null");
       return null;
     }
-    this.userLiveData.setValue(new StateData<>(this.firebaseUser));
+    this.userLiveData.setValue(new StateData<>(this.firebaseUser));*/
     return this.userLiveData;
   }
 

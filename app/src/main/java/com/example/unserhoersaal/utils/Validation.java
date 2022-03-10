@@ -39,6 +39,30 @@ public class Validation {
     return matcher.matches();
   }
 
+  public static boolean titleHasPattern(String title) {
+    Pattern pattern = Pattern.compile(Config.TITLE_PATTERN);
+    Matcher matcher = pattern.matcher(title);
+    return matcher.matches();
+  }
+
+  public static boolean textHasPattern(String title) {
+    Pattern pattern = Pattern.compile(Config.TEXT_PATTERN);
+    Matcher matcher = pattern.matcher(title);
+    return matcher.matches();
+  }
+
+  public static boolean institutionHasPattern(String title) {
+    Pattern pattern = Pattern.compile(Config.INSTITUTION_PATTERN);
+    Matcher matcher = pattern.matcher(title);
+    return matcher.matches();
+  }
+
+  public static boolean codeMappingHasPattern(String codeMapping) {
+    Pattern pattern = Pattern.compile(Config.INSTITUTION_PATTERN);
+    Matcher matcher = pattern.matcher(codeMapping);
+    return matcher.matches();
+  }
+
   /** When access StateLiveData in ViewModels, check if the StateData and/or Model exists. Also
    * returns the blank data. */
   public static <T> T checkStateLiveData(StateLiveData<T> data, String debugTag)  {

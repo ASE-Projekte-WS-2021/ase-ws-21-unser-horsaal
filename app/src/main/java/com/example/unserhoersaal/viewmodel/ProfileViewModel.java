@@ -84,7 +84,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     String displayName = userModel.getDisplayName();
-    //TODO: check if displayName matches our policy
+    //TODO: check if displayName matches our policy and is not null
 
     this.profileRepository.changeDisplayName(displayName);
   }
@@ -113,15 +113,14 @@ public class ProfileViewModel extends ViewModel {
       return;
     }
 
-    String oldPassword = passwordModel.getCurrentPassword();
-    String newPassword = passwordModel.getNewPassword();
-
-    if (!Validation.passwordHasPattern(newPassword)) {
+    //TODO: check if getPassword is null
+    if (!Validation.passwordHasPattern(passwordModel.getNewPassword())) {
       Log.d(TAG, "ProfileViewModel>changePassword: password doesn't match pattern");
-      this.userInputState.postError(new Error(Config.PASSWORD_RESET_FAILED), ErrorTag.REPO);
+      this.userInputState.postError(new Error(Config.PASSWORD_RESET_FAILED), ErrorTag.VM);
     } else {
-      this.userInputState.postComplete();
-      this.profileRepository.changePassword(oldPassword, newPassword);
+      this.userInputState.postComplete(); //TODO: passwordstate!!!
+      this.profileRepository
+              .changePassword(passwordModel.getCurrentPassword(), passwordModel.getNewPassword());
     }
   }
 

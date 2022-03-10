@@ -17,6 +17,7 @@ import com.example.unserhoersaal.adapter.ChatAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseThreadBinding;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 
 /**Course Thread.*/
@@ -66,13 +67,14 @@ public class CourseThreadFragment extends Fragment {
             .observe(getViewLifecycleOwner(), messageModels -> {
               KeyboardUtil.hideKeyboard(getActivity());
               chatAdapter.notifyDataSetChanged();
-              this.currentCourseViewModel.dataBindingMessageInput.setValue(new MessageModel());
+              this.currentCourseViewModel.messageModelInputState.postValue(new StateData<>(new MessageModel()));
             });
   }
 
   private void connectAdapter() {
     this.chatAdapter =
-            new ChatAdapter(this.currentCourseViewModel.getMessages().getValue(),
+            //TODO: assert != null
+            new ChatAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
                     this.currentCourseViewModel);
   }
 

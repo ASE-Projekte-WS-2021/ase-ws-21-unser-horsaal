@@ -1,8 +1,11 @@
 package com.example.unserhoersaal.repository;
 
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
+
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -13,7 +16,7 @@ public class CreateCourseRepository {
   private static final String TAG = "CourseCreationRepo";
 
   private static CreateCourseRepository instance;
-  private MutableLiveData<CourseModel> courseModelMutableLiveData = new MutableLiveData<>();
+  private StateLiveData<CourseModel> courseModelMutableLiveData = new StateLiveData<>();
 
   /** Generates an Instance of CreateCourseRepository. */
   public static CreateCourseRepository getInstance() {
@@ -27,7 +30,7 @@ public class CreateCourseRepository {
   public CreateCourseRepository() {
   }
 
-  public MutableLiveData<CourseModel> getUserCourse() {
+  public StateLiveData<CourseModel> getUserCourse() {
     return this.courseModelMutableLiveData;
   }
 
@@ -35,15 +38,20 @@ public class CreateCourseRepository {
   public void createNewCourse(CourseModel courseModel) {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    //TODO: assert firebaseauth.getcurrentuser 1= null
     String uid = firebaseAuth.getCurrentUser().getUid();
 
     courseModel.setCreatorId(uid);
     courseModel.setCreationTime(System.currentTimeMillis());
     String courseId = databaseReference.getRoot().push().getKey();
+    //TODO: assert courseId 1= null
     databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel)
             .addOnSuccessListener(unused -> {
               courseModel.setKey(courseId);
               addUserToCourse(courseModel, uid);
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
             });
   }
 
@@ -56,14 +64,23 @@ public class CreateCourseRepository {
                             .child(course.getKey())
                             .child(user)
                             .setValue(Boolean.TRUE)
-                            .addOnSuccessListener(unused1 -> addMapping(course)));
+                            .addOnSuccessListener(unused1 -> addMapping(course))
+                            .addOnFailureListener(e -> {
+                              Log.e(TAG, "User konnte dem Kurs nicht hinzugefügt werden: "
+                                      + e.getMessage());
+                            })
+            );
   }
 
   private void addMapping(CourseModel course) {
     String mappingCode = course.getCodeMapping();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     reference.child(Config.CHILD_CODE_MAPPING).child(mappingCode).setValue(course.getKey())
-            .addOnSuccessListener(unused -> courseModelMutableLiveData.postValue(course));
+            .addOnSuccessListener(unused ->
+                    courseModelMutableLiveData.postValue(new StateData<>(course)))
+            .addOnFailureListener(e ->
+              Log.e(TAG, "Das Mapping konnte nicht erstellt werden: " + e.getMessage())
+            );
   }
 
 }

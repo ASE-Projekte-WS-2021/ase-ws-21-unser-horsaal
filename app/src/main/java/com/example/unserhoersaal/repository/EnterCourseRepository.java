@@ -4,7 +4,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,8 +28,8 @@ public class EnterCourseRepository {
   private DatabaseReference databaseReference;
   private FirebaseAuth firebaseAuth;
 
-  private MutableLiveData<CourseModel> courseModel = new MutableLiveData<>();
-  private MutableLiveData<CourseModel> enteredCourse = new MutableLiveData<>();
+  private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
+  private StateLiveData<CourseModel> enteredCourse = new StateLiveData<>();
 
   /** Generates an Instance of the EnterCourseRepository. */
   public static EnterCourseRepository getInstance() {
@@ -42,12 +45,12 @@ public class EnterCourseRepository {
     this.firebaseAuth = FirebaseAuth.getInstance();
   }
 
-  public MutableLiveData<CourseModel> getCourse() {
+  public StateLiveData<CourseModel> getCourse() {
     return this.courseModel;
   }
 
   /** Gives back the current course id. */
-  public MutableLiveData<CourseModel> getEnteredCourse() {
+  public StateLiveData<CourseModel> getEnteredCourse() {
     return this.enteredCourse;
   }
 
@@ -61,7 +64,7 @@ public class EnterCourseRepository {
           loadCourse((String) dataSnapshot.getValue());
         } else {
           //TODO use status live data
-          courseModel.postValue(new CourseModel());
+          courseModel.postValue(new StateData<>(new CourseModel()));
         }
       }
 
@@ -80,13 +83,14 @@ public class EnterCourseRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel course = snapshot.getValue(CourseModel.class);
+        //TODO: assert != null
         course.setKey(snapshot.getKey());
         getAuthorName(course);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-
+        Log.e(TAG, "Loading Course failed: " + error.getMessage());
       }
     });
   }
@@ -99,7 +103,7 @@ public class EnterCourseRepository {
 
     task.addOnSuccessListener(dataSnapshot -> {
       course.setCreatorName(dataSnapshot.getValue(String.class));
-      courseModel.postValue(course);
+      courseModel.postValue(new StateData<>(course));
     });
   }
 
@@ -112,13 +116,15 @@ public class EnterCourseRepository {
           saveCourseInUser(course);
         } else {
           //if user has already entered the course just open it
-          enteredCourse.postValue(course);
+          enteredCourse.postSuccess(course);
         }
       }
 
       @Override
       public void onCancelled(DatabaseError databaseError) {
         Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+        //TODO
+        enteredCourse.postError(new Error("isUserInCourse failed"), ErrorTag.REPO);
       }
     };
 
@@ -129,6 +135,7 @@ public class EnterCourseRepository {
 
   /** Saves a entered course for a user. */
   public void saveCourseInUser(CourseModel course) {
+    //TODO: assert!= null
     String uid = this.firebaseAuth.getCurrentUser().getUid();
     this.databaseReference
             .child(Config.CHILD_USER_COURSES)
@@ -141,7 +148,12 @@ public class EnterCourseRepository {
                             .child(course.getKey())
                             .child(uid)
                     .setValue(Boolean.TRUE)
-                    .addOnSuccessListener(unused1 -> enteredCourse.postValue(course)));
+                    .addOnSuccessListener(unused1 -> enteredCourse.postSuccess(course)))
+            //TODO: errror messages
+                    .addOnFailureListener(e -> enteredCourse.postError(new Error(), ErrorTag.REPO))
+            .addOnFailureListener(e ->
+                      enteredCourse.postError(new Error(), ErrorTag.REPO)
+    );
 
   }
 

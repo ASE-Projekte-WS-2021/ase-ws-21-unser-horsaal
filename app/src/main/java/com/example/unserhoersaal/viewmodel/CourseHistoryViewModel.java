@@ -1,11 +1,19 @@
 package com.example.unserhoersaal.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
+
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,11 +25,11 @@ public class CourseHistoryViewModel extends ViewModel {
 
   private CourseHistoryRepository courseHistoryRepository;
 
-  private MutableLiveData<CourseModel> course = new MutableLiveData<>(new CourseModel());
-  private MutableLiveData<List<MeetingsModel>> meetings;
-  private MutableLiveData<MeetingsModel> meetingsModelMutableLiveData;
-  public MutableLiveData<MeetingsModel> dataBindingMeetingInput;
-  public MutableLiveData<String> userId;
+  private StateLiveData<CourseModel> course = new StateLiveData<>();
+  private StateLiveData<List<MeetingsModel>> meetings;
+  private StateLiveData<MeetingsModel> meetingsModelMutableLiveData;
+  public StateLiveData<MeetingsModel> meetingModelInputState = new StateLiveData<>();;
+  public StateLiveData<String> userId;
 
 
   /** Initialise the ViewModel. */
@@ -37,27 +45,27 @@ public class CourseHistoryViewModel extends ViewModel {
     this.courseHistoryRepository.setUserId();
     this.userId = this.courseHistoryRepository.getUserId();
 
-    if (this.course.getValue() != null) {
+    //TODO: assert != null
+    if (this.course.getValue().getData() != null) {
       this.meetings = this.courseHistoryRepository.getMeetings();
     }
-
-    this.dataBindingMeetingInput = new MutableLiveData<>(new MeetingsModel());
+    this.meetingModelInputState.postValue(new StateData<>(new MeetingsModel()));
   }
 
   public void resetMeetingData() {
-    this.dataBindingMeetingInput.setValue(new MeetingsModel());
-    this.meetingsModelMutableLiveData.setValue(null);
+    this.meetingModelInputState.postValue(new StateData<>(new MeetingsModel()));
+    this.meetingsModelMutableLiveData.postValue(new StateData<>(null));
   }
 
-  public LiveData<List<MeetingsModel>> getMeetings() {
+  public StateLiveData<List<MeetingsModel>> getMeetings() {
     return this.meetings;
   }
 
-  public LiveData<CourseModel> getCourse() {
+  public StateLiveData<CourseModel> getCourse() {
     return this.course;
   }
 
-  public LiveData<MeetingsModel> getMeetingsModel() {
+  public StateLiveData<MeetingsModel> getMeetingsModel() {
     return this.meetingsModelMutableLiveData;
   }
 
@@ -67,21 +75,23 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Create a new Meeting. */
   public void createMeeting() {
-    //TODO: send error back to view
-    if (this.dataBindingMeetingInput.getValue() == null) {
+    MeetingsModel meetingsModel = Validation.checkStateLiveData(this.meetingModelInputState, TAG);
+    if (meetingsModel == null) {
+      Log.d(TAG, "CourseHistoryVM>createMeeting meetingsModel is null.");
       return;
     }
 
-    MeetingsModel meetingsModel = this.dataBindingMeetingInput.getValue();
-    //TODO: send error back to view
     if (meetingsModel.getTitle() == null) {
+      this.meetingModelInputState.postError(new Error(Config.VM_TITLE_NULL), ErrorTag.VM);
+      return;
+    } else if (!Validation.titleHasPattern(meetingsModel.getTitle())) {
+      this.meetingModelInputState.postError(new Error(Config.VM_TITLE_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
-    //TODO: handle error if all values are 0
 
-    //TODO set to real eventtime
     meetingsModel.setEventTime(this.parseEventTime(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
+    this.meetingModelInputState.postComplete();
     this.courseHistoryRepository.createMeeting(meetingsModel);
   }
 

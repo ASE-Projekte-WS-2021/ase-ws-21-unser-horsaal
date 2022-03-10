@@ -14,8 +14,10 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
 /** Fragment for entering a course.*/
@@ -57,8 +59,10 @@ public class EnterCourseFragment extends Fragment {
     this.setupToolbar();
 
     if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+      CourseModel courseModel = new CourseModel();
+      courseModel.setCodeMapping(this.deepLinkMode.getCodeMapping());
       this.enterCourseViewModel
-              .dataBindingCourseIdInput.setValue(this.deepLinkMode.getCodeMapping());
+              .courseIdInputState.postValue(new StateData<>(courseModel));
       this.enterCourseViewModel.checkCode();
     }
   }
@@ -70,7 +74,7 @@ public class EnterCourseFragment extends Fragment {
     this.enterCourseViewModel.getCourse()
             .observe(getViewLifecycleOwner(), model -> {
               if (model != null) {
-                if (model.getKey() != null) {
+                if (model.getData().getKey() != null) {
                   KeyboardUtil.hideKeyboard(getActivity());
                   navController.navigate(
                           R.id.action_enterCourseFragment_to_enterCourseDetailFragment);

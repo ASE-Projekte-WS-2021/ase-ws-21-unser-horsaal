@@ -92,7 +92,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/enterCourseFragmentCourseNumberEditText"
-                        android:text="@={vm.dataBindingCourseIdInput}"
+                        android:text="@={vm.courseIdInputState.data.codeMapping}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"

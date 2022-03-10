@@ -65,7 +65,8 @@ public class CreateCourseFragment extends Fragment {
     this.createCourseViewModel
             .getCourseModel().observe(getViewLifecycleOwner(), courseModel -> {
               if (courseModel != null) {
-                courseCreated(courseModel);
+                //TODO: assert != null
+                courseCreated(courseModel.getData());
               }
             });
   }
