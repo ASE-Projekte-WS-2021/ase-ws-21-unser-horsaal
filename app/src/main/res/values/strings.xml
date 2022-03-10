@@ -150,6 +150,8 @@
     <string name="course_description_fragment_description">Kursbeschreibung</string>
     <string name="course_history_fragment_subtitle">Meetings</string>
     <string name="keine_threads_verf_gbar">Keine Threads verfügbar!</string>
+    <string name="du_hast_heute_keine_kurse">Du hast heute keine Kurse</string>
+    <string name="du_hast_noch_keine_kurse_erstellt">Du hast noch keine Kurse erstellt</string>
     <string name="current_time_placeholder">Uhrzeit</string>
     <string name="current_date_placeholder">Datum</string>
     <string name="course_description_fragment_enter_key">Beitrittscode</string>

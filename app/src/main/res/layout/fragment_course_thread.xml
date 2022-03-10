@@ -117,8 +117,7 @@
                             android:maxHeight="50dp"
                             setImage="@{vm.thread.photoUrl}"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/currentCourseFragmentAuthor"
-                            app:tint="@color/black" />
+                            app:layout_constraintTop_toTopOf="@+id/currentCourseFragmentAuthor" />
 
                         <TextView
                             android:id="@+id/currentCourseFragmentAuthor"

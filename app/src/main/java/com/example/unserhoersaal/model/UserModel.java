@@ -3,6 +3,8 @@ package com.example.unserhoersaal.model;
 /** Model for an user of the app. */
 public class UserModel {
 
+  private static final String TAG = "UserModel";
+
   private String displayName;
   private String email;
   private String institution;

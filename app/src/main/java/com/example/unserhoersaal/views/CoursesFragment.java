@@ -12,15 +12,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.viewpager2.widget.ViewPager2;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
+import com.example.unserhoersaal.adapter.ViewPagerAdapter;
 import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 /** Courses. */
 public class CoursesFragment extends Fragment {
 
   private static final String TAG = "CoursesFragment";
+
+  private ViewPagerAdapter viewPagerAdapter;
+  private ViewPager2 viewPager;
 
   private FragmentCoursesBinding binding;
   private CoursesViewModel coursesViewModel;
@@ -39,7 +46,7 @@ public class CoursesFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    this.binding =  DataBindingUtil.inflate(inflater,
+    this.binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_courses, container, false);
     return this.binding.getRoot();
   }
@@ -47,10 +54,18 @@ public class CoursesFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    this.initViewModel();
+
+    this.viewPager = view.findViewById(R.id.coursesFragmentViewPager);
+    this.viewPagerAdapter = new ViewPagerAdapter(this);
+    this.viewPager.setAdapter(viewPagerAdapter);
+    TabLayout tabLayout = view.findViewById(R.id.coursesFragmentTabLayout);
+    new TabLayoutMediator(tabLayout, viewPager,
+            (tab, position) -> tab.setText(coursesViewModel.getTabTitle(position))
+    ).attach();
 
     this.navController = Navigation.findNavController(view);
 
-    this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
     this.initToolbar();
@@ -61,16 +76,6 @@ public class CoursesFragment extends Fragment {
     this.coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
     this.coursesViewModel.init();
-
-    this.coursesViewModel.getUserCourses()
-            .observe(getViewLifecycleOwner(), userCourses -> {
-              coursesAdapter.notifyDataSetChanged();
-              if (userCourses.size() == 0) {
-                this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
-              } else {
-                this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
-              }
-            });
   }
 
   private void connectAdapter() {
@@ -90,7 +95,7 @@ public class CoursesFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_account_circle_24);
     this.binding.coursesFragmentToolbar
             .setNavigationOnClickListener(v ->
-            navController.navigate(R.id.action_coursesFragment_to_profileFragment));
+                    navController.navigate(R.id.action_coursesFragment_to_profileFragment));
   }
 
   //For closing the Floating Action Buttons when returning to
@@ -101,5 +106,5 @@ public class CoursesFragment extends Fragment {
     this.binding.coursesFragmentEnterCourseFabLayout.setVisibility(View.GONE);
     this.binding.coursesFragmentCreateCourseFabLayout.setVisibility(View.GONE);
   }
-
 }
+

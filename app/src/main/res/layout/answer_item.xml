@@ -29,8 +29,7 @@
             android:maxHeight="50dp"
             setImage="@{model.photoUrl}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/answerItemAuthor"
-            app:tint="@color/black" />
+            app:layout_constraintTop_toTopOf="@+id/answerItemAuthor" />
 
         <TextView
             android:id="@+id/answerItemAuthor"
