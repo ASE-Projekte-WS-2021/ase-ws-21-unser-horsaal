@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -38,7 +40,7 @@ public class EnterCourseViewModel extends ViewModel {
 
   /** Reset the entered data after joining the course. */
   public void resetEnterCourseId() {
-    this.dataBindingCourseIdInput.setValue(null);
+    this.dataBindingCourseIdInput.postValue(null);
   }
 
   public void resetEnterCourse() {
@@ -48,9 +50,10 @@ public class EnterCourseViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void checkCode() {
-
-    String id = dataBindingCourseIdInput.getValue();
-    if (id != null) {
+    String id = this.dataBindingCourseIdInput.getValue();
+    if (id == null) {
+      return;
+    } else {
       id = id.toUpperCase();
       id = id.replace(" ", "");
       id = id.replace("-", "");
