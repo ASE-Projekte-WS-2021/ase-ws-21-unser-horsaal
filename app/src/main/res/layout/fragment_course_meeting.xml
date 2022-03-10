@@ -46,11 +46,10 @@
             app:layout_constraintTop_toTopOf="parent" >
 
             <TextView
-                android:id="@+id/courseMeetingFragmentToolbarTitle"
+                style="@style/toolbarTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@={vm.meeting.title}"
-                style="@style/toolbarTitleStyle"/>
+                android:text="@string/course_meeting_subtitle" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -65,14 +64,17 @@
             app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentToolbar">
 
             <TextView
-                style="@style/toolbarSubtitleStyle"
+                android:id="@+id/courseMeetingFragmentToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_meeting_subtitle"
+                android:text="@={vm.meeting.title}"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                style="@style/toolbarSubtitleStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -98,6 +100,8 @@
             android:text="@string/course_meeting_create_button"
             android:backgroundTint="@color/app_blue"
             android:textColor="@color/white"
+            app:icon="@drawable/ic_baseline_create_24"
+            app:iconTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/white" />
@@ -153,7 +157,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:maxLength="100"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,7 +178,8 @@
                         android:layout_height="wrap_content"
                         android:maxLines="6"
                         android:singleLine="false"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:maxLength="500"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
