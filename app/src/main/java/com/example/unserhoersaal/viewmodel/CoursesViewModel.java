@@ -29,10 +29,6 @@ public class CoursesViewModel extends ViewModel {
     return this.userCourses;
   }
 
-  public void loadCourses() {
-    this.coursesRepository.loadUserCourses();
-  }
-
   /** Determine the name of the tabs. */
   public String getTabTitle(int position) {
     switch (position) {

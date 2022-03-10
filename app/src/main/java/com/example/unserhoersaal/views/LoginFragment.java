@@ -78,9 +78,6 @@ public class LoginFragment extends Fragment {
     this.loginViewModel = new ViewModelProvider(requireActivity())
             .get(LoginViewModel.class);
     this.loginViewModel.init();
-    //this.coursesViewModel = new ViewModelProvider(requireActivity())
-    //        .get(CoursesViewModel.class);
-    //this.coursesViewModel.init();
     /*
      * If user successfully logged in (login input correct and email is verified)
      *  navigate to the course screen.
