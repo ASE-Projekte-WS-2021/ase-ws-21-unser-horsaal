@@ -60,7 +60,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:maxLength="15"/>
 
                     <TextView
                         android:text="@{vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_EMPTY ? Config.REG_USERNAME_EMPTY : Config.REG_USERNAME_WRONG_PATTERN}"

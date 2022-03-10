@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:onClick="@{(view) -> NavUtil.navigateToMeeting(view, model)}"
-        android:background="@color/white"
+        android:background="@drawable/custom_ripple"
         android:padding="16dp">
 
         <TextView

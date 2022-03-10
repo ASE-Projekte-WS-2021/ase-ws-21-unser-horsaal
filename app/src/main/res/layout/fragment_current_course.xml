@@ -26,10 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Aktuelles Meeting"
-                style="@style/toolbarTitleStyle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                style="@style/toolbarTitleStyle" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -44,8 +41,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar" />
-
-
 
         <LinearLayout
             android:id="@+id/currentCourseFragmentLinearLayoutEnterNumber"

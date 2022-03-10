@@ -129,7 +129,7 @@
             <TableRow
                 android:id="@+id/courseDescriptionFragmentCourseDescriptionContainer"
                 android:layout_marginTop="2dp"
-                android:background="@color/white"
+                android:background="@drawable/custom_ripple"
                 android:padding="8dp"
                 android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseDescriptionDetailFragment)}">
 
@@ -175,8 +175,53 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/courseDescriptionFragmentCourseParticipantsContainer"
                 android:background="@color/white"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/courseDescriptionFragmentEnterKeyIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:src="@drawable/ic_baseline_vpn_key_24"
+                    app:tint="@color/app_blue" />
+
+                <TextView
+                    android:id="@+id/courseDescriptionFragmentEnterKeyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:text="@string/course_description_fragment_enter_key"
+                    android:layout_marginStart="16dp" />
+
+                <TextView
+                    android:id="@+id/courseDescriptionFragmentEnterKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:text="@{vm.courseModel.key}"
+                    android:textAlignment="viewEnd"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp" />
+
+                <ImageView
+                    android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.codeMapping)}"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_content_copy_24"
+                    android:layout_column="3"
+                    android:layout_marginEnd="8dp"
+                    android:padding="6dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/custom_ripple"
+                    app:tint="@color/black" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/courseDescriptionFragmentCourseParticipantsContainer"
+                android:background="@drawable/custom_ripple"
                 android:padding="8dp"
                 android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseParticipantsFragment)}">
 
@@ -208,7 +253,7 @@
             </TableRow>
 
             <TableRow
-                android:background="@color/white"
+                android:background="@drawable/custom_ripple"
                 android:padding="8dp"
                 android:layout_marginTop="2dp">
 
@@ -217,7 +262,7 @@
                     android:onClick="@{(view) -> NavUtil.unregisterFromCourse(view, vm)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_span="3"
+                    android:layout_span="4"
                     android:text="@string/course_description_unsubscribe_from_course"
                     android:textAlignment="center"
                     android:textColor="@color/red"
