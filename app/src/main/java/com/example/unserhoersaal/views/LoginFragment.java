@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -42,6 +44,13 @@ public class LoginFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+      @Override
+      public void handleOnBackPressed() {
+        // do nothing
+      }
+    };
+    requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
   }
 
   @Override
@@ -57,6 +66,7 @@ public class LoginFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
+
 
     this.initDeepLinkMode();
     this.initViewModel();
