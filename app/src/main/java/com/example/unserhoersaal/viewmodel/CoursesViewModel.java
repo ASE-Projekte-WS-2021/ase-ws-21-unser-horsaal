@@ -43,4 +43,7 @@ public class CoursesViewModel extends ViewModel {
     }
   }
 
+  public void loadUserCourses() {
+    this.coursesRepository.loadUserCourses();
+  }
 }

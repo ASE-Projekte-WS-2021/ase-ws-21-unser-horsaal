@@ -27,4 +27,8 @@ public class TodaysCoursesViewModel extends ViewModel {
   public LiveData<List<CourseModel>> getTodaysCourses() {
     return this.todaysCourses;
   }
+
+  public void loadTodaysCourses() {
+    this.todaysCoursesRepository.loadTodaysCourses();
+  }
 }

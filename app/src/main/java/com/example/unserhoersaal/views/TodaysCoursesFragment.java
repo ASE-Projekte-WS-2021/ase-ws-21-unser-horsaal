@@ -40,6 +40,7 @@ public class TodaysCoursesFragment extends Fragment {
     this.todaysCoursesViewModel = new ViewModelProvider(getActivity())
             .get(TodaysCoursesViewModel.class);
     this.todaysCoursesViewModel.init();
+    this.todaysCoursesViewModel.loadTodaysCourses();
     this.todaysCoursesViewModel.getTodaysCourses()
             .observe(getViewLifecycleOwner(), todaysCourses -> {
               this.coursesAdapter.notifyDataSetChanged();

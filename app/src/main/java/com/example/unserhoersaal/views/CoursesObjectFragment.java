@@ -44,6 +44,7 @@ public class CoursesObjectFragment extends Fragment {
     this.coursesViewModel = new ViewModelProvider(getActivity())
             .get(CoursesViewModel.class);
     this.coursesViewModel.init();
+    this.coursesViewModel.loadUserCourses();
     this.coursesViewModel.getUserCourses()
             .observe(getViewLifecycleOwner(), userCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
