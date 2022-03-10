@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.utils;
 
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -16,6 +17,7 @@ public class ImageAdapter {
   public static void setImage(ImageView view, String url) {
     Glide.with(view)
             .load(url)
+            .apply(RequestOptions.circleCropTransform())
             .placeholder(Config.PLACEHOLDER_AVATAR)
             .error(Config.ERROR_PROFILE_AVATAR)
             .into(view);
