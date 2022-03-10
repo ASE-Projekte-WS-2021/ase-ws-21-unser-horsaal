@@ -1,34 +1,178 @@
 package com.example.unserhoersaal.viewmodel;
 
-
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.DatabaseCurrentCourse;
+import com.example.unserhoersaal.enums.LikeStatus;
+import com.example.unserhoersaal.model.MeetingsModel;
+import com.example.unserhoersaal.model.MessageModel;
+import com.example.unserhoersaal.model.ThreadModel;
+import com.example.unserhoersaal.repository.CurrentCourseRepository;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-
+/** This class is the ViewModel for the joined course. */
 public class CurrentCourseViewModel extends ViewModel {
-  private DatabaseCurrentCourse databaseCurrentCourse;
 
+  private static final String TAG = "CurrentCourseViewModel";
 
-  public CurrentCourseViewModel() {
-    databaseCurrentCourse = new DatabaseCurrentCourse();
+  private CurrentCourseRepository currentCourseRepository;
+  private MutableLiveData<List<MessageModel>> messages;
+  private MutableLiveData<String> threadId = new MutableLiveData<>();
+  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
+  private MutableLiveData<ThreadModel> thread = new MutableLiveData<>();
+  public MutableLiveData<String> userId;
+  public MutableLiveData<MessageModel> dataBindingMessageInput;
 
+  /** This method initializes the database access. */
+  public void init() {
+    if (this.messages != null) {
+      return;
+    }
+    this.currentCourseRepository = CurrentCourseRepository.getInstance();
+    this.threadId = this.currentCourseRepository.getThreadId();
+    this.meeting = this.currentCourseRepository.getMeeting();
+    this.thread = this.currentCourseRepository.getThread();
+    this.currentCourseRepository.setUserId();
+    this.userId = this.currentCourseRepository.getUserId();
+    this.dataBindingMessageInput = new MutableLiveData<>(new MessageModel());
+
+    // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
+    // the messages and only set the courseId can init the CurrentCourseViewModel
+    if (this.threadId.getValue() != null) {
+      this.messages = this.currentCourseRepository.getMessages();
+    }
   }
 
-  public void sendMessage(String messageText){
-    databaseCurrentCourse.sendMessage(messageText);
+  public LiveData<List<MessageModel>> getMessages() {
+    return this.messages;
   }
 
-  public MutableLiveData<ArrayList> getMessages(){
-    return databaseCurrentCourse.getMessages();
+  /** Sort the messages list by likes. */
+  public void sortAnswersByLikes(List<MessageModel> messageModelList) {
+    Collections.sort(messageModelList, new Comparator<MessageModel>() {
+      @Override
+      public int compare(MessageModel messageModel, MessageModel t1) {
+        return t1.getLikes() - messageModel.getLikes();
+      }
+    });
   }
 
-  public void setupCurrentCourseViewModel(String courseId)
-  {
-    databaseCurrentCourse.setCourseId(courseId);
-    databaseCurrentCourse.setupListeners();
+  public LiveData<String> getThreadId() {
+    return this.threadId;
+  }
+
+  public LiveData<MeetingsModel> getMeeting() {
+    return this.meeting;
+  }
+
+  public LiveData<ThreadModel> getThread() {
+    return  this.thread;
+  }
+
+  /** Send a new message in a thread. */
+  public void sendMessage() {
+    //TODO: handle status to view
+    if (this.dataBindingMessageInput.getValue() == null) {
+      return;
+    }
+    //no empty messages
+    if (this.dataBindingMessageInput.getValue().getText() == null) {
+      return;
+    }
+
+    MessageModel messageModel = this.dataBindingMessageInput.getValue();
+    this.currentCourseRepository.sendMessage(messageModel);
+  }
+
+  public void setThreadId(String threadId) {
+    this.currentCourseRepository.setThreadId(threadId);
+  }
+
+  public void setMeeting(MeetingsModel meeting) {
+    this.currentCourseRepository.setMeetingId(meeting);
+  }
+
+  /** JavaDoc for this method. */
+  public void like(MessageModel message) {
+    String messageId = message.getKey();
+    LikeStatus likeStatus = message.getLikeStatus();
+    switch (likeStatus) {
+      case LIKE:
+        this.currentCourseRepository.handleLikeEvent(messageId, -1, LikeStatus.NEUTRAL);
+        break;
+      case DISLIKE:
+        this.currentCourseRepository.handleLikeEvent(messageId, 2, LikeStatus.LIKE);
+        break;
+      case NEUTRAL:
+        this.currentCourseRepository.handleLikeEvent(messageId, 1, LikeStatus.LIKE);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /** JavaDoc for this method. */
+  public void dislike(MessageModel message) {
+    String messageId = message.getKey();
+    LikeStatus likeStatus = message.getLikeStatus();
+    switch (likeStatus) {
+      case LIKE:
+        this.currentCourseRepository.handleLikeEvent(messageId, -2, LikeStatus.DISLIKE);
+        break;
+      case DISLIKE:
+        this.currentCourseRepository.handleLikeEvent(messageId, 1, LikeStatus.NEUTRAL);
+        break;
+      case NEUTRAL:
+        this.currentCourseRepository.handleLikeEvent(messageId, -1, LikeStatus.DISLIKE);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /** JavaDoc for this method. */
+  public void likeThread(ThreadModel threadModel) {
+    String threadId  = threadModel.getKey();
+    LikeStatus likeStatus = threadModel.getLikeStatus();
+    switch (likeStatus) {
+      case LIKE:
+        this.currentCourseRepository.handleLikeEventThread(threadId, -1, LikeStatus.NEUTRAL);
+        break;
+      case DISLIKE:
+        this.currentCourseRepository.handleLikeEventThread(threadId, 2, LikeStatus.LIKE);
+        break;
+      case NEUTRAL:
+        this.currentCourseRepository.handleLikeEventThread(threadId, 1, LikeStatus.LIKE);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /** JavaDoc for this method. */
+  public void dislikeThread(ThreadModel threadModel) {
+    String threadId = threadModel.getKey();
+    LikeStatus likeStatus = threadModel.getLikeStatus();
+    switch (likeStatus) {
+      case LIKE:
+        this.currentCourseRepository.handleLikeEventThread(threadId, -2, LikeStatus.DISLIKE);
+        break;
+      case DISLIKE:
+        this.currentCourseRepository.handleLikeEventThread(threadId, 1, LikeStatus.NEUTRAL);
+        break;
+      case NEUTRAL:
+        this.currentCourseRepository.handleLikeEventThread(threadId, -1, LikeStatus.DISLIKE);
+        break;
+      default:
+        break;
+    }
+  }
+
+  public void solved(String messageId) {
+    this.currentCourseRepository.solved(messageId);
   }
 
 }

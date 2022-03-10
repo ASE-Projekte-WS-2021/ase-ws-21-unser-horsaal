@@ -1,75 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="views.CreateCourseFragment"
-    android:background="@drawable/app_background">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CreateCourseViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context="views.CreateCourseFragment"
+        android:background="@color/app_background">
 
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/createCourseToolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="32dp"
-            android:layout_gravity="center">
+            android:layout_height="wrap_content"
+            android:background="@drawable/app_background"
+            app:titleTextColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
 
             <TextView
-                android:id="@+id/createCourseFragmentTitle"
-                android:layout_width="match_parent"
+                android:id="@+id/createCourseFragmentToolbarTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/create_course_string"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/white"
-                android:textSize="34sp" />
+                style="@style/toolbarTitleStyle"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/createCourseFragmentConstraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@drawable/app_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/createCourseToolbar">
 
             <TextView
-                android:id="@+id/createCourseFragmentCaption"
+                style="@style/toolbarSubtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_course_fragment_information_string"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/createCourseFragmentScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/createCourseFragmentConstraintLayout">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="@string/create_course_fragment_caption_string"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:layout_gravity="top"
+                android:layout_margin="32dp"
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/createCourseFragmentCourseTitleInputField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/white"
-                android:hint="@string/create_course_fragment_title_hint"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
+                <ImageView
+                    android:layout_width="260dp"
+                    android:layout_height="173dp"
+                    android:src="@drawable/create_course_image"
+                    android:layout_gravity="center"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/createCourseFragmentCourseTitleEditText"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/createCourseFragmentCourseTitleInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"/>
+                    android:layout_marginTop="32dp"
+                    android:hint="@string/create_course_fragment_title_hint">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/createCourseFragmentCourseTitleEditText"
+                        android:text="@={vm.dataBindingCourseModelInput.title}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:background="@color/white"
+                        android:maxLength="100"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/createCourseFragmentCreateButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/rounded_corners"
-                android:text="@string/create_course_create_button"
-                app:icon="@drawable/ic_baseline_add_circle_24"
-                app:iconGravity="textStart"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/createCourseFragmentCourseDescriptionInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:hint="@string/create_course_fragment_course_description">
 
-    </ScrollView>
-</LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/createCourseFragmentCourseDescriptionEditText"
+                        android:text="@={vm.dataBindingCourseModelInput.description}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:singleLine="false"
+                        android:background="@color/white"
+                        android:maxLength="500"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/createCourseFragmentCourseInstitutionInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:hint="@string/create_course_fragment_course_institution">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/createCourseFragmentCourseInstitutionEditText"
+                        android:text="@={vm.dataBindingCourseModelInput.institution}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:background="@color/white"
+                        android:maxLength="75"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/createCourseFragmentCreateButton"
+                    android:onClick="@{() -> vm.createCourse()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="64dp"
+                    android:text="@string/create_course_create_button"
+                    style="@style/wideOrangeButton" />
+
+            </LinearLayout>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

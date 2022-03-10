@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="model"
+            type="com.example.unserhoersaal.model.ThreadModel" />
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View" />
+        <import type="com.example.unserhoersaal.utils.Format"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="150dp"
+        android:layout_marginTop="2dp"
+        android:onClick="@{(view) -> NavUtil.navigateToThread(view, model)}"
+        android:background="@drawable/custom_ripple"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <LinearLayout
+            android:id="@+id/threadItemFeedbackContainer"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/threadItemLikesCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{Integer.toString(model.likes)}"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/threadItemLikesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/thread_item_likes_string"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/threadItemRepliesCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{Integer.toString(model.answersCount)}"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/threadItemRepliesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/thread_item_replies_string"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/threadItemSolvedIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_check_24"
+                setColor="@{model.answered}" />
+                <!--android:visibility="@{model.answered ? View.VISIBLE : View.GONE}"-->
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/threadItemQuestionContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/threadItemFeedbackContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/threadItemAuthor">
+
+            <TextView
+                android:id="@+id/threadItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/app_blue"
+                android:text="@{model.title}"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/threadItemDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.text}"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/threadItemAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.creatorName}"
+            android:textColor="@color/app_blue"
+            app:layout_constraintEnd_toStartOf="@id/threadItemTime"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/threadItemTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Format.getFormatedDateTime(threadItemTime, model.creationTime)}"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

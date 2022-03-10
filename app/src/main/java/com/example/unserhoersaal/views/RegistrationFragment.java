@@ -1,37 +1,39 @@
 package com.example.unserhoersaal.views;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.LoginRegisterViewModel;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
+import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.utils.DeepLinkMode;
+import com.example.unserhoersaal.utils.DialogBuilder;
+import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 
 /**
  * Initiates the UI of the registration area, the registration function
  * and the navigation to the course page.
  */
 public class RegistrationFragment extends Fragment {
-  EditText userEmailEditText;
-  EditText passwordEditText;
-  EditText repeatPasswordEditText;
-  CheckBox checkBox;
-  Button registrationButton;
 
-  private LoginRegisterViewModel loginRegisterViewModel;
+  private static final String TAG = "RegistrationFragment";
+
+  private FragmentRegistrationBinding binding;
+  private RegistrationViewModel registrationViewModel;
+  private NavController navController;
+  private DeepLinkMode deepLinkMode;
 
   public RegistrationFragment() {
       // Required empty public constructor
@@ -40,65 +42,75 @@ public class RegistrationFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    loginRegisterViewModel = new ViewModelProvider(this).get(LoginRegisterViewModel.class);
-
-    loginRegisterViewModel.getUserLiveData().observe(this, new Observer<FirebaseUser>() {
-      @Override
-      public void onChanged(FirebaseUser firebaseUser) {
-        if (firebaseUser != null) {
-          var backToLogin = R.id.action_registrationFragment_to_loginFragment;
-          Navigation.findNavController(getView()).navigate(backToLogin);
-          KeyboardUtil.hideKeyboard(getActivity());
-        }
-      }
-    });
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_registration, container, false);
+    this.binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_registration, container, false);
+    return this.binding.getRoot();
   }
-
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    initUi(view);
-    setupNavigation(view);
+
+    this.navController = Navigation.findNavController(view);
+    this.deepLinkMode = DeepLinkMode.getInstance();
+
+    this.initViewModel();
+    this.connectBinding();
   }
 
-  private void initUi(View view) {
-    userEmailEditText = view.findViewById(R.id.registrationFragmentUserEmailEditText);
-    passwordEditText = view.findViewById(R.id.registrationFragmentPasswordEditText);
-    repeatPasswordEditText = view.findViewById(R.id.registrationFragmentRepeatPasswordEditText);
-    checkBox = view.findViewById(R.id.registrationFragmentCheckBox);
-    registrationButton = view.findViewById(R.id.registrationFragmentRegistrationButton);
+  private void initViewModel() {
+    this.registrationViewModel = new ViewModelProvider(requireActivity())
+            .get(RegistrationViewModel.class);
+    this.registrationViewModel.init();
+
+    //Todo: automatic redirect to the course page after verification.
+    this.registrationViewModel
+            .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
+              //TODO @michi add verification check
+              //if (firebaseUser != null && firebaseUser.isEmailVerified()) {
+              if (firebaseUser != null
+                      && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+                navController.navigate(R.id.action_registrationFragment_to_enterCourseFragment);
+              }
+              if (firebaseUser != null) {
+                navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
+              }
+            });
+     
+
+    /* Open email-verify-dialog (with resend option) after registration input.*/
+    this.registrationViewModel
+            .verificationStatus.observe(getViewLifecycleOwner(), status -> {
+              if (status == EmailVerificationEnum.SEND_EMAIL_VERIFICATION) {
+                DialogBuilder dialog = new DialogBuilder();
+                AlertDialog.Builder verificationDialog =
+                        dialog.verifyEmailDialogRegistration(getView(), registrationViewModel);
+                /* If user don`t want to resend verification email switch to the login screen.*/
+                verificationDialog.setNegativeButton(Config.DIALOG_CANCEL_BUTTON,
+                        (dialogInterface, i) -> {
+                          registrationViewModel.setVerificationStatusOnNull();
+                          navController.navigate(R.id.action_registrationFragment_to_loginFragment);
+                        });
+                verificationDialog.show();
+              }
+            });
   }
 
+  private void connectBinding() {
+    this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.registrationViewModel);
+  }
 
-  //setup Navigation to corresponding fragments
-  private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
-
-    // todo add logic to registration
-    registrationButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-    public void onClick(View view) {
-        String email = userEmailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        if (email.length() > 0 && password.length() > 0) {
-          loginRegisterViewModel.register(email, password);
-          navController.navigate(R.id.action_registrationFragment_to_loginFragment);
-          KeyboardUtil.hideKeyboard(getActivity());
-        } else {
-          String emptyInputMessage = "Email Address and Password Must Be Entered";
-          Toast.makeText(getContext(), emptyInputMessage, Toast.LENGTH_SHORT).show();
-        }
-      }
-    });
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.registrationViewModel.resetErrorMessageLiveData();
+    this.registrationViewModel.resetDatabindingData();
   }
 
 }

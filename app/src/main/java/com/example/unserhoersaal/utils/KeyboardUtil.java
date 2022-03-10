@@ -8,6 +8,8 @@ import android.view.inputmethod.InputMethodManager;
 /** Utility class for keyboard-events.*/
 public class KeyboardUtil {
 
+  private static final String TAG = "KeyboardUtil";
+
   /** method for hiding soft-keyboard
    * source: https://stackoverflow.com/questions/26911469/hide-keyboard-when-navigating-from-
    * a-fragment-to-another */
@@ -23,4 +25,5 @@ public class KeyboardUtil {
       }
     }
   }
+
 }

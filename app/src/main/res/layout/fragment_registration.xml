@@ -1,120 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/app_background"
-    tools:context=".views.RegistrationFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.enums.LogRegErrorMessEnum" />
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/app_background"
+        tools:context=".views.RegistrationFragment">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="32dp"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/registrationFragmentTitleTextView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="@string/registration_fragment_title"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/white"
-                android:textSize="34sp" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/registrationFragmentUserEmailEditField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/white"
-                android:hint="@string/registration_fragment_user_email_hint"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/registrationFragmentUserEmailEditText"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/registrationFragmentTitleTextView"
+                    style="@style/loginRegistrationTitle"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
-                    android:singleLine="true"/>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="64dp"
+                    android:text="@string/registration_fragment_title"
+                    android:textAlignment="center" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/registrationFragmentPasswordEditField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/white"
-                android:hint="@string/registration_fragment_password_hint"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:endIconMode="password_toggle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/registrationFragmentPasswordEditText"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrationFragmentUserNameEditField"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
-                    android:singleLine="true"
-                    android:inputType="textPassword"/>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="64dp"
+                    android:hint="@string/registration_fragment_user_name">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrationFragmentUserNameEditText"
+                        android:text="@={vm.dataBindingUserInput.displayName}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:background="@color/white"
+                        android:maxLength="15"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/registrationFragmentRepeatPasswordEditField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/white"
-                android:hint="@string/registration_fragment_repeat_password_hint"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:endIconMode="password_toggle">
+                    <TextView
+                        android:text="@{vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_EMPTY ? Config.REG_USERNAME_EMPTY : Config.REG_USERNAME_WRONG_PATTERN}"
+                        android:visibility="@{vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_EMPTY || vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/registrationFragmentRepeatPasswordEditText"
-                    android:layout_width="match_parent"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrationFragmentUserEmailEditField"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
-                    android:singleLine="true"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"/>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp"
+                    android:hint="@string/registration_fragment_user_email_hint">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrationFragmentUserEmailEditText"
+                        android:text="@={vm.dataBindingUserInput.email}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
-            <CheckBox
-                android:id="@+id/registrationFragmentCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/registration_fragment_checkbox_string"
-                android:textColor="@color/white" />
+                    <TextView
+                        android:text="@{vm.errorMessageRegEmail == LogRegErrorMessEnum.EMAIL_EMPTY ? Config.EMAIL_EMPTY : Config.REG_EMAIL_PATTERN_WRONG}"
+                        android:visibility="@{vm.errorMessageRegEmail == LogRegErrorMessEnum.EMAIL_EMPTY || vm.errorMessageRegEmail == LogRegErrorMessEnum.EMAIL_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/registrationFragmentRegistrationButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners"
-                android:text="@string/registration_fragment_registrate_button_string"
-                app:icon="@drawable/ic_baseline_how_to_reg_24"
-                app:iconGravity="textStart"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrationFragmentPasswordEditField"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp"
+                    android:hint="@string/registration_fragment_password_hint"
+                    app:endIconMode="password_toggle">
 
-    </ScrollView>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrationFragmentPasswordEditText"
+                        android:text="@={vm.dataBindingPasswordInput}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:background="@color/white"/>
 
-</LinearLayout>
+                    <TextView
+                        android:text="@{vm.errorMessageRegPassword == LogRegErrorMessEnum.PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.REG_PASSWORD_PATTERN_WRONG}"
+                        android:visibility="@{vm.errorMessageRegPassword == LogRegErrorMessEnum.PASSWORD_EMPTY || vm.errorMessageRegPassword == LogRegErrorMessEnum.PASSWORD_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/registrationFragmentRegistrationButton"
+                    android:onClick="@{() -> vm.register()}"
+                    android:background="@drawable/app_background"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/registration_fragment_registrate_button_string"
+                    app:backgroundTint="@null"/>
+
+                <TextView
+                    android:text="@string/registration_fragment_registration_fail_string"
+                    android:visibility="@{vm.errorMessageRegProcess == LogRegErrorMessEnum.REGISTRATION_PROCESS_FAIL ? View.VISIBLE : View.GONE}"
+                    android:textColor="@color/red"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp">
+
+                    <TextView
+                        android:id="@+id/registrationFragmentAccountAvailableTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/registration_fragment_account_available_string" />
+
+                    <TextView
+                        android:id="@+id/registrationFragmentLoginTextView"
+                        android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_registrationFragment_to_loginFragment)}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/registration_fragment_login_string"
+                        android:layout_marginStart="16dp"
+                        android:textColor="@color/app_blue"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

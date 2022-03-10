@@ -4,29 +4,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.model.DatabaseEnterCourse;
+import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
+import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
-  EditText enterCourseEditText;
-  Button enterCourseButton;
-  EnterCourseViewModel enterCourseViewModel;
-  CreateCourseViewModel createCourseViewModel;
+  private static final String TAG = "EnterCourseFragment";
+
+  private EnterCourseViewModel enterCourseViewModel;
+  private NavController navController;
+  private FragmentEnterCourseBinding binding;
+  private DeepLinkMode deepLinkMode;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -38,50 +38,68 @@ public class EnterCourseFragment extends Fragment {
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_enter_course, container, false);
+    this.binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_enter_course, container, false);
+    return this.binding.getRoot();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    enterCourseViewModel = new ViewModelProvider(requireActivity()).get(EnterCourseViewModel.class);
-    createCourseViewModel = new ViewModelProvider(requireActivity())
-            .get(CreateCourseViewModel.class);
-    initUi(view);
-    setupNavigation(view);
+    this.navController = Navigation.findNavController(view);
+    this.deepLinkMode = DeepLinkMode.getInstance();
+
+    this.initViewModel();
+    this.connectBinding();
+    this.setupToolbar();
+
+    if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+      this.enterCourseViewModel
+              .dataBindingCourseIdInput.setValue(this.deepLinkMode.getCodeMapping());
+      this.enterCourseViewModel.checkCode();
+    }
   }
 
-  private void initUi(View view) {
-    enterCourseEditText = view.findViewById(R.id.enterCourseFragmentCourseNumberEditText);
-    enterCourseButton = view.findViewById(R.id.enterCourseFragmentEnterButton);
+  private void initViewModel() {
+    this.enterCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(EnterCourseViewModel.class);
+    this.enterCourseViewModel.init();
+    this.enterCourseViewModel.getCourse()
+            .observe(getViewLifecycleOwner(), model -> {
+              if (model != null) {
+                if (model.getKey() != null) {
+                  KeyboardUtil.hideKeyboard(getActivity());
+                  navController.navigate(
+                          R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
+                } else {
+                  navController.navigate(
+                          R.id.action_enterCourseFragment_to_noCourseFoundFragment);
+                }
+              }
+            });
   }
 
-  //setup Navigation to corresponding fragments
-  private void setupNavigation(View view) {
-    NavController navController = Navigation.findNavController(view);
-    //todo add logic to entering course
-    enterCourseButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        createCourseViewModel.setCourseId(enterCourseEditText.getText().toString());
-        enterCourseViewModel.saveUserCourses(enterCourseEditText.getText().toString())
-                .observe(getViewLifecycleOwner(), courseIdIsCorrect -> {
-                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.TRUE) {
-                    if (navController.getCurrentDestination().getId() == R.id.enterCourseFragment){
-                      navController.navigate(R.id.action_enterCourseFragment_to_currentCourseFragment);
-                    }
-                  }
-                  if (courseIdIsCorrect == DatabaseEnterCourse.ThreeState.FALSE){
-                    Toast.makeText(getActivity(), "Incorrect key",
-                            Toast.LENGTH_LONG).show();
-                  }
-        });
-        KeyboardUtil.hideKeyboard(getActivity());
-      }
-    });
+  private void connectBinding() {
+    this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.enterCourseViewModel);
   }
+
+  private void setupToolbar() {
+    this.binding.enterCourseFragmentToolbar
+            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.enterCourseFragmentToolbar
+            .setNavigationOnClickListener(v ->
+                    this.navController.navigate(
+                            R.id.action_enterCourseFragment_to_coursesFragment));
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.enterCourseViewModel.resetEnterCourseId();
+  }
+
 }

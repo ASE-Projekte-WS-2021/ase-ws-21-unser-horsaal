@@ -1,29 +1,75 @@
 package com.example.unserhoersaal.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.DatabaseCourseCreation;
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.repository.CreateCourseRepository;
+import java.util.Random;
 
-/**Class transfers data from DatabaseCourseCreation to CreateCourseFragment and viceversa.**/
-
+/**Class transfers data from CreateCourseRepository to CreateCourseFragment and viceversa.**/
 public class CreateCourseViewModel extends ViewModel {
-  private DatabaseCourseCreation databaseCourseCreation;
-  private final MutableLiveData<String> courseId = new MutableLiveData<String>();
 
+  private static final String TAG = "CreateCourseViewModel";
 
-  public CreateCourseViewModel() {
-    databaseCourseCreation = new DatabaseCourseCreation();
+  private CreateCourseRepository createCourseRepository;
+  private MutableLiveData<CourseModel> courseModel;
+  public MutableLiveData<CourseModel> dataBindingCourseModelInput;
+
+  /** Initialization of the CreatCourseViewModel. */
+  public void init() {
+    if (this.courseModel != null) {
+      return;
+    }
+    this.createCourseRepository = CreateCourseRepository.getInstance();
+    this.courseModel = this.createCourseRepository.getUserCourse();
+    this.dataBindingCourseModelInput = new MutableLiveData<>(new CourseModel());
   }
 
-  public void createCourse(String courseName, String courseDescription) {
-    databaseCourseCreation.createNewCourse(courseName, courseDescription);
+  public LiveData<CourseModel> getCourseModel() {
+    return this.courseModel;
   }
 
-  public String getCourseId() {
-    return databaseCourseCreation.getCourseId();
+  public void resetCourseModelInput() {
+    this.dataBindingCourseModelInput.setValue(new CourseModel());
+    this.courseModel.setValue(null);
   }
 
-  public void setCourseId(String courseId) {
-    databaseCourseCreation.setCourseId(courseId);
+  /** Create a new course. */
+  public void createCourse() {
+    //TODO: status data to view
+    if (this.dataBindingCourseModelInput.getValue() == null) {
+      return;
+    }
+
+    CourseModel courseModel = this.dataBindingCourseModelInput.getValue();
+    String codeMapping = this.getCodeMapping();
+    courseModel.setCodeMapping(codeMapping);
+
+    //TODO: status data to view
+    if (courseModel.getTitle() == null) {
+      return;
+    }
+    if (courseModel.getDescription() == null) {
+      return;
+    }
+    if (courseModel.getInstitution() == null) {
+      return;
+    }
+
+    this.createCourseRepository.createNewCourse(courseModel);
   }
+
+  //https://www.codegrepper.com/code-examples/java/how+to+generate+random+letters+in+java
+  private String getCodeMapping() {
+    String chars = Config.CHARS;
+    Random random = new Random();
+    StringBuilder sb = new StringBuilder(Config.CODE_LENGTH);
+    for (int i = 0; i < Config.CODE_LENGTH; i++) {
+      sb.append(chars.charAt(random.nextInt(chars.length())));
+    }
+    return sb.toString();
+  }
+
 }

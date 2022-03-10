@@ -1,23 +1,76 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.model.DatabaseCourseCreation;
-import com.example.unserhoersaal.model.DatabaseEnterCourse;
+import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.repository.EnterCourseRepository;
 
 /**Class EnterCourseViewModel.**/
-
 public class EnterCourseViewModel extends ViewModel {
 
-    private DatabaseEnterCourse databaseEnterCourse;
+  private static final String TAG = "EnterCourseViewModel";
 
-    public EnterCourseViewModel() {
-        databaseEnterCourse = new DatabaseEnterCourse();
-    }
+  private EnterCourseRepository enterCourseRepository;
+  private MutableLiveData<CourseModel> courseModel;
 
-    public MutableLiveData<DatabaseEnterCourse.ThreeState> saveUserCourses(String courseId){
-        return databaseEnterCourse.saveUserCourses(courseId);
+  public MutableLiveData<String> dataBindingCourseIdInput;
+  private MutableLiveData<CourseModel> enteredCourse;
+
+  /** Initialize the EnterCourseViewModel. */
+  public void init() {
+    if (this.courseModel != null) {
+      return;
     }
+    this.enterCourseRepository = EnterCourseRepository.getInstance();
+    this.courseModel = this.enterCourseRepository.getCourse();
+    this.dataBindingCourseIdInput = new MutableLiveData<>();
+    this.enteredCourse = this.enterCourseRepository.getEnteredCourse();
+  }
+
+  public LiveData<CourseModel> getCourse() {
+    return this.courseModel;
+  }
+
+  public LiveData<CourseModel> getEnteredCourse() {
+    return this.enteredCourse;
+  }
+
+  /** Reset the entered data after joining the course. */
+  public void resetEnterCourseId() {
+    this.dataBindingCourseIdInput.postValue(null);
+  }
+
+  public void resetEnterCourse() {
+    this.courseModel.setValue(null);
+    this.enteredCourse.setValue(null);
+  }
+
+  /** JavaDoc for this method. */
+  public void checkCode() {
+    String id = this.dataBindingCourseIdInput.getValue();
+    if (id == null) {
+      return;
+    } else {
+      id = id.toUpperCase();
+      id = id.replace(" ", "");
+      id = id.replace("-", "");
+      this.enterCourseRepository.checkCode(id);
+    }
+  }
+
+  /** JavaDoc for this method. */
+  public void enterCourse() {
+    //TODO: send status data back to view on error
+    if (courseModel.getValue() == null) {
+      return;
+    }
+    if (courseModel.getValue().getKey() == null) {
+      return;
+    }
+    this.enterCourseRepository.isUserInCourse(courseModel.getValue());
+  }
 
 }
