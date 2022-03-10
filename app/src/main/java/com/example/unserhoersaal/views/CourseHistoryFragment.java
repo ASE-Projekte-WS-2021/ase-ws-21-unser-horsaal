@@ -74,6 +74,7 @@ public class CourseHistoryFragment extends Fragment {
     this.courseDescriptionViewModel.init();
 
     this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
+      this.courseHistoryViewModel.sortMeetingByEventTime(meetingsModels);
       meetingAdapter.notifyDataSetChanged();
       if (meetingsModels.size() == 0) {
         this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
@@ -89,6 +90,7 @@ public class CourseHistoryFragment extends Fragment {
               }
             });
   }
+
 
   private void connectAdapter() {
     this.meetingAdapter =

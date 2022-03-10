@@ -8,6 +8,9 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /** This class is the ViewModel for the joined course. */
@@ -45,6 +48,16 @@ public class CurrentCourseViewModel extends ViewModel {
 
   public LiveData<List<MessageModel>> getMessages() {
     return this.messages;
+  }
+
+  /** Sort the messages list by likes. */
+  public void sortAnswersByLikes(List<MessageModel> messageModelList) {
+    Collections.sort(messageModelList, new Comparator<MessageModel>() {
+      @Override
+      public int compare(MessageModel messageModel, MessageModel t1) {
+        return t1.getLikes() - messageModel.getLikes();
+      }
+    });
   }
 
   public LiveData<String> getThreadId() {

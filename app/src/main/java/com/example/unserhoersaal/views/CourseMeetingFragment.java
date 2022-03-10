@@ -69,6 +69,7 @@ public class CourseMeetingFragment extends Fragment {
     this.courseMeetingViewModel.init();
     this.currentCourseViewModel.init();
     this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
+      this.courseMeetingViewModel.sortThreadsByLikes(messageList);
       threadAdapter.notifyDataSetChanged();
       if (messageList.size() == 0) {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);

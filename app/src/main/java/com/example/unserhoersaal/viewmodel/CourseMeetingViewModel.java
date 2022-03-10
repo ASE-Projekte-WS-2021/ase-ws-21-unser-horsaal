@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /** ViewModel for the CourseMeetingFragment. */
@@ -39,6 +42,16 @@ public class CourseMeetingViewModel extends ViewModel {
 
   public LiveData<List<ThreadModel>> getThreads() {
     return this.threads;
+  }
+
+  /** Sort the threads list by likes. */
+  public void sortThreadsByLikes(List<ThreadModel> threadsModelList) {
+    Collections.sort(threadsModelList, new Comparator<ThreadModel>() {
+      @Override
+      public int compare(ThreadModel threadModel, ThreadModel t1) {
+        return t1.getLikes() - threadModel.getLikes();
+      }
+    });
   }
 
   public LiveData<MeetingsModel> getMeeting() {

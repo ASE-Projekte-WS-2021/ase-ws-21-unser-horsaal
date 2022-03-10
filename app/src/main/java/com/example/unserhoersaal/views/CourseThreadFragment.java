@@ -65,6 +65,7 @@ public class CourseThreadFragment extends Fragment {
     this.currentCourseViewModel.getMessages()
             .observe(getViewLifecycleOwner(), messageModels -> {
               KeyboardUtil.hideKeyboard(getActivity());
+              this.currentCourseViewModel.sortAnswersByLikes(messageModels);
               chatAdapter.notifyDataSetChanged();
               this.currentCourseViewModel.dataBindingMessageInput.setValue(new MessageModel());
             });
