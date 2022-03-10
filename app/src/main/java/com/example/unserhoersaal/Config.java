@@ -92,5 +92,9 @@ public class Config {
   public static final String COURSE_CODE_MAPPING_CLIPBOARD = "Code_Mapping_Clip_Data";
   public static final String COURSE_CODE_MAPPING_CLIPBOARD_TOAST_TEXT = "Copied!";
   public static final String DEEP_LINK_URL = "https://app.vairasza.dev/unserhoersaal/";
+  public static final String COPY_KEY_CLIPBOARD = "Copy_Key_Clipboard";
+  public static final String CODE_MAPPING_READABILITY_ITEM = "-";
+  public static final int READABILITY_ITEM_POSITION_1 = 3;
+  public static final int READABILITY_ITEM_POSITION_2 = 6;
 
 }

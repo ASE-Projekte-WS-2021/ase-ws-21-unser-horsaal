@@ -11,6 +11,7 @@
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.utils.Clipboard" />
+        <import type="com.example.unserhoersaal.utils.Format"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -199,14 +200,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:text="@{vm.courseModel.key}"
+                    android:text="@{Format.formatEnterKey(courseDescriptionFragmentEnterKey, vm.courseModel.codeMapping)}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp" />
 
                 <ImageView
-                    android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.codeMapping)}"
+                    android:onClick="@{(view) -> Clipboard.copyCodeToClipboard(view, vm.courseModel.codeMapping)}"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_content_copy_24"

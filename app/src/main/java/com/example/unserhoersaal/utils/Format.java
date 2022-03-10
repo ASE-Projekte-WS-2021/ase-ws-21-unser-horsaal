@@ -79,4 +79,15 @@ public class Format {
     }
   }
 
+  /** Format the enter key for a course in a better readable string. */
+  @BindingAdapter("formatEnterKey")
+  public static String formatEnterKey(TextView view, String text) {
+    if (text == null) {
+      return "";
+    }
+    return new StringBuilder(text)
+            .insert(Config.READABILITY_ITEM_POSITION_2, Config.CODE_MAPPING_READABILITY_ITEM)
+            .insert(Config.READABILITY_ITEM_POSITION_1, Config.CODE_MAPPING_READABILITY_ITEM)
+            .toString();
+  }
 }

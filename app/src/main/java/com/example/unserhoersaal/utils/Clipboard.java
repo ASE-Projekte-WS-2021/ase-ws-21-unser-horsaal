@@ -24,4 +24,16 @@ public class Clipboard {
             Config.COURSE_CODE_MAPPING_CLIPBOARD_TOAST_TEXT, Toast.LENGTH_SHORT).show();
   }
 
+  /** Copy enter code for course. */
+  @BindingAdapter("copyCodeToClipboard")
+  public static void copyCodeToClipboard(View view, String text) {
+    ClipboardManager clipboardManager = (ClipboardManager) view.getContext()
+            .getSystemService(Context.CLIPBOARD_SERVICE);
+    ClipData clipData = ClipData.newPlainText(Config.COPY_KEY_CLIPBOARD, text);
+    clipboardManager.setPrimaryClip(clipData);
+
+    Toast.makeText(view.getContext(),
+            Config.COURSE_CODE_MAPPING_CLIPBOARD_TOAST_TEXT, Toast.LENGTH_SHORT).show();
+  }
+
 }
