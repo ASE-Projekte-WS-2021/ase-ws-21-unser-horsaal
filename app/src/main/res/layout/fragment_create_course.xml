@@ -91,7 +91,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:maxLength="100"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +110,8 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
                         android:singleLine="false"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:maxLength="500"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,7 +129,8 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:maxLength="75"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
