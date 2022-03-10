@@ -52,10 +52,10 @@ public class AuthAppRepository {
 
   /** Gives back the current UserModel. */
   public MutableLiveData<FirebaseUser> getUserLiveData() {
-    if (this.user == null) {
+    /*if (this.user == null) {
       this.user = this.firebaseAuth.getCurrentUser();
     }
-    this.userLiveData.setValue(this.user);
+    this.userLiveData.postValue(this.user);*/
     return this.userLiveData;
   }
 

@@ -3,6 +3,7 @@ package com.example.unserhoersaal.views;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +78,9 @@ public class RegistrationFragment extends Fragment {
                       && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
                 navController.navigate(R.id.action_registrationFragment_to_enterCourseFragment);
               }
-              if (firebaseUser != null) {
+              /*if (firebaseUser != null) {
                 navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
-              }
+              }*/
             });
      
 
@@ -113,4 +114,9 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel.resetDatabindingData();
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    Log.d(TAG, "onResume: ");
+  }
 }
