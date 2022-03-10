@@ -61,14 +61,13 @@ public class CourseHistoryViewModel extends ViewModel {
   }
 
   /** Sort the meetings list by event time. */
-  public List<MeetingsModel> sortMeetingByEventTime(List<MeetingsModel> meetingsModelList) {
+  public void sortMeetingByEventTime(List<MeetingsModel> meetingsModelList) {
     Collections.sort(meetingsModelList, new Comparator<MeetingsModel>() {
       @Override
       public int compare(MeetingsModel meetingsModel, MeetingsModel t1) {
         return meetingsModel.getEventTime().compareTo(t1.getEventTime());
       }
     });
-    return meetingsModelList;
   }
 
   public LiveData<CourseModel> getCourse() {
