@@ -3,6 +3,7 @@ package com.example.unserhoersaal.repository;
 import android.util.Log;
 
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
@@ -36,15 +37,31 @@ public class CreateCourseRepository {
 
   /**Method creates an course.**/
   public void createNewCourse(CourseModel courseModel) {
+    this.courseModelMutableLiveData.postLoading();
+
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    //TODO: assert firebaseauth.getcurrentuser 1= null
+
+    if (firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courseModelMutableLiveData.postError(
+              new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
     String uid = firebaseAuth.getCurrentUser().getUid();
 
     courseModel.setCreatorId(uid);
     courseModel.setCreationTime(System.currentTimeMillis());
     String courseId = databaseReference.getRoot().push().getKey();
-    //TODO: assert courseId 1= null
+
+    if (courseId == null) {
+      Log.e(TAG, "courseid is null");
+      this.courseModelMutableLiveData.postError(
+              new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
     databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel)
             .addOnSuccessListener(unused -> {
               courseModel.setKey(courseId);
@@ -52,6 +69,8 @@ public class CreateCourseRepository {
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
+              courseModelMutableLiveData.postError(
+                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
             });
   }
 
@@ -68,6 +87,9 @@ public class CreateCourseRepository {
                             .addOnFailureListener(e -> {
                               Log.e(TAG, "User konnte dem Kurs nicht hinzugefügt werden: "
                                       + e.getMessage());
+                              courseModelMutableLiveData.postError(
+                                      new Error(Config.COURSES_COURSE_CREATION_FAILURE),
+                                      ErrorTag.REPO);
                             })
             );
   }
@@ -77,10 +99,12 @@ public class CreateCourseRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     reference.child(Config.CHILD_CODE_MAPPING).child(mappingCode).setValue(course.getKey())
             .addOnSuccessListener(unused ->
-                    courseModelMutableLiveData.postValue(new StateData<>(course)))
-            .addOnFailureListener(e ->
-              Log.e(TAG, "Das Mapping konnte nicht erstellt werden: " + e.getMessage())
-            );
+                    courseModelMutableLiveData.postSuccess(course))
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Das Mapping konnte nicht erstellt werden: " + e.getMessage());
+              courseModelMutableLiveData.postError(
+                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+            });
   }
 
 }

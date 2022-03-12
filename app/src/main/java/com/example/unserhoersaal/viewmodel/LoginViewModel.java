@@ -58,8 +58,8 @@ public class LoginViewModel extends ViewModel {
    * to multiple Databinding Fragments. (Registration, ResetPassword, Login)
    * Used when initialising this Fragment and when leaving the Fragment. */
   public void setDefaultInputState() {
-    this.userInputState.setValue(new StateData<>(new UserModel()));
-    this.passwordInputState.setValue(new StateData<>(new PasswordModel()));
+    this.userInputState.postValue(new StateData<>(new UserModel()));
+    this.passwordInputState.postValue(new StateData<>(new PasswordModel()));
   }
 
   /** JavaDoc for this method. */
@@ -67,29 +67,35 @@ public class LoginViewModel extends ViewModel {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
-      Log.d(TAG, "LoginViewModel>login userModel or passwordModel is null.");
+      Log.e(TAG, "userModel or passwordModel is null.");
       return;
     }
 
     String email = userModel.getEmail();
     String password = passwordModel.getCurrentPassword();
 
-    if (Validation.emptyEmail(email)) {
-      this.userInputState.postError(new Error(Config.EMAIL_EMPTY), ErrorTag.EMAIL);
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, "email is null.");
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
       return;
     } else if (!Validation.emailHasPattern(email)) {
-      this.userInputState.postError(new Error(Config.EMAIL_PATTERN_WRONG), ErrorTag.EMAIL);
+      Log.d(TAG, "email has wrong pattern.");
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN), ErrorTag.EMAIL);
       return;
     }
-    if (Validation.emptyPassword(passwordModel.getCurrentPassword())) {
-      this.passwordInputState.postError(new Error(Config.PASSWORD_EMPTY), ErrorTag.PASSWORD);
+    if (Validation.emptyString(password)) {
+      Log.d(TAG, "password is null.");
+      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
       return;
-    } else if (!Validation.passwordHasPattern(passwordModel.getCurrentPassword())) {
-      this.passwordInputState.postError(new Error(Config.PASSWORD_PATTERN_WRONG), ErrorTag.PASSWORD);
+    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, "password has wrong pattern.");
+      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
       return;
     }
 
     this.userInputState.postComplete();
+    //do not listen for this status because we would get two spinner loops
+    this.passwordInputState.postComplete();
     this.authAppRepository.login(email, password);
   }
 
@@ -97,41 +103,21 @@ public class LoginViewModel extends ViewModel {
   public void sendPasswordResetMail() {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.d(TAG, "LoginViewModel>sendPasswordResetMail userModel is null.");
+      Log.e(TAG, "LoginViewModel>sendPasswordResetMail userModel is null.");
       return;
     }
 
     String email = userModel.getEmail();
 
-    if (email == null) {
-      this.userInputState.postError(new Error(Config.EMAIL_EMPTY), ErrorTag.EMAIL);
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, "email is null.");
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
     } else if (!Validation.emailHasPattern(email)) {
-      this.userInputState.postError(new Error(Config.EMAIL_PATTERN_WRONG), ErrorTag.PASSWORD);
+      Log.d(TAG, "email has wrong pattern.");
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
     } else {
       this.userInputState.postComplete();
       this.authAppRepository.sendPasswordResetMail(email);
-    }
-  }
-
-  //TODO: check if we need this; probably for registration only -- internal
-  /** Checks in Firebase Auth if the email that the user wants to use for his account
-   *  already exists. */
-  public void checkEmailExists() {
-    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
-    if (userModel == null) {
-      Log.d(TAG, "LoginViewModel>checkEmailExists userModel is null.");
-      return;
-    }
-
-    String email = userModel.getEmail();
-
-    if (email == null) {
-      this.userInputState.postError(new Error(Config.EMAIL_EMPTY), ErrorTag.EMAIL);
-    } else if (!Validation.emailHasPattern(email)) {
-      this.userInputState.postError(new Error(Config.EMAIL_PATTERN_WRONG), ErrorTag.EMAIL);
-    } else {
-      this.userInputState.postComplete();
-      this.authAppRepository.emailExist(email);
     }
   }
 
@@ -145,16 +131,18 @@ public class LoginViewModel extends ViewModel {
   public void resetPassword() {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.d(TAG, "LoginViewModel>resetPassword userModel is null.");
+      Log.e(TAG, "userModel is null.");
       return;
     }
 
     String email = userModel.getEmail();
 
-    if (email == null) {
-      this.userInputState.postError(new Error(Config.EMAIL_EMPTY), ErrorTag.EMAIL);
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, "email is null.");
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
     } else if (!Validation.emailHasPattern(email)) {
-      this.userInputState.postError(new Error(Config.EMAIL_PATTERN_WRONG), ErrorTag.EMAIL);
+      Log.d(TAG, "email has wrong pattern.");
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN), ErrorTag.EMAIL);
     } else {
       this.userInputState.postComplete();
       this.authAppRepository.resetPassword(email);

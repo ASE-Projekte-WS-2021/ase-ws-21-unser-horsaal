@@ -77,7 +77,7 @@ public class CourseMeetingFragment extends Fragment {
       }
     });
     this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
-      if (threadModel != null) {
+      if (threadModel.getData() != null) {
         KeyboardUtil.hideKeyboard(getActivity());
         this.currentCourseViewModel.setThreadId(threadModel.getData().getKey());
         this.courseMeetingViewModel.resetThreadModelInput();

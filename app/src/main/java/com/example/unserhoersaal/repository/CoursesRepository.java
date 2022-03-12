@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
@@ -43,17 +44,24 @@ public class CoursesRepository {
       this.loadUserCourses();
     }
 
-    this.courses.setValue(new StateData<>(userCoursesList));
+    this.courses.postValue(new StateData<>(userCoursesList));
     return this.courses;
   }
 
   /** This method loads all courses in which the user is signed in. */
   public void loadUserCourses() {
+    this.courses.postLoading();
+
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
-    //TODO: assert auth.getcurrentuser != null
-    String id = auth.getCurrentUser().getUid();
 
+    if (auth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
+
+    String id = auth.getCurrentUser().getUid();
 
     Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
@@ -67,7 +75,12 @@ public class CoursesRepository {
         Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
           for (Task<DataSnapshot> task : taskList) {
             CourseModel model = task.getResult().getValue(CourseModel.class);
-            //TODO: assert setKey != null
+
+            if (model == null) {
+              Log.e(TAG, "model is null");
+              courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              return;
+            }
             model.setKey(task.getResult().getKey());
             authorList.add(model);
           }
@@ -78,6 +91,7 @@ public class CoursesRepository {
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.e(TAG, "onCancelled: " + error.getMessage());
+        courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
   }
@@ -102,7 +116,7 @@ public class CoursesRepository {
       }
       userCoursesList.clear();
       userCoursesList.addAll(authorList);
-      courses.postValue(new StateData<>(userCoursesList));
+      courses.postSuccess(userCoursesList);
     });
   }
 

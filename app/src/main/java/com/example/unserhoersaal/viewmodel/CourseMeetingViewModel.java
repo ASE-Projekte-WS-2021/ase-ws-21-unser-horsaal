@@ -1,17 +1,11 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
-import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.ThreadModel;
-import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
@@ -29,7 +23,7 @@ public class CourseMeetingViewModel extends ViewModel {
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<List<ThreadModel>> threads;
   private StateLiveData<ThreadModel> threadModelMutableLiveData;
-  public StateLiveData<ThreadModel> threadModelInputState;
+  public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -73,26 +67,26 @@ public class CourseMeetingViewModel extends ViewModel {
   public void createThread() {
     ThreadModel threadModel = Validation.checkStateLiveData(this.threadModelInputState, TAG);
     if (threadModel == null) {
-      Log.d(TAG, "CourseMeetingVM>createThread threadModel is null.");
+      Log.e(TAG, "threadModel is null.");
       return;
     }
 
     if (threadModel.getTitle() == null) {
-      Log.d(TAG, "CourseMeetingVM>createThread: title is null.");
-      this.threadModelInputState.postError(new Error(Config.VM_TITLE_NULL), ErrorTag.VM);
+      Log.d(TAG, "title is null.");
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
       return;
-    } else if (!Validation.titleHasPattern(threadModel.getTitle())) {
-      Log.d(TAG, "CourseMeetingVM>createThread: title wrong pattern.");
-      this.threadModelInputState.postError(new Error(Config.VM_TITLE_WRONG_PATTERN), ErrorTag.VM);
+    } else if (!Validation.stringHasPattern(threadModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
+      Log.d(TAG, "title wrong pattern.");
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
     if (threadModel.getText() == null) {
-      Log.d(TAG, "CourseMeetingVM>createThread: text is null.");
-      this.threadModelInputState.postError(new Error(Config.VM_TEXT_NULL), ErrorTag.VM);
+      Log.d(TAG, "text is null.");
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.VM);
       return;
-    } else if (!Validation.textHasPattern(threadModel.getText())) {
-      Log.d(TAG, "CourseMeetingVM>createThread: text wrong pattern.");
-      this.threadModelInputState.postError(new Error(Config.VM_TEXT_WRONG_PATTERN), ErrorTag.VM);
+    } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
+      Log.d(TAG, "text wrong pattern.");
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
 

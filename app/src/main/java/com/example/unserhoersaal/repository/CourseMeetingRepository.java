@@ -1,14 +1,15 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,7 @@ public class CourseMeetingRepository {
   private ValueEventListener listener;
 
   public CourseMeetingRepository() {
-    initListener();
+    this.initListener();
   }
 
   /** Generate an instance of the class. */
@@ -48,10 +49,6 @@ public class CourseMeetingRepository {
 
   /** Give back all threads of the Meeting. */
   public StateLiveData<List<ThreadModel>> getThreads() {
-    /*if (this.threadModelList.size() == 0) {
-      loadThreads();
-    }*/
-
     this.threads.setValue(new StateData<>(this.threadModelList));
     return this.threads;
   }
@@ -66,42 +63,81 @@ public class CourseMeetingRepository {
 
   /** Set the id of the current meeting. */
   public void setMeeting(MeetingsModel meeting) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    if (this.meeting.getValue() != null) {
-      //TODO: assert getdata != null
-      reference.child(Config.CHILD_THREADS).child(this.meeting.getValue().getData().getKey())
-              .removeEventListener(this.listener);
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      Log.e(TAG, "meetingObj is null.");
+      return;
     }
+
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+    reference.child(Config.CHILD_THREADS).child(meetingObj.getKey())
+            .removeEventListener(this.listener);
+
     reference.child(Config.CHILD_THREADS)
             .child(meeting.getKey())
             .addValueEventListener(this.listener);
-    this.meeting.postValue(new StateData<>(meeting));
+
+    this.meeting.postSuccess(meeting);
   }
 
   /** Loads all threads of the current meeting from the database. */
   //Query is not updated
   public void loadThreads() {
+    this.meeting.postLoading();
+
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      Log.e(TAG, "meetingObj is null.");
+      this.meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
+
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    //TODO: assert getdata != null
-    Query query = reference.child(Config.CHILD_MEETINGS).child(this.meeting.getValue().getData().getKey())
+    Query query = reference.child(Config.CHILD_MEETINGS)
+            .child(meetingObj.getKey())
             .child(Config.CHILD_THREADS);
     query.addValueEventListener(this.listener);
   }
 
   /** Creates a new threat in the meeting. */
   public void createThread(ThreadModel threadModel) {
+    this.threadModelMutableLiveData.postLoading();
+
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      Log.e(TAG, "meetingObj is null.");
+      this.threadModelMutableLiveData.postError(
+              new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    //TODO: assert getdata != null
+
+    if (firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.threadModelMutableLiveData.postError(
+              new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+
     String uid = firebaseAuth.getCurrentUser().getUid();
 
     threadModel.setCreatorId(uid);
     threadModel.setCreationTime(System.currentTimeMillis());
-    //TODO: assert threadId != null
+
     String threadId = reference.getRoot().push().getKey();
-    //TODO: assert getdata != null
+
+    if (threadId == null) {
+      Log.e(TAG, Config.COURSE_MEETING_THREAD_CREATION_FAILURE);
+      this.threadModelMutableLiveData.postError(
+              new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
     reference.child(Config.CHILD_THREADS)
-            .child(this.meeting.getValue().getData().getKey())
+            .child(meetingObj.getKey())
             .child(threadId)
             .setValue(threadModel)
             .addOnSuccessListener(unused -> {
@@ -117,6 +153,8 @@ public class CourseMeetingRepository {
 
   /** get the author for each thread in the provided list. */
   public void getAuthor(List<ThreadModel> threadList) {
+    this.threads.postLoading();
+
     List<Task<DataSnapshot>> authorNames = new ArrayList<>();
     for (ThreadModel thread : threadList) {
       authorNames.add(getAuthorName(thread.getCreatorId()));
@@ -144,7 +182,13 @@ public class CourseMeetingRepository {
         List<ThreadModel> threadList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           ThreadModel model = snapshot.getValue(ThreadModel.class);
-          //TODO: assert setkey != null
+
+          if (model == null) {
+            Log.e(TAG, Config.THREADS_FAILED_TO_LOAD);
+            meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+            return;
+          }
+
           model.setKey(snapshot.getKey());
           threadList.add(model);
         }
@@ -153,8 +197,8 @@ public class CourseMeetingRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, Config.COURSE_MEETING_LISTENER_FAILURE);
-        //TODO: can we set an error on statelivedata to inform the user about errors?
+        Log.e(TAG, Config.THREADS_FAILED_TO_LOAD);
+        meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     };
   }

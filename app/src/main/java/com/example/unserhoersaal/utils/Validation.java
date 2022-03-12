@@ -9,57 +9,17 @@ import java.util.regex.Pattern;
 /** Class for String validation. */
 public class Validation {
 
-  public static boolean emptyEmail(String email) {
-    return email == null || email.equals("");
-  }
-
-  public static boolean emptyUserName(String userName) {
-    return userName == null || userName.equals("");
-  }
-
-  public static boolean emptyPassword(String password) {
-    return password == null || password.equals("");
+  public static boolean emptyString(String string) {
+    return string == null || string.equals("");
   }
 
   public static boolean emailHasPattern(String email) {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches();
   }
 
-  /** Check if the username fits the pattern. */
-  public static boolean userNameHasPattern(String userName) {
-    Pattern pattern = Pattern.compile(Config.USERNAME_PATTERN);
-    Matcher matcher = pattern.matcher(userName);
-    return matcher.matches();
-  }
-
-  /** Check if the password fits the pattern. */
-  public static boolean passwordHasPattern(String password) {
-    Pattern pattern = Pattern.compile(Config.PASSWORD_PATTERN);
-    Matcher matcher = pattern.matcher(password);
-    return matcher.matches();
-  }
-
-  public static boolean titleHasPattern(String title) {
-    Pattern pattern = Pattern.compile(Config.TITLE_PATTERN);
-    Matcher matcher = pattern.matcher(title);
-    return matcher.matches();
-  }
-
-  public static boolean textHasPattern(String title) {
-    Pattern pattern = Pattern.compile(Config.TEXT_PATTERN);
-    Matcher matcher = pattern.matcher(title);
-    return matcher.matches();
-  }
-
-  public static boolean institutionHasPattern(String title) {
-    Pattern pattern = Pattern.compile(Config.INSTITUTION_PATTERN);
-    Matcher matcher = pattern.matcher(title);
-    return matcher.matches();
-  }
-
-  public static boolean codeMappingHasPattern(String codeMapping) {
-    Pattern pattern = Pattern.compile(Config.INSTITUTION_PATTERN);
-    Matcher matcher = pattern.matcher(codeMapping);
+  public static boolean stringHasPattern(String text, String regex) {
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(text);
     return matcher.matches();
   }
 

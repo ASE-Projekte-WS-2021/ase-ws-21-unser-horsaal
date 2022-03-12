@@ -12,7 +12,6 @@ import com.example.unserhoersaal.repository.CurrentCourseRepository;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
-
 import java.util.List;
 
 /** This class is the ViewModel for the joined course. */
@@ -26,7 +25,7 @@ public class CurrentCourseViewModel extends ViewModel {
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<ThreadModel> thread = new StateLiveData<>();
   public StateLiveData<String> userId;
-  public StateLiveData<MessageModel> messageModelInputState;
+  public StateLiveData<MessageModel> messageModelInputState = new StateLiveData<>();
 
   /** This method initializes the database access. */
   public void init() {
@@ -68,19 +67,20 @@ public class CurrentCourseViewModel extends ViewModel {
   public void sendMessage() {
     MessageModel messageModel = Validation.checkStateLiveData(this.messageModelInputState, TAG);
     if (messageModel == null) {
-      Log.d(TAG, "CurrentCourseVM>sendMessage messageModel is null.");
+      Log.e(TAG, "messageModel is null.");
       return;
     }
 
     if (messageModel.getText() == null) {
-      Log.d(TAG, "CurrentCourseVM>sendMessage: title is null.");
-      this.messageModelInputState.postError(new Error(Config.VM_TEXT_NULL), ErrorTag.VM);
+      Log.d(TAG, "title is null.");
+      this.messageModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.VM);
       return;
-    } else if (!Validation.textHasPattern(messageModel.getText())) {
-      Log.d(TAG, "CurrentCourseVM>sendMessage: title has wrong pattern.");
-      this.messageModelInputState.postError(new Error(Config.VM_TEXT_WRONG_PATTERN), ErrorTag.VM);
+    } else if (!Validation.stringHasPattern(messageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
+      Log.d(TAG, "title has wrong pattern.");
+      this.messageModelInputState.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
+
     messageModel.setCreationTime(System.currentTimeMillis());
 
     this.messageModelInputState.postComplete();

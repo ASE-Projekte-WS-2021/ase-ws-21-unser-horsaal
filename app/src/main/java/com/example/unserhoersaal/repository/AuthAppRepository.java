@@ -19,9 +19,9 @@ public class AuthAppRepository {
   private static final String TAG = "AuthAppRepo";
 
   private static AuthAppRepository instance;
-  private final FirebaseAuth firebaseAuth;
+  private FirebaseAuth firebaseAuth;
   private FirebaseUser firebaseUser = null;
-  private final StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
+  private StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
 
 
   /** Gives back an Instance of AuthAppRepository. */
@@ -43,17 +43,10 @@ public class AuthAppRepository {
 
   /** Gives back the current UserModel. */
   public StateLiveData<FirebaseUser> getUserStateLiveData() {
-    /* TODO: remove completley to remove register issue!!!!
-    //TODO: why 2 times this.firebaseuser === null
-    if (this.firebaseUser == null) {
-      this.firebaseUser = this.firebaseAuth.getCurrentUser();
+    /*if (this.user == null) {
+      this.user = this.firebaseAuth.getCurrentUser();
     }
-    if (this.firebaseUser == null) {
-      //TODO: review
-      Log.e(TAG, "user data is null");
-      return null;
-    }
-    this.userLiveData.setValue(new StateData<>(this.firebaseUser));*/
+    this.userLiveData.postValue(this.user);*/
     return this.userLiveData;
   }
 
@@ -64,17 +57,16 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 if (this.firebaseAuth.getCurrentUser() == null) {
-                  //TODO: review
-                  Log.e(TAG, "firebaseauth is null");
-                  this.userLiveData.postError(new Error(Config.LOGIN_FAILED), ErrorTag.REPO);
+                  Log.e(TAG, "firebase did not authenticated a user.");
+                  this.userLiveData.postError(new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
                 }
                 else {
-                  //TODO: check in login fragment if email is verified
+                  Log.d(TAG, "Login with firebase auth was successful");
                   this.userLiveData.postSuccess(this.firebaseAuth.getCurrentUser());
                 }
               } else {
-                Log.e(TAG, "firebaseauth failed.");
-                this.userLiveData.postError(new Error(Config.LOGIN_FAILED), ErrorTag.REPO);
+                Log.e(TAG, "authentication failed.");
+                this.userLiveData.postError(new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
               }
             });
   }
@@ -87,29 +79,14 @@ public class AuthAppRepository {
               if (task.isSuccessful()) {
                 this.firebaseUser = this.firebaseAuth.getCurrentUser();
                 if (this.firebaseUser == null) {
-                  Log.w(TAG, "firebase user is null.");
+                  Log.e(TAG, "firebase did not authenticated a user.");
                 }
+                Log.d(TAG, "Successfully registered with firebase auth.");
                 this.createNewUser(username, email, this.firebaseUser.getUid());
-                //TODO: await the result of createNewUser before sending a verification email
-                //TODO: important!!!
-                /* if registration process succeeded initiate email verification process */
-                this.firebaseUser.sendEmailVerification()
-                        .addOnCompleteListener(task1 -> {
-                          if (task1.isSuccessful()) {
-                            this.userLiveData.postSuccess(this.firebaseUser);
-                          } else {
-                            this.userLiveData.postError(
-                                    new Error(Config.VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
-                          }
-                        });
-
-                //TODO: if this does not work, https://stackoverflow.com/a/46580326/13620136
-                // suggests reloading the firebase user object
-                this.firebaseAuth.addAuthStateListener(this.authStateListener());
               }
               else {
-                Log.e(TAG, "User registration failed.");
-                this.userLiveData.postError(new Error(Config.REG_FAILED), ErrorTag.REPO);
+                Log.e(TAG, "user registration failed.");
+                this.userLiveData.postError(new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
               }
             });
   }
@@ -127,23 +104,42 @@ public class AuthAppRepository {
             .child(uid)
             .setValue(newUser)
             .addOnSuccessListener(unused -> {
-              //TODO: pass success result to method register
+              Log.d(TAG, "A new user was created in the database");
+              this.sendVerificationEmail();
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, "Could not create a new user!");
-              //TODO: assert! deny access to user! pass result to method register
+              this.userLiveData.postError(new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
             });
   }
 
+  /** sends a verification email to the email address that the user provided after a user is created
+   * in the database. */
+  private void sendVerificationEmail() {
+    this.firebaseUser.sendEmailVerification()
+            .addOnCompleteListener(task1 -> {
+              if (task1.isSuccessful()) {
+                Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
+                this.userLiveData.postSuccess(this.firebaseUser);
+                this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
+              } else {
+                Log.e(TAG,  Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
+                this.userLiveData.postError(
+                        new Error(Config.AUTH_VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
+              }
+            });
+  }
+
+  //TODO: review -> in dont know if this works
   /** listenr: changes on firebase user status */
-  private FirebaseAuth.AuthStateListener authStateListener() {
+  private FirebaseAuth.AuthStateListener authStateListenerVerification() {
     return firebaseAuth1 -> {
       this.firebaseUser = firebaseAuth1.getCurrentUser();
       if (this.firebaseUser != null && this.firebaseUser.isEmailVerified()) {
         Log.d(TAG, "User verified.");
         this.firebaseUser.reload();
         this.userLiveData.postSuccess(this.firebaseUser);
-        this.firebaseAuth.removeAuthStateListener(this.authStateListener());
+        this.firebaseAuth.removeAuthStateListener(this.authStateListenerVerification());
       } else {
         Log.w(TAG, "User konnte nicht verifiziert werden.");
       }
@@ -153,31 +149,37 @@ public class AuthAppRepository {
   /** Method to reset the password via password reset email.*/
   public void resetPassword(String mail) {
     this.userLiveData.postLoading();
-    this.firebaseAuth.sendPasswordResetEmail(mail).addOnCompleteListener(task -> {
-      if (task.isSuccessful()) {
-        Log.d(TAG, "password was reset.");
-        this.userLiveData.postSuccess(this.firebaseUser);
-      } else {
-        Log.d(TAG, "password could not be reset.");
-        this.userLiveData.postError(new Error(Config.PASSWORD_RESET_FAILED), ErrorTag.REPO);
-      }
-    });
+    this.firebaseAuth.sendPasswordResetEmail(mail)
+            .addOnCompleteListener(task -> {
+              if (task.isSuccessful()) {
+                Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_SUCCESS);
+                this.userLiveData.postSuccess(this.firebaseUser);
+              } else {
+                Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED);
+                this.userLiveData.postError(
+                        new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
+              }
+            });
   }
 
   /** Method to (re)send a email verification.*/
   public void resendEmailVerification() {
     this.userLiveData.postLoading();
     if (this.firebaseUser == null) {
-      this.userLiveData.postError(new Error(Config.VERIFICATION_FIREBASE_USER_NULL), ErrorTag.REPO);
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.userLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
     } else {
       this.firebaseUser.sendEmailVerification()
               .addOnCompleteListener(task1 -> {
                 if (task1.isSuccessful()) {
+                  Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
                   this.userLiveData.postSuccess(this.firebaseUser);
                   //add an authstatelistener so we can live observe when user clicks the email
-                  this.firebaseAuth.addAuthStateListener(this.authStateListener());
+                  this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
                 } else {
-                  this.userLiveData.postError(new Error(Config.VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
+                  Log.e(TAG, Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
+                  this.userLiveData.postError(
+                          new Error(Config.AUTH_VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
                 }
               });
     }
@@ -185,39 +187,45 @@ public class AuthAppRepository {
 
   public void sendPasswordResetMail(String email) {
     this.userLiveData.postLoading();
-    this.firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
-      if (task.isSuccessful()) {
-        this.userLiveData.postSuccess(this.firebaseUser);
-      } else {
-        this.userLiveData.postError(new Error(Config.VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
-      }
-    });
+    this.firebaseAuth.sendPasswordResetEmail(email)
+            .addOnCompleteListener(task -> {
+              if (task.isSuccessful()) {
+                Log.d(TAG, Config.AUTH_PASSWORD_RESET_MAIL_SENT);
+                this.userLiveData.postSuccess(this.firebaseUser);
+              } else {
+                Log.e(TAG, Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT);
+                this.userLiveData.postError(
+                        new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
+              }
+            });
   }
 
   /** Logging out the current user. */
   public void logOut() {
+    this.userLiveData.postLoading();
     this.firebaseAuth.signOut();
-    this.userLiveData.postSuccess(null);
+    this.firebaseAuth.addAuthStateListener(this.authStateListenerLogout());
+  }
+
+  /** listener for logout method */
+  private FirebaseAuth.AuthStateListener authStateListenerLogout() {
+    return firebaseAuth1 -> {
+      this.firebaseUser = firebaseAuth1.getCurrentUser();
+      if (firebaseAuth.getCurrentUser() == null) {
+        Log.d(TAG, Config.AUTH_LOGOUT_SUCCESS);
+        this.userLiveData.postSuccess(null);
+        this.firebaseAuth.removeAuthStateListener(authStateListenerLogout());
+      } else {
+        Log.e(TAG, Config.AUTH_LOGOUT_FAIL);
+        this.userLiveData.postError(new Error(Config.AUTH_LOGOUT_FAIL), ErrorTag.REPO);
+      }
+    };
   }
 
   /** Method to delete an user account. */
   public void deleteAccount() {
     //TODO: delete Account in real time database and firebase authentication
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
-  }
-
-  /** Checks FirebaseAuth if the email that the user tries to register with exists. */
-  public void emailExist(String email) {
-    this.userLiveData.postLoading();
-    this.firebaseAuth.fetchSignInMethodsForEmail(email)
-            .addOnCompleteListener(task -> {
-              boolean emailNotExists = task.getResult().getSignInMethods().isEmpty();
-              if (emailNotExists) {
-                //existency.setValue(ResetPasswordEnum.ERROR);
-              } else {
-                //existency.setValue(ResetPasswordEnum.SUCCESS);
-              }
-            });
   }
 
 }

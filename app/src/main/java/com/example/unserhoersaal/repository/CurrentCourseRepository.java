@@ -57,10 +57,6 @@ public class CurrentCourseRepository {
    * This method provides all messages of a course.
    */
   public StateLiveData<List<MessageModel>> getMessages() {
-    /*if (this.messagesList.size() == 0) {
-      this.loadMessages();
-    }*/
-
     this.messages.setValue(new StateData<>(this.messagesList));
     return this.messages;
   }

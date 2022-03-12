@@ -54,17 +54,17 @@ public class EnterCourseViewModel extends ViewModel {
   public void checkCode() {
     CourseModel courseModel = Validation.checkStateLiveData(this.courseIdInputState, TAG);
     if (courseModel == null) {
-      Log.d(TAG, "ProfileViewModel>checkCode courseModel is null.");
+      Log.e(TAG, "courseModel is null.");
       return;
     }
 
     if (courseModel.getCodeMapping()== null) {
-      this.courseIdInputState.postError(new Error(Config.VM_CODEMAPPING_NULL), ErrorTag.VM);
-      Log.d(TAG, "EnterCourseVM>checkCode id is null.");
+      this.courseIdInputState.postError(new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
+      Log.d(TAG, "codeMapping is null.");
       return;
-    } else if (!Validation.codeMappingHasPattern(courseModel.getCodeMapping())) {
-      this.courseIdInputState.postError(new Error(Config.VM_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
-      Log.d(TAG, "EnterCourseVM>checkCode id has wrong pattern.");
+    } else if (!Validation.stringHasPattern(courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
+      this.courseIdInputState.postError(new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
+      Log.d(TAG, "codeMapping has wrong pattern.");
       return;
     }
 
@@ -75,25 +75,24 @@ public class EnterCourseViewModel extends ViewModel {
 
     this.courseIdInputState.postComplete();
     this.enterCourseRepository.checkCode(codeMapping);
-
   }
 
   /** JavaDoc for this method. */
   public void enterCourse() {
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelStateLiveData, TAG);
     if (courseModel == null) {
-      Log.d(TAG, "ProfileViewModel>changeInstitution userModel is null.");
+      Log.e(TAG, "courseModel is null.");
       return;
     }
 
     if (courseModel.getCodeMapping() == null) {
-      this.courseIdInputState.postError(new Error(Config.VM_CODEMAPPING_NULL), ErrorTag.VM);
-      Log.d(TAG, "EnterCourseVM>enterCourse codeMapping is null.");
+      this.courseModelStateLiveData.postError(new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
+      Log.d(TAG, "codeMapping is null.");
       return;
     }
-    else if (!Validation.codeMappingHasPattern(courseModel.getCodeMapping())) {
-      this.courseIdInputState.postError(new Error(Config.VM_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
-      Log.d(TAG, "EnterCourseVM>enterCourse codeMapping has wrong pattern.");
+    else if (!Validation.stringHasPattern(courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
+      this.courseModelStateLiveData.postError(new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
+      Log.d(TAG, "codeMapping has wrong pattern.");
       return;
     }
 

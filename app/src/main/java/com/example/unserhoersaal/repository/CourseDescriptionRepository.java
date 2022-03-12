@@ -7,6 +7,7 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +27,7 @@ public class CourseDescriptionRepository {
   private ValueEventListener listener;
 
   public CourseDescriptionRepository() {
-    initListener();
+    this.initListener();
   }
 
   /** Generates an instance of CourseDescriptionRepository. */
@@ -46,16 +47,21 @@ public class CourseDescriptionRepository {
   }
 
   /** Sets the current course. */
-  public void setCourseId(String courseId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    if (this.courseId.getValue() != null) {
-      //TODO: assert this.courseId.getvalue() != null
-      reference.child(Config.CHILD_COURSES).child(this.courseId.getValue().getData())
-              .removeEventListener(this.listener);
+  public void setCourseId(String newCourseId) {
+    String oldKey = Validation.checkStateLiveData(this.courseId, TAG);
+    if (oldKey == null) {
+      Log.e(TAG, "key is null.");
+      return;
     }
-    reference.child(Config.CHILD_COURSES).child(courseId).addValueEventListener(this.listener);
+
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    reference.child(Config.CHILD_COURSES)
+            .child(oldKey)
+            .removeEventListener(this.listener);
+
+    reference.child(Config.CHILD_COURSES).child(newCourseId).addValueEventListener(this.listener);
     this.courseModel.postValue(new StateData<>(new CourseModel()));
-    this.courseId.postValue(new StateData<>(courseId));
+    this.courseId.postValue(new StateData<>(newCourseId));
   }
 
   /** Initializes the listener for the database access. */
@@ -64,14 +70,23 @@ public class CourseDescriptionRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
-        //TODO: assert model =! null
+
+        if (model == null) {
+          Log.e(TAG, "model is null");
+          courseModel.postError(
+                  new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
+          return;
+        }
+
         model.setKey(snapshot.getKey());
         getAuthorName(model);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        courseModel.postError(new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
+        Log.e(TAG, "setcourseid task failed.");
+        courseModel.postError(
+                new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
     };
   }
@@ -85,16 +100,24 @@ public class CourseDescriptionRepository {
     task.addOnSuccessListener(dataSnapshot -> {
       course.setCreatorName(dataSnapshot.getValue(String.class));
       this.courseModel.postSuccess(course);
-    }).addOnFailureListener(e ->
-            this.courseModel.postError(new Error(Config.COURSE_DESCRIPTION_COULD_NOT_LOAD_USER), ErrorTag.REPO)
-    );
+    }).addOnFailureListener(e -> {
+      Log.e(TAG, e.getMessage());
+      this.courseModel.postError(
+              new Error(Config.COURSE_DESCRIPTION_COULD_NOT_LOAD_USER), ErrorTag.REPO);
+    });
   }
 
   /** unregisters a user from a course in real time database. */
   public void unregisterFromCourse(String id) {
     this.courseModel.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    //TODO: Firebaseuser != null
+
+    if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courseModel.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      return;
+    }
+
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     reference.child(Config.CHILD_USER_COURSES)
             .child(uid).child(id)

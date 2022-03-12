@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
@@ -78,19 +79,24 @@ public class CourseParticipantsRepository {
         Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
           for (Task<DataSnapshot> task : taskList) {
             UserModel model = task.getResult().getValue(UserModel.class);
-            //TODO: assert setkey != null
+
+            if (model == null) {
+              Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
+              users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
+              return;
+            }
             model.setKey(task.getResult().getKey());
             userList.add(model);
           }
-          users.postValue(new StateData<>(userList));
+          users.postSuccess(userList);
         });
 
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, Config.COURSE_PARTICIPANTS_LISTENER_FAILURE);
-        //TODO: can we set an error on statelivedata to inform the user about errors?
+        Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
+        users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
       }
     };
   }

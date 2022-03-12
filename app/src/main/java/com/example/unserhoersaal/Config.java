@@ -4,15 +4,71 @@ import java.text.SimpleDateFormat;
 
 /** Config Class. */
 public class Config {
+  /**=======================.
+   * User Input Lengths
+   * ======================= */
+  public static final int PASSWORD_LENGTH_MIN = 8;
+  public static final int PASSWORD_LENGTH_MAX = 64;
+  public static final int USERNAME_LENGTH_MIN = 3;
+  public static final int USERNAME_LENGTH_MAX = 15;
+  public static final int INSTITUTION_LENGTH_MIN = 0; //optional
+  public static final int INSTITUTION_LENGTH_MAX = 75;
 
-  /** ChatAdapter. */
+  public static final int COURSE_TITLE_LENGTH_MIN = 3;
+  public static final int COURSE_TITLE_LENGTH_MAX = 100;
+  public static final int MEETING_TITLE_LENGTH_MIN = 3;
+  public static final int MEETING_TITLE_LENGTH_MAX = 100;
+  public static final int THREAD_TITLE_LENGTH_MIN = 3;
+  public static final int THREAD_TITLE_LENGTH_MAX = 100;
+
+  public static final int COURSE_TEXT_LENGTH_MIN = 1;
+  public static final int COURSE_TEXT_LENGTH_MAX = 500;
+  public static final int MEETING_TEXT_LENGTH_MIN = 1;
+  public static final int MEETING_TEXT_LENGTH_MAX = 500;
+  public static final int THREAD_TEXT_LENGTH_MIN = 1;
+  public static final int THREAD_TEXT_LENGTH_MAX = 500;
+  public static final int MESSAGE_TEXT_LENGTH_MIN = 1;
+  public static final int MESSAGE_TEXT_LENGTH_MAX = 500;
+
+  public static final int COURSE_DESCRIPTION_LENGTH_MIN = 0; //optional
+  public static final int COURSE_DESCRIPTION_LENGTH_MAX = 500;
+  public static final int MEETING_DESCRIPTION_LENGTH_MIN = 0; //optional
+  public static final int MEETING_DESCRIPTION_LENGTH_MAX = 500;
+
+  public static final int CODE_MAPPING_LENGTH = 9;
+
+  /**=======================.
+   * User Allowed Input Characters
+   * ======================= */
+  public static final String PASSWORD_ALLOWED_CHARACTERS = "";
+  public static final String USERNAME_ALLOWED_CHARACTERS = "";
+  public static final String TEXT_ALLOWED_CHARACTERS = "";
+  public static final String CODE_MAPPING_ALLOWED_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  /**=======================.
+   *  Regex Patterns
+   * ======================= */
+  // reference: https://ihateregex.io/expr/username/
+  public static final String REGEX_PATTERN_USERNAME = String.format("^[a-zA-Z0-9_-]{%s,%s}$", USERNAME_LENGTH_MIN, USERNAME_LENGTH_MAX);
+  // reference: https://ihateregex.io/expr/password/
+  public static final String REGEX_PATTERN_PASSWORD = String.format("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{%s,%s}$", PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
+  public static final String REGEX_PATTERN_TITLE = ".*";
+  public static final String REGEX_PATTERN_INSTITUTION = ".*";
+  public static final String REGEX_PATTERN_TEXT = ".*";
+  public static final String REGEX_PATTERN_CODE_MAPPING = ".*";
+
+  /**=======================.
+   * Date / Time Formats
+   * ======================= */
   public static final SimpleDateFormat RECENT_FORMAT = new SimpleDateFormat("HH:mm");
   public static final SimpleDateFormat OLD_FORMAT = new SimpleDateFormat("dd. MMMM");
   public static final SimpleDateFormat DATE_TIME_FORMAT
           = new SimpleDateFormat("dd. MMMM, HH:mm");
   public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd. MM. yyyy");
 
-  /** Database Children. */
+  /**=======================.
+   * Database Children
+   * ======================= */
   public static final String CHILD_USER = "users";
   public static final String CHILD_COURSES = "courses";
   public static final String CHILD_MESSAGES = "messages";
@@ -31,112 +87,79 @@ public class Config {
   public static final String CHILD_DISPLAY_NAME = "displayName";
   public static final String CHILD_INSTITUTION = "institution";
 
-  /** Repository Errors */
+  /**=======================.
+   * Internal Error Messages
+   * ======================= */
+
+  public static final String FIREBASE_USER_NULL = "Firebase User is null";
+  public static final String STATE_LIVE_DATA_NULL = "Databinding Error";
+  public static final String AUTH_LOGOUT_SUCCESS = "";
+  public static final String AUTH_LOGOUT_FAIL = "";
+  public static final String LISTENER_FAILED_TO_RESOLVE = "Peter Lustig";
+
+  /**=======================.
+   * Error Messages For User
+   * ======================= */
+  public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
+  public static final String DATABINDING_TITLE_WRONG_PATTERN = "Der Titel enthält ungültige Charaktere!"; //TODO: add characters
+  public static final String DATABINDING_TEXT_NULL = "Der Titel darf nicht null sein!";
+  public static final String DATABINDING_TEXT_WRONG_PATTERN = "Der Titel enthält ungültige Charaktere!";
+  public static final String DATABINDING_CODEMAPPING_NULL = "Der Beitrittscode darf nicht leer sein!";
+  public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN = "Der Beitrittscode enthält ungültige Charaktere.";
+
+  public static final String AUTH_EMAIL_EMPTY = "Bitte gib eine Email-Adresse ein!";
+  public static final String AUTH_EMAIL_WRONG_PATTERN = "Email ist ungültig oder bereits vergeben!";
+  public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
+  public static final String AUTH_PASSWORD_WRONG_PATTERN = "Das Passwort muss aus Groß- und Kleinbuchstaben, sowie mindestens einer Zahl bestehen! Zudem muss es mindestens 8 Zeichen lang sein!";
+  public static final String AUTH_USERNAME_EMPTY = "Bitte gib einen Nutzernamen ein!";
+  public static final String AUTH_USERNAME_WRONG_PATTERN = "Nutzername ist ungültig oder bereits vergeben!";
+  public static final String AUTH_INSTITUTION_EMPTY = "Bitte gib eine Institution ein!";
+  public static final String AUTH_INSTITUTION_WRONG_PATTERN = "Institution ist ungültig!";
+  public static final String AUTH_REGISTRATION_FAILED = "Die Registrierung konnte nicht abgeschlossen werden!";
+  public static final String AUTH_LOGIN_FAILED = "Falsche Email-Adresse oder falsches Passwort!";
+  public static final String AUTH_EDIT_PASSWORD_CHANGE_FAILED = "Das Passwort konnte nicht geändert werden!";
+  public static final String AUTH_EDIT_PASSWORD_CHANGE_SUCCESS = "Das Passwort wurde erfolgreich geändert!";
+  public static final String AUTH_EDIT_USERNAME_CHANGE_FAILED = "Der Nutzername konnte nicht geändert werden!";
+  public static final String AUTH_EDIT_USERNAME_CHANGE_SUCCESS = "Der Nutzername wurde erfolgreich geändert!";
+  public static final String AUTH_EDIT_INSTITUTION_CHANGE_FAILED = "Die Institution konnte nicht geändert werden!";
+  public static final String AUTH_EDIT_INSTITUTION_CHANGE_SUCCESS = "Die Institution wurde erfolgreich geändert!";
+  public static final String AUTH_VERIFICATION_EMAIL_SENT = "Verifizierungsemail versandt";
+  public static final String AUTH_VERIFICATION_EMAIL_NOT_SENT = "Die Verfizierungsemail konnte nicht versandt werden!";
+  public static final String AUTH_PASSWORD_RESET_MAIL_SENT = "Email zur Passwortzurücksetzung versandt.";
+  public static final String AUTH_PASSWORD_RESET_MAIL_NOT_SENT = "Die Email zur Passwortzurücksetzung konnte nicht versandt werden!";
+
+  public static final String COURSES_COURSE_CREATION_FAILURE = "Der Kurs konnte nicht erstellt werden!";
+  public static final String COURSE_HISTORY_MEETING_CREATION_FAILURE = "Das Meeting konnte nicht erstellt werden!";
+  public static final String COURSE_MEETING_THREAD_CREATION_FAILURE = "Der Thread konnte nicht erstellt werden!";
+  public static final String CURRENT_COURSE_CREATION_MESSAGE = "Die Chatnachricht konnte nicht versandt werden!";
+
   public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED = "Das Abmelden vom Kurs war nicht erfolgreich!";
-  public static final String COURSE_DESCRIPTION_SETCOURSEID_FAILED = "Kursid konnte nicht gesetzt werden.";
-  public static final String COURSE_DESCRIPTION_COULD_NOT_LOAD_USER = "Nutzer konnte nicht geladen werden.";
-  public static final String COURSE_HISTORY_MEETING_NOT_CREATED = "Das Meeting konnte nicht erstellt werden.";
-  public static final String COURSE_HISTORY_LISTENER_FAILURE = "Course History Listener Failure";
-  public static final String COURSE_MEETING_THREAD_CREATION_FAILURE = "Der Thread konnte nicht erstellt werden";
-  public static final String COURSE_MEETING_LISTENER_FAILURE = "Course Meeting Listener Failure";
-  public static final String COURSE_PARTICIPANTS_LISTENER_FAILURE = "Course Participants Listener Failure";
+  public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_SUCCESS = "Erfolgreich vom Kurs abgemeldet!";
+  public static final String COURSE_DESCRIPTION_SETCOURSEID_FAILED = "Der ausgewählte Kurs konnte nicht gefunden werden!";
 
-  /** Profile Error */
-  public static final String PROFILE_FAILED_TO_LOAD_USER = "Der Nutzer konnte nicht geladen werden.";
-  public static final String PROFILE_FAILED_TO_CHANGE_PASSWORD = "Das Password konnte nicht geändert werden.";
-  public static final String PROFILE_FAILED_TO_CHANGE_INSTITUTION = "Die Institution konnte nicht geändert werden.";
-  public static final String PROFILE_FAILED_TO_CHANGE_DISPLAYNAME = "Der Nutzername konnte nicht geändert werden.";
+  public static final String COURSE_DESCRIPTION_COULD_NOT_LOAD_USER = "Nutzer konnte nicht geladen werden!";
+  public static final String PROFILE_FAILED_TO_LOAD_USER = "Das Nutzerprofil konnte nicht geladen werden!";
+  public static final String COURSES_FAILED_TO_LOAD = "Kurse konnten nicht geladen werden!";
+  public static final String THREADS_FAILED_TO_LOAD = "Threads konnten nicht geladen werden!";
+  public static final String MEETINGS_FAILED_TO_LOAD = "Meeting konnten nicht geladen werden!";
+  public static final String MESSAGES_FAILED_TO_LOAD = "Nachrichten konnten nicht geladen werden!";
 
-  /** ViewModel */
-  public static final String VM_TITLE_NULL = "Der Titel darf nicht null sein.";
-  public static final String VM_TITLE_WRONG_PATTERN = "Der Titel entspricht nicht dem vorgegebenen Pattern.";
-  public static final String VM_TEXT_NULL = "Der Titel darf nicht null sein.";
-  public static final String VM_TEXT_WRONG_PATTERN = "Der Titel entspricht nicht dem vorgegebenen Pattern.";
-  public static final String VM_INSTITUTION_NULL = "Der Text für Institution darf nicht null sein.";
-  public static final String VM_INSTITUTION_WRONG_PATTERN = "Der Text für Institution entspricht nicht dem vorgegebenen Pattern.";
-  public static final String VM_CODEMAPPING_NULL = "Der Beitrittscode darf nicht leer sein.";
-  public static final String VM_CODEMAPPING_WRONG_PATTERN = "Der Beitrittscode hat ein ungültiges Muster.";
-
-  /** UI. */
+  /**=======================.
+   *  Avatar Placeholder Ids
+   * ======================= */
   public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;
   public static final int ERROR_PROFILE_AVATAR = R.drawable.ic_baseline_account_circle_24;
 
-  /** Login Failed */
-  public static final String LOGIN_FAILED = "Der Loginversuch war nicht erfolgreich.";
-
-  /** Password Reset Failed */
-  public static final String PASSWORD_RESET_FAILED = "Password reset failed.";
-
-  /** Verification */
-  public static final String VERIFICATION_FIREBASE_USER_NULL = "Firebase User is null";
-
-  /** Login Error Message. */
-  public static final String EMAIL_EMPTY = "Bitte geben Sie eine Emailadresse ein!";
-  public static final String EMAIL_PATTERN_WRONG = "Die eingegebene Email ist falsch!";
-  public static final String PASSWORD_EMPTY = "Bitte geben Sie ein Passwort ein!";
-  public static final String PASSWORD_PATTERN_WRONG = "Das eingegebene Passwort ist falsch!"
-          + "Passwort vergessen?";
-
-  /** Registration Error Message. */
-  public static final String REG_FAILED = "Die Registrierung konnte nicht abgeschlossen werden.";
-  public static final String REG_EMAIL_PATTERN_WRONG = "Die Email wurde falsch eingegeben.";
-  public static final String REG_EMAIL_EMPTY = "Bitte geben Sie eine Emailaddresse ein.";
-  public static final String REG_PASSWORD_PATTERN_WRONG = "Das Passwort muss mind. 8 Zeichen "
-          + "lang sein und mind. 1 Groß- und Kleinbuchstaben, sowie mind. 1 Zahl enthalten.";
-  public static final String REG_PASSWORD_EMPTY = "Bitte geben Sie ein Password ein.";
-  public static final String REG_USERNAME_EMPTY = "Bitte geben Sie einen Nutzernamen ein.";
-  public static final String REG_USERNAME_WRONG_PATTERN = "Der eingegebene Nutzername muss "
-          + "mind. 3 und max. 15 Zeichen lang sein.";
-  public static final String VERIFICATION_EMAIL_NOT_SENT = "Die Verfizierungsemail konnte"
-          + " nicht versandt werden";
-
-  public static final String STATE_LIVE_DATA_NULL = "Databinding Error";
-
-  /** Toast Messages. */
-  public static final String REG_VERIFY_EMAIL = "Verifizierungsemail versandt";
-
-  /** Alert Dialog Registration. */
-  public static final String DIALOG_VERIFICATION_TITLE = "Emailverifizierung";
-  public static final String DIALOG_VERIFICATION_MESSAGE = "Eine Email mit dem Verifizierungscode"
-          + " wurde an die von Ihnen angegebene Email versandt.";
-  public static final String DIALOG_SEND_BUTTON = "Erneut senden";
-  public static final String DIALOG_CANCEL_BUTTON = "Schließen";
-
-  /** Alert Dialog Login. */
-  public static final String DIALOG_VERIFICATION_MESSAGE_LOGIIN = "Sie haben Ihre Email noch "
-          + "nicht verifiziert. Verifizierungsmail erneut senden?";
-
-  /** Dialog Password Reset. */
-  public static final String DIALOG_EMAIL_PATTERN_WRONG = "Die eingegebene Email wurde falsch "
-          + "eingegeben oder es existiert kein Account zu dieser Email Adresse";
-  public static final String DIALOG_PASSWORD_RESET_SUCCESS = "Email mit einem Link zur "
-          + "Passwortzurücksetzung wurde versandt";
-
-  /** Regex. */
-  /* reference: https://ihateregex.io/expr/username/ */
-  public static final String USERNAME_PATTERN = "^[a-zA-Z0-9_-]{3,15}$";
-  /* reference: https://ihateregex.io/expr/password/
-     In this case a password may contain:
-    (?=.*?[A-Z]) : At least one upper case English letter
-    (?=.*?[a-z]) : At least one lower case English letter
-    (?=.*?[0-9]) : At least one digit
-    .{8,} : Minimum eight in length
-    The lookahead ( (?=.*?[A-Z]) ) is used to check if after some characters if there is an
-    occurance of an upper case letter. Similarly all the other lookaheads(lower, numbers, etc)
-    are checked to complete the whole regex.
-  */
-  public static final String PASSWORD_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$";
-  //TODO: check if this matches our policy
-  public static final String TITLE_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,64}$";
-  public static final String INSTITUTION_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,30}$";
-  public static final String TEXT_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{1,200}$";
-
-  /** CodeMapping. */
-  public static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  public static final int CODE_LENGTH = 9;
+  /**=======================.
+   *  CodeMapping
+   * ======================= */
   public static final String CODE_MAPPING_DEEP_LINK_KEY = "codeMapping";
   public static final String COURSE_CODE_MAPPING_CLIPBOARD = "Code_Mapping_Clip_Data";
   public static final String COURSE_CODE_MAPPING_CLIPBOARD_TOAST_TEXT = "Copied!";
+
+  /**=======================.
+   *  Deep Link
+   * ======================= */
   public static final String DEEP_LINK_URL = "https://app.vairasza.dev/unserhoersaal/";
 
 }

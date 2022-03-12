@@ -1,12 +1,9 @@
 package com.example.unserhoersaal.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.CourseParticipantsRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
-
 import java.util.List;
 
 /** JavaDoc for this ViewModel. */

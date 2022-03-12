@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.CoursesRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
-
 import java.util.List;
 
 /** This class is the ViewModel for the signed up courses. */

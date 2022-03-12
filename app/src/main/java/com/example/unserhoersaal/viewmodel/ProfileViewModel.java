@@ -1,10 +1,7 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.PasswordModel;
@@ -25,8 +22,8 @@ public class ProfileViewModel extends ViewModel {
   private ProfileRepository profileRepository;
   private StateLiveData<FirebaseUser> userLiveData;
   private StateLiveData<UserModel> profileLiveData;
-  public StateLiveData<UserModel> userInputState;
-  public StateLiveData<PasswordModel> passwordInputState;
+  public StateLiveData<UserModel> userInputState = new StateLiveData<>();
+  public StateLiveData<PasswordModel> passwordInputState = new StateLiveData<>();
   public StateLiveData<Boolean> profileChanged;
 
   /** Initialize the LoginRegisterViewModel. */
@@ -39,8 +36,8 @@ public class ProfileViewModel extends ViewModel {
     this.userLiveData = this.authAppRepository.getUserStateLiveData();
     this.profileLiveData = this.profileRepository.getUser();
 
-    this.userInputState.setValue(new StateData<>(new UserModel()));
-    this.passwordInputState.setValue(new StateData<>(new PasswordModel()));
+    this.userInputState.postValue(new StateData<>(new UserModel()));
+    this.passwordInputState.postValue(new StateData<>(new PasswordModel()));
     this.profileChanged = this.profileRepository.getProfileChanged();
   }
 
@@ -59,12 +56,12 @@ public class ProfileViewModel extends ViewModel {
 
 
   public void resetProfileInput() {
-    this.userInputState.setValue(new StateData<>(new UserModel()));
+    this.userInputState.postValue(new StateData<>(new UserModel()));
   }
 
   /** JavaDoc for this method. */
   public void resetPasswordInput() {
-    this.passwordInputState.setValue(new StateData<>(new PasswordModel()));
+    this.passwordInputState.postValue(new StateData<>(new PasswordModel()));
   }
 
   public void logout() {
@@ -79,13 +76,23 @@ public class ProfileViewModel extends ViewModel {
   public void changeDisplayName() {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.d(TAG, "ProfileViewModel>changeDisplayName userModel is null.");
+      Log.e(TAG, "userModel is null.");
       return;
     }
 
     String displayName = userModel.getDisplayName();
-    //TODO: check if displayName matches our policy and is not null
 
+    if (Validation.emptyString(displayName)) {
+      Log.d(TAG, "displayName is null.");
+      this.userInputState.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
+      return;
+    } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
+      Log.d(TAG, "displayName has wrong pattern.");
+      this.userInputState.postError(new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      return;
+    }
+
+    this.userInputState.postComplete();
     this.profileRepository.changeDisplayName(displayName);
   }
 
@@ -93,12 +100,21 @@ public class ProfileViewModel extends ViewModel {
   public void changeInstitution() {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.d(TAG, "ProfileViewModel>changeInstitution userModel is null.");
+      Log.e(TAG, "userModel is null.");
       return;
     }
 
     String institution = userModel.getInstitution();
-    //TODO: check if institution matches our policy -> pattern
+
+    if (Validation.emptyString(institution)) {
+      Log.d(TAG, "institution is null.");
+      this.userInputState.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
+      return;
+    } else if (!Validation.stringHasPattern(institution, Config.REGEX_PATTERN_INSTITUTION)) {
+      Log.d(TAG, "institution has wrong pattern.");
+      this.userInputState.postError(new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
+      return;
+    }
 
     this.userInputState.postComplete();
     this.profileRepository.changeInstitution(institution);
@@ -106,22 +122,38 @@ public class ProfileViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void changePassword() {
-    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
-    if (userModel == null || passwordModel == null) {
-      Log.d(TAG, "ProfileViewModel>changePassword userModel or passwordModel is null.");
+    if (passwordModel == null) {
+      Log.e(TAG, "passwordModel is null.");
       return;
     }
 
-    //TODO: check if getPassword is null
-    if (!Validation.passwordHasPattern(passwordModel.getNewPassword())) {
-      Log.d(TAG, "ProfileViewModel>changePassword: password doesn't match pattern");
-      this.userInputState.postError(new Error(Config.PASSWORD_RESET_FAILED), ErrorTag.VM);
-    } else {
-      this.userInputState.postComplete(); //TODO: passwordstate!!!
-      this.profileRepository
-              .changePassword(passwordModel.getCurrentPassword(), passwordModel.getNewPassword());
+    String oldPassword = passwordModel.getCurrentPassword();
+    String newPassword = passwordModel.getNewPassword();
+
+    if (Validation.emptyString(oldPassword)) {
+      Log.d(TAG, "oldPassword is null.");
+      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return;
+    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, "oldPassword has wrong pattern.");
+      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return;
     }
-  }
+
+    if (Validation.emptyString(newPassword)) {
+      Log.d(TAG, "newPassword is null.");
+      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
+      return;
+    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, "newPassword has wrong pattern.");
+      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
+      return;
+    }
+
+      this.passwordInputState.postComplete();
+      this.profileRepository
+              .changePassword(oldPassword, newPassword);
+    }
 
 }

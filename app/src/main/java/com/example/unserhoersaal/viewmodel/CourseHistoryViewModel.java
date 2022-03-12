@@ -1,19 +1,15 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
-import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +20,6 @@ public class CourseHistoryViewModel extends ViewModel {
   private static final String TAG = "CourseHistoryViewModel";
 
   private CourseHistoryRepository courseHistoryRepository;
-
   private StateLiveData<CourseModel> course = new StateLiveData<>();
   private StateLiveData<List<MeetingsModel>> meetings;
   private StateLiveData<MeetingsModel> meetingsModelMutableLiveData;
@@ -45,8 +40,7 @@ public class CourseHistoryViewModel extends ViewModel {
     this.courseHistoryRepository.setUserId();
     this.userId = this.courseHistoryRepository.getUserId();
 
-    //TODO: assert != null
-    if (this.course.getValue().getData() != null) {
+    if (this.course.getValue() != null) {
       this.meetings = this.courseHistoryRepository.getMeetings();
     }
     this.meetingModelInputState.postValue(new StateData<>(new MeetingsModel()));
@@ -77,15 +71,17 @@ public class CourseHistoryViewModel extends ViewModel {
   public void createMeeting() {
     MeetingsModel meetingsModel = Validation.checkStateLiveData(this.meetingModelInputState, TAG);
     if (meetingsModel == null) {
-      Log.d(TAG, "CourseHistoryVM>createMeeting meetingsModel is null.");
+      Log.e(TAG, "meetingsModel is null.");
       return;
     }
 
     if (meetingsModel.getTitle() == null) {
-      this.meetingModelInputState.postError(new Error(Config.VM_TITLE_NULL), ErrorTag.VM);
+      Log.d(TAG, "title is null.");
+      this.meetingModelInputState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
       return;
-    } else if (!Validation.titleHasPattern(meetingsModel.getTitle())) {
-      this.meetingModelInputState.postError(new Error(Config.VM_TITLE_WRONG_PATTERN), ErrorTag.VM);
+    } else if (!Validation.stringHasPattern(meetingsModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
+      Log.d(TAG, "title wrong pattern.");
+      this.meetingModelInputState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
 
@@ -95,6 +91,7 @@ public class CourseHistoryViewModel extends ViewModel {
     this.courseHistoryRepository.createMeeting(meetingsModel);
   }
 
+  /** convert the input from date and time picker to unix timestamp. */
   private long parseEventTime(MeetingsModel meetingsModel) {
     Calendar calendar = Calendar.getInstance();
     calendar.set(Calendar.YEAR, meetingsModel.getYearInput());

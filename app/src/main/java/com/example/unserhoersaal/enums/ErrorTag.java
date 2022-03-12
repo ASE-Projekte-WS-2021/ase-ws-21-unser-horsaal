@@ -4,7 +4,9 @@ public enum ErrorTag {
   DEFAULT,
   EMAIL,
   USERNAME,
-  PASSWORD,
+  CURRENT_PASSWORD,
+  NEW_PASSWORD,
+  INSTITUTION,
   REPO,
   VM
 }
