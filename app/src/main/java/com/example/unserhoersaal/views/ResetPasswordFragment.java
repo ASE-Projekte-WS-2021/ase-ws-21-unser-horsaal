@@ -72,7 +72,7 @@ public class ResetPasswordFragment extends Fragment {
                     navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
                   } else if (!userStateData.getData().isEmailVerified()) {
                     Toast.makeText(getContext(),
-                            Config.DIALOG_PASSWORD_RESET_SUCCESS,
+                            Config.AUTH_EDIT_PASSWORD_CHANGE_SUCCESS,
                             Toast.LENGTH_LONG)
                             .show();
                   }

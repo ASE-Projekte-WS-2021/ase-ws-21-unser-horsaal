@@ -2,7 +2,6 @@ package com.example.unserhoersaal.repository;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
@@ -50,7 +49,7 @@ public class CoursesRepository {
       this.loadUserCourses();
     }
 
-    this.courses.postValue(new StateData<>(userCoursesList));
+    this.courses.setValue(new StateData<>(this.userCoursesList));
     return this.courses;
   }
 
@@ -72,6 +71,7 @@ public class CoursesRepository {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         ArrayList<Task<DataSnapshot>> taskList = new ArrayList<>();
         ArrayList<CourseModel> authorList = new ArrayList<>();
+
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           taskList.add(getCourseTask(snapshot.getKey()));
         }
@@ -80,7 +80,6 @@ public class CoursesRepository {
             CourseModel model = task.getResult().getValue(CourseModel.class);
 
             if (model == null) {
-              Log.e(TAG, "model is null");
               courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
               return;
             }
@@ -89,6 +88,7 @@ public class CoursesRepository {
           }
           getAuthor(authorList);
         });
+        courses.postComplete();
       }
 
       @Override
@@ -111,14 +111,18 @@ public class CoursesRepository {
     }
     Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
       for (int i = 0; i < authorList.size(); i++) {
-        /*CourseModel model = authorList.get(i);
-        model.setCreatorName(authorNames.get(i).getResult().getValue(String.class));
-        authorList.set(i, model);*/
-        authorList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+        String name = authorNames.get(i).getResult().getValue(String.class);
+        if (name == null) {
+          authorList.get(i).setCreatorName(Config.UNKNOWN_USER);
+        } else {
+          authorList.get(i).setCreatorName(name);
+        }
       }
+      Log.d(TAG, authorList.toString());
       userCoursesList.clear();
       userCoursesList.addAll(authorList);
-      courses.postSuccess(userCoursesList);
+
+      courses.postValue(new StateData<>(userCoursesList));
     });
   }
 

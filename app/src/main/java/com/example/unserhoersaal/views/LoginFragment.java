@@ -36,8 +36,6 @@ public class LoginFragment extends Fragment {
 
   public LoginFragment() {
     // Required empty public constructor
-    //TODO: if we are coming from profileframgent (=logout), destroy fragment stack
-    //TODO: disable back nav in this fragment
   }
 
   @Override
@@ -111,6 +109,7 @@ public class LoginFragment extends Fragment {
     this.loginViewModel
             .getUserInputState()
             .observe(getViewLifecycleOwner(), userModelStateData -> {
+
               if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
                 this.binding.loginFragmentUserEmailErrorText
                         .setText(userModelStateData.getError().getMessage());

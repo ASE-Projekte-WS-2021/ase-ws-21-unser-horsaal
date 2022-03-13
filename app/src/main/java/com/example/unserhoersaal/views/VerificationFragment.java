@@ -68,7 +68,7 @@ public class VerificationFragment extends Fragment {
                 }
                 else if (!userStateData.getData().isEmailVerified()) {
                   Toast.makeText(getContext(),
-                          Config.DIALOG_PASSWORD_RESET_SUCCESS,
+                          Config.AUTH_VERIFICATION_EMAIL_NOT_SENT,
                           Toast.LENGTH_LONG)
                           .show();
                 }

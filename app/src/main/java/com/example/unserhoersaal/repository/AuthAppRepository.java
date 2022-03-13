@@ -24,7 +24,6 @@ public class AuthAppRepository {
   private FirebaseUser firebaseUser = null;
   private StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
 
-
   /** Gives back an Instance of AuthAppRepository. */
   public static AuthAppRepository getInstance() {
     if (instance == null) {
@@ -211,24 +210,7 @@ public class AuthAppRepository {
 
   /** Logging out the current user. */
   public void logOut() {
-    this.userLiveData.postLoading();
     this.firebaseAuth.signOut();
-    this.firebaseAuth.addAuthStateListener(this.authStateListenerLogout());
-  }
-
-  /** listener for logout method */
-  private FirebaseAuth.AuthStateListener authStateListenerLogout() {
-    return firebaseAuth1 -> {
-      this.firebaseUser = firebaseAuth1.getCurrentUser();
-      if (firebaseAuth.getCurrentUser() == null) {
-        Log.d(TAG, Config.AUTH_LOGOUT_SUCCESS);
-        this.userLiveData.postSuccess(null);
-        this.firebaseAuth.removeAuthStateListener(authStateListenerLogout());
-      } else {
-        Log.e(TAG, Config.AUTH_LOGOUT_FAIL);
-        this.userLiveData.postError(new Error(Config.AUTH_LOGOUT_FAIL), ErrorTag.REPO);
-      }
-    };
   }
 
   /** Method to delete an user account. */

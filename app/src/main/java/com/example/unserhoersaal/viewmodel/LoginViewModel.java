@@ -58,8 +58,8 @@ public class LoginViewModel extends ViewModel {
    * to multiple Databinding Fragments. (Registration, ResetPassword, Login)
    * Used when initialising this Fragment and when leaving the Fragment. */
   public void setDefaultInputState() {
-    this.userInputState.postValue(new StateData<>(new UserModel()));
-    this.passwordInputState.postValue(new StateData<>(new PasswordModel()));
+    this.userInputState.setValue(new StateData<>(new UserModel()));
+    this.passwordInputState.setValue(new StateData<>(new PasswordModel()));
   }
 
   /** JavaDoc for this method. */
@@ -68,6 +68,7 @@ public class LoginViewModel extends ViewModel {
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
       Log.e(TAG, "userModel or passwordModel is null.");
+      this.userInputState.postError(new Error("123"), ErrorTag.VM);
       return;
     }
 
@@ -94,6 +95,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     this.userInputState.postComplete();
+    System.out.println(this.userInputState.getValue().getData());
     //do not listen for this status because we would get two spinner loops
     this.passwordInputState.postComplete();
     this.authAppRepository.login(email, password);

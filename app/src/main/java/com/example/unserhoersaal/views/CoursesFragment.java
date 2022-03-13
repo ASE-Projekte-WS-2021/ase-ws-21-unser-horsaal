@@ -2,6 +2,7 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 
 /** Courses. */
@@ -65,6 +67,13 @@ public class CoursesFragment extends Fragment {
     this.coursesViewModel.getUserCourses()
             .observe(getViewLifecycleOwner(), userCourses -> {
               coursesAdapter.notifyDataSetChanged();
+              if (userCourses.getStatus() == StateData.DataStatus.LOADING) {
+                this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
+              }
+              else if (userCourses.getStatus() == StateData.DataStatus.COMPLETE) {
+                this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
+              }
+              if (userCourses.getData() == null) return;
               if (userCourses.getData().size() == 0) {
                 this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
               } else {
@@ -74,7 +83,10 @@ public class CoursesFragment extends Fragment {
   }
 
   private void connectAdapter() {
-    //TODO: assert != null
+    if (this.coursesViewModel.getUserCourses().getValue() == null) {
+      Log.e(TAG, "List for Adapter is null");
+      return;
+    }
     this.coursesAdapter = new CoursesAdapter(
             this.coursesViewModel.getUserCourses().getValue().getData());
   }
