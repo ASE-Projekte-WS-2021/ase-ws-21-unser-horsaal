@@ -21,6 +21,8 @@ public class CourseDescriptionRepository {
 
   private static final String TAG = "CourseDescriptionRepository";
 
+  private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private static CourseDescriptionRepository instance;
   private StateLiveData<String> courseId = new StateLiveData<>();
   private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
@@ -28,6 +30,8 @@ public class CourseDescriptionRepository {
 
   public CourseDescriptionRepository() {
     this.initListener();
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
   /** Generates an instance of CourseDescriptionRepository. */
@@ -54,12 +58,16 @@ public class CourseDescriptionRepository {
       return;
     }
 
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_COURSES)
+    this.databaseReference
+            .child(Config.CHILD_COURSES)
             .child(oldKey)
             .removeEventListener(this.listener);
 
-    reference.child(Config.CHILD_COURSES).child(newCourseId).addValueEventListener(this.listener);
+    this.databaseReference
+            .child(Config.CHILD_COURSES)
+            .child(newCourseId)
+            .addValueEventListener(this.listener);
+
     this.courseModel.postValue(new StateData<>(new CourseModel()));
     this.courseId.postValue(new StateData<>(newCourseId));
   }
@@ -92,11 +100,12 @@ public class CourseDescriptionRepository {
   }
 
   private void getAuthorName(CourseModel course) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Task<DataSnapshot> task = reference
+    Task<DataSnapshot> task = this.databaseReference
             .child(Config.CHILD_USER)
             .child(course.getCreatorId())
-            .child(Config.CHILD_USER_NAME).get();
+            .child(Config.CHILD_USER_NAME)
+            .get();
+
     task.addOnSuccessListener(dataSnapshot -> {
       course.setCreatorName(dataSnapshot.getValue(String.class));
       this.courseModel.postSuccess(course);
@@ -110,20 +119,21 @@ public class CourseDescriptionRepository {
   /** unregisters a user from a course in real time database. */
   public void unregisterFromCourse(String id) {
     this.courseModel.postLoading();
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
-    if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.courseModel.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
       return;
     }
 
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    reference.child(Config.CHILD_USER_COURSES)
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
+    this.databaseReference
+            .child(Config.CHILD_USER_COURSES)
             .child(uid).child(id)
             .removeValue()
             .addOnSuccessListener(unused ->
-                    reference.child(Config.CHILD_COURSES_USER)
+                    databaseReference
+                            .child(Config.CHILD_COURSES_USER)
                             .child(id)
                             .child(uid)
                             .removeValue()

@@ -6,7 +6,6 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
-import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
@@ -26,7 +25,8 @@ public class CourseHistoryRepository {
   private static final String TAG = "CourseHistoryRepo";
 
   private static CourseHistoryRepository instance;
-
+  private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private ArrayList<MeetingsModel> meetingsModelList = new ArrayList<>();
   private StateLiveData<List<MeetingsModel>> meetings = new StateLiveData<>();
   private StateLiveData<CourseModel> course = new StateLiveData<>();
@@ -35,7 +35,9 @@ public class CourseHistoryRepository {
   private ValueEventListener listener;
 
   public CourseHistoryRepository() {
-    initListener();
+    this.initListener();
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
   /** Generate an instance of the class. */
@@ -48,7 +50,7 @@ public class CourseHistoryRepository {
 
   /** This method gives back all meetings of the course. */
   public StateLiveData<List<MeetingsModel>> getMeetings() {
-    this.meetings.setValue(new StateData<>(this.meetingsModelList));
+    this.meetings.postValue(new StateData<>(this.meetingsModelList));
     return this.meetings;
   }
 
@@ -73,23 +75,28 @@ public class CourseHistoryRepository {
     }
 
     String courseId = courseModel.getKey();
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
-    reference.child(Config.CHILD_MEETINGS).child(courseObj.getKey())
+    this.databaseReference
+            .child(Config.CHILD_MEETINGS)
+            .child(courseObj.getKey())
             .removeEventListener(this.listener);
 
-    reference.child(Config.CHILD_MEETINGS).child(courseId).addValueEventListener(this.listener);
+    this.databaseReference
+            .child(Config.CHILD_MEETINGS)
+            .child(courseId)
+            .addValueEventListener(this.listener);
+
     this.course.postValue(new StateData<>(courseModel));
   }
 
   public void setUserId() {
-    if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.userId.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
       return;
     }
 
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
     this.userId.postValue(new StateData<>(uid));
   }
 
@@ -102,9 +109,9 @@ public class CourseHistoryRepository {
       return;
     }
 
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-
-    Query query = reference.child(Config.CHILD_COURSES).child(courseObj.getKey())
+    Query query = this.databaseReference
+            .child(Config.CHILD_COURSES)
+            .child(courseObj.getKey())
             .child(Config.CHILD_MEETINGS);
     query.addValueEventListener(this.listener);
   }
@@ -113,10 +120,7 @@ public class CourseHistoryRepository {
   public void createMeeting(MeetingsModel meetingsModel) {
     this.meetingsModelMutableLiveData.postLoading();
 
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    if (firebaseAuth.getCurrentUser() == null) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.meetingsModelMutableLiveData.postError(
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
@@ -131,14 +135,14 @@ public class CourseHistoryRepository {
       return;
     }
 
-    String uid = firebaseAuth.getCurrentUser().getUid();
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
     //TODO: eventTimeInput -> eventTime umschreiben;
     // startTimeInput -> startTime umschreiben; bzw auf datapicker warten
     // (micha: wusste nicht was ich hier machen soll)
     meetingsModel.setCreatorId(uid);
     meetingsModel.setCreationTime(System.currentTimeMillis());
 
-    String meetingId = reference.getRoot().push().getKey();
+    String meetingId = this.databaseReference.getRoot().push().getKey();
 
     if (meetingId == null) {
       Log.e(TAG, "meeting id is null");
@@ -147,8 +151,10 @@ public class CourseHistoryRepository {
       return;
     }
 
-    reference.child(Config.CHILD_MEETINGS)
-            .child(courseObj.getKey()).child(meetingId)
+    this.databaseReference
+            .child(Config.CHILD_MEETINGS)
+            .child(courseObj.getKey())
+            .child(meetingId)
             .setValue(meetingsModel)
             .addOnSuccessListener(unused -> {
               meetingsModel.setKey(meetingId);

@@ -26,9 +26,15 @@ public class CoursesRepository {
   private static final String TAG = "CoursesRepo";
 
   private static CoursesRepository instance;
-
+  private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private ArrayList<CourseModel> userCoursesList = new ArrayList<>();
   private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
+
+  public CoursesRepository() {
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
+  }
 
   /** This method generates the Instance of the CourseRepository. */
   public static CoursesRepository getInstance() {
@@ -52,18 +58,15 @@ public class CoursesRepository {
   public void loadUserCourses() {
     this.courses.postLoading();
 
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-
-    if (auth.getCurrentUser() == null) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       return;
     }
 
-    String id = auth.getCurrentUser().getUid();
+    String id = this.firebaseAuth.getCurrentUser().getUid();
 
-    Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
+    Query query = this.databaseReference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,8 +100,7 @@ public class CoursesRepository {
   }
 
   public Task<DataSnapshot> getCourseTask(String courseId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    return reference.child(Config.CHILD_COURSES).child(courseId).get();
+    return this.databaseReference.child(Config.CHILD_COURSES).child(courseId).get();
   }
 
   /** TODO. */
@@ -121,8 +123,11 @@ public class CoursesRepository {
   }
 
   public Task<DataSnapshot> getAuthorName(String authorId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    return reference.child(Config.CHILD_USER).child(authorId).child(Config.CHILD_USER_NAME).get();
+    return this.databaseReference
+            .child(Config.CHILD_USER)
+            .child(authorId)
+            .child(Config.CHILD_USER_NAME)
+            .get();
   }
 
 }

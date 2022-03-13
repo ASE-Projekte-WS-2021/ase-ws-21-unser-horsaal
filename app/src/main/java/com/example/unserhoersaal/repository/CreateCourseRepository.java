@@ -15,7 +15,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class CreateCourseRepository {
 
   private static final String TAG = "CourseCreationRepo";
-
+  private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private static CreateCourseRepository instance;
   private StateLiveData<CourseModel> courseModelMutableLiveData = new StateLiveData<>();
 
@@ -29,6 +30,8 @@ public class CreateCourseRepository {
 
   /**Method gets an instance of Firebase.**/
   public CreateCourseRepository() {
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
   public StateLiveData<CourseModel> getUserCourse() {
@@ -39,21 +42,18 @@ public class CreateCourseRepository {
   public void createNewCourse(CourseModel courseModel) {
     this.courseModelMutableLiveData.postLoading();
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-    if (firebaseAuth.getCurrentUser() == null) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.courseModelMutableLiveData.postError(
               new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
 
-    String uid = firebaseAuth.getCurrentUser().getUid();
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
 
     courseModel.setCreatorId(uid);
     courseModel.setCreationTime(System.currentTimeMillis());
-    String courseId = databaseReference.getRoot().push().getKey();
+    String courseId = this.databaseReference.getRoot().push().getKey();
 
     if (courseId == null) {
       Log.e(TAG, "courseid is null");
@@ -62,7 +62,7 @@ public class CreateCourseRepository {
       return;
     }
 
-    databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel)
+    this.databaseReference.child(Config.CHILD_COURSES).child(courseId).setValue(courseModel)
             .addOnSuccessListener(unused -> {
               courseModel.setKey(courseId);
               addUserToCourse(courseModel, uid);
@@ -75,11 +75,10 @@ public class CreateCourseRepository {
   }
 
   private void addUserToCourse(CourseModel course, String user) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_USER_COURSES).child(user).child(course.getKey())
+    this.databaseReference.child(Config.CHILD_USER_COURSES).child(user).child(course.getKey())
             .setValue(Boolean.TRUE)
             .addOnSuccessListener(unused ->
-                    reference.child(Config.CHILD_COURSES_USER)
+                    databaseReference.child(Config.CHILD_COURSES_USER)
                             .child(course.getKey())
                             .child(user)
                             .setValue(Boolean.TRUE)
@@ -96,8 +95,11 @@ public class CreateCourseRepository {
 
   private void addMapping(CourseModel course) {
     String mappingCode = course.getCodeMapping();
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    reference.child(Config.CHILD_CODE_MAPPING).child(mappingCode).setValue(course.getKey())
+
+    this.databaseReference
+            .child(Config.CHILD_CODE_MAPPING)
+            .child(mappingCode)
+            .setValue(course.getKey())
             .addOnSuccessListener(unused ->
                     courseModelMutableLiveData.postSuccess(course))
             .addOnFailureListener(e -> {

@@ -1,9 +1,7 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
@@ -25,14 +23,15 @@ public class CourseParticipantsRepository {
   private static final String TAG = "CourseParticipantsRepo";
 
   private static CourseParticipantsRepository instance;
-
+  private DatabaseReference databaseReference;
   private StateLiveData<String> courseId = new StateLiveData<>();
   private StateLiveData<List<UserModel>> users = new StateLiveData<>();
 
   private ValueEventListener listener;
 
   public CourseParticipantsRepository() {
-    initListener();
+    this.initListener();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
   /** Returns the instance of this singleton class. */
@@ -53,17 +52,22 @@ public class CourseParticipantsRepository {
 
   /** TODO. */
   public void setCourseId(String courseId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.courseId.getValue() != null) {
-      reference.child(Config.CHILD_COURSES_USER).child(courseId).removeEventListener(this.listener);
+      this.databaseReference
+              .child(Config.CHILD_COURSES_USER)
+              .child(courseId)
+              .removeEventListener(this.listener);
     }
-    reference.child(Config.CHILD_COURSES_USER).child(courseId).addValueEventListener(this.listener);
+
+    this.databaseReference
+            .child(Config.CHILD_COURSES_USER)
+            .child(courseId)
+            .addValueEventListener(this.listener);
     this.courseId.postValue(new StateData<>(courseId));
   }
 
   private Task<DataSnapshot> getUserTask(String uid) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    return reference.child(Config.CHILD_USER).child(uid).get();
+    return this.databaseReference.child(Config.CHILD_USER).child(uid).get();
   }
 
   /** TODO. */

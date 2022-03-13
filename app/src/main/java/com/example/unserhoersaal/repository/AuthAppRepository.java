@@ -20,6 +20,7 @@ public class AuthAppRepository {
 
   private static AuthAppRepository instance;
   private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private FirebaseUser firebaseUser = null;
   private StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
 
@@ -35,6 +36,7 @@ public class AuthAppRepository {
   /** Constructor Description. */
   public AuthAppRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
 
     if (this.firebaseAuth.getCurrentUser() != null) {
       this.userLiveData.postValue(new StateData<>(this.firebaseAuth.getCurrentUser()));
@@ -53,6 +55,7 @@ public class AuthAppRepository {
   /** This method is logging in the user.*/
   public void login(String email, String password) {
     this.userLiveData.postLoading();
+
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
@@ -74,6 +77,7 @@ public class AuthAppRepository {
   /** This method registers a new user.*/
   public void register(String username, String email, String password) {
     this.userLiveData.postLoading();
+
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
@@ -93,13 +97,11 @@ public class AuthAppRepository {
 
   /**Method creates a new user.**/
   private void createNewUser(String username, String email, String uid) {
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
     UserModel newUser = new UserModel();
     newUser.setDisplayName(username);
     newUser.setEmail(email);
 
-    databaseReference
+    this.databaseReference
             .child(Config.CHILD_USER)
             .child(uid)
             .setValue(newUser)
@@ -109,7 +111,8 @@ public class AuthAppRepository {
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, "Could not create a new user!");
-              this.userLiveData.postError(new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
+              this.userLiveData.postError(
+                      new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
             });
   }
 
@@ -149,7 +152,9 @@ public class AuthAppRepository {
   /** Method to reset the password via password reset email.*/
   public void resetPassword(String mail) {
     this.userLiveData.postLoading();
-    this.firebaseAuth.sendPasswordResetEmail(mail)
+
+    this.firebaseAuth
+            .sendPasswordResetEmail(mail)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_SUCCESS);
@@ -165,11 +170,13 @@ public class AuthAppRepository {
   /** Method to (re)send a email verification.*/
   public void resendEmailVerification() {
     this.userLiveData.postLoading();
+
     if (this.firebaseUser == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.userLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
     } else {
-      this.firebaseUser.sendEmailVerification()
+      this.firebaseUser
+              .sendEmailVerification()
               .addOnCompleteListener(task1 -> {
                 if (task1.isSuccessful()) {
                   Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
@@ -187,7 +194,9 @@ public class AuthAppRepository {
 
   public void sendPasswordResetMail(String email) {
     this.userLiveData.postLoading();
-    this.firebaseAuth.sendPasswordResetEmail(email)
+
+    this.firebaseAuth
+            .sendPasswordResetEmail(email)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_PASSWORD_RESET_MAIL_SENT);

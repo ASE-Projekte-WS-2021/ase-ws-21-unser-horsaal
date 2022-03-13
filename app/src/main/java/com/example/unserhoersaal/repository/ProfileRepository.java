@@ -51,8 +51,14 @@ public class ProfileRepository {
     this.user.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     //TODO: maybe make firebaseauth to an instance variable?
-    //TODO: assert firebaseuser != null
     FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    if (auth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+      return;
+    }
+
     String id = auth.getCurrentUser().getUid();
 
     Query query = reference.child(Config.CHILD_USER).child(id);
@@ -60,7 +66,12 @@ public class ProfileRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         UserModel userModel = snapshot.getValue(UserModel.class);
-        //TODO: assert userModel != null
+
+        if (userModel == null) {
+          Log.e(TAG, "user model null");
+          user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+          return;
+        }
         userModel.setKey(snapshot.getKey());
         user.postSuccess(userModel);
       }
@@ -78,8 +89,22 @@ public class ProfileRepository {
     this.profileChanged.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     //TODO: maybe make firebaseauth to an instance variable?
-    //TODO: assert firebaseuser == null
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    if (auth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    String uid = auth.getUid();
+
+    if (uid == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
     reference.child(Config.CHILD_USER)
             .child(uid)
             .child(Config.CHILD_DISPLAY_NAME)
@@ -90,7 +115,7 @@ public class ProfileRepository {
             .addOnFailureListener(e -> {
               Log.e(TAG, e.getMessage());
               profileChanged.postError(
-                      new Error(Config.PROFILE_FAILED_TO_CHANGE_DISPLAYNAME), ErrorTag.REPO);
+                      new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
             });
   }
 
@@ -98,8 +123,24 @@ public class ProfileRepository {
   public void changeInstitution(String institution) {
     this.profileChanged.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    //TODO: assert if firebaseauth.getinstance.getcurrentuser returns null -> this.user.postError
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    if (auth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    String uid = auth.getUid();
+
+    if (uid == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
     reference.child(Config.CHILD_USER)
             .child(uid)
             .child(Config.CHILD_INSTITUTION)
@@ -107,33 +148,47 @@ public class ProfileRepository {
             .addOnSuccessListener(unused -> profileChanged.postSuccess(Boolean.TRUE))
             .addOnFailureListener(e ->
                     profileChanged.postError(
-                            new Error(Config.PROFILE_FAILED_TO_CHANGE_INSTITUTION), ErrorTag.REPO));
+                            new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO));
   }
 
   /** TODO. */
   public void changePassword(String oldPassword, String newPassword) {
-    //TODO: loading for password -> firebaseuser?
     this.profileChanged.postLoading();
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    //TODO: check if user is not null
-    String email = user.getEmail();
+    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    if (firebaseUser == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    String email = firebaseUser.getEmail();
+
+    if (email == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
     AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
 
-    user.reauthenticate(credential).addOnCompleteListener(task -> {
+    firebaseUser.reauthenticate(credential).addOnCompleteListener(task -> {
       if (task.isSuccessful()) {
-        user.updatePassword(newPassword).addOnCompleteListener(task1 -> {
+        firebaseUser.updatePassword(newPassword).addOnCompleteListener(task1 -> {
           if (task1.isSuccessful()) {
             profileChanged.postSuccess(Boolean.TRUE);
           } else {
-            //todo password reset failed
-            Log.d(TAG, "onComplete: " + "reset failed");
-            profileChanged.postError(new Error(Config.PROFILE_FAILED_TO_CHANGE_PASSWORD), ErrorTag.REPO);
+            Log.e(TAG, "onComplete: " + "reset failed");
+            profileChanged.postError(
+                    new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
           }
         });
       } else {
-        //todo old password wrong
-        Log.d(TAG, "onComplete: " + "old password wrong");
-        profileChanged.postError(new Error(Config.PROFILE_FAILED_TO_CHANGE_PASSWORD), ErrorTag.REPO);
+        Log.e(TAG, "onComplete: " + "old password wrong");
+        profileChanged.postError(
+                new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
       }
     });
   }

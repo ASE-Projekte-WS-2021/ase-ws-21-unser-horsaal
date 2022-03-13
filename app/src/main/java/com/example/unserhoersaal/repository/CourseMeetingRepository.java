@@ -28,7 +28,8 @@ public class CourseMeetingRepository {
   private static final String TAG = "CourseMeetingRepository";
 
   private static CourseMeetingRepository instance;
-
+  private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private ArrayList<ThreadModel> threadModelList = new ArrayList<>();
   private StateLiveData<List<ThreadModel>> threads = new StateLiveData<>();
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
@@ -37,6 +38,8 @@ public class CourseMeetingRepository {
 
   public CourseMeetingRepository() {
     this.initListener();
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
   /** Generate an instance of the class. */
@@ -49,7 +52,7 @@ public class CourseMeetingRepository {
 
   /** Give back all threads of the Meeting. */
   public StateLiveData<List<ThreadModel>> getThreads() {
-    this.threads.setValue(new StateData<>(this.threadModelList));
+    this.threads.postValue(new StateData<>(this.threadModelList));
     return this.threads;
   }
 
@@ -69,12 +72,13 @@ public class CourseMeetingRepository {
       return;
     }
 
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-
-    reference.child(Config.CHILD_THREADS).child(meetingObj.getKey())
+    this.databaseReference
+            .child(Config.CHILD_THREADS)
+            .child(meetingObj.getKey())
             .removeEventListener(this.listener);
 
-    reference.child(Config.CHILD_THREADS)
+    this.databaseReference
+            .child(Config.CHILD_THREADS)
             .child(meeting.getKey())
             .addValueEventListener(this.listener);
 
@@ -93,8 +97,8 @@ public class CourseMeetingRepository {
       return;
     }
 
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Query query = reference.child(Config.CHILD_MEETINGS)
+    Query query = this.databaseReference
+            .child(Config.CHILD_MEETINGS)
             .child(meetingObj.getKey())
             .child(Config.CHILD_THREADS);
     query.addValueEventListener(this.listener);
@@ -112,10 +116,7 @@ public class CourseMeetingRepository {
       return;
     }
 
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-    if (firebaseAuth.getCurrentUser() == null) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.threadModelMutableLiveData.postError(
               new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
@@ -123,12 +124,12 @@ public class CourseMeetingRepository {
     }
 
 
-    String uid = firebaseAuth.getCurrentUser().getUid();
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
 
     threadModel.setCreatorId(uid);
     threadModel.setCreationTime(System.currentTimeMillis());
 
-    String threadId = reference.getRoot().push().getKey();
+    String threadId = this.databaseReference.getRoot().push().getKey();
 
     if (threadId == null) {
       Log.e(TAG, Config.COURSE_MEETING_THREAD_CREATION_FAILURE);
@@ -136,7 +137,8 @@ public class CourseMeetingRepository {
               new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
-    reference.child(Config.CHILD_THREADS)
+
+    this.databaseReference.child(Config.CHILD_THREADS)
             .child(meetingObj.getKey())
             .child(threadId)
             .setValue(threadModel)
@@ -170,8 +172,11 @@ public class CourseMeetingRepository {
   }
 
   public Task<DataSnapshot> getAuthorName(String authorId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    return reference.child(Config.CHILD_USER).child(authorId).child(Config.CHILD_USER_NAME).get();
+    return this.databaseReference
+            .child(Config.CHILD_USER)
+            .child(authorId)
+            .child(Config.CHILD_USER_NAME)
+            .get();
   }
 
   /** Initialise the listener for the database access. */

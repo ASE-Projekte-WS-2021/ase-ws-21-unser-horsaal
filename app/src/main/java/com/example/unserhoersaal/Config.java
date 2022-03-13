@@ -100,6 +100,8 @@ public class Config {
   /**=======================.
    * Error Messages For User
    * ======================= */
+  public static final String UNSPECIFIC_ERROR = "Ein Fehler ist aufgetreten!"; //hide too specific error from user
+
   public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
   public static final String DATABINDING_TITLE_WRONG_PATTERN = "Der Titel enthält ungültige Charaktere!"; //TODO: add characters
   public static final String DATABINDING_TEXT_NULL = "Der Titel darf nicht null sein!";
