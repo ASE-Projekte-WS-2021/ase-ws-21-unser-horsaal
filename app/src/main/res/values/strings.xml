@@ -173,5 +173,10 @@
     <string name="course_meeting_fragment_chip_exam">Prüfung</string>
     <string name="course_meeting_fragment_filter">Filter</string>
     <string name="course_meeting_fragment_tags">Tags</string>
+    <string name="create_thread_fragment_title">Nachricht erstellen</string>
+    <string name="create_thread_fragment_tag_textview">Welcher tag beschreibt den Inhalt deiner Nachricht am besten?</string>
+    <string name="create_thread_fragment_hashtag_text">Gibt es einen Hashtag, der deine Nachricht besonders gut beschreibt? (optional)</string>
+    <string name="create_thread_fragment_pagenumber_text">Bezieht sich deine Nachricht auf eine Seite im Skript? (optional)</string>
+    <string name="create_thread_fragment_button_send">Nachricht senden</string>
 
 </resources>

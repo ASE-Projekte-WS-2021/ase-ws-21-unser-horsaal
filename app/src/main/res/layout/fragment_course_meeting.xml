@@ -13,6 +13,7 @@
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -239,7 +240,7 @@
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/courseMeetingFragmentFab"
-            android:onClick="@{(view) -> VisibilityAdapter.openCreationLayout(view, courseMeetingFragmentCreateThreadContainer)}"
+            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseMeetingFragment_to_createThreadFragment)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"

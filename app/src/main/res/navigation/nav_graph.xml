@@ -287,6 +287,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_courseMeetingFragment_to_createThreadFragment"
+            app:destination="@id/createThreadFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileNameFragment"
@@ -419,6 +422,17 @@
         <action
             android:id="@+id/action_reset_password_fragment_to_login_fragment"
             app:destination="@id/loginFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/createThreadFragment"
+        android:name="com.example.unserhoersaal.views.CreateThreadFragment"
+        android:label="fragment_create_thread"
+        tools:layout="@layout/fragment_create_thread" >
+        <action
+            android:id="@+id/action_createThreadFragment_to_courseMeetingFragment"
+            app:destination="@id/courseMeetingFragment"
+            app:popUpTo="@id/courseMeetingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

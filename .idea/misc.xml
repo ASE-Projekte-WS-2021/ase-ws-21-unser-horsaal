@@ -16,6 +16,7 @@
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_question_item.xml" value="0.33" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/app_background.xml" value="0.165" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/custom_ripple.xml" value="0.1765" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/custom_ripple_app_background.xml" value="0.2515" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/custom_ripple_blue.xml" value="0.1765" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.134" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.134" />
@@ -42,6 +43,7 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_courses.xml" value="0.264" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course.xml" value="0.264" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.264" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_thread.xml" value="0.3625" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_current_course.xml" value="0.264" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile.xml" value="0.20606884057971014" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile_institution.xml" value="0.13903985507246377" />
