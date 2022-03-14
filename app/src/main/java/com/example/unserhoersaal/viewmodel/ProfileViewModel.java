@@ -43,6 +43,10 @@ public class ProfileViewModel extends ViewModel {
     this.profileChanged = this.profileRepository.getProfileChanged();
   }
 
+  public void loadProfile() {
+    this.profileRepository.loadUser();
+  }
+
   /** Give back the user data. */
   public LiveData<FirebaseUser> getUserLiveData() {
     return this.userLiveData;
@@ -56,7 +60,10 @@ public class ProfileViewModel extends ViewModel {
     return this.profileChanged;
   }
 
+  /** Signs out the user and resets the displayed data. */
   public void logout() {
+    //TODO better way? statusLiveData
+    this.profileLiveData.setValue(new UserModel());
     this.authAppRepository.logOut();
   }
 

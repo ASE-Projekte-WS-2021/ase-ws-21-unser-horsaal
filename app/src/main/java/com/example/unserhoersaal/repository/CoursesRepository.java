@@ -24,7 +24,7 @@ public class CoursesRepository {
 
   private static CoursesRepository instance;
 
-  private ArrayList<CourseModel> userCoursesList = new ArrayList<CourseModel>();
+  private ArrayList<CourseModel> userCoursesList = new ArrayList<>();
   private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
 
   /** This method generates the Instance of the CourseRepository. */
@@ -50,7 +50,8 @@ public class CoursesRepository {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
     String id = auth.getCurrentUser().getUid();
-
+    this.userCoursesList.clear();
+    this.courses.postValue(userCoursesList);
 
     Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
@@ -73,7 +74,7 @@ public class CoursesRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.d(TAG, "onCancelled: " + error.getMessage());
+        Log.e(TAG, "onCancelled: " + error.getMessage());
       }
     });
   }
@@ -91,10 +92,12 @@ public class CoursesRepository {
     }
     Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
       for (int i = 0; i < authorList.size(); i++) {
-        /*CourseModel model = authorList.get(i);
-        model.setCreatorName(authorNames.get(i).getResult().getValue(String.class));
-        authorList.set(i, model);*/
-        authorList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+        String name = authorNames.get(i).getResult().getValue(String.class);
+        if (name == null) {
+          authorList.get(i).setCreatorName(Config.UNKNOWN_USER);
+        } else {
+          authorList.get(i).setCreatorName(name);
+        }
       }
       userCoursesList.clear();
       userCoursesList.addAll(authorList);

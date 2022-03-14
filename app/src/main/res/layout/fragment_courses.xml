@@ -23,20 +23,6 @@
         tools:context="views.CoursesFragment"
         android:background="@color/app_background">
 
-        <TextView
-            android:id="@+id/coursesFragmentTitleTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/du_bist_noch_keinem_kurs_beigetreten"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"/>
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/coursesFragmentToolbar"
@@ -67,37 +53,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/coursesFragmentToolbar">
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/coursesFragmentLiveTab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/courses_fragment_live_tab_string" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/coursesFragmentAllTab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/courses_fragment_all_tab_string" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/coursesFragmentCreatedTab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/courses_fragment_created_tab_string" />
 
         </com.google.android.material.tabs.TabLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/coursesFragmentRecyclerView"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/coursesFragmentViewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:adapter="@{adapter}"
-            app:initLayoutManager="@{R.id.coursesFragmentRecyclerView}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coursesFragmentTabLayout"
-            tools:listitem="@layout/simple_course_item" />
+            app:layout_constraintTop_toBottomOf="@+id/coursesFragmentTabLayout"/>
+
+
 
         <LinearLayout
             android:id="@+id/coursesFragmentCreateCourseFabLayout"
@@ -116,7 +84,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/kurs_erstellen"
                 android:layout_gravity="center"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:padding="8dp"
+                android:elevation="4dp"
+                android:textColor="@color/app_blue"
+                android:background="@color/white"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/coursesFragmentFabCreateCourse"
@@ -147,7 +119,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/kurs_beitreten"
                 android:layout_gravity="center"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:elevation="4dp"
+                android:padding="8dp"
+                android:background="@color/white"
+                android:textColor="@color/app_blue"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/coursesFragmentFabEnterCourse"

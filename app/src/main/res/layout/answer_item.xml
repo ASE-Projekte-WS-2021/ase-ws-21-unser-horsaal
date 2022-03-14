@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:background="@color/white"
+        android:background="@drawable/custom_ripple"
         android:layout_margin="16dp">
 
         <ImageView
@@ -29,17 +29,18 @@
             android:maxHeight="50dp"
             setImage="@{model.photoUrl}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/answerItemAuthor"
-            app:tint="@color/black" />
+            app:layout_constraintTop_toTopOf="@+id/answerItemAuthor" />
 
         <TextView
             android:id="@+id/answerItemAuthor"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@{model.creatorName}"
             android:textStyle="bold"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/answerItemTime"
             app:layout_constraintStart_toEndOf="@+id/answerItemUserImage"
             app:layout_constraintTop_toTopOf="parent" />
 

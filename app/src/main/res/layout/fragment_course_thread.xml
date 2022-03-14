@@ -38,7 +38,7 @@
                     android:id="@+id/currentCourseFragmentTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.meeting.title}"
+                    android:text="@string/course_thread_fragment_title"
                     style="@style/toolbarTitleStyle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -117,8 +117,7 @@
                             android:maxHeight="50dp"
                             setImage="@{vm.thread.photoUrl}"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/currentCourseFragmentAuthor"
-                            app:tint="@color/black" />
+                            app:layout_constraintTop_toTopOf="@+id/currentCourseFragmentAuthor" />
 
                         <TextView
                             android:id="@+id/currentCourseFragmentAuthor"
@@ -255,7 +254,6 @@
                 android:id="@+id/currentCourseFragmentQuestionEditField"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners"
                 android:backgroundTint="@color/white"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
@@ -271,7 +269,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners"
-                    android:hint="@string/current_course_edit_text_hint" />
+                    android:hint="@string/current_course_edit_text_hint"
+                    android:maxLength="500"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

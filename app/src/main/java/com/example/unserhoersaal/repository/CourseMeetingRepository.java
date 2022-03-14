@@ -107,7 +107,12 @@ public class CourseMeetingRepository {
     }
     Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
       for (int i = 0; i < threadList.size(); i++) {
-        threadList.get(i).setCreatorName(authorNames.get(i).getResult().getValue(String.class));
+        String name = authorNames.get(i).getResult().getValue(String.class);
+        if (name == null) {
+          threadList.get(i).setCreatorName(Config.UNKNOWN_USER);
+        } else {
+          threadList.get(i).setCreatorName(name);
+        }
       }
       threadModelList.clear();
       threadModelList.addAll(threadList);

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +20,7 @@ import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.enums.EmailVerificationEnum;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.DialogBuilder;
+import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 
 /**
@@ -29,6 +32,7 @@ public class LoginFragment extends Fragment {
   private static final String TAG = "LoginFragment";
 
   private LoginViewModel loginViewModel;
+  private CoursesViewModel coursesViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -40,6 +44,13 @@ public class LoginFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+      @Override
+      public void handleOnBackPressed() {
+        // do nothing
+      }
+    };
+    requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
   }
 
   @Override
@@ -55,6 +66,7 @@ public class LoginFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
+
 
     this.initDeepLinkMode();
     this.initViewModel();
@@ -89,8 +101,10 @@ public class LoginFragment extends Fragment {
               if (firebaseUser != null
                       && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
                 navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
+                //this.coursesViewModel.loadCourses();
               } else if (firebaseUser != null) {
                 navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+                //this.coursesViewModel.loadCourses();
               }
             });
     /* If user tries to log in but its email isn`t verified yet open verify-email-dialog.*/

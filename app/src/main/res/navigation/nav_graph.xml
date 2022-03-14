@@ -64,10 +64,18 @@
             app:destination="@id/courseHistoryFragment" />
         <action
             android:id="@+id/action_enterCourseFragment_to_noCourseFoundFragment"
-            app:destination="@id/noCourseFoundFragment" />
+            app:destination="@id/noCourseFoundFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_enterCourseFragment_to_enterCourseDetailFragment"
-            app:destination="@id/enterCourseDetailFragment" />
+            app:destination="@id/enterCourseDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createCourseFragment"
@@ -81,7 +89,9 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_createCourseFragment_to_courseHistoryFragment"
-            app:destination="@id/courseHistoryFragment" />
+            app:destination="@id/courseHistoryFragment"
+            app:popUpTo="@id/courseHistoryFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
 
@@ -108,6 +118,10 @@
         <action
             android:id="@+id/action_profileFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_top"
+            app:popEnterAnim="@anim/slide_in_top"
+            app:popExitAnim="@anim/slide_out_bottom"
             app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
         <action
@@ -146,10 +160,18 @@
             app:destination="@id/enterCourseFragment" />
         <action
             android:id="@+id/action_coursesFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_top"
+            app:exitAnim="@anim/slide_out_bottom"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_top" />
         <action
             android:id="@+id/action_coursesFragment_to_courseHistoryFragment"
-            app:destination="@id/courseHistoryFragment" />
+            app:destination="@id/courseHistoryFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/courseHistoryFragment"
@@ -159,11 +181,19 @@
         <action
             android:id="@+id/action_courseHistoryFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_courseHistoryFragment_to_courseDescriptionFragment"
-            app:destination="@id/courseDescriptionFragment" />
+            app:destination="@id/courseDescriptionFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_courseHistoryFragment_to_courseMeetingFragment"
             app:destination="@id/courseMeetingFragment"
@@ -173,7 +203,11 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_courseHistoryFragment_to_createCourseMeetingFragment"
-            app:destination="@id/createCourseMeetingFragment" />
+            app:destination="@id/createCourseMeetingFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/courseDescriptionFragment"
@@ -183,11 +217,19 @@
         <action
             android:id="@+id/action_courseDescriptionFragment_to_courseHistoryFragment"
             app:destination="@id/courseHistoryFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/courseHistoryFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_courseDescriptionFragment_to_courseParticipantsFragment"
-            app:destination="@id/courseParticipantsFragment" />
+            app:destination="@id/courseParticipantsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_courseDescriptionFragment_to_coursesFragment"
             app:destination="@id/coursesFragment"
@@ -195,7 +237,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_courseDescriptionFragment_to_courseDescriptionDetailFragment"
-            app:destination="@+id/courseDescriptionDetailFragment"/>
+            app:destination="@+id/courseDescriptionDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/courseParticipantsFragment"
@@ -205,6 +251,10 @@
         <action
             android:id="@+id/action_courseParticipantsFragment_to_courseDescriptionFragment"
             app:destination="@id/courseDescriptionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/courseDescriptionFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -294,7 +344,9 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/courseMeetingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/enterCourseDetailFragment"
@@ -307,6 +359,10 @@
         <action
             android:id="@+id/action_enterCourseDetailFragment_to_enterCourseFragment"
             app:destination="@id/enterCourseFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/enterCourseFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -318,6 +374,10 @@
         <action
             android:id="@+id/action_noCourseFoundFragment_to_enterCourseFragment"
             app:destination="@id/enterCourseFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/enterCourseFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -329,6 +389,10 @@
         <action
             android:id="@+id/action_createCourseMeetingFragment_to_courseHistoryFragment"
             app:destination="@id/courseHistoryFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/courseHistoryFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -340,6 +404,10 @@
         <action
             android:id="@+id/action_courseDescriptionDetailFragment_to_courseDescriptionFragment"
             app:destination="@id/courseDescriptionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/courseDescriptionFragment"
             app:popUpToInclusive="true" />
     </fragment>

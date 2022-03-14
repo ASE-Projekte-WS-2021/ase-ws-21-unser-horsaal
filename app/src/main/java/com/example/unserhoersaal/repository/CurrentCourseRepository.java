@@ -197,8 +197,12 @@ public class CurrentCourseRepository {
     Tasks.whenAll(authorModels).addOnSuccessListener(unused -> {
       for (int i = 0; i < authorModels.size(); i++) {
         UserModel model = authorModels.get(i).getResult().getValue(UserModel.class);
-        mesList.get(i).setCreatorName(model.getDisplayName());
-        mesList.get(i).setPhotoUrl(model.getPhotoUrl());
+        if (model == null) {
+          mesList.get(i).setCreatorName(Config.UNKNOWN_USER);
+        } else {
+          mesList.get(i).setCreatorName(model.getDisplayName());
+          mesList.get(i).setPhotoUrl(model.getPhotoUrl());
+        }
       }
       getLikeStatus(mesList);
     });
@@ -239,8 +243,12 @@ public class CurrentCourseRepository {
         Task<DataSnapshot> task = getAuthorModel(threadModel.creatorId);
         task.addOnSuccessListener(dataSnapshot -> {
           UserModel model = task.getResult().getValue(UserModel.class);
-          threadModel.setCreatorName(model.getDisplayName());
-          threadModel.setPhotoUrl(model.getPhotoUrl());
+          if (model == null) {
+            threadModel.setCreatorName(Config.UNKNOWN_USER);
+          } else {
+            threadModel.setCreatorName(model.getDisplayName());
+            threadModel.setPhotoUrl(model.getPhotoUrl());
+          }
           getLikeStatusThread(threadModel);
         });
       }

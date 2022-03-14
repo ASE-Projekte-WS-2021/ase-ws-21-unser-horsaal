@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
@@ -98,8 +99,15 @@ public class CourseHistoryViewModel extends ViewModel {
 
     //TODO set to real eventtime
     meetingsModel.setEventTime(this.parseEventTime(meetingsModel));
+    meetingsModel.setMeetingDate(this.parseMeetingDate(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
     this.courseHistoryRepository.createMeeting(meetingsModel);
+  }
+
+  private String parseMeetingDate(MeetingsModel meetingsModel) {
+    Long eventTime = meetingsModel.getEventTime();
+
+    return Config.DATE_FORMAT.format(eventTime);
   }
 
   private long parseEventTime(MeetingsModel meetingsModel) {

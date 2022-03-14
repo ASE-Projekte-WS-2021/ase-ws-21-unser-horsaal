@@ -3,6 +3,8 @@ package com.example.unserhoersaal.model;
 /** Model for a meeting. */
 public class MeetingsModel {
 
+  private static final String TAG = "MeetingsModel";
+
   private int yearInput;
   private int monthInput;
   private int dayOfMonthInput;
@@ -14,6 +16,7 @@ public class MeetingsModel {
   private Long eventTime;
   private String title;
   private String key;
+  private String meetingDate;
 
   public MeetingsModel() {
     //needed for Firebase
@@ -107,5 +110,12 @@ public class MeetingsModel {
     this.key = key;
   }
 
+  public String getMeetingDate() {
+    return this.meetingDate;
+  }
+
+  public void setMeetingDate(String meetingDate) {
+    this.meetingDate = meetingDate;
+  }
 }
 
