@@ -1,43 +1,81 @@
 package com.example.unserhoersaal.utils;
 
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.enums.ErrorTag;
 
-/** Extension to MutableLiveData. Offers public methods to access DataStatus and Error messages
- * in StateData helping with handling invalid inputs and various results from Firebase.
+/** Extension to MutableLiveData. Offers public methods to access DataStatus, Error messages
+ * and Error Tags in StateData helping with handling invalid inputs and various results
+ * from Firebase. DataStatus is important for the Fragments when observing LiveData: while Status
+ * loading a progressbar may be displayed, while Status Error various error messages are rendered
+ * into special TextViews and Status success overrides existing data resulting in rerendering e.g.
+ * the items in a RecyclerView or logging in the user. Error Tags are used to further differentiate
+ * Views. postCreate is used to initiate and reset the StatusLiveData.
  * code reference: https://stackoverflow.com/a/53420462/13620136
  **/
 public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
 
+  private static final String TAG = "StateLiveData";
+
   /**
-   * Use this to put the Data on a LOADING Status
+   * Initiate or reset the data instance of a model class in a StateLiveData instance. The model
+   * class is wrapped with StateDate which holds the actual data along with error messages and data
+   * status.
+   * @param modelInstance new instance of a model class / list of model classes
+   */
+  public void postCreate(@NonNull T modelInstance) {
+    setValue(new StateData<T>().create(modelInstance));
+  }
+
+  /**
+   * Use this method to set the DataStatus to loading. Loading is used to set the visibility of a
+   * progressspinner.
    */
   public void postLoading() {
-    postValue(new StateData<T>().loading());
+    if (this.getValue() != null) {
+      setValue(this.getValue().loading());
+    } else {
+      Log.e(TAG, "postLoading: getValue returned null");
+    }
   }
 
   /**
-   * Use this to put the Data on a ERROR DataStatus
+   * Use this method to set the DataStatus to error. While Error the Fragment can display error
+   * messages to the user.
    * @param throwable the error to be handled
+   * @param errorTag to help differentiate ErrorTextViews
    */
-  public void postError(Throwable throwable, ErrorTag errorTag) {
-    postValue(new StateData<T>().error(throwable, errorTag));
+  public void postError(@NonNull Throwable throwable, @NonNull ErrorTag errorTag) {
+    if (this.getValue() != null) {
+      setValue(this.getValue().error(throwable, errorTag));
+    } else {
+      Log.e(TAG, "postError: getValue returned null");
+    }
   }
 
   /**
-   * Use this to put the Data on a SUCCESS DataStatus
-   * @param data
+   * Use this method to set the DataStatus to success. Success is used in Repositories to update new
+   * data and indicate a rerendering of data.
+   * @param updatedData model class / list of model classes
    */
-  public void postSuccess(T data) {
-    postValue(new StateData<T>().success(data));
+  public void postUpdate(@NonNull T updatedData) {
+    if (this.getValue() != null) {
+      setValue(this.getValue().update(updatedData));
+    } else {
+      Log.e(TAG, "postSuccess: getValue returned null");
+    }
   }
 
-  /**
-   * Use this to put the Data on a COMPLETE DataStatus
-   */
+  @Deprecated
   public void postComplete() {
-    postValue(new StateData<T>().complete());
+    setValue(new StateData<T>().complete());
+  }
+
+  @Deprecated
+  public void postComplete(T data) {
+    setValue(new StateData<T>(data).complete());
   }
 
 }

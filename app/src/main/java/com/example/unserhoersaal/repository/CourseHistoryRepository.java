@@ -158,7 +158,7 @@ public class CourseHistoryRepository {
             .setValue(meetingsModel)
             .addOnSuccessListener(unused -> {
               meetingsModel.setKey(meetingId);
-              meetingsModelMutableLiveData.postSuccess(meetingsModel);
+              meetingsModelMutableLiveData.postUpdate(meetingsModel);
             }).addOnFailureListener(e -> {
               Log.e(TAG, "Meeting konnte nicht erstellt werden.");
               meetingsModelMutableLiveData.postError(
@@ -185,7 +185,7 @@ public class CourseHistoryRepository {
           model.setKey(snapshot.getKey());
           meetingsModelList.add(model);
         }
-        meetings.postSuccess(meetingsModelList);
+        meetings.postUpdate(meetingsModelList);
       }
 
       @Override

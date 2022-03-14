@@ -38,7 +38,7 @@ public class ProfileViewModel extends ViewModel {
 
     this.userInputState.postValue(new StateData<>(new UserModel()));
     this.passwordInputState.postValue(new StateData<>(new PasswordModel()));
-    this.profileChanged = this.profileRepository.getProfileChanged();
+    //this.profileChanged = this.profileRepository.getProfileChanged();
   }
 
   /** Give back the user data. */
@@ -50,9 +50,9 @@ public class ProfileViewModel extends ViewModel {
     return this.profileLiveData;
   }
 
-  public StateLiveData<Boolean> getProfileChanged() {
+  /*public StateLiveData<Boolean> getProfileChanged() {
     return this.profileChanged;
-  }
+  }*/
 
 
   public void resetProfileInput() {
@@ -93,7 +93,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     this.userInputState.postComplete();
-    this.profileRepository.changeDisplayName(displayName);
+    //this.profileRepository.changeDisplayName(displayName);
   }
 
   /** JavaDoc for this method. */
@@ -117,7 +117,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     this.userInputState.postComplete();
-    this.profileRepository.changeInstitution(institution);
+    //this.profileRepository.changeInstitution(institution);
   }
 
   /** JavaDoc for this method. */
@@ -152,8 +152,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
       this.passwordInputState.postComplete();
-      this.profileRepository
-              .changePassword(oldPassword, newPassword);
+      //this.profileRepository.changePassword(oldPassword, newPassword);
     }
 
 }

@@ -56,7 +56,7 @@ public class VerificationFragment extends Fragment {
     this.loginViewModel.init();
     this.loginViewModel.getUserLiveData()
             .observe(getViewLifecycleOwner(), userStateData -> {
-              if (userStateData.getStatus() == StateData.DataStatus.SUCCESS) {
+              if (userStateData.getStatus() == StateData.DataStatus.UPDATE) {
                 //TODO: do we always have success when firebase user is null?
                 this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
                 if (userStateData.getData() == null) {

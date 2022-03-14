@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.model.PasswordModel;
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
@@ -79,61 +82,72 @@ public class LoginFragment extends Fragment {
     this.loginViewModel.init();
     this.loginViewModel
             .getUserLiveData()
-            .observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser.getStatus() == StateData.DataStatus.SUCCESS) {
-                if (firebaseUser.getData() == null) {
-                  return;
-                }
-                this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
-                this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.GONE);
-                FirebaseUser firebaseUser1 = firebaseUser.getData();
-
-                if (firebaseUser1.isEmailVerified()
-                        && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
-                  navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
-                } else if (firebaseUser1.isEmailVerified()) {
-                  navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-                }
-                else if (!firebaseUser1.isEmailVerified()) {
-                  navController.navigate(R.id.action_loginFragment_to_verificationFragment);
-                }
-              } else if (firebaseUser.getStatus() == StateData.DataStatus.LOADING) {
-                this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
-                this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.GONE);
-              } else if (firebaseUser.getStatus() == StateData.DataStatus.ERROR) {
-                this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
-                this.binding.loginFragmentGeneralErrorMessage.setText(firebaseUser.getError().getMessage());
-                this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
     this.loginViewModel
             .getUserInputState()
-            .observe(getViewLifecycleOwner(), userModelStateData -> {
-
-              if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-                this.binding.loginFragmentUserEmailErrorText
-                        .setText(userModelStateData.getError().getMessage());
-                this.binding.loginFragmentUserEmailErrorText
-                        .setVisibility(View.VISIBLE);
-              } else if (userModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
-                this.binding.loginFragmentUserEmailErrorText
-                        .setVisibility(View.GONE);
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::userInputStateCallback);
     this.loginViewModel
             .getPasswordInputState()
-            .observe(getViewLifecycleOwner(), passwordModelStateData -> {
-              if (passwordModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-                this.binding.loginFragmentPasswordErrorText
-                        .setText(passwordModelStateData.getError().getMessage());
-                this.binding.loginFragmentPasswordErrorText
-                        .setVisibility(View.VISIBLE);
-              }
-              else if (passwordModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
-                this.binding.loginFragmentPasswordErrorText
-                        .setVisibility(View.GONE);
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::passwordInputStateCallback);
+  }
+
+  private void userLiveDataCallback(StateData<FirebaseUser> firebaseUserStateData) {
+    this.resetBindings();
+
+    if (firebaseUserStateData == null) {
+      Log.e(TAG, "FirebaseUser object is null");
+      return;
+    }
+
+    if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE) {
+      if (firebaseUserStateData.getData() == null) {
+        return;
+      }
+      FirebaseUser firebaseUser = firebaseUserStateData.getData();
+
+      if (firebaseUser.isEmailVerified()
+              && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+        navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
+      } else if (firebaseUser.isEmailVerified()) {
+        navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+      }
+      else if (!firebaseUser.isEmailVerified()) {
+        navController.navigate(R.id.action_loginFragment_to_verificationFragment);
+      }
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.loginFragmentGeneralErrorMessage
+              .setText(firebaseUserStateData.getError().getMessage());
+      this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void userInputStateCallback(StateData<UserModel> userModelStateData) {
+    this.resetBindings();
+
+    if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.loginFragmentUserEmailErrorText
+              .setText(userModelStateData.getError().getMessage());
+      this.binding.loginFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void passwordInputStateCallback(StateData<PasswordModel> passwordModelStateData) {
+    this.resetBindings();
+
+    if (passwordModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.loginFragmentPasswordErrorText
+              .setText(passwordModelStateData.getError().getMessage());
+      this.binding.loginFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.loginFragmentUserEmailErrorText.setVisibility(View.GONE);
+    this.binding.loginFragmentPasswordErrorText.setVisibility(View.GONE);
+    this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.GONE);
+    this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectBinding() {

@@ -101,7 +101,7 @@ public class CreateCourseRepository {
             .child(mappingCode)
             .setValue(course.getKey())
             .addOnSuccessListener(unused ->
-                    courseModelMutableLiveData.postSuccess(course))
+                    courseModelMutableLiveData.postUpdate(course))
             .addOnFailureListener(e -> {
               Log.e(TAG, "Das Mapping konnte nicht erstellt werden: " + e.getMessage());
               courseModelMutableLiveData.postError(

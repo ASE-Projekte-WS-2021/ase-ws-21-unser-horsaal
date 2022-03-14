@@ -92,7 +92,7 @@ public class RegistrationViewModel extends ViewModel {
       return;
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN), ErrorTag.EMAIL);
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_REGISTRATION), ErrorTag.EMAIL);
       return;
     }
     /* Check if password input is empty or has wrong pattern.*/

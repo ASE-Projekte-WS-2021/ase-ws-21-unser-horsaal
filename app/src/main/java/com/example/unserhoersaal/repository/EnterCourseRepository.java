@@ -109,7 +109,7 @@ public class EnterCourseRepository {
 
     task.addOnSuccessListener(dataSnapshot -> {
       course.setCreatorName(dataSnapshot.getValue(String.class));
-      courseModel.postSuccess(course);
+      courseModel.postUpdate(course);
     }).addOnFailureListener(e -> {
       Log.e(TAG, "Loading Course failed: " + e.getMessage());
       courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
@@ -127,7 +127,7 @@ public class EnterCourseRepository {
           saveCourseInUser(course);
         } else {
           //if user has already entered the course just open it
-          enteredCourse.postSuccess(course);
+          enteredCourse.postUpdate(course);
         }
       }
 
@@ -169,7 +169,7 @@ public class EnterCourseRepository {
                             .child(course.getKey())
                             .child(uid)
                     .setValue(Boolean.TRUE)
-                    .addOnSuccessListener(unused1 -> enteredCourse.postSuccess(course)))
+                    .addOnSuccessListener(unused1 -> enteredCourse.postUpdate(course)))
                     .addOnFailureListener(e -> {
                             Log.e(TAG, e.getMessage());
                             enteredCourse.postError(

@@ -227,7 +227,7 @@ public class CurrentCourseRepository {
       }
       messagesList.clear();
       messagesList.addAll(mesList);
-      messages.postSuccess(messagesList);
+      messages.postUpdate(messagesList);
     });
   }
 
@@ -242,7 +242,7 @@ public class CurrentCourseRepository {
       } else if (task.getResult().getValue(LikeStatus.class) == LikeStatus.DISLIKE) {
         threadModel.setLikeStatus(LikeStatus.DISLIKE);
       }
-      thread.postSuccess(threadModel);
+      thread.postUpdate(threadModel);
     });
 
   }

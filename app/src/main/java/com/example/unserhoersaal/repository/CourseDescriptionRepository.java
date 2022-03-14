@@ -108,7 +108,7 @@ public class CourseDescriptionRepository {
 
     task.addOnSuccessListener(dataSnapshot -> {
       course.setCreatorName(dataSnapshot.getValue(String.class));
-      this.courseModel.postSuccess(course);
+      this.courseModel.postUpdate(course);
     }).addOnFailureListener(e -> {
       Log.e(TAG, e.getMessage());
       this.courseModel.postError(
@@ -137,7 +137,7 @@ public class CourseDescriptionRepository {
                             .child(id)
                             .child(uid)
                             .removeValue()
-                            .addOnSuccessListener(unused1 -> courseModel.postSuccess(null))
+                            .addOnSuccessListener(unused1 -> courseModel.postUpdate(null))
                             .addOnFailureListener(e -> {
                               Log.e(TAG, "Could not unregister User from course");
                               this.courseModel.postError(

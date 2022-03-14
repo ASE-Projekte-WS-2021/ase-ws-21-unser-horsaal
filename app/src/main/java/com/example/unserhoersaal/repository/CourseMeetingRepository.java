@@ -82,7 +82,7 @@ public class CourseMeetingRepository {
             .child(meeting.getKey())
             .addValueEventListener(this.listener);
 
-    this.meeting.postSuccess(meeting);
+    this.meeting.postUpdate(meeting);
   }
 
   /** Loads all threads of the current meeting from the database. */
@@ -144,7 +144,7 @@ public class CourseMeetingRepository {
             .setValue(threadModel)
             .addOnSuccessListener(unused -> {
               threadModel.setKey(threadId);
-              threadModelMutableLiveData.postSuccess(threadModel);
+              threadModelMutableLiveData.postUpdate(threadModel);
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, Config.COURSE_MEETING_THREAD_CREATION_FAILURE);
@@ -167,7 +167,7 @@ public class CourseMeetingRepository {
       }
       threadModelList.clear();
       threadModelList.addAll(threadList);
-      threads.postSuccess(threadModelList);
+      threads.postUpdate(threadModelList);
     });
   }
 

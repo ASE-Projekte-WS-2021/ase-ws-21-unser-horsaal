@@ -67,7 +67,7 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel.init();
     this.registrationViewModel
             .getUserStateLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser.getStatus() == StateData.DataStatus.SUCCESS) {
+              if (firebaseUser.getStatus() == StateData.DataStatus.UPDATE) {
                 if (firebaseUser.getData() == null) {
                   return;
                 }
@@ -110,10 +110,10 @@ public class RegistrationFragment extends Fragment {
                           .setVisibility(View.VISIBLE);
                 }
 
-              } else if (userModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
+              }/* else if (userModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
                 this.binding.registrationFragmentUserErrorText
                         .setVisibility(View.GONE);
-              }
+              }*/
             });
     this.registrationViewModel
             .getPasswordInputState()
@@ -123,11 +123,11 @@ public class RegistrationFragment extends Fragment {
                         .setText(passwordModelStateData.getError().getMessage());
                 this.binding.registrationFragmentPasswordErrorText
                         .setVisibility(View.VISIBLE);
-              }
+              }/*
               else if (passwordModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
                 this.binding.registrationFragmentPasswordErrorText
                         .setVisibility(View.GONE);
-              }
+              }*/
             });
   }
 

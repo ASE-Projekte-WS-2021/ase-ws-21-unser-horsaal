@@ -58,7 +58,7 @@ public class EditProfileInstitutionFragment extends Fragment {
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
     this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(), change -> {
-      if (change.getStatus() == StateData.DataStatus.SUCCESS) {
+      if (change.getStatus() == StateData.DataStatus.UPDATE) {
         this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
         navController.navigate(R.id.action_editProfileInstitutionFragment_to_profileFragment);
       } else if (change.getStatus() == StateData.DataStatus.ERROR) {

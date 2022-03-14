@@ -69,10 +69,10 @@ public class CoursesFragment extends Fragment {
               coursesAdapter.notifyDataSetChanged();
               if (userCourses.getStatus() == StateData.DataStatus.LOADING) {
                 this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
-              }
+              }/*
               else if (userCourses.getStatus() == StateData.DataStatus.COMPLETE) {
                 this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
-              }
+              }*/
               if (userCourses.getData() == null) return;
               if (userCourses.getData().size() == 0) {
                 this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);

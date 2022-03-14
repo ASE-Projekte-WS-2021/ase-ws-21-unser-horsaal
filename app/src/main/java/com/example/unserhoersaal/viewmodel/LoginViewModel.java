@@ -1,6 +1,8 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
+
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -58,12 +60,13 @@ public class LoginViewModel extends ViewModel {
    * to multiple Databinding Fragments. (Registration, ResetPassword, Login)
    * Used when initialising this Fragment and when leaving the Fragment. */
   public void setDefaultInputState() {
-    this.userInputState.setValue(new StateData<>(new UserModel()));
-    this.passwordInputState.setValue(new StateData<>(new PasswordModel()));
+    this.userInputState.postCreate(new UserModel());
+    this.passwordInputState.postCreate(new PasswordModel());
   }
 
   /** JavaDoc for this method. */
   public void login() {
+    System.out.println(this.userInputState.getValue().getData());
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
@@ -81,7 +84,7 @@ public class LoginViewModel extends ViewModel {
       return;
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN), ErrorTag.EMAIL);
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
       return;
     }
     if (Validation.emptyString(password)) {
@@ -94,10 +97,7 @@ public class LoginViewModel extends ViewModel {
       return;
     }
 
-    this.userInputState.postComplete();
-    System.out.println(this.userInputState.getValue().getData());
-    //do not listen for this status because we would get two spinner loops
-    this.passwordInputState.postComplete();
+    this.setDefaultInputState();
     this.authAppRepository.login(email, password);
   }
 
@@ -116,7 +116,7 @@ public class LoginViewModel extends ViewModel {
       this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
     } else {
       this.userInputState.postComplete();
       this.authAppRepository.sendPasswordResetMail(email);
@@ -144,7 +144,7 @@ public class LoginViewModel extends ViewModel {
       this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN), ErrorTag.EMAIL);
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
     } else {
       this.userInputState.postComplete();
       this.authAppRepository.resetPassword(email);

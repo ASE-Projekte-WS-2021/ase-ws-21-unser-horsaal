@@ -24,7 +24,7 @@ public class ProfileRepository {
 
   private static ProfileRepository instance;
   private StateLiveData<UserModel> user = new StateLiveData<>();
-  private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
+  //private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
 
   public ProfileRepository() {
     this.loadUser();
@@ -42,9 +42,9 @@ public class ProfileRepository {
     return this.user;
   }
 
-  public StateLiveData<Boolean> getProfileChanged() {
+  /*public StateLiveData<Boolean> getProfileChanged() {
     return this.profileChanged;
-  }
+  }*/
 
   /** Loads an user from the database. */
   public void loadUser() {
@@ -73,7 +73,7 @@ public class ProfileRepository {
           return;
         }
         userModel.setKey(snapshot.getKey());
-        user.postSuccess(userModel);
+        user.postUpdate(userModel);
       }
 
       @Override
@@ -85,7 +85,7 @@ public class ProfileRepository {
   }
 
   /** TODO. */
-  public void changeDisplayName(String displayName) {
+  /*  public void changeDisplayName(String displayName) {
     this.profileChanged.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     //TODO: maybe make firebaseauth to an instance variable?
@@ -118,9 +118,9 @@ public class ProfileRepository {
                       new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
             });
   }
-
+*/
   /** TODO. */
-  public void changeInstitution(String institution) {
+  /*public void changeInstitution(String institution) {
     this.profileChanged.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -149,10 +149,10 @@ public class ProfileRepository {
             .addOnFailureListener(e ->
                     profileChanged.postError(
                             new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO));
-  }
+  }*/
 
   /** TODO. */
-  public void changePassword(String oldPassword, String newPassword) {
+  /*public void changePassword(String oldPassword, String newPassword) {
     this.profileChanged.postLoading();
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -191,6 +191,6 @@ public class ProfileRepository {
                 new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
       }
     });
-  }
+  }*/
 
 }

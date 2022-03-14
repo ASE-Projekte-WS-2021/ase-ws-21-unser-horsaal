@@ -64,7 +64,7 @@ public class AuthAppRepository {
                 }
                 else {
                   Log.d(TAG, "Login with firebase auth was successful");
-                  this.userLiveData.postSuccess(this.firebaseAuth.getCurrentUser());
+                  this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
                 }
               } else {
                 Log.e(TAG, "authentication failed.");
@@ -122,7 +122,7 @@ public class AuthAppRepository {
             .addOnCompleteListener(task1 -> {
               if (task1.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                this.userLiveData.postSuccess(this.firebaseUser);
+                this.userLiveData.postUpdate(this.firebaseUser);
                 this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
               } else {
                 Log.e(TAG,  Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
@@ -140,7 +140,7 @@ public class AuthAppRepository {
       if (this.firebaseUser != null && this.firebaseUser.isEmailVerified()) {
         Log.d(TAG, "User verified.");
         this.firebaseUser.reload();
-        this.userLiveData.postSuccess(this.firebaseUser);
+        this.userLiveData.postUpdate(this.firebaseUser);
         this.firebaseAuth.removeAuthStateListener(this.authStateListenerVerification());
       } else {
         Log.w(TAG, "User konnte nicht verifiziert werden.");
@@ -157,7 +157,7 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_SUCCESS);
-                this.userLiveData.postSuccess(this.firebaseUser);
+                this.userLiveData.postUpdate(this.firebaseUser);
               } else {
                 Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED);
                 this.userLiveData.postError(
@@ -179,7 +179,7 @@ public class AuthAppRepository {
               .addOnCompleteListener(task1 -> {
                 if (task1.isSuccessful()) {
                   Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                  this.userLiveData.postSuccess(this.firebaseUser);
+                  this.userLiveData.postUpdate(this.firebaseUser);
                   //add an authstatelistener so we can live observe when user clicks the email
                   this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
                 } else {
@@ -199,7 +199,7 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_PASSWORD_RESET_MAIL_SENT);
-                this.userLiveData.postSuccess(this.firebaseUser);
+                this.userLiveData.postUpdate(this.firebaseUser);
               } else {
                 Log.e(TAG, Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT);
                 this.userLiveData.postError(

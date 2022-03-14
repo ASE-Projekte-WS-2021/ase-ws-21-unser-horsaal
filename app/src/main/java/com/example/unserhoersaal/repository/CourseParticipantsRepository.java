@@ -92,7 +92,7 @@ public class CourseParticipantsRepository {
             model.setKey(task.getResult().getKey());
             userList.add(model);
           }
-          users.postSuccess(userList);
+          users.postUpdate(userList);
         });
 
       }

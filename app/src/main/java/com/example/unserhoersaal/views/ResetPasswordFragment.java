@@ -60,7 +60,7 @@ public class ResetPasswordFragment extends Fragment {
     this.loginViewModel
             .getUserLiveData()
             .observe(getViewLifecycleOwner(), userStateData -> {
-                if (userStateData.getStatus() == StateData.DataStatus.SUCCESS) {
+                if (userStateData.getStatus() == StateData.DataStatus.UPDATE) {
                   this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
                   this.binding.resetPasswordErrorText.setVisibility(View.GONE);
 
@@ -92,9 +92,9 @@ public class ResetPasswordFragment extends Fragment {
               if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
                 this.binding.resetPasswordErrorText.setText(userModelStateData.getError().getMessage());
                 this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
-              } else if (userModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
+              }/* else if (userModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
                 this.binding.resetPasswordErrorText.setVisibility(View.GONE);
-              }
+              }*/
             });
   }
 

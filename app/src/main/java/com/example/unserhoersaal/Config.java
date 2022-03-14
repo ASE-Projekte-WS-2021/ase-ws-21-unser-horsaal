@@ -111,7 +111,8 @@ public class Config {
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN = "Der Beitrittscode enthält ungültige Charaktere.";
 
   public static final String AUTH_EMAIL_EMPTY = "Bitte gib eine Email-Adresse ein!";
-  public static final String AUTH_EMAIL_WRONG_PATTERN = "Email ist ungültig oder bereits vergeben!";
+  public static final String AUTH_EMAIL_WRONG_PATTERN_REGISTRATION = "Email ist ungültig oder bereits vergeben!";
+  public static final String AUTH_EMAIL_WRONG_PATTERN_LOGIN = "Ungültige Email-Adresse!";
   public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
   public static final String AUTH_PASSWORD_WRONG_PATTERN = "Das Passwort muss aus Groß- und Kleinbuchstaben, sowie mindestens einer Zahl bestehen! Zudem muss es mindestens 8 Zeichen lang sein!";
   public static final String AUTH_USERNAME_EMPTY = "Bitte gib einen Nutzernamen ein!";
