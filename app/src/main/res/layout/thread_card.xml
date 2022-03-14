@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/threadCardSolvedImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_baseline_check_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -30,8 +30,8 @@
 
             <ImageView
                 android:id="@+id/threadCardUpvote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -49,8 +49,8 @@
 
             <ImageView
                 android:id="@+id/threadCardDownvote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -88,14 +88,16 @@
                 android:id="@+id/threadCardHashtagOne"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="#hashtag1"
-                android:layout_marginEnd="8dp"/>
+                android:text="#hashtag1m #hashtagtwoandsoon"
+                android:layout_marginEnd="8dp" />
 
+            <!--
             <TextView
                 android:id="@+id/threadCardHashtagTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="#hashtag1"/>
+            -->
         </LinearLayout>
 
         <TextView
