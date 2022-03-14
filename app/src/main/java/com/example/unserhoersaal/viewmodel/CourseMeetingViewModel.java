@@ -54,6 +54,15 @@ public class CourseMeetingViewModel extends ViewModel {
     });
   }
 
+  public void sortThreadsByCreationTime(List<ThreadModel> threadsModelList) {
+    Collections.sort(threadsModelList, new Comparator<ThreadModel>() {
+      @Override
+      public int compare(ThreadModel threadModel, ThreadModel t1) {
+        return t1.getCreationTime().compareTo(threadModel.getCreationTime());
+      }
+    });
+  }
+
   public LiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }
