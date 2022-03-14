@@ -9,6 +9,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
+import com.example.unserhoersaal.utils.CollectionsSorter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,12 +64,8 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Sort the meetings list by event time. */
   public void sortMeetingByEventTime(List<MeetingsModel> meetingsModelList) {
-    Collections.sort(meetingsModelList, new Comparator<MeetingsModel>() {
-      @Override
-      public int compare(MeetingsModel meetingsModel, MeetingsModel t1) {
-        return meetingsModel.getEventTime().compareTo(t1.getEventTime());
-      }
-    });
+   CollectionsSorter collectionsSorter = new CollectionsSorter();
+   collectionsSorter.sortMeetingListByEventTimeAsc(meetingsModelList);
   }
 
   public LiveData<CourseModel> getCourse() {
