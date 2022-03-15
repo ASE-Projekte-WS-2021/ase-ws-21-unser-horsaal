@@ -9,12 +9,13 @@ public class CourseModel {
   private Long creationTime;
   private String creatorId;
   private String description;
-  private String groupIcon;
+  //private String groupIcon;
   private String institution;
   private String title;
 
   private String key;
   private String creatorName;
+  private String photoUrl;
 
   public CourseModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
@@ -44,9 +45,9 @@ public class CourseModel {
     return this.description;
   }
 
-  public String getGroupIcon() {
+  /*public String getGroupIcon() {
     return this.groupIcon;
-  }
+  }*/
 
   public String getInstitution() {
     return this.institution;
@@ -62,6 +63,10 @@ public class CourseModel {
 
   public String getCreatorName() {
     return this.creatorName;
+  }
+
+  public String getPhotoUrl() {
+    return this.photoUrl;
   }
 
   /** Setter. */
@@ -81,9 +86,9 @@ public class CourseModel {
     this.description = description;
   }
 
-  public void setGroupIcon(String groupIcon) {
+  /*public void setGroupIcon(String groupIcon) {
     this.groupIcon = groupIcon;
-  }
+  }*/
 
   public void setInstitution(String institution) {
     this.institution = institution;
@@ -99,6 +104,10 @@ public class CourseModel {
 
   public void setCreatorName(String creatorName) {
     this.creatorName = creatorName;
+  }
+
+  public void setPhotoUrl(String photoUrl) {
+    this.photoUrl = photoUrl;
   }
 
 }
