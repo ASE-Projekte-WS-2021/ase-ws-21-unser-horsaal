@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -49,7 +48,7 @@ public class CoursesRepository {
       this.loadUserCourses();
     }
 
-    this.courses.setValue(new StateData<>(this.userCoursesList));
+    this.courses.postCreate(this.userCoursesList);
     return this.courses;
   }
 
@@ -88,7 +87,6 @@ public class CoursesRepository {
           }
           getAuthor(authorList);
         });
-        courses.postComplete();
       }
 
       @Override
@@ -122,7 +120,7 @@ public class CoursesRepository {
       userCoursesList.clear();
       userCoursesList.addAll(authorList);
 
-      courses.postValue(new StateData<>(userCoursesList));
+      courses.postUpdate(userCoursesList);
     });
   }
 

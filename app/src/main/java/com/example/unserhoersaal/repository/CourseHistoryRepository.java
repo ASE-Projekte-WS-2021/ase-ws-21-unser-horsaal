@@ -6,7 +6,6 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +37,7 @@ public class CourseHistoryRepository {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    this.course.postCreate(new CourseModel());
   }
 
   /** Generate an instance of the class. */
@@ -50,7 +50,7 @@ public class CourseHistoryRepository {
 
   /** This method gives back all meetings of the course. */
   public StateLiveData<List<MeetingsModel>> getMeetings() {
-    this.meetings.postValue(new StateData<>(this.meetingsModelList));
+    this.meetings.postCreate(this.meetingsModelList);
     return this.meetings;
   }
 
@@ -68,25 +68,23 @@ public class CourseHistoryRepository {
 
   /** Setts the Id of the course. */
   public void setCourse(CourseModel courseModel) {
-    CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
-    if (courseObj == null) {
-      Log.e(TAG, "courseObj is null.");
-      return;
-    }
-
     String courseId = courseModel.getKey();
 
-    this.databaseReference
-            .child(Config.CHILD_MEETINGS)
-            .child(courseObj.getKey())
-            .removeEventListener(this.listener);
+    CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
+
+    if (courseObj.getKey() != null) {
+      this.databaseReference
+              .child(Config.CHILD_MEETINGS)
+              .child(courseObj.getKey())
+              .removeEventListener(this.listener);
+    }
 
     this.databaseReference
             .child(Config.CHILD_MEETINGS)
             .child(courseId)
             .addValueEventListener(this.listener);
 
-    this.course.postValue(new StateData<>(courseModel));
+    this.course.postCreate(courseModel);
   }
 
   public void setUserId() {
@@ -97,7 +95,7 @@ public class CourseHistoryRepository {
     }
 
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.userId.postValue(new StateData<>(uid));
+    this.userId.postCreate(uid);
   }
 
   /** Loads all meetings of the course. */

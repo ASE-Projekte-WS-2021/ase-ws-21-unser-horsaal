@@ -6,7 +6,6 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.CreateCourseRepository;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.Random;
@@ -18,7 +17,7 @@ public class CreateCourseViewModel extends ViewModel {
 
   private CreateCourseRepository createCourseRepository;
   private StateLiveData<CourseModel> courseModel;
-  public StateLiveData<CourseModel> courseModelInputState;
+  public StateLiveData<CourseModel> courseModelInputState = new StateLiveData<>();
 
   /** Initialization of the CreateCourseViewModel. */
   public void init() {
@@ -27,7 +26,7 @@ public class CreateCourseViewModel extends ViewModel {
     }
     this.createCourseRepository = CreateCourseRepository.getInstance();
     this.courseModel = this.createCourseRepository.getUserCourse();
-    this.courseModelInputState.postValue(new StateData<>(new CourseModel()));
+    this.courseModelInputState.postCreate(new CourseModel());
   }
 
   public StateLiveData<CourseModel> getCourseModel() {
@@ -35,8 +34,8 @@ public class CreateCourseViewModel extends ViewModel {
   }
 
   public void resetCourseModelInput() {
-    this.courseModelInputState.postValue(new StateData<>(new CourseModel()));
-    this.courseModel.postValue(new StateData<>(null));
+    this.courseModelInputState.postCreate(new CourseModel());
+    this.courseModel.postCreate(null);
   }
 
   /** Create a new course. */
@@ -49,35 +48,35 @@ public class CreateCourseViewModel extends ViewModel {
 
     if (courseModel.getTitle() == null) {
       Log.d(TAG, "title is null.");
-      this.courseModelInputState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
+      this.courseModel.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
       return;
     } else if (!Validation.stringHasPattern(courseModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
       Log.d(TAG, "title has wrong pattern.");
-      this.courseModelInputState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
+      this.courseModel.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
       return;
     }
     if (courseModel.getDescription() == null) {
       Log.d(TAG, "description is null.");
-      this.courseModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.VM);
+      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
       return;
     } else if (!Validation.stringHasPattern(courseModel.getDescription(), Config.REGEX_PATTERN_TEXT)) {
       Log.d(TAG, "description has wrong pattern.");
-      this.courseModelInputState.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
+      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
       return;
     }
     if (courseModel.getInstitution() == null) {
       Log.d(TAG, "institution is null.");
-      this.courseModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.VM);
+      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
       return;
     } else if (!Validation.stringHasPattern(courseModel.getInstitution(), Config.REGEX_PATTERN_TEXT)) {
       Log.d(TAG, "institution has wrong pattern.");
-      this.courseModelInputState.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
+      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.INSTITUTION);
       return;
     }
 
     courseModel.setCodeMapping(this.getCodeMapping());
 
-    this.courseModelInputState.postComplete();
+    this.courseModelInputState.postCreate(new CourseModel());
     this.createCourseRepository.createNewCourse(courseModel);
   }
 

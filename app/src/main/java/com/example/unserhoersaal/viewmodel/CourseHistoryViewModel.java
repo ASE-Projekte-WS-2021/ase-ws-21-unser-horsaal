@@ -43,12 +43,12 @@ public class CourseHistoryViewModel extends ViewModel {
     if (this.course.getValue() != null) {
       this.meetings = this.courseHistoryRepository.getMeetings();
     }
-    this.meetingModelInputState.postValue(new StateData<>(new MeetingsModel()));
+    this.meetingModelInputState.postCreate(new MeetingsModel());
   }
 
   public void resetMeetingData() {
-    this.meetingModelInputState.postValue(new StateData<>(new MeetingsModel()));
-    this.meetingsModelMutableLiveData.postValue(new StateData<>(null));
+    this.meetingModelInputState.postCreate(new MeetingsModel());
+    this.meetingsModelMutableLiveData.postCreate(null);
   }
 
   public StateLiveData<List<MeetingsModel>> getMeetings() {
@@ -69,6 +69,8 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Create a new Meeting. */
   public void createMeeting() {
+    this.meetingModelInputState.postLoading();
+
     MeetingsModel meetingsModel = Validation.checkStateLiveData(this.meetingModelInputState, TAG);
     if (meetingsModel == null) {
       Log.e(TAG, "meetingsModel is null.");
@@ -77,17 +79,17 @@ public class CourseHistoryViewModel extends ViewModel {
 
     if (meetingsModel.getTitle() == null) {
       Log.d(TAG, "title is null.");
-      this.meetingModelInputState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
+      this.meetingsModelMutableLiveData.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
       return;
     } else if (!Validation.stringHasPattern(meetingsModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
       Log.d(TAG, "title wrong pattern.");
-      this.meetingModelInputState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
+      this.meetingsModelMutableLiveData.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
 
     meetingsModel.setEventTime(this.parseEventTime(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
-    this.meetingModelInputState.postComplete();
+    this.meetingModelInputState.postCreate(new MeetingsModel());
     this.courseHistoryRepository.createMeeting(meetingsModel);
   }
 

@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEnterCourseBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
@@ -62,7 +64,7 @@ public class EnterCourseFragment extends Fragment {
       CourseModel courseModel = new CourseModel();
       courseModel.setCodeMapping(this.deepLinkMode.getCodeMapping());
       this.enterCourseViewModel
-              .courseIdInputState.postValue(new StateData<>(courseModel));
+              .courseIdInputState.postCreate(courseModel);
       this.enterCourseViewModel.checkCode();
     }
   }
@@ -72,18 +74,53 @@ public class EnterCourseFragment extends Fragment {
             .get(EnterCourseViewModel.class);
     this.enterCourseViewModel.init();
     this.enterCourseViewModel.getCourse()
-            .observe(getViewLifecycleOwner(), model -> {
-              if (model != null) {
-                if (model.getData().getKey() != null) {
-                  KeyboardUtil.hideKeyboard(getActivity());
-                  navController.navigate(
-                          R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
-                } else {
-                  navController.navigate(
-                          R.id.action_enterCourseFragment_to_noCourseFoundFragment);
-                }
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::courseLiveDataCallback);
+    this.enterCourseViewModel.getCourseIdInputState()
+            .observe(getViewLifecycleOwner(), this::courseIdInputStateCallback);
+  }
+
+  private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
+    this.resetBindings();
+
+    if (courseModelStateData == null) {
+      this.binding.enterCourseFragmentPasswordErrorText.setText(Config.UNSPECIFIC_ERROR);
+      this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+    }
+
+    if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.enterCourseFragmentPasswordErrorText
+              .setText(courseModelStateData.getError().getMessage());
+      this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+    } else if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    } else {
+      if (courseModelStateData.getData() == null) {
+        return;
+      }
+      if (courseModelStateData.getData().getKey() != null) {
+        KeyboardUtil.hideKeyboard(getActivity());
+        navController.navigate(
+                R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
+      } else {
+        navController.navigate(
+                R.id.action_enterCourseFragment_to_noCourseFoundFragment);
+      }
+    }
+  }
+
+  private void courseIdInputStateCallback(StateData<CourseModel> courseModelStateData) {
+    this.resetBindings();
+
+    if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.enterCourseFragmentPasswordErrorText
+              .setText(courseModelStateData.getError().getMessage());
+      this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.GONE);
+    this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectBinding() {

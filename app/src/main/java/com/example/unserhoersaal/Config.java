@@ -105,7 +105,7 @@ public class Config {
 
   public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
   public static final String DATABINDING_TITLE_WRONG_PATTERN = "Der Titel enthält ungültige Charaktere!"; //TODO: add characters
-  public static final String DATABINDING_TEXT_NULL = "Der Titel darf nicht null sein!";
+  public static final String DATABINDING_TEXT_NULL = "Dieses Textfeld darf nicht leer sein!";
   public static final String DATABINDING_TEXT_WRONG_PATTERN = "Der Titel enthält ungültige Charaktere!";
   public static final String DATABINDING_CODEMAPPING_NULL = "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN = "Der Beitrittscode enthält ungültige Charaktere.";

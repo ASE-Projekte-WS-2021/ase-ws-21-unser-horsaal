@@ -65,7 +65,7 @@ public class EnterCourseDetailFragment extends Fragment {
     this.enterCourseViewModel.init();
     this.courseHistoryViewModel.init();
     this.enterCourseViewModel.getEnteredCourse().observe(getViewLifecycleOwner(), model -> {
-      if (model != null) {
+      if (model.getData() != null) {
         openNewCourse(model.getData());
       }
     });

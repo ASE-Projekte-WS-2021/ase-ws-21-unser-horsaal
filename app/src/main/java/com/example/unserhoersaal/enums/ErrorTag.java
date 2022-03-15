@@ -6,6 +6,8 @@ public enum ErrorTag {
   USERNAME,
   CURRENT_PASSWORD,
   NEW_PASSWORD,
+  TITLE,
+  DESCRIPTION,
   INSTITUTION,
   REPO,
   VM

@@ -93,6 +93,13 @@
                         android:singleLine="true"
                         android:background="@color/white"/>
 
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseTitleErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -110,6 +117,13 @@
                         android:imeOptions="actionDone"
                         android:singleLine="false"
                         android:background="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseDescriptionErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +143,32 @@
                         android:singleLine="true"
                         android:background="@color/white"/>
 
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseInstitutionErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/createCourseFragmentCourseGeneralErrorText"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ProgressBar
+                    android:id="@+id/coursesCreateFragmentProgressSpinner"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
 
                 <com.google.android.material.button.MaterialButton

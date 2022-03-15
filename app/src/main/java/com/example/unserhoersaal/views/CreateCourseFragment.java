@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -13,7 +15,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseBinding;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 
@@ -63,12 +67,46 @@ public class CreateCourseFragment extends Fragment {
     this.createCourseViewModel.init();
     this.courseHistoryViewModel.init();
     this.createCourseViewModel
-            .getCourseModel().observe(getViewLifecycleOwner(), courseModel -> {
-              if (courseModel != null) {
-                //TODO: assert != null
-                courseCreated(courseModel.getData());
-              }
-            });
+            .getCourseModel().observe(getViewLifecycleOwner(), this::courseLiveDataCallback);
+  }
+
+  private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
+    this.resetBindings();
+
+    if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.coursesCreateFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    }
+    else if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      if (courseModelStateData.getErrorTag() == ErrorTag.TITLE) {
+        System.out.println(courseModelStateData.getError().getMessage());
+        this.binding.createCourseFragmentCourseTitleErrorText
+                .setText(courseModelStateData.getError().getMessage());
+        this.binding.createCourseFragmentCourseTitleErrorText.setVisibility(View.VISIBLE);
+      } else if (courseModelStateData.getErrorTag() == ErrorTag.DESCRIPTION) {
+        this.binding.createCourseFragmentCourseDescriptionErrorText
+                .setText(courseModelStateData.getError().getMessage());
+        this.binding.createCourseFragmentCourseDescriptionErrorText.setVisibility(View.VISIBLE);
+      } else if (courseModelStateData.getErrorTag() == ErrorTag.INSTITUTION) {
+        this.binding.createCourseFragmentCourseInstitutionErrorText
+                .setText(courseModelStateData.getError().getMessage());
+        this.binding.createCourseFragmentCourseInstitutionErrorText.setVisibility(View.VISIBLE);
+      } else {
+        this.binding.createCourseFragmentCourseGeneralErrorText
+                .setText(courseModelStateData.getError().getMessage());
+        this.binding.createCourseFragmentCourseGeneralErrorText.setVisibility(View.VISIBLE);
+      }
+    }
+    if (courseModelStateData.getData() != null) {
+      courseCreated(courseModelStateData.getData());
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.coursesCreateFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.createCourseFragmentCourseGeneralErrorText.setVisibility(View.GONE);
+    this.binding.createCourseFragmentCourseInstitutionErrorText.setVisibility(View.GONE);
+    this.binding.createCourseFragmentCourseDescriptionErrorText.setVisibility(View.GONE);
+    this.binding.createCourseFragmentCourseTitleErrorText.setVisibility(View.GONE);
   }
 
   private void connectBinding() {
@@ -85,7 +123,6 @@ public class CreateCourseFragment extends Fragment {
 
   /** Signs the creator in the course. */
   public void courseCreated(CourseModel course) {
-    String key = course.getKey();
     this.courseHistoryViewModel.setCourse(course);
     this.createCourseViewModel.resetCourseModelInput();
     this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);

@@ -30,6 +30,7 @@ public class EnterCourseViewModel extends ViewModel {
     this.courseModelStateLiveData = this.enterCourseRepository.getCourse();
     this.enteredCourse = this.enterCourseRepository.getEnteredCourse();
     this.courseIdInputState = new StateLiveData<>();
+    this.courseIdInputState.postCreate(new CourseModel());
   }
 
   public StateLiveData<CourseModel> getCourse() {
@@ -40,14 +41,18 @@ public class EnterCourseViewModel extends ViewModel {
     return this.enteredCourse;
   }
 
+  public StateLiveData<CourseModel> getCourseIdInputState() {
+    return this.courseIdInputState;
+  }
+
   /** Reset the entered data after joining the course. */
   public void resetEnterCourseId() {
-    this.courseIdInputState.postValue(new StateData<>(new CourseModel()));
+    this.courseIdInputState.postCreate(new CourseModel());
   }
 
   public void resetEnterCourse() {
-    this.courseModelStateLiveData.postValue(new StateData<>(null));
-    this.enteredCourse.postValue(new StateData<>(null));
+    this.courseModelStateLiveData.postCreate(null);
+    this.enteredCourse.postCreate(null);
   }
 
   /** JavaDoc for this method. */
@@ -73,7 +78,7 @@ public class EnterCourseViewModel extends ViewModel {
     codeMapping = codeMapping.replace(" ", "");
     codeMapping = codeMapping.replace("-", "");
 
-    this.courseIdInputState.postComplete();
+    this.courseIdInputState.postCreate(new CourseModel());
     this.enterCourseRepository.checkCode(codeMapping);
   }
 
@@ -96,7 +101,7 @@ public class EnterCourseViewModel extends ViewModel {
       return;
     }
 
-    this.courseModelStateLiveData.postComplete();
+    this.courseModelStateLiveData.postCreate(new CourseModel());
     this.enterCourseRepository.isUserInCourse(courseModel);
   }
 

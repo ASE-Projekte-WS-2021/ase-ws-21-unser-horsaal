@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -16,8 +18,11 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
+
+import java.util.List;
 
 /** Courses. */
 public class CoursesFragment extends Fragment {
@@ -58,35 +63,39 @@ public class CoursesFragment extends Fragment {
     this.initToolbar();
   }
 
-  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
     this.coursesViewModel.init();
 
     this.coursesViewModel.getUserCourses()
-            .observe(getViewLifecycleOwner(), userCourses -> {
-              coursesAdapter.notifyDataSetChanged();
-              if (userCourses.getStatus() == StateData.DataStatus.LOADING) {
-                this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
-              }/*
-              else if (userCourses.getStatus() == StateData.DataStatus.COMPLETE) {
-                this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
-              }*/
-              if (userCourses.getData() == null) return;
-              if (userCourses.getData().size() == 0) {
-                this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
-              } else {
-                this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::coursesLiveDataCallback);
+  }
+
+  @SuppressLint("NotifyDataSetChanged")
+  private void coursesLiveDataCallback(StateData<List<CourseModel>> listStateData) {
+    this.resetBindings();
+    this.coursesAdapter.notifyDataSetChanged();
+
+    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.coursesFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    }
+    else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    if (listStateData.getData().size() == 0) {
+      this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
+    } else {
+      this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.coursesFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectAdapter() {
-    if (this.coursesViewModel.getUserCourses().getValue() == null) {
-      Log.e(TAG, "List for Adapter is null");
-      return;
-    }
     this.coursesAdapter = new CoursesAdapter(
             this.coursesViewModel.getUserCourses().getValue().getData());
   }
