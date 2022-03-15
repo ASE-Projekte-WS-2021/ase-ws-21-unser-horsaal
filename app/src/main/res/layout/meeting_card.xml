@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/meetingCardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meetingtitel"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/meetingCardTimeImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_access_time_24"
+            android:layout_marginTop="16dp"
+            app:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/meetingCardTitle"
+            />
+
+        <TextView
+            android:id="@+id/meetingCardStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="16:15"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/meetingCardTimeImage"
+            app:layout_constraintBottom_toBottomOf="@id/meetingCardTimeImage"
+            app:layout_constraintTop_toTopOf="@id/meetingCardTimeImage"/>
+
+        <TextView
+            android:id="@+id/meetingCardTimeSeparator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/meetingCardStartTime"
+            app:layout_constraintBottom_toBottomOf="@id/meetingCardStartTime"/>
+
+        <TextView
+            android:id="@+id/meetingCardEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="17:45"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/meetingCardTimeSeparator"
+            app:layout_constraintTop_toTopOf="@id/meetingCardStartTime"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/meetingCardDateImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_date_range_24"
+            android:layout_marginEnd="12dp"
+            app:tint="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/meetingCardDate"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/meetingCardDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="06.05.22"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/meetingCardDateImage"
+            app:layout_constraintTop_toTopOf="@id/meetingCardDateImage"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -157,7 +157,26 @@
     <string name="course_description_fragment_enter_key">Beitrittscode</string>
     <string name="course_history_fragment_subtitle_information">Für Informationen klicken</string>
     <string name="course_thread_fragment_title">Frage</string>
-
-    <style name="course_participants_fragment_title">Teilnehmer:innen</style>
+    <string name="course_participants_fragment_title">Teilnehmer:innen</string>
+    <string name="course_meeting_fragment_chip_new">neueste</string>
+    <string name="course_meeting_fragment_chip_most_likes">meiste Likes</string>
+    <string name="course_meeting_fragment_chip_most_comments">meiste Kommentare</string>
+    <string name="course_meeting_fragment_chip_solved">beantwortet</string>
+    <string name="course_meeting_fragment_chip_unsolved">unbeantwortet</string>
+    <string name="course_meeting_fragment_chip_subject">Lehrstoff</string>
+    <string name="course_meeting_fragment_chip_organizational">Organisatorisch</string>
+    <string name="course_meeting_fragment_chip_mistake">Fehler</string>
+    <string name="course_meeting_fragment_chip_other">Sonstiges</string>
+    <string name="course_meeting_fragment_chip_page_number">Seitenzahl</string>
+    <string name="course_meeting_fragment_chip_own">eigene</string>
+    <string name="course_meeting_fragment_chip_course_creator">Kursersteller</string>
+    <string name="course_meeting_fragment_chip_exam">Prüfung</string>
+    <string name="course_meeting_fragment_filter">Filter</string>
+    <string name="course_meeting_fragment_tags">Tags</string>
+    <string name="create_thread_fragment_title">Nachricht erstellen</string>
+    <string name="create_thread_fragment_tag_textview">Welcher tag beschreibt den Inhalt deiner Nachricht am besten?</string>
+    <string name="create_thread_fragment_hashtag_text">Gibt es einen Hashtag, der deine Nachricht besonders gut beschreibt? (optional)</string>
+    <string name="create_thread_fragment_pagenumber_text">Bezieht sich deine Nachricht auf eine Seite im Skript? (optional)</string>
+    <string name="create_thread_fragment_button_send">Nachricht senden</string>
 
 </resources>
