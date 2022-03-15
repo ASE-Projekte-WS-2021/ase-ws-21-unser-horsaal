@@ -30,6 +30,7 @@ public class Config {
   public static final String CHILD_LIKE_USER = "likeUser";
   public static final String CHILD_DISPLAY_NAME = "displayName";
   public static final String CHILD_INSTITUTION = "institution";
+  public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
 
   /** Tabview. */
   public static final int TAB_TODAY = 0;

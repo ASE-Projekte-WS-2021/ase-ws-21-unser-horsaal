@@ -76,11 +76,11 @@
                 android:id="@+id/courseItemCardNumberMeetings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5"
                 app:layout_constraintStart_toEndOf="@id/courseItemCardMeetingsImage"
                 app:layout_constraintTop_toTopOf="@id/courseItemCardMeetingsImage"
                 app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsImage"
-                app:layout_constraintEnd_toStartOf="@id/courseItemCardMeetingsTextView" />
+                app:layout_constraintEnd_toStartOf="@id/courseItemCardMeetingsTextView"
+                tools:text="@{Integer.toString(model.meetingsCount)}"/>
 
             <TextView
                 android:id="@+id/courseItemCardMeetingsTextView"
@@ -104,10 +104,10 @@
                 android:id="@+id/courseItemCardNumberParticipants"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="28"
                 android:layout_marginEnd="12dp"
                 app:layout_constraintEnd_toStartOf="@id/courseItemCardParticipantsTextView"
-                app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsTextView" />
+                app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsTextView"
+                tools:text="@{Integer.toString(model.memberCount)}"/>
 
             <TextView
                 android:id="@+id/courseItemCardParticipantsTextView"

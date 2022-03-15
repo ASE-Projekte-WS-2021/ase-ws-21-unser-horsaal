@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,8 +105,14 @@ public class CourseHistoryRepository {
             .child(this.course.getValue().getKey()).child(meetingId)
             .setValue(meetingsModel)
             .addOnSuccessListener(unused -> {
-              meetingsModel.setKey(meetingId);
-              meetingsModelMutableLiveData.postValue(meetingsModel);
+              reference.child(Config.CHILD_COURSES)
+                      .child(this.course.getValue().getKey())
+                      .child(Config.CHILD_MEETINGS_COUNT)
+                      .setValue(ServerValue.increment(1))
+                      .addOnSuccessListener(unused1 -> {
+                        meetingsModel.setKey(meetingId);
+                        meetingsModelMutableLiveData.postValue(meetingsModel);
+                      });
             });
   }
 

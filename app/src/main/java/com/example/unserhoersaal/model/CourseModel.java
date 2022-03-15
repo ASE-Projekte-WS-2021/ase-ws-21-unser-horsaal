@@ -16,6 +16,8 @@ public class CourseModel {
   private String key;
   private String creatorName;
   private String photoUrl;
+  private int meetingsCount;
+  private int memberCount;
 
   public CourseModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
@@ -69,6 +71,14 @@ public class CourseModel {
     return this.photoUrl;
   }
 
+  public int getMeetingsCount() {
+    return this.meetingsCount;
+  }
+
+  public int getMemberCount() {
+    return this.memberCount;
+  }
+
   /** Setter. */
   public void setCodeMapping(String codeMapping) {
     this.codeMapping = codeMapping;
@@ -110,4 +120,11 @@ public class CourseModel {
     this.photoUrl = photoUrl;
   }
 
+  public void setMeetingsCount(int meetingsCount) {
+    this.meetingsCount = meetingsCount;
+  }
+
+  public void setMemberCount(int memberCount) {
+    this.memberCount = memberCount;
+  }
 }
