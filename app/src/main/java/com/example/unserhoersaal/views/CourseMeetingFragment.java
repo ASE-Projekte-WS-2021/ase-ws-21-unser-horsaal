@@ -79,16 +79,7 @@ public class CourseMeetingFragment extends Fragment {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
       }
     });
-    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
-      if (threadModel != null) {
-        KeyboardUtil.hideKeyboard(getActivity());
-        this.currentCourseViewModel.setThreadId(threadModel.getKey());
-        this.courseMeetingViewModel.resetThreadModelInput();
-        this.binding.courseMeetingFragmentCreateThreadContainer.setVisibility(View.GONE);
-        this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
-        this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
-      }
-    });
+
   }
 
   private void connectAdapter() {

@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CourseMeetingViewModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
@@ -60,7 +63,8 @@
                         android:singleLine="false"
                         android:background="@color/white"
                         android:maxLength="500"
-                        android:hint="Nachricht eingeben" />
+                        android:hint="Nachricht eingeben"
+                        android:text="@={vm.threadModelInput.text}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -207,6 +211,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/createThreadFragmentButton"
+                    android:onClick="@{() -> vm.createThread()}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"

@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -80,9 +82,6 @@ public class CourseMeetingViewModel extends ViewModel {
 
     //TODO: error -> view
     ThreadModel threadModel = this.threadModelInput.getValue();
-    if (threadModel.getTitle() == null) {
-      return;
-    }
     if (threadModel.getText() == null) {
       return;
     }
