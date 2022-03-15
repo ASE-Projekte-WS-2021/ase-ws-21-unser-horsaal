@@ -9,12 +9,9 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
-import com.example.unserhoersaal.utils.CollectionsSorter;
+import com.example.unserhoersaal.utils.ArrayListUtil;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class CourseHistoryViewModel extends ViewModel {
   private static final String TAG = "CourseHistoryViewModel";
 
   private CourseHistoryRepository courseHistoryRepository;
-  private CollectionsSorter collectionsSorter = new CollectionsSorter();
+  private ArrayListUtil arrayListUtil = new ArrayListUtil();
 
   private MutableLiveData<CourseModel> course = new MutableLiveData<>();
   private MutableLiveData<List<MeetingsModel>> meetings;
@@ -63,9 +60,13 @@ public class CourseHistoryViewModel extends ViewModel {
     return this.meetings;
   }
 
-  /** Sort the meetings list by event time. */
-  public void sortMeetingByEventTime(List<MeetingsModel> meetingsModelList) {
-   this.collectionsSorter.sortMeetingListByEventTimeAsc(meetingsModelList);
+  /** Sort the meetings list.
+   *  First parameter is the meeting list to sort.
+   *  The second parameter is a sort option.
+   *  Sort options: newest, oldest
+   */
+  public void sortMeetings(List<MeetingsModel> meetingsModelList, String sortOption) {
+   this.arrayListUtil.sortMeetingList(meetingsModelList, sortOption);
   }
 
   public LiveData<CourseModel> getCourse() {

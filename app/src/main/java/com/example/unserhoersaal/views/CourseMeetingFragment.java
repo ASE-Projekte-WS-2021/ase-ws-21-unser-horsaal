@@ -71,7 +71,7 @@ public class CourseMeetingFragment extends Fragment {
     this.courseMeetingViewModel.init();
     this.currentCourseViewModel.init();
     this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
-      this.courseMeetingViewModel.sortThreadsByCreationTime(messageList);
+      this.courseMeetingViewModel.sortThreads(messageList, "newest");
       threadAdapter.notifyDataSetChanged();
       if (messageList.size() == 0) {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
@@ -111,7 +111,8 @@ public class CourseMeetingFragment extends Fragment {
                     this.navController.navigate(
                             R.id.action_courseMeetingFragment_to_courseHistoryFragment)
     );
-    this.binding.courseMeetingFragmentToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+    this.binding.courseMeetingFragmentToolbar.setOnMenuItemClickListener
+            (new Toolbar.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.courseMeetingToolbarFilter){
