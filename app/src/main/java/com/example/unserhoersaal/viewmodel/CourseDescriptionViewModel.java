@@ -53,7 +53,7 @@ public class CourseDescriptionViewModel extends ViewModel {
       return;
     }
 
-    this.courseId.postComplete();
+    this.courseId.postUpdate(null);
     this.courseDescriptionRepository.unregisterFromCourse(courseKey);
   }
 

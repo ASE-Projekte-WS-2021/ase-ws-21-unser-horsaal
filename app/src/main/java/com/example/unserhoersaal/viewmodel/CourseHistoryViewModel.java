@@ -48,7 +48,7 @@ public class CourseHistoryViewModel extends ViewModel {
 
   public void resetMeetingData() {
     this.meetingModelInputState.postCreate(new MeetingsModel());
-    this.meetingsModelMutableLiveData.postCreate(null);
+    this.meetingsModelMutableLiveData.postCreate(new MeetingsModel());
   }
 
   public StateLiveData<List<MeetingsModel>> getMeetings() {
@@ -64,6 +64,7 @@ public class CourseHistoryViewModel extends ViewModel {
   }
 
   public void setCourse(CourseModel course) {
+    Log.d(TAG, course.getKey());
     this.courseHistoryRepository.setCourse(course);
   }
 

@@ -36,6 +36,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"/>
 
+        <ProgressBar
+            android:id="@+id/courseMeetingFragmentProgressSpinner"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.95" />
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/courseMeetingFragmentToolbar"
             android:layout_width="match_parent"
@@ -124,8 +137,7 @@
                 android:background="@color/app_background"
                 android:elevation="20dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/courseMeetingFragmentCreateThreadTitle"
@@ -155,6 +167,13 @@
                         android:singleLine="true"
                         android:background="@color/white"/>
 
+                    <TextView
+                        android:id="@+id/courseMeetingFragmentQuestionTitleErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -175,7 +194,30 @@
                         android:singleLine="false"
                         android:background="@color/white"/>
 
+                    <TextView
+                        android:id="@+id/courseMeetingFragmentQuestionTextErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/courseMeetingFragmentGeneralErrorText"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/red"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ProgressBar
+                    android:id="@+id/courseMeetingFragmentContainerProgressSpinner"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/courseMeetingFragmentSendThreadButton"

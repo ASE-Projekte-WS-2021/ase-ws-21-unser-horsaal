@@ -32,6 +32,7 @@ public class CourseParticipantsRepository {
   public CourseParticipantsRepository() {
     this.initListener();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    this.users.postCreate(new ArrayList<>());
   }
 
   /** Returns the instance of this singleton class. */
@@ -63,7 +64,8 @@ public class CourseParticipantsRepository {
             .child(Config.CHILD_COURSES_USER)
             .child(courseId)
             .addValueEventListener(this.listener);
-    this.courseId.postValue(new StateData<>(courseId));
+
+    this.courseId.postCreate(courseId);
   }
 
   private Task<DataSnapshot> getUserTask(String uid) {

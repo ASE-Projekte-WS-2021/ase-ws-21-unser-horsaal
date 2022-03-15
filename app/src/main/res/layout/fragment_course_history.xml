@@ -41,7 +41,7 @@
 
         <ProgressBar
             android:id="@+id/coursesHistoryFragmentProgressSpinner"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

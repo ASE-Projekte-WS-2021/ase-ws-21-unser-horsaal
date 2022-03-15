@@ -108,7 +108,6 @@ public class CourseHistoryFragment extends Fragment {
   private void meetingModelInputStateCallback(StateData<MeetingsModel> meetingsModelStateData) {
     if (meetingsModelStateData != null) {
       KeyboardUtil.hideKeyboard(getActivity());
-      this.courseHistoryViewModel.resetMeetingData();
     }
   }
 

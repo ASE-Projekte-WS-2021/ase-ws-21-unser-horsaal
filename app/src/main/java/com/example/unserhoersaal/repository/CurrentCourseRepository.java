@@ -61,7 +61,7 @@ public class CurrentCourseRepository {
    * This method provides all messages of a course.
    */
   public StateLiveData<List<MessageModel>> getMessages() {
-    this.messages.postValue(new StateData<>(this.messagesList));
+    this.messages.postCreate(this.messagesList);
     return this.messages;
   }
 
@@ -161,11 +161,11 @@ public class CurrentCourseRepository {
     }
 
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.userId.postValue(new StateData<>(uid));
+    this.userId.postCreate(uid);
   }
 
   public void setMeetingId(MeetingsModel meeting) {
-    this.meeting.postValue(new StateData<>(meeting));
+    this.meeting.postCreate(meeting);
   }
 
   /**
@@ -173,30 +173,25 @@ public class CurrentCourseRepository {
    */
   public void setThreadId(String threadId) {
     String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
-    if (threadKey == null) {
-      Log.e(TAG, "threadKey is null.");
-      return;
-    }
-
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "threadKey is null.");
+      Log.e(TAG, "meetingObj is null.");
       return;
     }
 
-    //TODO: if threadkey is null, this method is aborted; so the last two listeners are not added too
-    // previously if threadkey was null, the last two database calls were executed anyway
-    this.databaseReference.child(Config.CHILD_MESSAGES).child(threadKey)
-            .removeEventListener(this.messageListener);
+    if (threadKey != null) {
+      this.databaseReference.child(Config.CHILD_MESSAGES).child(threadKey)
+              .removeEventListener(this.messageListener);
 
-    this.databaseReference.child(Config.CHILD_THREADS).child(meetingObj.getKey())
-            .child(threadKey).removeEventListener(this.threadListener);
+      this.databaseReference.child(Config.CHILD_THREADS).child(meetingObj.getKey())
+              .child(threadKey).removeEventListener(this.threadListener);
+    }
 
     this.databaseReference.child(Config.CHILD_MESSAGES).child(threadId)
             .addValueEventListener(this.messageListener);
     this.databaseReference.child(Config.CHILD_THREADS).child(meetingObj.getKey()).child(threadId)
             .addValueEventListener(this.threadListener);
-    this.threadId.postValue(new StateData<>(threadId));
+    this.threadId.postCreate(threadId);
   }
 
   public Task<DataSnapshot> getLikeStatusMessage(String id) {

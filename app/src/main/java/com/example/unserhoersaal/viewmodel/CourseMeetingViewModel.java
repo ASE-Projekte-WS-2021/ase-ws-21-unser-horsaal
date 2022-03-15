@@ -39,7 +39,7 @@ public class CourseMeetingViewModel extends ViewModel {
     if (this.meeting.getValue() != null) {
       this.threads = this.courseMeetingRepository.getThreads();
     }
-    this.threadModelInputState.postValue(new StateData<>(new ThreadModel()));
+    this.threadModelInputState.postCreate(new ThreadModel());
   }
 
   public StateLiveData<List<ThreadModel>> getThreads() {
@@ -54,9 +54,13 @@ public class CourseMeetingViewModel extends ViewModel {
     return this.threadModelMutableLiveData;
   }
 
+  public StateLiveData<ThreadModel> getThreadModelInputState() {
+    return this.threadModelInputState;
+  }
+
   public void resetThreadModelInput() {
-    this.threadModelInputState.postValue(new StateData<>(new ThreadModel()));
-    this.threadModelMutableLiveData.postValue(new StateData<>(null));
+    this.threadModelInputState.postCreate(new ThreadModel());
+    this.threadModelMutableLiveData.postCreate(null);
   }
 
   public void setMeeting(MeetingsModel meeting) {
@@ -73,24 +77,24 @@ public class CourseMeetingViewModel extends ViewModel {
 
     if (threadModel.getTitle() == null) {
       Log.d(TAG, "title is null.");
-      this.threadModelInputState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
       return;
     } else if (!Validation.stringHasPattern(threadModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
       Log.d(TAG, "title wrong pattern.");
-      this.threadModelInputState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
       return;
     }
     if (threadModel.getText() == null) {
       Log.d(TAG, "text is null.");
-      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.VM);
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
       return;
     } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
       Log.d(TAG, "text wrong pattern.");
-      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
       return;
     }
 
-    this.threadModelInputState.postComplete();
+    this.threadModelInputState.postCreate(new ThreadModel());
     this.courseMeetingRepository.createThread(threadModel);
   }
 }

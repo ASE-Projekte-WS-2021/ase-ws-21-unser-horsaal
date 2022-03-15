@@ -40,6 +40,7 @@ public class CourseMeetingRepository {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    this.meeting.postCreate(new MeetingsModel());
   }
 
   /** Generate an instance of the class. */
@@ -52,7 +53,7 @@ public class CourseMeetingRepository {
 
   /** Give back all threads of the Meeting. */
   public StateLiveData<List<ThreadModel>> getThreads() {
-    this.threads.postValue(new StateData<>(this.threadModelList));
+    this.threads.postCreate(this.threadModelList);
     return this.threads;
   }
 
@@ -67,15 +68,13 @@ public class CourseMeetingRepository {
   /** Set the id of the current meeting. */
   public void setMeeting(MeetingsModel meeting) {
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
-    if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
-      return;
-    }
 
-    this.databaseReference
-            .child(Config.CHILD_THREADS)
-            .child(meetingObj.getKey())
-            .removeEventListener(this.listener);
+    if (meetingObj.getKey() != null) {
+      this.databaseReference
+              .child(Config.CHILD_THREADS)
+              .child(meetingObj.getKey())
+              .removeEventListener(this.listener);
+    }
 
     this.databaseReference
             .child(Config.CHILD_THREADS)
@@ -122,7 +121,6 @@ public class CourseMeetingRepository {
               new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
-
 
     String uid = this.firebaseAuth.getCurrentUser().getUid();
 

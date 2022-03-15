@@ -32,6 +32,8 @@ public class CourseDescriptionRepository {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    this.courseModel.postCreate(new CourseModel());
+    this.courseId.postCreate(null);
   }
 
   /** Generates an instance of CourseDescriptionRepository. */
@@ -53,23 +55,21 @@ public class CourseDescriptionRepository {
   /** Sets the current course. */
   public void setCourseId(String newCourseId) {
     String oldKey = Validation.checkStateLiveData(this.courseId, TAG);
-    if (oldKey == null) {
-      Log.e(TAG, "key is null.");
-      return;
-    }
 
-    this.databaseReference
-            .child(Config.CHILD_COURSES)
-            .child(oldKey)
-            .removeEventListener(this.listener);
+    if (oldKey != null) {
+      this.databaseReference
+              .child(Config.CHILD_COURSES)
+              .child(oldKey)
+              .removeEventListener(this.listener);
+    }
 
     this.databaseReference
             .child(Config.CHILD_COURSES)
             .child(newCourseId)
             .addValueEventListener(this.listener);
 
-    this.courseModel.postValue(new StateData<>(new CourseModel()));
-    this.courseId.postValue(new StateData<>(newCourseId));
+    this.courseModel.postUpdate(new CourseModel());
+    this.courseId.postCreate(newCourseId);
   }
 
   /** Initializes the listener for the database access. */

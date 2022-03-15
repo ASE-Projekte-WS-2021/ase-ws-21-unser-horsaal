@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -15,9 +16,13 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseMeetingBinding;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import java.util.List;
 
 /** Course-Meeting. */
 public class CourseMeetingFragment extends Fragment {
@@ -60,7 +65,6 @@ public class CourseMeetingFragment extends Fragment {
   }
 
   /** Initialise all ViewModels for the Fragment. */
-  @SuppressLint("NotifyDataSetChanged")
   public void initViewModel() {
     this.courseMeetingViewModel = new ViewModelProvider(requireActivity())
             .get(CourseMeetingViewModel.class);
@@ -68,29 +72,81 @@ public class CourseMeetingFragment extends Fragment {
             .get(CurrentCourseViewModel.class);
     this.courseMeetingViewModel.init();
     this.currentCourseViewModel.init();
-    this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
-      threadAdapter.notifyDataSetChanged();
-      if (messageList.getData().size() == 0) {
-        this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
-      } else {
-        this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
+    this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(),
+            this::meetingsLiveStateCallback);
+    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(),
+            this::threadLiveStateCallback);
+    this.courseMeetingViewModel.getThreadModelInputState().observe(getViewLifecycleOwner(),
+            this::threadModelInputStateCallback);
+  }
+
+  @SuppressLint("NotifyDataSetChanged")
+  private void meetingsLiveStateCallback(StateData<List<ThreadModel>> listStateData) {
+    this.resetBindings();
+    this.threadAdapter.notifyDataSetChanged();
+
+    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    }
+    else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    if (listStateData.getData().size() == 0) {
+      this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
+    } else {
+      this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
+    }
+  }
+
+  private void threadLiveStateCallback(StateData<ThreadModel> threadModelStateData) {
+    this.resetBindings();
+
+    if (threadModelStateData.getData() != null) {
+      KeyboardUtil.hideKeyboard(getActivity());
+      this.currentCourseViewModel.setThreadId(threadModelStateData.getData().getKey());
+      this.courseMeetingViewModel.resetThreadModelInput();
+      this.binding.courseMeetingFragmentCreateThreadContainer.setVisibility(View.GONE);
+      this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
+      this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
+    }
+  }
+
+  private void threadModelInputStateCallback(StateData<ThreadModel> threadModelStateData) {
+    this.resetBindings();
+
+    if (threadModelStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.courseMeetingFragmentContainerProgressSpinner.setVisibility(View.VISIBLE);
+    }
+    else if (threadModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      if (threadModelStateData.getErrorTag() == ErrorTag.TITLE) {
+        this.binding.courseMeetingFragmentQuestionTitleErrorText
+                .setText(threadModelStateData.getError().getMessage());
+        this.binding.courseMeetingFragmentQuestionTitleErrorText.setVisibility(View.VISIBLE);
       }
-    });
-    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
-      if (threadModel.getData() != null) {
-        KeyboardUtil.hideKeyboard(getActivity());
-        this.currentCourseViewModel.setThreadId(threadModel.getData().getKey());
-        this.courseMeetingViewModel.resetThreadModelInput();
-        this.binding.courseMeetingFragmentCreateThreadContainer.setVisibility(View.GONE);
-        this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
-        this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
+      else if (threadModelStateData.getErrorTag() == ErrorTag.TEXT) {
+        this.binding.courseMeetingFragmentQuestionTextErrorText
+                .setText(threadModelStateData.getError().getMessage());
+        this.binding.courseMeetingFragmentQuestionTextErrorText.setVisibility(View.VISIBLE);
       }
-    });
+      else {
+        this.binding.courseMeetingFragmentGeneralErrorText
+                .setText(threadModelStateData.getError().getMessage());
+        this.binding.courseMeetingFragmentGeneralErrorText.setVisibility(View.VISIBLE);
+      }
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.courseMeetingFragmentQuestionTitleErrorText.setVisibility(View.GONE);
+    this.binding.courseMeetingFragmentQuestionTextErrorText.setVisibility(View.GONE);
+    this.binding.courseMeetingFragmentContainerProgressSpinner.setVisibility(View.GONE);
+    this.binding.courseMeetingFragmentGeneralErrorText.setVisibility(View.GONE);
   }
 
   private void connectAdapter() {
     this.threadAdapter =
-            //TODO: assert != null
             new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue().getData());
   }
 

@@ -38,11 +38,12 @@ public class CurrentCourseViewModel extends ViewModel {
     this.thread = this.currentCourseRepository.getThread();
     this.currentCourseRepository.setUserId();
     this.userId = this.currentCourseRepository.getUserId();
-    this.messageModelInputState.postValue(new StateData<>(new MessageModel()));
+    this.messageModelInputState.postCreate(new MessageModel());
 
     // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
     // the messages and only set the courseId can init the CurrentCourseViewModel
     if (this.threadId.getValue() != null) {
+      Log.d(TAG, "threadId: " + this.threadId.getValue().getData());
       this.messages = this.currentCourseRepository.getMessages();
     }
   }
@@ -83,7 +84,7 @@ public class CurrentCourseViewModel extends ViewModel {
 
     messageModel.setCreationTime(System.currentTimeMillis());
 
-    this.messageModelInputState.postComplete();
+    this.messageModelInputState.postCreate(new MessageModel());
     this.currentCourseRepository.sendMessage(messageModel);
   }
 

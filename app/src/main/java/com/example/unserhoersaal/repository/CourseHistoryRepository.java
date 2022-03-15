@@ -38,6 +38,7 @@ public class CourseHistoryRepository {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.course.postCreate(new CourseModel());
+    this.meetingsModelMutableLiveData.postCreate(new MeetingsModel());
   }
 
   /** Generate an instance of the class. */
@@ -169,13 +170,14 @@ public class CourseHistoryRepository {
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
         meetingsModelList.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           MeetingsModel model = snapshot.getValue(MeetingsModel.class);
 
           if (model == null) {
             Log.e(TAG, Config.COURSE_HISTORY_MEETING_CREATION_FAILURE);
-            meetingsModelMutableLiveData.postError(
+            meetings.postError(
                     new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
             return;
           }
@@ -189,7 +191,7 @@ public class CourseHistoryRepository {
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.e(TAG, "Course History Listener Failure");
-        meetingsModelMutableLiveData.postError(
+        meetings.postError(
                 new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       }
     };

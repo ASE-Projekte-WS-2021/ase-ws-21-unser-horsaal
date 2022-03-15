@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -19,6 +21,8 @@ import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+
+import java.util.List;
 
 /**Course Thread.*/
 public class CourseThreadFragment extends Fragment {
@@ -64,16 +68,38 @@ public class CourseThreadFragment extends Fragment {
             .get(CurrentCourseViewModel.class);
     this.currentCourseViewModel.init();
     this.currentCourseViewModel.getMessages()
-            .observe(getViewLifecycleOwner(), messageModels -> {
-              KeyboardUtil.hideKeyboard(getActivity());
-              chatAdapter.notifyDataSetChanged();
-              this.currentCourseViewModel.messageModelInputState.postValue(new StateData<>(new MessageModel()));
-            });
+            .observe(getViewLifecycleOwner(), this::messageLiveDataCallback);
+  }
+
+  @SuppressLint("NotifyDataSetChanged")
+  private void messageLiveDataCallback(StateData<List<MessageModel>> listStateData) {
+    this.resetBindings();
+
+    this.chatAdapter.notifyDataSetChanged();
+
+    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.coursesThreadFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    }
+    else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    if (listStateData.getData().size() == 0) {
+      //TODO: text that is displayed when answers are zero
+      //this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
+    } else {
+      //this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
+    }
+    //this.currentCourseViewModel.messageModelInputState.postValue(new StateData<>(new MessageModel()));
+  }
+
+
+  private void resetBindings() {
+    this.binding.coursesThreadFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectAdapter() {
     this.chatAdapter =
-            //TODO: assert != null
             new ChatAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
                     this.currentCourseViewModel);
   }

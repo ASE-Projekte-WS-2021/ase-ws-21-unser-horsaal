@@ -213,7 +213,7 @@ public class AuthAppRepository {
   /** Logging out the current user. */
   public void logOut() {
     this.firebaseAuth.signOut();
-    this.userLiveData.postCreate(null);
+    this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
   }
 
   /** Method to delete an user account. */
