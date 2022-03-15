@@ -84,7 +84,8 @@ public class CourseMeetingFragment extends Fragment {
 
   private void connectAdapter() {
     this.threadAdapter =
-            new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue());
+            new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue(),
+                    currentCourseViewModel);
   }
 
   private void connectBinding() {

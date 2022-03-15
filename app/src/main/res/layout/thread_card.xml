@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CurrentCourseViewModel" />
+        <variable
             name="model"
             type="com.example.unserhoersaal.model.ThreadModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
@@ -44,6 +47,8 @@
 
                 <ImageView
                     android:id="@+id/threadCardUpvote"
+                    setLikeStatus="@{model.likeStatus}"
+                    android:onClick="@{(view) -> vm.likeThread(model)}"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
@@ -63,6 +68,8 @@
 
                 <ImageView
                     android:id="@+id/threadCardDownvote"
+                    android:onClick="@{(view) -> vm.dislikeThread(model)}"
+                    setDisLikeStatus="@{model.likeStatus}"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_baseline_keyboard_arrow_down_24"

@@ -9,6 +9,8 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.ThreadCardBinding;
 import com.example.unserhoersaal.databinding.ThreadItemBinding;
 import com.example.unserhoersaal.model.ThreadModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+
 import java.util.List;
 
 /** Adapter for the RecyclerView inCourseMeetingRepository. */
@@ -17,9 +19,11 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
   private static final String TAG = "ThreadAdapter";
 
   private List<ThreadModel> localDataSet;
+  private final CurrentCourseViewModel currentCourseViewModel;
 
-  public ThreadAdapter(List<ThreadModel> dataSet) {
+  public ThreadAdapter(List<ThreadModel> dataSet, CurrentCourseViewModel currentCourseViewModel) {
     this.localDataSet = dataSet;
+    this.currentCourseViewModel = currentCourseViewModel;
   }
 
   @NonNull
@@ -36,7 +40,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
     ThreadModel threadModel = this.localDataSet.get(position);
-    viewHolder.connect(threadModel);
+    viewHolder.connect(threadModel, currentCourseViewModel);
   }
 
   @Override
@@ -54,8 +58,9 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
       this.binding = binding;
     }
 
-    public void connect(ThreadModel model) {
+    public void connect(ThreadModel model, CurrentCourseViewModel currentCourseViewModel) {
       this.binding.setModel(model);
+      this.binding.setVm(currentCourseViewModel);
       this.binding.executePendingBindings();
     }
 

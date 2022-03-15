@@ -133,6 +133,7 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
+  //TODO do this in meetingsViewModel
   /** JavaDoc for this method. */
   public void likeThread(ThreadModel threadModel) {
     String threadId  = threadModel.getKey();

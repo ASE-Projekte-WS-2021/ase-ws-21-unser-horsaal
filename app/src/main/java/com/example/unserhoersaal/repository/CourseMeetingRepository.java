@@ -3,6 +3,7 @@ package com.example.unserhoersaal.repository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.google.android.gms.tasks.Task;
@@ -114,15 +115,40 @@ public class CourseMeetingRepository {
           threadList.get(i).setCreatorName(name);
         }
       }
-      threadModelList.clear();
-      threadModelList.addAll(threadList);
-      threads.postValue(threadModelList);
+      getLikeStatus(threadList);
     });
   }
 
   public Task<DataSnapshot> getAuthorName(String authorId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     return reference.child(Config.CHILD_USER).child(authorId).child(Config.CHILD_USER_NAME).get();
+  }
+
+  private void getLikeStatus(List<ThreadModel> threadList) {
+    List<Task<DataSnapshot>> likeList = new ArrayList<>();
+    for (ThreadModel thread : threadList) {
+      likeList.add(getLikeStatusThread(thread.getKey()));
+    }
+    Tasks.whenAll(likeList).addOnSuccessListener(unused -> {
+      for (int i = 0; i < likeList.size(); i++) {
+        if(!likeList.get(i).getResult().exists()) {
+          threadList.get(i).setLikeStatus(LikeStatus.NEUTRAL);
+        } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.LIKE) {
+          threadList.get(i).setLikeStatus(LikeStatus.LIKE);
+        } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.DISLIKE) {
+          threadList.get(i).setLikeStatus(LikeStatus.DISLIKE);
+        }
+      }
+      threadModelList.clear();
+      threadModelList.addAll(threadList);
+      threads.postValue(threadModelList);
+    });
+  }
+
+  private Task<DataSnapshot> getLikeStatusThread(String id) {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    return reference.child(Config.CHILD_USER_LIKE).child(uid).child(id).get();
   }
 
   /** Initialise the listener for the database access. */
