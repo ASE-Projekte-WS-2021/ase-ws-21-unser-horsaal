@@ -96,10 +96,18 @@ public class LoginFragment extends Fragment {
 
     if (firebaseUserStateData == null) {
       Log.e(TAG, "FirebaseUser object is null");
+      this.binding.loginFragmentGeneralErrorMessage.setText(Config.UNSPECIFIC_ERROR);
+      this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
       return;
     }
 
-    if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE) {
+    if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.loginFragmentGeneralErrorMessage
+              .setText(firebaseUserStateData.getError().getMessage());
+      this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
+    } else {
       if (firebaseUserStateData.getData() == null) {
         return;
       }
@@ -114,12 +122,6 @@ public class LoginFragment extends Fragment {
       else if (!firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_loginFragment_to_verificationFragment);
       }
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.loginFragmentGeneralErrorMessage
-              .setText(firebaseUserStateData.getError().getMessage());
-      this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
     }
   }
 

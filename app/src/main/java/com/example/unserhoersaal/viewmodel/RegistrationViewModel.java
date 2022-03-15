@@ -80,7 +80,7 @@ public class RegistrationViewModel extends ViewModel {
       Log.d(TAG, "userName is null.");
       this.userInputState.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
       return;
-    } else if (!Validation.stringHasPattern(userName, Config.AUTH_USERNAME_WRONG_PATTERN)) {
+    } else if (!Validation.stringHasPattern(userName, Config.REGEX_PATTERN_USERNAME)) {
       Log.d(TAG, "userName has wrong pattern.");
       this.userInputState.postError(new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
       return;

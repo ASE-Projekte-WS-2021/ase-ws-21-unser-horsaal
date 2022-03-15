@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentResetPasswordBinding;
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
+import com.google.firebase.auth.FirebaseUser;
 
 /** JavaDoc for this Fragment. */
 public class ResetPasswordFragment extends Fragment {
@@ -58,44 +61,50 @@ public class ResetPasswordFragment extends Fragment {
     this.loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     this.loginViewModel.init();
     this.loginViewModel
-            .getUserLiveData()
-            .observe(getViewLifecycleOwner(), userStateData -> {
-                if (userStateData.getStatus() == StateData.DataStatus.UPDATE) {
-                  this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
-                  this.binding.resetPasswordErrorText.setVisibility(View.GONE);
-
-                  if (userStateData.getData() == null) {
-                    navController.navigate(R.id.action_verificationFragment_to_loginFragment);
-                  }
-                  else if (userStateData.getData() != null
-                          && userStateData.getData().isEmailVerified()) {
-                    navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
-                  } else if (!userStateData.getData().isEmailVerified()) {
-                    Toast.makeText(getContext(),
-                            Config.AUTH_EDIT_PASSWORD_CHANGE_SUCCESS,
-                            Toast.LENGTH_LONG)
-                            .show();
-                  }
-                } else if (userStateData.getStatus() == StateData.DataStatus.LOADING) {
-                  this.binding.resetPasswordErrorText.setVisibility(View.GONE);
-                  this.binding.resetPasswordFragmentSpinner.setVisibility(View.VISIBLE);
-                } else if (userStateData.getStatus() == StateData.DataStatus.ERROR) {
-                  this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
-                  this.binding.resetPasswordErrorText
-                          .setText(userStateData.getError().getMessage());
-                  this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
-                }
-            });
+            .getEmailSentLiveData()
+            .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
     this.loginViewModel
             .getUserInputState()
-            .observe(getViewLifecycleOwner(), userModelStateData -> {
-              if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-                this.binding.resetPasswordErrorText.setText(userModelStateData.getError().getMessage());
-                this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
-              }/* else if (userModelStateData.getStatus() == StateData.DataStatus.COMPLETE) {
-                this.binding.resetPasswordErrorText.setVisibility(View.GONE);
-              }*/
-            });
+            .observe(getViewLifecycleOwner(), this::userInputState);
+  }
+
+
+  private void userLiveDataCallback(StateData<Boolean> booleanStateData) {
+    this.resetBindings();
+
+    if (booleanStateData == null) {
+      this.binding.resetPasswordErrorText.setText(Config.UNSPECIFIC_ERROR);
+      this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
+      return;
+    }
+
+    if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
+        Toast.makeText(getContext(),
+                Config.AUTH_VERIFICATION_EMAIL_SENT,
+                Toast.LENGTH_LONG)
+                .show();
+
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.resetPasswordFragmentSpinner.setVisibility(View.VISIBLE);
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.resetPasswordErrorText
+              .setText(booleanStateData.getError().getMessage());
+      this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void userInputState(StateData<UserModel> userModelStateData) {
+    this.resetBindings();
+
+    if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.resetPasswordErrorText.setText(userModelStateData.getError().getMessage());
+      this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
+    this.binding.resetPasswordErrorText.setVisibility(View.GONE);
   }
 
   private void connectBinding() {

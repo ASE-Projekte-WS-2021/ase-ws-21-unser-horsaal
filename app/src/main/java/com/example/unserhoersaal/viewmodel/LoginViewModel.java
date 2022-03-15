@@ -1,15 +1,12 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +22,7 @@ public class LoginViewModel extends ViewModel {
   private StateLiveData<FirebaseUser> userLiveData;
   public StateLiveData<UserModel> userInputState;
   public StateLiveData<PasswordModel> passwordInputState;
+  public StateLiveData<Boolean> emailSentLiveData;
 
   /**
    * Initialize the LoginRegisterViewModel.
@@ -35,6 +33,7 @@ public class LoginViewModel extends ViewModel {
     }
     this.authAppRepository = AuthAppRepository.getInstance();
     this.userLiveData = this.authAppRepository.getUserStateLiveData();
+    this.emailSentLiveData = this.authAppRepository.getEmailSentLiveData();
     this.userInputState = new StateLiveData<>();
     this.passwordInputState = new StateLiveData<>();
     this.setDefaultInputState();
@@ -56,6 +55,10 @@ public class LoginViewModel extends ViewModel {
     return this.passwordInputState;
   }
 
+  public StateLiveData<Boolean> getEmailSentLiveData() {
+    return this.emailSentLiveData;
+  }
+
   /** Sets the values in StateLiveData to their default values. These StateLiveData are connected
    * to multiple Databinding Fragments. (Registration, ResetPassword, Login)
    * Used when initialising this Fragment and when leaving the Fragment. */
@@ -66,12 +69,11 @@ public class LoginViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void login() {
-    System.out.println(this.userInputState.getValue().getData());
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
       Log.e(TAG, "userModel or passwordModel is null.");
-      this.userInputState.postError(new Error("123"), ErrorTag.VM);
+      this.userInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
@@ -106,6 +108,7 @@ public class LoginViewModel extends ViewModel {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
       Log.e(TAG, "LoginViewModel>sendPasswordResetMail userModel is null.");
+      this.userInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
@@ -118,15 +121,16 @@ public class LoginViewModel extends ViewModel {
       Log.d(TAG, "email has wrong pattern.");
       this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
     } else {
-      this.userInputState.postComplete();
+
+      this.setDefaultInputState();
       this.authAppRepository.sendPasswordResetMail(email);
     }
   }
 
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
-  public void resendEmailVerification() {
-    this.authAppRepository.resendEmailVerification();
+  public void resendVerificationEmail() {
+    this.authAppRepository.resendVerificationEmail();
   }
 
   /** Changes the password of the user. */
@@ -134,6 +138,7 @@ public class LoginViewModel extends ViewModel {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
       Log.e(TAG, "userModel is null.");
+      this.userInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
@@ -146,9 +151,18 @@ public class LoginViewModel extends ViewModel {
       Log.d(TAG, "email has wrong pattern.");
       this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
     } else {
-      this.userInputState.postComplete();
+
+      this.setDefaultInputState();
       this.authAppRepository.resetPassword(email);
     }
+  }
+
+  public void reloadFirebaseUser() {
+    this.authAppRepository.reloadFirebaseUser();
+  }
+
+  public void logout() {
+    this.authAppRepository.logOut();
   }
 
 }

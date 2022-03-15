@@ -1,10 +1,11 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -17,6 +18,7 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentVerificationBinding;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
+import com.google.firebase.auth.FirebaseUser;
 
 public class VerificationFragment extends Fragment {
 
@@ -25,6 +27,8 @@ public class VerificationFragment extends Fragment {
   private FragmentVerificationBinding binding;
   private NavController navController;
   private LoginViewModel loginViewModel;
+  private Handler handler;
+  private Runnable runnable;
 
   public VerificationFragment() {}
 
@@ -49,43 +53,59 @@ public class VerificationFragment extends Fragment {
 
     this.initViewModel();
     this.connectBinding();
+    this.emailVerifiedChecker();
+  }
+
+  private void emailVerifiedChecker() {
+    this.handler = new Handler();
+    this.handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
+    this.runnable = () -> {
+      Log.d(TAG, "checking for authstatechange");
+      loginViewModel.reloadFirebaseUser();
+      handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
+    };
+    this.handler.post(this.runnable);
   }
 
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     this.loginViewModel.init();
     this.loginViewModel.getUserLiveData()
-            .observe(getViewLifecycleOwner(), userStateData -> {
-              if (userStateData.getStatus() == StateData.DataStatus.UPDATE) {
-                //TODO: do we always have success when firebase user is null?
-                this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
-                if (userStateData.getData() == null) {
-                  navController.navigate(R.id.action_verificationFragment_to_loginFragment);
-                }
-                else if (userStateData.getData() != null
-                        && userStateData.getData().isEmailVerified()) {
-                  navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
-                }
-                else if (!userStateData.getData().isEmailVerified()) {
-                  Toast.makeText(getContext(),
-                          Config.AUTH_VERIFICATION_EMAIL_NOT_SENT,
-                          Toast.LENGTH_LONG)
-                          .show();
-                }
-              }
-              else if (userStateData.getStatus() == StateData.DataStatus.LOADING) {
-                  this.binding.resetPasswordFragmentSpinner.setVisibility(View.VISIBLE);
-              }
-              else if (userStateData.getStatus() == StateData.DataStatus.ERROR) {
-                  this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
-                  String errorMessage = userStateData.getError().getMessage();
-                  Toast.makeText(getContext(),
-                          errorMessage,
-                          Toast.LENGTH_LONG)
-                          .show();
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::userLiveStateCallback);
+  }
 
+  private void userLiveStateCallback(StateData<FirebaseUser> firebaseUserStateData) {
+    this.resetBindings();
+
+    if (firebaseUserStateData == null) {
+      Log.e(TAG, "FirebaseUser object is null");
+      this.binding.verificationFragmentErrorText.setText(Config.UNSPECIFIC_ERROR);
+      this.binding.verificationFragmentErrorText.setVisibility(View.VISIBLE);
+      return;
+    }
+
+    if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.verificationFragmentSpinner.setVisibility(View.VISIBLE);
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.verificationFragmentErrorText
+              .setText(firebaseUserStateData.getError().getMessage());
+      this.binding.verificationFragmentErrorText.setVisibility(View.VISIBLE);
+    } else {
+      FirebaseUser firebaseUser = firebaseUserStateData.getData();
+
+      if (firebaseUser == null) {
+        Log.d(TAG, "firebase user is null");
+        navController.navigate(R.id.action_verificationFragment_to_loginFragment);
+      }
+      else if (firebaseUser.isEmailVerified()) {
+        navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
+      }
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.verificationFragmentErrorText.setVisibility(View.GONE);
+    this.binding.verificationFragmentSpinner.setVisibility(View.GONE);
   }
 
   private void connectBinding() {
@@ -97,5 +117,6 @@ public class VerificationFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.loginViewModel.setDefaultInputState();
+    this.handler.removeCallbacks(this.runnable);
   }
 }

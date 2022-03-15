@@ -13,7 +13,7 @@ public class StateData<T> {
   @NonNull
   private DataStatus status;
 
-  @NonNull
+  @Nullable
   private T data;
 
   @Nullable
@@ -23,7 +23,7 @@ public class StateData<T> {
   private ErrorTag errorTag;
 
   @Deprecated
-  public StateData(@NonNull T data) {
+  public StateData(@Nullable T data) {
     this.status = DataStatus.CREATED;
     this.data = data;
     this.error = null;
@@ -55,7 +55,7 @@ public class StateData<T> {
 
   /** Updates the current data in this class.
    * @param data update data */
-  public StateData<T> update(@NonNull T data) {
+  public StateData<T> update(@Nullable T data) {
     this.status = DataStatus.UPDATE;
     this.data = data;
     this.error = null;

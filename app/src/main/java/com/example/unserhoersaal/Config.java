@@ -166,4 +166,8 @@ public class Config {
    * ======================= */
   public static final String DEEP_LINK_URL = "https://app.vairasza.dev/unserhoersaal/";
 
+  /**=======================.
+   *  Verification Check
+   * ======================= */
+  public static final int VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL = 2000;
 }

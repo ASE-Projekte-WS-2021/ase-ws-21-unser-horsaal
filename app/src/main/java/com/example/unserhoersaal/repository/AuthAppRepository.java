@@ -23,6 +23,7 @@ public class AuthAppRepository {
   private DatabaseReference databaseReference;
   private FirebaseUser firebaseUser = null;
   private StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
+  private StateLiveData<Boolean> emailSentLiveData = new StateLiveData<>();
 
   /** Gives back an Instance of AuthAppRepository. */
   public static AuthAppRepository getInstance() {
@@ -38,17 +39,19 @@ public class AuthAppRepository {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
 
     if (this.firebaseAuth.getCurrentUser() != null) {
-      this.userLiveData.postValue(new StateData<>(this.firebaseAuth.getCurrentUser()));
+      this.userLiveData.postCreate(this.firebaseAuth.getCurrentUser());
     }
+
+    this.emailSentLiveData.postCreate(Boolean.FALSE);
   }
 
   /** Gives back the current UserModel. */
   public StateLiveData<FirebaseUser> getUserStateLiveData() {
-    /*if (this.user == null) {
-      this.user = this.firebaseAuth.getCurrentUser();
-    }
-    this.userLiveData.postValue(this.user);*/
     return this.userLiveData;
+  }
+
+  public StateLiveData<Boolean> getEmailSentLiveData() {
+    return this.emailSentLiveData;
   }
 
   /** This method is logging in the user.*/
@@ -132,14 +135,13 @@ public class AuthAppRepository {
             });
   }
 
-  //TODO: review -> in dont know if this works
   /** listenr: changes on firebase user status */
   private FirebaseAuth.AuthStateListener authStateListenerVerification() {
     return firebaseAuth1 -> {
+      Log.d(TAG, "Firebase Auth State changed");
       this.firebaseUser = firebaseAuth1.getCurrentUser();
       if (this.firebaseUser != null && this.firebaseUser.isEmailVerified()) {
         Log.d(TAG, "User verified.");
-        this.firebaseUser.reload();
         this.userLiveData.postUpdate(this.firebaseUser);
         this.firebaseAuth.removeAuthStateListener(this.authStateListenerVerification());
       } else {
@@ -167,7 +169,7 @@ public class AuthAppRepository {
   }
 
   /** Method to (re)send a email verification.*/
-  public void resendEmailVerification() {
+  public void resendVerificationEmail() {
     this.userLiveData.postLoading();
 
     if (this.firebaseUser == null) {
@@ -192,18 +194,20 @@ public class AuthAppRepository {
   }
 
   public void sendPasswordResetMail(String email) {
-    this.userLiveData.postLoading();
+    this.emailSentLiveData.postLoading();
 
     this.firebaseAuth
             .sendPasswordResetEmail(email)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_PASSWORD_RESET_MAIL_SENT);
-                this.userLiveData.postUpdate(this.firebaseUser);
+                //this.userLiveData.postUpdate(this.firebaseUser);
+                this.emailSentLiveData.postUpdate(Boolean.TRUE);
+                this.emailSentLiveData.postCreate(Boolean.FALSE);
               } else {
                 Log.e(TAG, Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT);
-                this.userLiveData.postError(
-                        new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
+                //this.userLiveData.postError(new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
+                this.emailSentLiveData.postError(new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
               }
             });
   }
@@ -211,12 +215,22 @@ public class AuthAppRepository {
   /** Logging out the current user. */
   public void logOut() {
     this.firebaseAuth.signOut();
+    this.userLiveData.postCreate(null);
   }
 
   /** Method to delete an user account. */
   public void deleteAccount() {
     //TODO: delete Account in real time database and firebase authentication
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
+  }
+
+  /** Reloads the current FirebaseUser object so that we can see if the email was verified. */
+  public void reloadFirebaseUser() {
+    if (this.firebaseAuth.getCurrentUser() !=  null) {
+      Log.d(TAG, "reloaded current user");
+      this.firebaseAuth.getCurrentUser().reload();
+      this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
+    }
   }
 
 }

@@ -64,7 +64,6 @@
 
                     <TextView
                         android:id="@+id/registrationFragmentUserErrorText"
-                        android:text=""
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
@@ -90,7 +89,6 @@
 
                     <TextView
                         android:id="@+id/registrationFragmentUserEmailErrorText"
-                        android:text=""
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
@@ -119,7 +117,6 @@
 
                     <TextView
                         android:id="@+id/registrationFragmentPasswordErrorText"
-                        android:text=""
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
@@ -138,7 +135,7 @@
                     android:layout_gravity="center"/>
 
                 <ProgressBar
-                    android:id="@+id/loginFragmentProgressSpinner"
+                    android:id="@+id/registrationFragmentProgressSpinner"
                     android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

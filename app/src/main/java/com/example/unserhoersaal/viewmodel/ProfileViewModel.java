@@ -151,8 +151,8 @@ public class ProfileViewModel extends ViewModel {
       return;
     }
 
-      this.passwordInputState.postComplete();
-      //this.profileRepository.changePassword(oldPassword, newPassword);
+      this.passwordInputState.postCreate(new PasswordModel());
+      this.profileRepository.changePassword(oldPassword, newPassword);
     }
 
 }

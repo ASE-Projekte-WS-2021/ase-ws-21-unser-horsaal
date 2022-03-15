@@ -24,10 +24,11 @@ public class ProfileRepository {
 
   private static ProfileRepository instance;
   private StateLiveData<UserModel> user = new StateLiveData<>();
-  //private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
+  private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
 
   public ProfileRepository() {
     this.loadUser();
+    this.profileChanged.postCreate(Boolean.FALSE);
   }
 
   /** Generate an instance of the class. */
@@ -42,9 +43,9 @@ public class ProfileRepository {
     return this.user;
   }
 
-  /*public StateLiveData<Boolean> getProfileChanged() {
+  public StateLiveData<Boolean> getProfileChanged() {
     return this.profileChanged;
-  }*/
+  }
 
   /** Loads an user from the database. */
   public void loadUser() {
@@ -85,7 +86,7 @@ public class ProfileRepository {
   }
 
   /** TODO. */
-  /*  public void changeDisplayName(String displayName) {
+    public void changeDisplayName(String displayName) {
     this.profileChanged.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     //TODO: maybe make firebaseauth to an instance variable?
@@ -110,7 +111,7 @@ public class ProfileRepository {
             .child(Config.CHILD_DISPLAY_NAME)
             .setValue(displayName)
             .addOnSuccessListener(unused ->
-              profileChanged.postSuccess(Boolean.TRUE)
+              profileChanged.postUpdate(Boolean.TRUE)
             )
             .addOnFailureListener(e -> {
               Log.e(TAG, e.getMessage());
@@ -118,9 +119,9 @@ public class ProfileRepository {
                       new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
             });
   }
-*/
+
   /** TODO. */
-  /*public void changeInstitution(String institution) {
+  public void changeInstitution(String institution) {
     this.profileChanged.postLoading();
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -145,14 +146,14 @@ public class ProfileRepository {
             .child(uid)
             .child(Config.CHILD_INSTITUTION)
             .setValue(institution)
-            .addOnSuccessListener(unused -> profileChanged.postSuccess(Boolean.TRUE))
+            .addOnSuccessListener(unused -> profileChanged.postUpdate(Boolean.TRUE))
             .addOnFailureListener(e ->
                     profileChanged.postError(
                             new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO));
-  }*/
+  }
 
   /** TODO. */
-  /*public void changePassword(String oldPassword, String newPassword) {
+  public void changePassword(String oldPassword, String newPassword) {
     this.profileChanged.postLoading();
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -178,7 +179,7 @@ public class ProfileRepository {
       if (task.isSuccessful()) {
         firebaseUser.updatePassword(newPassword).addOnCompleteListener(task1 -> {
           if (task1.isSuccessful()) {
-            profileChanged.postSuccess(Boolean.TRUE);
+            profileChanged.postUpdate(Boolean.TRUE);
           } else {
             Log.e(TAG, "onComplete: " + "reset failed");
             profileChanged.postError(
@@ -191,6 +192,6 @@ public class ProfileRepository {
                 new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
       }
     });
-  }*/
+  }
 
 }

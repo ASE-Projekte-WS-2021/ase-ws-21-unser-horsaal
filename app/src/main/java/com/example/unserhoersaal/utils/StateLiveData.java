@@ -3,6 +3,7 @@ package com.example.unserhoersaal.utils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.enums.ErrorTag;
 
@@ -25,7 +26,7 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
    * status.
    * @param modelInstance new instance of a model class / list of model classes
    */
-  public void postCreate(@NonNull T modelInstance) {
+  public void postCreate(@Nullable T modelInstance) {
     setValue(new StateData<T>().create(modelInstance));
   }
 
@@ -37,7 +38,7 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
     if (this.getValue() != null) {
       setValue(this.getValue().loading());
     } else {
-      Log.e(TAG, "postLoading: getValue returned null");
+      setValue(new StateData<T>().loading());
     }
   }
 
@@ -51,7 +52,7 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
     if (this.getValue() != null) {
       setValue(this.getValue().error(throwable, errorTag));
     } else {
-      Log.e(TAG, "postError: getValue returned null");
+      setValue(new StateData<T>().error(throwable, errorTag));
     }
   }
 
@@ -60,11 +61,11 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
    * data and indicate a rerendering of data.
    * @param updatedData model class / list of model classes
    */
-  public void postUpdate(@NonNull T updatedData) {
+  public void postUpdate(@Nullable T updatedData) {
     if (this.getValue() != null) {
       setValue(this.getValue().update(updatedData));
     } else {
-      Log.e(TAG, "postSuccess: getValue returned null");
+      setValue(new StateData<T>().update(updatedData));
     }
   }
 

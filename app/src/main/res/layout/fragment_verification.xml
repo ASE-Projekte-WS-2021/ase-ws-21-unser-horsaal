@@ -12,30 +12,51 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/app_background"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/verificationFragmentTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/eine_email_wurde_an_ihre_angegebene_emailadresse_versendet" />
+            android:layout_marginTop="64dp"
+            android:text="@string/verification_mail"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:text="@string/email_was_sent"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginEnd="54dp"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/verificationFragmentErrorText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textAlignment="center"
             android:visibility="gone"/>
 
         <ProgressBar
-            android:id="@+id/resetPasswordFragmentSpinner"
+            android:id="@+id/verificationFragmentSpinner"
             android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/verificationFragmentResendEmail"
             android:text="@string/send_again"
-            android:onClick="@{() -> vm.resendEmailVerification()}"
-            android:layout_width="match_parent"
+            android:onClick="@{() -> vm.resendVerificationEmail()}"
+            android:layout_width="300dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
             android:layout_height="wrap_content">
 
         </com.google.android.material.button.MaterialButton>
@@ -43,8 +64,9 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/verificationFragmentReturnToLogin"
             android:text="@string/back_to_login"
-            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_verificationFragment_to_loginFragment)}"
-            android:layout_width="match_parent"
+            android:onClick="@{(view) -> vm.logout()}"
+            android:layout_width="300dp"
+            android:layout_gravity="center"
             android:layout_height="wrap_content">
 
         </com.google.android.material.button.MaterialButton>

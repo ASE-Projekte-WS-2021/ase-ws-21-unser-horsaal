@@ -152,9 +152,10 @@
     <string name="keine_threads_verf_gbar">Keine Threads verfügbar!</string>
     <string name="current_time_placeholder">Current Time Placeholder</string>
     <string name="current_date_placeholder">Current Date Placeholder</string>
-    <string name="eine_email_wurde_an_ihre_angegebene_emailadresse_versendet">Eine Email wurde an Ihre angegebene Emailadresse versendet.</string>
+    <string name="email_was_sent">Eine Email wurde an Ihre angegebene Emailadresse versendet.</string>
     <string name="send_again">Erneut Senden</string>
     <string name="back_to_login">Zurück zum Login</string>
+    <string name="verification_mail">Verifikationsemail</string>
 
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
 
