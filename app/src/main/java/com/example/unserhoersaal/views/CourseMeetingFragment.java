@@ -3,10 +3,12 @@ package com.example.unserhoersaal.views;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -101,6 +103,7 @@ public class CourseMeetingFragment extends Fragment {
   }
 
   private void initToolbar() {
+    this.binding.courseMeetingFragmentToolbar.inflateMenu(R.menu.course_meeting_menu);
     this.binding.courseMeetingFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseMeetingFragmentToolbar
@@ -108,12 +111,30 @@ public class CourseMeetingFragment extends Fragment {
                     this.navController.navigate(
                             R.id.action_courseMeetingFragment_to_courseHistoryFragment)
     );
+    this.binding.courseMeetingFragmentToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+      @Override
+      public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.courseMeetingToolbarFilter){
+          toggleFilterContainer();
+        }
+        return true;
+      }
+    });
   }
 
   @Override
   public void onResume() {
     super.onResume();
     this.courseMeetingViewModel.resetThreadModelInput();
+  }
+
+  private void toggleFilterContainer(){
+    View container = this.binding.courseMeetingFragmentAvailableChipsContainer;
+    if (container.getVisibility() == View.GONE) {
+      container.setVisibility(View.VISIBLE);
+    } else {
+      container.setVisibility(View.GONE);
+    }
   }
 
 }
