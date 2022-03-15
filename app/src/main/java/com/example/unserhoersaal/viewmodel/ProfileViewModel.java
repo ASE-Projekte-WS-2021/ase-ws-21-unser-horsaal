@@ -8,7 +8,6 @@ import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.repository.ProfileRepository;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,9 +35,9 @@ public class ProfileViewModel extends ViewModel {
     this.userLiveData = this.authAppRepository.getUserStateLiveData();
     this.profileLiveData = this.profileRepository.getUser();
 
-    this.userInputState.postValue(new StateData<>(new UserModel()));
-    this.passwordInputState.postValue(new StateData<>(new PasswordModel()));
-    //this.profileChanged = this.profileRepository.getProfileChanged();
+    this.userInputState.postCreate(new UserModel());
+    this.passwordInputState.postCreate(new PasswordModel());
+    this.profileChanged = this.profileRepository.getProfileChanged();
   }
 
   /** Give back the user data. */
@@ -50,18 +49,17 @@ public class ProfileViewModel extends ViewModel {
     return this.profileLiveData;
   }
 
-  /*public StateLiveData<Boolean> getProfileChanged() {
+  public StateLiveData<Boolean> getProfileChanged() {
     return this.profileChanged;
-  }*/
-
+  }
 
   public void resetProfileInput() {
-    this.userInputState.postValue(new StateData<>(new UserModel()));
+    this.userInputState.postCreate(new UserModel());
   }
 
   /** JavaDoc for this method. */
   public void resetPasswordInput() {
-    this.passwordInputState.postValue(new StateData<>(new PasswordModel()));
+    this.passwordInputState.postCreate(new PasswordModel());
   }
 
   public void logout() {
@@ -84,16 +82,16 @@ public class ProfileViewModel extends ViewModel {
 
     if (Validation.emptyString(displayName)) {
       Log.d(TAG, "displayName is null.");
-      this.userInputState.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
+      this.profileChanged.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
       return;
     } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
       Log.d(TAG, "displayName has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      this.profileChanged.postError(new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
       return;
     }
 
-    this.userInputState.postComplete();
-    //this.profileRepository.changeDisplayName(displayName);
+    this.userInputState.postCreate(new UserModel());
+    this.profileRepository.changeDisplayName(displayName);
   }
 
   /** JavaDoc for this method. */
@@ -108,16 +106,16 @@ public class ProfileViewModel extends ViewModel {
 
     if (Validation.emptyString(institution)) {
       Log.d(TAG, "institution is null.");
-      this.userInputState.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
+      this.profileChanged.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
       return;
     } else if (!Validation.stringHasPattern(institution, Config.REGEX_PATTERN_INSTITUTION)) {
       Log.d(TAG, "institution has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
+      this.profileChanged.postError(new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
       return;
     }
 
-    this.userInputState.postComplete();
-    //this.profileRepository.changeInstitution(institution);
+    this.userInputState.postCreate(new UserModel());
+    this.profileRepository.changeInstitution(institution);
   }
 
   /** JavaDoc for this method. */
@@ -133,21 +131,21 @@ public class ProfileViewModel extends ViewModel {
 
     if (Validation.emptyString(oldPassword)) {
       Log.d(TAG, "oldPassword is null.");
-      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
       return;
     } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
       Log.d(TAG, "oldPassword has wrong pattern.");
-      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
       return;
     }
 
     if (Validation.emptyString(newPassword)) {
       Log.d(TAG, "newPassword is null.");
-      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
+      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
       return;
     } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
       Log.d(TAG, "newPassword has wrong pattern.");
-      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
+      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
       return;
     }
 

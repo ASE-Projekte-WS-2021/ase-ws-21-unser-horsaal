@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -15,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEditProfileNameBindingImpl;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
@@ -57,21 +57,34 @@ public class EditProfileNameFragment extends Fragment {
     this.profileViewModel
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
-    this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(), change -> {
-      if (change.getStatus() == StateData.DataStatus.UPDATE) {
-        this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
-        navController.navigate(R.id.action_editProfileNameFragment_to_profileFragment);
-      } else if (change.getStatus() == StateData.DataStatus.ERROR) {
-        this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
-        Toast.makeText(getContext(),
-                change.getError().getMessage(),
-                Toast.LENGTH_LONG)
-                .show();
+    this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(),
+            this::profileChangedCallback);
+  }
+
+  private void profileChangedCallback(StateData<Boolean> booleanStateData) {
+    this.resetBindings();
+
+    if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
+      navController.navigate(R.id.action_editProfileNameFragment_to_profileFragment);
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
+      if (booleanStateData.getErrorTag() == ErrorTag.USERNAME) {
+        this.binding.editProfileUserNameErrorText.setText(booleanStateData.getError().getMessage());
+        this.binding.editProfileUserNameErrorText.setVisibility(View.VISIBLE);
+      } else {
+        this.binding.editProfileUserNameGeneralErrorText.setText(
+                booleanStateData.getError().getMessage());
+        this.binding.editProfileUserNameGeneralErrorText.setVisibility(View.VISIBLE);
       }
-      else if (change.getStatus() == StateData.DataStatus.LOADING) {
-        this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
-      }
-    });
+    }
+    else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.editProfileUserNameFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.editProfileUserNameGeneralErrorText.setVisibility(View.GONE);
+    this.binding.editProfileUserNameErrorText.setVisibility(View.GONE);
+    this.binding.editProfileUserNameFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectBinding() {

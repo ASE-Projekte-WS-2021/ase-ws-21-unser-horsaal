@@ -4,7 +4,6 @@ import android.util.Log;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -201,12 +200,11 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_PASSWORD_RESET_MAIL_SENT);
-                //this.userLiveData.postUpdate(this.firebaseUser);
+
                 this.emailSentLiveData.postUpdate(Boolean.TRUE);
                 this.emailSentLiveData.postCreate(Boolean.FALSE);
               } else {
                 Log.e(TAG, Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT);
-                //this.userLiveData.postError(new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
                 this.emailSentLiveData.postError(new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
               }
             });
@@ -220,6 +218,7 @@ public class AuthAppRepository {
 
   /** Method to delete an user account. */
   public void deleteAccount() {
+    this.userLiveData.postLoading();
     //TODO: delete Account in real time database and firebase authentication
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
   }

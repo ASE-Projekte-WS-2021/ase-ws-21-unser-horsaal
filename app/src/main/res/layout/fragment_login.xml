@@ -7,16 +7,9 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.LoginViewModel"/>
-
-        <import
-            type="com.example.unserhoersaal.enums.LogRegErrorMessEnum" />
-
-        <import
-            type="com.example.unserhoersaal.Config" />
-
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
-
         <import type="android.view.View"/>
     </data>
 

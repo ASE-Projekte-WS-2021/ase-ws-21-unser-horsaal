@@ -9,7 +9,6 @@
             type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
-        <import type="com.example.unserhoersaal.enums.LogRegErrorMessEnum" />
         <import type="com.example.unserhoersaal.Config" />
         <import type="android.view.View"/>
     </data>
