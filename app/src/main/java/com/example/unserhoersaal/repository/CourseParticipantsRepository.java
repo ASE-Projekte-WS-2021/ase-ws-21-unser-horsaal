@@ -74,7 +74,7 @@ public class CourseParticipantsRepository {
         Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
           for (Task<DataSnapshot> task : taskList) {
             UserModel model = task.getResult().getValue(UserModel.class);
-            model.setKey(task.getResult().getKey());
+            //model.setKey(task.getResult().getKey());
             userList.add(model);
           }
           users.postValue(userList);
