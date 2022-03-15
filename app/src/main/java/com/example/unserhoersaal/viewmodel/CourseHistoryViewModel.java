@@ -24,6 +24,7 @@ public class CourseHistoryViewModel extends ViewModel {
   private static final String TAG = "CourseHistoryViewModel";
 
   private CourseHistoryRepository courseHistoryRepository;
+  private CollectionsSorter collectionsSorter = new CollectionsSorter();
 
   private MutableLiveData<CourseModel> course = new MutableLiveData<>();
   private MutableLiveData<List<MeetingsModel>> meetings;
@@ -64,8 +65,7 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Sort the meetings list by event time. */
   public void sortMeetingByEventTime(List<MeetingsModel> meetingsModelList) {
-   CollectionsSorter collectionsSorter = new CollectionsSorter();
-   collectionsSorter.sortMeetingListByEventTimeAsc(meetingsModelList);
+   this.collectionsSorter.sortMeetingListByEventTimeAsc(meetingsModelList);
   }
 
   public LiveData<CourseModel> getCourse() {

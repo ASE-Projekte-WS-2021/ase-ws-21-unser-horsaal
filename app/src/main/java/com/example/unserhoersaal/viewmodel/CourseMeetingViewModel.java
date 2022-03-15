@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
+import com.example.unserhoersaal.utils.CollectionsSorter;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,6 +18,7 @@ public class CourseMeetingViewModel extends ViewModel {
   private static final String TAG = "CourseMeetingViewModel";
 
   private CourseMeetingRepository courseMeetingRepository;
+  private CollectionsSorter collectionsSorter = new CollectionsSorter();
 
   private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
   private MutableLiveData<List<ThreadModel>> threads;
@@ -44,23 +46,27 @@ public class CourseMeetingViewModel extends ViewModel {
     return this.threads;
   }
 
-  /** Sort the threads list by likes. */
+  /** Sort thread list by likes. -desc */
   public void sortThreadsByLikes(List<ThreadModel> threadsModelList) {
-    Collections.sort(threadsModelList, new Comparator<ThreadModel>() {
-      @Override
-      public int compare(ThreadModel threadModel, ThreadModel t1) {
-        return t1.getLikes() - threadModel.getLikes();
-      }
-    });
+    this.collectionsSorter.sortThreadListByLikesDesc(threadsModelList);
   }
 
+  /** Sort thread list by creation time. -desc
+   * Shows the newest first
+   */
   public void sortThreadsByCreationTime(List<ThreadModel> threadsModelList) {
-    Collections.sort(threadsModelList, new Comparator<ThreadModel>() {
-      @Override
-      public int compare(ThreadModel threadModel, ThreadModel t1) {
-        return t1.getCreationTime().compareTo(threadModel.getCreationTime());
-      }
-    });
+    this.collectionsSorter.sortThreadListByEventTimeDesc(threadsModelList);
+  }
+
+  /** Sort thread list by answers. -desc */
+  public void sortThreadsByAnswers(List<ThreadModel> threadsModelList) {
+    this.collectionsSorter.sortThreadListByAnswersDesc(threadsModelList);
+  }
+
+  /** filter thread list by answered status true. -show only answered threads */
+  public void filterThreadsByAnsweredStatus(List<ThreadModel> threadsModelList,
+                                            Boolean answeredStatus) {
+    this.collectionsSorter.filterThreadListByAnswerStatus(threadsModelList, answeredStatus);
   }
 
   public LiveData<MeetingsModel> getMeeting() {
