@@ -31,6 +31,7 @@ public class Config {
   public static final String CHILD_DISPLAY_NAME = "displayName";
   public static final String CHILD_INSTITUTION = "institution";
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
+  public static final String CHILD_MEMBER_COUNT = "memberCount";
 
   /** Tabview. */
   public static final int TAB_TODAY = 0;

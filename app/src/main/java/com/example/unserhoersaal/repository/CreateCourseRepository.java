@@ -6,6 +6,7 @@ import com.example.unserhoersaal.model.CourseModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 /**Class creates a course and saves it in Firebase.**/
 public class CreateCourseRepository {
@@ -56,7 +57,13 @@ public class CreateCourseRepository {
                             .child(course.getKey())
                             .child(user)
                             .setValue(Boolean.TRUE)
-                            .addOnSuccessListener(unused1 -> addMapping(course)));
+                            .addOnSuccessListener(unused1 -> {
+                              reference.child(Config.CHILD_COURSES)
+                                      .child(course.getKey())
+                                      .child(Config.CHILD_MEMBER_COUNT)
+                                      .setValue(ServerValue.increment(1))
+                                      .addOnSuccessListener(unused2 -> addMapping(course));
+                            }));
   }
 
   private void addMapping(CourseModel course) {
