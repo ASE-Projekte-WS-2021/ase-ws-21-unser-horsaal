@@ -7,10 +7,8 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
-
 import java.util.List;
 
 /** ViewModel for the CourseMeetingFragment. */
@@ -77,11 +75,13 @@ public class CourseMeetingViewModel extends ViewModel {
 
     if (threadModel.getTitle() == null) {
       Log.d(TAG, "title is null.");
-      this.threadModelInputState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
+      this.threadModelInputState.postError(
+              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
       return;
     } else if (!Validation.stringHasPattern(threadModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
       Log.d(TAG, "title wrong pattern.");
-      this.threadModelInputState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+      this.threadModelInputState.postError(
+              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
       return;
     }
     if (threadModel.getText() == null) {
@@ -90,11 +90,13 @@ public class CourseMeetingViewModel extends ViewModel {
       return;
     } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
       Log.d(TAG, "text wrong pattern.");
-      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
+      this.threadModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
       return;
     }
 
     this.threadModelInputState.postCreate(new ThreadModel());
     this.courseMeetingRepository.createThread(threadModel);
   }
+
 }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,10 +17,8 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseThreadBinding;
 import com.example.unserhoersaal.model.MessageModel;
-import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
-
 import java.util.List;
 
 /**Course Thread.*/
@@ -79,18 +76,15 @@ public class CourseThreadFragment extends Fragment {
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesThreadFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    }
-    else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
               listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
     }
     if (listStateData.getData().size() == 0) {
-      //TODO: text that is displayed when answers are zero
-      //this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
+      this.binding.currentCourseFragmentNoAnswersTextView.setVisibility(View.VISIBLE);
     } else {
-      //this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
+      this.binding.currentCourseFragmentNoAnswersTextView.setVisibility(View.GONE);
     }
-    //this.currentCourseViewModel.messageModelInputState.postValue(new StateData<>(new MessageModel()));
   }
 
 

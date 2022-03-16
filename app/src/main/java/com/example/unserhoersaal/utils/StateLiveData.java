@@ -1,7 +1,5 @@
 package com.example.unserhoersaal.utils;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -24,6 +22,7 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
    * Initiate or reset the data instance of a model class in a StateLiveData instance. The model
    * class is wrapped with StateDate which holds the actual data along with error messages and data
    * status.
+   *
    * @param modelInstance new instance of a model class / list of model classes
    */
   public void postCreate(@Nullable T modelInstance) {
@@ -45,6 +44,7 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
   /**
    * Use this method to set the DataStatus to error. While Error the Fragment can display error
    * messages to the user.
+   *
    * @param throwable the error to be handled
    * @param errorTag to help differentiate ErrorTextViews
    */
@@ -59,6 +59,7 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
   /**
    * Use this method to set the DataStatus to success. Success is used in Repositories to update new
    * data and indicate a rerendering of data.
+   *
    * @param updatedData model class / list of model classes
    */
   public void postUpdate(@Nullable T updatedData) {

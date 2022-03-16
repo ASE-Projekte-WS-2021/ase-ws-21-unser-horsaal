@@ -27,6 +27,7 @@ public class ProfileRepository {
   private StateLiveData<UserModel> user = new StateLiveData<>();
   private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
 
+  /** TODO. */
   public ProfileRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -86,12 +87,13 @@ public class ProfileRepository {
   }
 
   /** TODO. */
-    public void changeDisplayName(String displayName) {
+  public void changeDisplayName(String displayName) {
     this.profileChanged.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.profileChanged.postError(new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
       return;
     }
 
@@ -99,7 +101,8 @@ public class ProfileRepository {
 
     if (uid == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.profileChanged.postError(new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
       return;
     }
 

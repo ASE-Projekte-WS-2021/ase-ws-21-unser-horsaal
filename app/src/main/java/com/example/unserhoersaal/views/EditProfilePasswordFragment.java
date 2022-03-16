@@ -79,8 +79,7 @@ public class EditProfilePasswordFragment extends Fragment {
                 .setText(booleanStateData.getError().getMessage());
         this.binding.editProfilePasswordGeneralErrorText.setVisibility(View.VISIBLE);
       }
-    }
-    else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.editProfilePasswordFragmentProgressSpinner.setVisibility(View.VISIBLE);
     }
   }

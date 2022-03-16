@@ -86,16 +86,19 @@ public class LoginViewModel extends ViewModel {
       return;
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
+      this.userInputState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
       return;
     }
     if (Validation.emptyString(password)) {
       Log.d(TAG, "password is null.");
-      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      this.passwordInputState.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
       return;
     } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
       Log.d(TAG, "password has wrong pattern.");
-      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      this.passwordInputState.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
       return;
     }
 
@@ -119,7 +122,8 @@ public class LoginViewModel extends ViewModel {
       this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
+      this.userInputState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
     } else {
 
       this.setDefaultInputState();
@@ -149,7 +153,8 @@ public class LoginViewModel extends ViewModel {
       this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
+      this.userInputState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
     } else {
 
       this.setDefaultInputState();

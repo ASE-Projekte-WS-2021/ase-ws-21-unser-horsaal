@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
@@ -104,11 +103,9 @@ public class RegistrationFragment extends Fragment {
       } else if (!firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
       }
-    }
-    else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.registrationFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    }
-    else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
       this.binding.registrationFragmentGeneralErrorText
               .setText(firebaseUserStateData.getError().getMessage());
       this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);

@@ -36,6 +36,7 @@ public class CourseMeetingRepository {
   private StateLiveData<ThreadModel> threadModelMutableLiveData = new StateLiveData<>();
   private ValueEventListener listener;
 
+  /** JavaDoc. */
   public CourseMeetingRepository() {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
@@ -169,6 +170,7 @@ public class CourseMeetingRepository {
     });
   }
 
+  /** JavaDoc. */
   public Task<DataSnapshot> getAuthorName(String authorId) {
     return this.databaseReference
             .child(Config.CHILD_USER)

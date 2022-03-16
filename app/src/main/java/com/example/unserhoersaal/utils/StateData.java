@@ -22,6 +22,7 @@ public class StateData<T> {
   @NonNull
   private ErrorTag errorTag;
 
+  /** TODO. */
   @Deprecated
   public StateData(@Nullable T data) {
     this.status = DataStatus.CREATED;
@@ -30,13 +31,14 @@ public class StateData<T> {
     this.errorTag = ErrorTag.NULL;
   }
 
+  /** TODO. */
   public StateData() {
     this.status = DataStatus.CREATED;
     this.error = null;
     this.errorTag = ErrorTag.NULL;
   }
 
-  /** Instantiate or reset data using the constructor. Status, Error and ErrorTag is created here. */
+  /** Instantiate or reset data using the constructor. Status, Error and ErrorTag is created here.*/
   public StateData<T> create(T modelInstance) {
     this.status = DataStatus.CREATED;
     this.data = modelInstance;
@@ -53,8 +55,11 @@ public class StateData<T> {
     return this;
   }
 
-  /** Updates the current data in this class.
-   * @param data update data */
+  /**
+   * Updates the current data in this class.
+   *
+   * @param data update data
+   * */
   public StateData<T> update(@Nullable T data) {
     this.status = DataStatus.UPDATE;
     this.data = data;
@@ -63,6 +68,7 @@ public class StateData<T> {
     return this;
   }
 
+  /** TODO. */
   @Deprecated
   public StateData<T> success() {
     this.status = DataStatus.CREATED;
@@ -71,9 +77,11 @@ public class StateData<T> {
     return this;
   }
 
-  /** Method to set an error message.
+  /**
+   * Method to set an error message.
    * Removed this.data = null because it would lead to many null pointer exceptions.
    * Better call postCreate to wipe data.
+   *
    * @param error error to be handled
    * @param errorTag to help differentiate ErrorTextViews
    * */
@@ -109,6 +117,7 @@ public class StateData<T> {
     return errorTag;
   }
 
+  /** TODO. */
   public enum DataStatus {
     CREATED,
     LOADING,

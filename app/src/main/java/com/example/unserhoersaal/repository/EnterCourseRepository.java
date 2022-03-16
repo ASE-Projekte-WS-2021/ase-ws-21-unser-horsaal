@@ -171,9 +171,9 @@ public class EnterCourseRepository {
                     .setValue(Boolean.TRUE)
                     .addOnSuccessListener(unused1 -> enteredCourse.postUpdate(course)))
                     .addOnFailureListener(e -> {
-                            Log.e(TAG, e.getMessage());
-                            enteredCourse.postError(
-                                    new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+                      Log.e(TAG, e.getMessage());
+                      enteredCourse.postError(
+                              new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
                     })
             .addOnFailureListener(e -> {
               Log.e(TAG, e.getMessage());

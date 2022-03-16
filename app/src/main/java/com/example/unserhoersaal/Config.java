@@ -49,9 +49,12 @@ public class Config {
    *  Regex Patterns
    * ======================= */
   // reference: https://ihateregex.io/expr/username/
-  public static final String REGEX_PATTERN_USERNAME = String.format("^[a-zA-Z0-9_-]{%s,%s}$", USERNAME_LENGTH_MIN, USERNAME_LENGTH_MAX);
+  public static final String REGEX_PATTERN_USERNAME =
+          String.format("^[a-zA-Z0-9_-]{%s,%s}$", USERNAME_LENGTH_MIN, USERNAME_LENGTH_MAX);
   // reference: https://ihateregex.io/expr/password/
-  public static final String REGEX_PATTERN_PASSWORD = String.format("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{%s,%s}$", PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
+  public static final String REGEX_PATTERN_PASSWORD =
+          String.format("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{%s,%s}$",
+                  PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
   public static final String REGEX_PATTERN_TITLE = ".*";
   public static final String REGEX_PATTERN_INSTITUTION = ".*";
   public static final String REGEX_PATTERN_TEXT = ".*";
@@ -101,48 +104,77 @@ public class Config {
   /**=======================.
    * Error Messages For User
    * ======================= */
-  public static final String UNSPECIFIC_ERROR = "Ein Fehler ist aufgetreten!"; //hide too specific error from user
+  public static final String UNSPECIFIC_ERROR =
+          "Ein Fehler ist aufgetreten!"; //hide too specific error from user
 
   public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
-  public static final String DATABINDING_TITLE_WRONG_PATTERN = "Der Titel enthält ungültige Charaktere!"; //TODO: add characters
+  public static final String DATABINDING_TITLE_WRONG_PATTERN =
+          "Der Titel enthält ungültige Charaktere!"; //TODO: add characters
   public static final String DATABINDING_TEXT_NULL = "Dieses Textfeld darf nicht leer sein!";
-  public static final String DATABINDING_TEXT_WRONG_PATTERN = "Der Titel enthält ungültige Charaktere!";
-  public static final String DATABINDING_CODEMAPPING_NULL = "Der Beitrittscode darf nicht leer sein!";
-  public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN = "Der Beitrittscode enthält ungültige Charaktere.";
+  public static final String DATABINDING_TEXT_WRONG_PATTERN =
+          "Der Titel enthält ungültige Charaktere!";
+  public static final String DATABINDING_CODEMAPPING_NULL =
+          "Der Beitrittscode darf nicht leer sein!";
+  public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
+          "Der Beitrittscode enthält ungültige Charaktere.";
 
   public static final String AUTH_EMAIL_EMPTY = "Bitte gib eine Email-Adresse ein!";
-  public static final String AUTH_EMAIL_WRONG_PATTERN_REGISTRATION = "Email ist ungültig oder bereits vergeben!";
+  public static final String AUTH_EMAIL_WRONG_PATTERN_REGISTRATION =
+          "Email ist ungültig oder bereits vergeben!";
   public static final String AUTH_EMAIL_WRONG_PATTERN_LOGIN = "Ungültige Email-Adresse!";
   public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
-  public static final String AUTH_PASSWORD_WRONG_PATTERN = "Das Passwort muss aus Groß- und Kleinbuchstaben, sowie mindestens einer Zahl bestehen! Zudem muss es mindestens 8 Zeichen lang sein!";
+  public static final String AUTH_PASSWORD_WRONG_PATTERN =
+          "Das Passwort muss aus Groß- und Kleinbuchstaben, sowie mindestens einer Zahl bestehen! "
+                  + "Zudem muss es mindestens 8 Zeichen lang sein!";
   public static final String AUTH_USERNAME_EMPTY = "Bitte gib einen Nutzernamen ein!";
-  public static final String AUTH_USERNAME_WRONG_PATTERN = "Nutzername ist ungültig oder bereits vergeben!";
+  public static final String AUTH_USERNAME_WRONG_PATTERN =
+          "Nutzername ist ungültig oder bereits vergeben!";
   public static final String AUTH_INSTITUTION_EMPTY = "Bitte gib eine Institution ein!";
   public static final String AUTH_INSTITUTION_WRONG_PATTERN = "Institution ist ungültig!";
-  public static final String AUTH_REGISTRATION_FAILED = "Die Registrierung konnte nicht abgeschlossen werden!";
+  public static final String AUTH_REGISTRATION_FAILED =
+          "Die Registrierung konnte nicht abgeschlossen werden!";
   public static final String AUTH_LOGIN_FAILED = "Falsche Email-Adresse oder falsches Passwort!";
-  public static final String AUTH_EDIT_PASSWORD_CHANGE_FAILED = "Das Passwort konnte nicht geändert werden!";
-  public static final String AUTH_EDIT_PASSWORD_CHANGE_SUCCESS = "Das Passwort wurde erfolgreich geändert!";
-  public static final String AUTH_EDIT_USERNAME_CHANGE_FAILED = "Der Nutzername konnte nicht geändert werden!";
-  public static final String AUTH_EDIT_USERNAME_CHANGE_SUCCESS = "Der Nutzername wurde erfolgreich geändert!";
-  public static final String AUTH_EDIT_INSTITUTION_CHANGE_FAILED = "Die Institution konnte nicht geändert werden!";
-  public static final String AUTH_EDIT_INSTITUTION_CHANGE_SUCCESS = "Die Institution wurde erfolgreich geändert!";
-  public static final String AUTH_VERIFICATION_EMAIL_SENT = "Verifizierungsemail versandt";
-  public static final String AUTH_VERIFICATION_EMAIL_NOT_SENT = "Die Verfizierungsemail konnte nicht versandt werden!";
-  public static final String AUTH_PASSWORD_RESET_MAIL_SENT = "Email zur Passwortzurücksetzung versandt.";
-  public static final String AUTH_PASSWORD_RESET_MAIL_NOT_SENT = "Die Email zur Passwortzurücksetzung konnte nicht versandt werden!";
+  public static final String AUTH_EDIT_PASSWORD_CHANGE_FAILED =
+          "Das Passwort konnte nicht geändert werden!";
+  public static final String AUTH_EDIT_PASSWORD_CHANGE_SUCCESS =
+          "Das Passwort wurde erfolgreich geändert!";
+  public static final String AUTH_EDIT_USERNAME_CHANGE_FAILED =
+          "Der Nutzername konnte nicht geändert werden!";
+  public static final String AUTH_EDIT_USERNAME_CHANGE_SUCCESS =
+          "Der Nutzername wurde erfolgreich geändert!";
+  public static final String AUTH_EDIT_INSTITUTION_CHANGE_FAILED =
+          "Die Institution konnte nicht geändert werden!";
+  public static final String AUTH_EDIT_INSTITUTION_CHANGE_SUCCESS =
+          "Die Institution wurde erfolgreich geändert!";
+  public static final String AUTH_VERIFICATION_EMAIL_SENT =
+          "Verifizierungsemail versandt";
+  public static final String AUTH_VERIFICATION_EMAIL_NOT_SENT =
+          "Die Verfizierungsemail konnte nicht versandt werden!";
+  public static final String AUTH_PASSWORD_RESET_MAIL_SENT =
+          "Email zur Passwortzurücksetzung versandt.";
+  public static final String AUTH_PASSWORD_RESET_MAIL_NOT_SENT =
+          "Die Email zur Passwortzurücksetzung konnte nicht versandt werden!";
 
-  public static final String COURSES_COURSE_CREATION_FAILURE = "Der Kurs konnte nicht erstellt werden!";
-  public static final String COURSE_HISTORY_MEETING_CREATION_FAILURE = "Das Meeting konnte nicht erstellt werden!";
-  public static final String COURSE_MEETING_THREAD_CREATION_FAILURE = "Der Thread konnte nicht erstellt werden!";
-  public static final String CURRENT_COURSE_CREATION_MESSAGE = "Die Chatnachricht konnte nicht versandt werden!";
+  public static final String COURSES_COURSE_CREATION_FAILURE =
+          "Der Kurs konnte nicht erstellt werden!";
+  public static final String COURSE_HISTORY_MEETING_CREATION_FAILURE =
+          "Das Meeting konnte nicht erstellt werden!";
+  public static final String COURSE_MEETING_THREAD_CREATION_FAILURE =
+          "Der Thread konnte nicht erstellt werden!";
+  public static final String CURRENT_COURSE_CREATION_MESSAGE =
+          "Die Chatnachricht konnte nicht versandt werden!";
 
-  public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED = "Das Abmelden vom Kurs war nicht erfolgreich!";
-  public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_SUCCESS = "Erfolgreich vom Kurs abgemeldet!";
-  public static final String COURSE_DESCRIPTION_SETCOURSEID_FAILED = "Der ausgewählte Kurs konnte nicht gefunden werden!";
+  public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED =
+          "Das Abmelden vom Kurs war nicht erfolgreich!";
+  public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_SUCCESS =
+          "Erfolgreich vom Kurs abgemeldet!";
+  public static final String COURSE_DESCRIPTION_SETCOURSEID_FAILED =
+          "Der ausgewählte Kurs konnte nicht gefunden werden!";
 
-  public static final String COURSE_DESCRIPTION_COULD_NOT_LOAD_USER = "Nutzer konnte nicht geladen werden!";
-  public static final String PROFILE_FAILED_TO_LOAD_USER = "Das Nutzerprofil konnte nicht geladen werden!";
+  public static final String COURSE_DESCRIPTION_COULD_NOT_LOAD_USER =
+          "Nutzer konnte nicht geladen werden!";
+  public static final String PROFILE_FAILED_TO_LOAD_USER =
+          "Das Nutzerprofil konnte nicht geladen werden!";
   public static final String COURSES_FAILED_TO_LOAD = "Kurse konnten nicht geladen werden!";
   public static final String THREADS_FAILED_TO_LOAD = "Threads konnten nicht geladen werden!";
   public static final String MEETINGS_FAILED_TO_LOAD = "Meeting konnten nicht geladen werden!";

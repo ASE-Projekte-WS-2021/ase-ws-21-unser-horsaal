@@ -118,8 +118,7 @@ public class LoginFragment extends Fragment {
         navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
       } else if (firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-      }
-      else if (!firebaseUser.isEmailVerified()) {
+      } else if (!firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_loginFragment_to_verificationFragment);
       }
     }

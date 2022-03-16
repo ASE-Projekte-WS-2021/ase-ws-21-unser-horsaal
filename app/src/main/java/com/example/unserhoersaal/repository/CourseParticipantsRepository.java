@@ -29,6 +29,7 @@ public class CourseParticipantsRepository {
 
   private ValueEventListener listener;
 
+  /** JavaDoc. */
   public CourseParticipantsRepository() {
     this.initListener();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();

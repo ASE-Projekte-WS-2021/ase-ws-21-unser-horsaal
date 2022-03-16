@@ -79,10 +79,10 @@ public class ResetPasswordFragment extends Fragment {
     }
 
     if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
-        Toast.makeText(getContext(),
-                Config.AUTH_VERIFICATION_EMAIL_SENT,
-                Toast.LENGTH_LONG)
-                .show();
+      Toast.makeText(getContext(),
+              Config.AUTH_VERIFICATION_EMAIL_SENT,
+              Toast.LENGTH_LONG)
+              .show();
 
     } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.resetPasswordFragmentSpinner.setVisibility(View.VISIBLE);

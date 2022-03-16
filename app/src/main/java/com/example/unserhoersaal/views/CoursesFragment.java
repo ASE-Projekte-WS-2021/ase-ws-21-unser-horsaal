@@ -19,7 +19,6 @@ import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
-
 import java.util.List;
 
 /** Courses. */
@@ -77,8 +76,7 @@ public class CoursesFragment extends Fragment {
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    }
-    else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
               listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
     }

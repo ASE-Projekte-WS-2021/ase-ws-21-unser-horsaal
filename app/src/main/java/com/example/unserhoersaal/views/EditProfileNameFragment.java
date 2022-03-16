@@ -75,8 +75,7 @@ public class EditProfileNameFragment extends Fragment {
                 booleanStateData.getError().getMessage());
         this.binding.editProfileUserNameGeneralErrorText.setVisibility(View.VISIBLE);
       }
-    }
-    else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.editProfileUserNameFragmentProgressSpinner.setVisibility(View.VISIBLE);
     }
   }

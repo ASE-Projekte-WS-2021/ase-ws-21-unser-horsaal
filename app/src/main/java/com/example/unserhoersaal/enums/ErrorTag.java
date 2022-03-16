@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.enums;
 
+/** TODO. */
 public enum ErrorTag {
   NULL,
   EMAIL,

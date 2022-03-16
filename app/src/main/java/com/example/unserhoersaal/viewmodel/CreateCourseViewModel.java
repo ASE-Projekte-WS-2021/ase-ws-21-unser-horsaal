@@ -59,18 +59,22 @@ public class CreateCourseViewModel extends ViewModel {
       Log.d(TAG, "description is null.");
       this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
       return;
-    } else if (!Validation.stringHasPattern(courseModel.getDescription(), Config.REGEX_PATTERN_TEXT)) {
+    } else if (!Validation.stringHasPattern(
+            courseModel.getDescription(), Config.REGEX_PATTERN_TEXT)) {
       Log.d(TAG, "description has wrong pattern.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
+      this.courseModel.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
       return;
     }
     if (courseModel.getInstitution() == null) {
       Log.d(TAG, "institution is null.");
       this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
       return;
-    } else if (!Validation.stringHasPattern(courseModel.getInstitution(), Config.REGEX_PATTERN_TEXT)) {
+    } else if (!Validation.stringHasPattern(
+            courseModel.getInstitution(), Config.REGEX_PATTERN_TEXT)) {
       Log.d(TAG, "institution has wrong pattern.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.INSTITUTION);
+      this.courseModel.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.INSTITUTION);
       return;
     }
 

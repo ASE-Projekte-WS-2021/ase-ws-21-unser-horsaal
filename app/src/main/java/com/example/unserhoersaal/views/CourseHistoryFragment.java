@@ -22,7 +22,6 @@ import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
-
 import java.util.List;
 
 /** Fragment contains list of course-meetings.*/
@@ -93,8 +92,7 @@ public class CourseHistoryFragment extends Fragment {
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    }
-    else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
               listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
     }

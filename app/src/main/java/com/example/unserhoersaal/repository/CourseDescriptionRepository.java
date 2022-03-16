@@ -28,6 +28,7 @@ public class CourseDescriptionRepository {
   private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
   private ValueEventListener listener;
 
+  /** JavaDoc. */
   public CourseDescriptionRepository() {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();

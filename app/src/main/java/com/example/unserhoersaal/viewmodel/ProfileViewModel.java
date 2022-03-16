@@ -86,7 +86,8 @@ public class ProfileViewModel extends ViewModel {
       return;
     } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
       Log.d(TAG, "displayName has wrong pattern.");
-      this.profileChanged.postError(new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
       return;
     }
 
@@ -110,7 +111,8 @@ public class ProfileViewModel extends ViewModel {
       return;
     } else if (!Validation.stringHasPattern(institution, Config.REGEX_PATTERN_INSTITUTION)) {
       Log.d(TAG, "institution has wrong pattern.");
-      this.profileChanged.postError(new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
       return;
     }
 
@@ -131,11 +133,13 @@ public class ProfileViewModel extends ViewModel {
 
     if (Validation.emptyString(oldPassword)) {
       Log.d(TAG, "oldPassword is null.");
-      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
       return;
     } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
       Log.d(TAG, "oldPassword has wrong pattern.");
-      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
       return;
     }
 
@@ -145,12 +149,13 @@ public class ProfileViewModel extends ViewModel {
       return;
     } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
       Log.d(TAG, "newPassword has wrong pattern.");
-      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
       return;
     }
 
-      this.passwordInputState.postCreate(new PasswordModel());
-      this.profileRepository.changePassword(oldPassword, newPassword);
-    }
+    this.passwordInputState.postCreate(new PasswordModel());
+    this.profileRepository.changePassword(oldPassword, newPassword);
+  }
 
 }

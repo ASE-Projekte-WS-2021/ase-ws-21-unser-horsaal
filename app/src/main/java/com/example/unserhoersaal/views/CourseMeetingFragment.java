@@ -87,8 +87,7 @@ public class CourseMeetingFragment extends Fragment {
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    }
-    else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
               listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
     }
@@ -117,19 +116,16 @@ public class CourseMeetingFragment extends Fragment {
 
     if (threadModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.courseMeetingFragmentContainerProgressSpinner.setVisibility(View.VISIBLE);
-    }
-    else if (threadModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+    } else if (threadModelStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (threadModelStateData.getErrorTag() == ErrorTag.TITLE) {
         this.binding.courseMeetingFragmentQuestionTitleErrorText
                 .setText(threadModelStateData.getError().getMessage());
         this.binding.courseMeetingFragmentQuestionTitleErrorText.setVisibility(View.VISIBLE);
-      }
-      else if (threadModelStateData.getErrorTag() == ErrorTag.TEXT) {
+      } else if (threadModelStateData.getErrorTag() == ErrorTag.TEXT) {
         this.binding.courseMeetingFragmentQuestionTextErrorText
                 .setText(threadModelStateData.getError().getMessage());
         this.binding.courseMeetingFragmentQuestionTextErrorText.setVisibility(View.VISIBLE);
-      }
-      else {
+      } else {
         this.binding.courseMeetingFragmentGeneralErrorText
                 .setText(threadModelStateData.getError().getMessage());
         this.binding.courseMeetingFragmentGeneralErrorText.setVisibility(View.VISIBLE);

@@ -23,7 +23,7 @@ public class CourseHistoryViewModel extends ViewModel {
   private StateLiveData<CourseModel> course = new StateLiveData<>();
   private StateLiveData<List<MeetingsModel>> meetings;
   private StateLiveData<MeetingsModel> meetingsModelMutableLiveData;
-  public StateLiveData<MeetingsModel> meetingModelInputState = new StateLiveData<>();;
+  public StateLiveData<MeetingsModel> meetingModelInputState = new StateLiveData<>();
   public StateLiveData<String> userId;
 
 
@@ -80,11 +80,13 @@ public class CourseHistoryViewModel extends ViewModel {
 
     if (meetingsModel.getTitle() == null) {
       Log.d(TAG, "title is null.");
-      this.meetingsModelMutableLiveData.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
+      this.meetingsModelMutableLiveData.postError(
+              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
       return;
     } else if (!Validation.stringHasPattern(meetingsModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
       Log.d(TAG, "title wrong pattern.");
-      this.meetingsModelMutableLiveData.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
+      this.meetingsModelMutableLiveData.postError(
+              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
 

@@ -75,8 +75,7 @@ public class EditProfileInstitutionFragment extends Fragment {
                 .setText(booleanStateData.getError().getMessage());
         this.binding.editProfileInstitutionFragmentGeneralErrorText.setVisibility(View.VISIBLE);
       }
-    }
-    else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
     }
   }

@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -75,8 +73,7 @@ public class CreateCourseFragment extends Fragment {
 
     if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesCreateFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    }
-    else if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+    } else if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (courseModelStateData.getErrorTag() == ErrorTag.TITLE) {
         System.out.println(courseModelStateData.getError().getMessage());
         this.binding.createCourseFragmentCourseTitleErrorText

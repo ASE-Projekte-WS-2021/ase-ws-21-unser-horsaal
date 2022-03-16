@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**Class communicates with Firebase for getting current course data.**/
+/** Class communicates with Firebase for getting current course data. **/
 public class CurrentCourseRepository {
 
   private static final String TAG = "CurrentCourseRepo";
@@ -41,6 +41,7 @@ public class CurrentCourseRepository {
   private ValueEventListener messageListener;
   private ValueEventListener threadListener;
 
+  /** TODO. */
   public CurrentCourseRepository() {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
@@ -154,6 +155,7 @@ public class CurrentCourseRepository {
             .setValue(ServerValue.increment(1));
   }
 
+  /** TODO. */
   public void setUserId() {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
@@ -194,6 +196,7 @@ public class CurrentCourseRepository {
     this.threadId.postCreate(threadId);
   }
 
+  /** TODO. */
   public Task<DataSnapshot> getLikeStatusMessage(String id) {
     String userKey = Validation.checkStateLiveData(this.userId, TAG);
     if (userKey == null) {

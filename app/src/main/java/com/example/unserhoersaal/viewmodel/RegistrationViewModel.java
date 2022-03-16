@@ -82,7 +82,8 @@ public class RegistrationViewModel extends ViewModel {
       return;
     } else if (!Validation.stringHasPattern(userName, Config.REGEX_PATTERN_USERNAME)) {
       Log.d(TAG, "userName has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      this.userInputState.postError(
+              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
       return;
     }
     /* Check if email input is empty or has wrong pattern.*/
@@ -92,23 +93,26 @@ public class RegistrationViewModel extends ViewModel {
       return;
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_WRONG_PATTERN_REGISTRATION), ErrorTag.EMAIL);
+      this.userInputState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_REGISTRATION), ErrorTag.EMAIL);
       return;
     }
     /* Check if password input is empty or has wrong pattern.*/
     if (Validation.emptyString(password)) {
       Log.d(TAG, "password has is null.");
-      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      this.passwordInputState.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
       return;
     } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
       Log.d(TAG, "password has wrong pattern.");
-      this.passwordInputState.postError(new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      this.passwordInputState.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
       return;
     }
 
-    this.userInputState.postComplete();
+    this.userInputState.postCreate(new UserModel());
     //do not listen for this status because we would get two spinner loops
-    this.passwordInputState.postComplete();
+    this.passwordInputState.postCreate(new PasswordModel());
     this.authAppRepository.register(userName, email, password);
 
   }

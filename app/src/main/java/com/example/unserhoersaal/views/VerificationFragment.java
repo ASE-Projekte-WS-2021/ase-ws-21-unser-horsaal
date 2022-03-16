@@ -20,6 +20,7 @@ import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
+/** TODO. */
 public class VerificationFragment extends Fragment {
 
   private static final String TAG = "ResetPasswordFragment";
@@ -96,8 +97,7 @@ public class VerificationFragment extends Fragment {
       if (firebaseUser == null) {
         Log.d(TAG, "firebase user is null");
         navController.navigate(R.id.action_verificationFragment_to_loginFragment);
-      }
-      else if (firebaseUser.isEmailVerified()) {
+      } else if (firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
       }
     }

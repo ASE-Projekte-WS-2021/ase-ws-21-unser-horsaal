@@ -33,6 +33,7 @@ public class CourseHistoryRepository {
   private StateLiveData<String> userId = new StateLiveData<>();
   private ValueEventListener listener;
 
+  /** JavaDoc. */
   public CourseHistoryRepository() {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
@@ -88,6 +89,7 @@ public class CourseHistoryRepository {
     this.course.postCreate(courseModel);
   }
 
+  /** JavaDoc. */
   public void setUserId() {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);

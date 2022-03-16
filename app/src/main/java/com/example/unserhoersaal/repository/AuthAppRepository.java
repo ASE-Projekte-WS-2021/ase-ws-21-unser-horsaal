@@ -63,8 +63,7 @@ public class AuthAppRepository {
                 if (this.firebaseAuth.getCurrentUser() == null) {
                   Log.e(TAG, "firebase did not authenticated a user.");
                   this.userLiveData.postError(new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
-                }
-                else {
+                } else {
                   Log.d(TAG, "Login with firebase auth was successful");
                   this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
                 }
@@ -88,15 +87,15 @@ public class AuthAppRepository {
                 }
                 Log.d(TAG, "Successfully registered with firebase auth.");
                 this.createNewUser(username, email, this.firebaseUser.getUid());
-              }
-              else {
+              } else {
                 Log.e(TAG, "user registration failed.");
-                this.userLiveData.postError(new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
+                this.userLiveData.postError(
+                        new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
               }
             });
   }
 
-  /**Method creates a new user.**/
+  /** Method creates a new user. **/
   private void createNewUser(String username, String email, String uid) {
     UserModel newUser = new UserModel();
     newUser.setDisplayName(username);
@@ -134,7 +133,7 @@ public class AuthAppRepository {
             });
   }
 
-  /** listenr: changes on firebase user status */
+  /** listenr: changes on firebase user status. */
   private FirebaseAuth.AuthStateListener authStateListenerVerification() {
     return firebaseAuth1 -> {
       Log.d(TAG, "Firebase Auth State changed");
@@ -192,6 +191,7 @@ public class AuthAppRepository {
     }
   }
 
+  /** JavaDoc. */
   public void sendPasswordResetMail(String email) {
     this.emailSentLiveData.postLoading();
 
@@ -205,7 +205,8 @@ public class AuthAppRepository {
                 this.emailSentLiveData.postCreate(Boolean.FALSE);
               } else {
                 Log.e(TAG, Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT);
-                this.emailSentLiveData.postError(new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
+                this.emailSentLiveData.postError(
+                        new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
               }
             });
   }

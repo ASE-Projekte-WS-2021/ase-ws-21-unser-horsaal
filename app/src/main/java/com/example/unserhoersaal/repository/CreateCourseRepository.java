@@ -1,11 +1,9 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -75,7 +73,10 @@ public class CreateCourseRepository {
   }
 
   private void addUserToCourse(CourseModel course, String user) {
-    this.databaseReference.child(Config.CHILD_USER_COURSES).child(user).child(course.getKey())
+    this.databaseReference
+            .child(Config.CHILD_USER_COURSES)
+            .child(user)
+            .child(course.getKey())
             .setValue(Boolean.TRUE)
             .addOnSuccessListener(unused ->
                     databaseReference.child(Config.CHILD_COURSES_USER)
@@ -89,8 +90,7 @@ public class CreateCourseRepository {
                               courseModelMutableLiveData.postError(
                                       new Error(Config.COURSES_COURSE_CREATION_FAILURE),
                                       ErrorTag.REPO);
-                            })
-            );
+                            }));
   }
 
   private void addMapping(CourseModel course) {

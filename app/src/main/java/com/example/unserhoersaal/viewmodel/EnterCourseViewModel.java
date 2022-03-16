@@ -63,12 +63,15 @@ public class EnterCourseViewModel extends ViewModel {
       return;
     }
 
-    if (courseModel.getCodeMapping()== null) {
-      this.courseIdInputState.postError(new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
+    if (courseModel.getCodeMapping() == null) {
+      this.courseIdInputState.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
       Log.d(TAG, "codeMapping is null.");
       return;
-    } else if (!Validation.stringHasPattern(courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.courseIdInputState.postError(new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
+    } else if (!Validation.stringHasPattern(
+            courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
+      this.courseIdInputState.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
       Log.d(TAG, "codeMapping has wrong pattern.");
       return;
     }
@@ -91,12 +94,14 @@ public class EnterCourseViewModel extends ViewModel {
     }
 
     if (courseModel.getCodeMapping() == null) {
-      this.courseModelStateLiveData.postError(new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
+      this.courseModelStateLiveData.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
       Log.d(TAG, "codeMapping is null.");
       return;
-    }
-    else if (!Validation.stringHasPattern(courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.courseModelStateLiveData.postError(new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
+    } else if (!Validation.stringHasPattern(
+            courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
+      this.courseModelStateLiveData.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
       Log.d(TAG, "codeMapping has wrong pattern.");
       return;
     }

@@ -78,7 +78,8 @@ public class CurrentCourseViewModel extends ViewModel {
       return;
     } else if (!Validation.stringHasPattern(messageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
       Log.d(TAG, "title has wrong pattern.");
-      this.messageModelInputState.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
+      this.messageModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
       return;
     }
 

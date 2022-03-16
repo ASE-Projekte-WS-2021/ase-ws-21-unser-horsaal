@@ -40,6 +40,7 @@ public class CourseDescriptionViewModel extends ViewModel {
     this.courseDescriptionRepository.setCourseId(courseId);
   }
 
+  /** JavaDoc. */
   public void unregisterFromCourse() {
     String courseKey = Validation.checkStateLiveData(this.courseId, TAG);
 
