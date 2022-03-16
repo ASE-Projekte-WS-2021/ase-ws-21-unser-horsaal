@@ -64,7 +64,7 @@ public class EditProfileInstitutionFragment extends Fragment {
     this.resetBindings();
 
     if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
-      this.navController.navigate(R.id.action_editProfilePasswordFragment_to_profileFragment);
+      this.navController.navigate(R.id.action_editProfileInstitutionFragment_to_profileFragment);
     } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (booleanStateData.getErrorTag() == ErrorTag.INSTITUTION) {
         this.binding.editProfileInstitutionFragmentInstitutionErrorText

@@ -2,9 +2,12 @@ package com.example.unserhoersaal.utils;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.util.Log;
 import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,8 +22,8 @@ public class DateTimePicker {
   @BindingAdapter("datePicker")
   public static void datePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
-      MeetingModel meetingModel = 
-              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState);
+      MeetingsModel meetingModel =
+              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState, TAG);
       if (meetingModel == null) {
         Log.e(TAG, "MeetingModel is null");
         return;
@@ -49,8 +52,8 @@ public class DateTimePicker {
   @BindingAdapter("timePicker")
   public static void timePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     TimePickerDialog.OnTimeSetListener timeSetListener = (datePicker, hour, minute) -> {
-      MeetingModel meetingModel = 
-              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState);
+      MeetingsModel meetingModel =
+              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState, TAG);
       if (meetingModel == null) {
         Log.e(TAG, "MeetingModel is null");
         return;

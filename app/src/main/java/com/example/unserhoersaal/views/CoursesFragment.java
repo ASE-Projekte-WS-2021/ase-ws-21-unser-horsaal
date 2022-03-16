@@ -80,11 +80,11 @@ public class CoursesFragment extends Fragment {
             .get(CoursesViewModel.class);
     this.coursesViewModel.init();
 
-    this.coursesViewModel.getUserCourses()
-            .observe(getViewLifecycleOwner(), this::coursesLiveDataCallback);
+    /*this.coursesViewModel.getUserCourses()
+            .observe(getViewLifecycleOwner(), this::coursesLiveDataCallback);*/
   }
 
-  @SuppressLint("NotifyDataSetChanged")
+  /*@SuppressLint("NotifyDataSetChanged")
   private void coursesLiveDataCallback(StateData<List<CourseModel>> listStateData) {
     this.resetBindings();
     this.coursesAdapter.notifyDataSetChanged();
@@ -100,7 +100,7 @@ public class CoursesFragment extends Fragment {
     } else {
       this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
     }
-  }
+  }*/
 
   private void resetBindings() {
     this.binding.coursesFragmentProgressSpinner.setVisibility(View.GONE);

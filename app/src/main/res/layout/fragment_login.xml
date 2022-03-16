@@ -122,7 +122,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/login_fragment_login_button_string"
-                    android:layout_gravity="center"
                     app:backgroundTint="@null"
                     app:icon="@drawable/ic_baseline_login_24"
                     app:iconGravity="textStart"

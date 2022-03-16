@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment {
     this.profileViewModel
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
-    this.profileViewModel.loadProfile();
+    //this.profileViewModel.loadProfile();
     this.profileViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
               if (firebaseUser.getData() == null) {

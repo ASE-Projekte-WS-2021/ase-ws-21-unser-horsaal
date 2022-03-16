@@ -60,10 +60,9 @@
             app:layout_constraintTop_toTopOf="parent" >
 
             <TextView
-                style="@style/toolbarTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@={vm.meeting.data.title}"
+                android:text="@string/course_meeting_subtitle"
                 style="@style/toolbarTitleStyle"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -82,7 +81,7 @@
                 android:id="@+id/courseMeetingFragmentToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@={vm.meeting.title}"
+                android:text="@={vm.meeting.data.title}"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 style="@style/toolbarSubtitleStyle"

@@ -172,10 +172,4 @@ public class LoginFragment extends Fragment {
     this.binding.setVm(this.loginViewModel);
   }
 
-  @Override
-  public void onPause() {
-    super.onPause();
-    this.loginViewModel.resetErrorMessageLiveData();
-  }
-
 }

@@ -63,8 +63,6 @@ public class ProfileViewModel extends ViewModel {
   }
 
   public void logout() {
-    //TODO better way? statusLiveData
-    this.profileLiveData.setValue(new UserModel());
     this.authAppRepository.logOut();
   }
 

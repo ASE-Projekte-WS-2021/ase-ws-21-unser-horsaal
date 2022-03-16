@@ -158,10 +158,4 @@ public class RegistrationFragment extends Fragment {
     this.binding.setVm(this.registrationViewModel);
   }
 
-  @Override
-  public void onPause() {
-    super.onPause();
-    this.registrationViewModel.resetErrorMessageLiveData();
-    this.registrationViewModel.resetDatabindingData();
-  }
 }

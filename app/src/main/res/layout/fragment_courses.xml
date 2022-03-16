@@ -23,7 +23,6 @@
         tools:context="views.CoursesFragment"
         android:background="@color/app_background">
 
-
         <ProgressBar
             android:id="@+id/coursesFragmentProgressSpinner"
             android:visibility="gone"

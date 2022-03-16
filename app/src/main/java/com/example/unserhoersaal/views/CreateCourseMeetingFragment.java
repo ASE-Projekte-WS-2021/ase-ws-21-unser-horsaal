@@ -11,9 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.bumptech.glide.util.Util;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseMeetingBinding;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 
 /**Create Course Meeting.*/
@@ -56,13 +60,23 @@ public class CreateCourseMeetingFragment extends Fragment {
             .get(CourseHistoryViewModel.class);
     this.courseHistoryViewModel.init();
     this.courseHistoryViewModel.getMeetingsModel()
-            .observe(getViewLifecycleOwner(), meetingsModel -> {
-              if (meetingsModel != null) {
-                KeyboardUtil.hideKeyboard(getActivity());
-                this.navController.navigate(
-                        R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::meetingModelLiveDataCallback);
+  }
+
+  private void meetingModelLiveDataCallback(StateData<MeetingsModel> meetingsModelStateData) {
+    this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
+    if (meetingsModelStateData.getStatus() == StateData.DataStatus.LOADING) {
+      //TODO spinner
+    } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      //TODO error inclusive errortags
+    } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
+      this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
+    }
+  }
+
+  private void resetBindings() {
+    //TODO: spinner, errortext
   }
 
   private void connectBinding() {

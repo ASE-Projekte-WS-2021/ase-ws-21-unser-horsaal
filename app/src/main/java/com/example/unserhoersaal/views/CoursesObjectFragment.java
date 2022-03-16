@@ -48,7 +48,7 @@ public class CoursesObjectFragment extends Fragment {
     this.coursesViewModel.getUserCourses()
             .observe(getViewLifecycleOwner(), userCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
-              if (userCourses.size() == 0) {
+              if (userCourses.getData().size() == 0) {
                 this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
               } else {
                 this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
@@ -57,8 +57,8 @@ public class CoursesObjectFragment extends Fragment {
   }
 
   private void connectAdapter() {
-    this.coursesAdapter = new CoursesAdapter(
-            this.coursesViewModel.getUserCourses().getValue());
+    this.coursesAdapter =
+            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue().getData());
   }
 
   private void connectBinding() {

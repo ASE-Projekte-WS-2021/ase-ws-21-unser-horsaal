@@ -63,13 +63,6 @@
                         android:maxLength="15"/>
 
                     <TextView
-                        android:text="@{vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_EMPTY ? Config.REG_USERNAME_EMPTY : Config.REG_USERNAME_WRONG_PATTERN}"
-                        android:visibility="@{vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_EMPTY || vm.errorMessageRegUserName == LogRegErrorMessEnum.USERNAME_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                    <TextView
                         android:id="@+id/registrationFragmentUserErrorText"
                         android:visibility="gone"
                         android:textColor="@color/red"

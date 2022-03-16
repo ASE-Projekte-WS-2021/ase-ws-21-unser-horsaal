@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:singleLine="true"
-                        android:text="@={vm.dataBindingMeetingInput.data.title}"
+                        android:text="@={vm.meetingModelInputState.data.title}"
                         android:maxLength="100"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
