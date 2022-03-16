@@ -30,7 +30,9 @@ public class CourseMeetingViewModel extends ViewModel {
     }
 
     this.courseMeetingRepository = CourseMeetingRepository.getInstance();
+    this.arrayListUtil = new ArrayListUtil();
     this.meeting = this.courseMeetingRepository.getMeeting();
+    this.arrayListUtil.setMutableLiveDataActualMeeting(meeting);
     this.threadModelMutableLiveData =
             this.courseMeetingRepository.getThreadModelMutableLiveData();
 
@@ -59,7 +61,7 @@ public class CourseMeetingViewModel extends ViewModel {
    *  filter options: "answered" and "not answered"
    */
   public void filterThreads(List<ThreadModel> threadsModelList, String filterOption) {
-    this.arrayListUtil.sortThreadList(threadsModelList, filterOption);
+    this.arrayListUtil.filterThreadList(threadsModelList, filterOption);
   }
 
   public LiveData<MeetingsModel> getMeeting() {

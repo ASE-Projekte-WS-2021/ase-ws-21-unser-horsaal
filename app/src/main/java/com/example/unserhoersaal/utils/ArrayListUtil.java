@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.utils;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 
@@ -16,6 +18,9 @@ public class ArrayListUtil {
    */
 
   /** Sorting options for MeetingsModel lists*/
+  private MutableLiveData<MeetingsModel> actualMeeting = new MutableLiveData<>();
+
+  public ArrayListUtil() {}
 
   public void sortMeetingList(List<MeetingsModel> meetingsModelList, String sortingOption) {
 
@@ -53,8 +58,12 @@ public class ArrayListUtil {
       case "not answered":
         filterThreadListByAnswerStatus(threadsModelList, false);
         break;
+      case "course provider":
+        filterThreadListByCourseProvider(threadsModelList);
+        break;
     }
   }
+
 
   /** sort by event time. */
   private void sortMeetingListByEventTime(List<MeetingsModel> meetingsModelList, String order) {
@@ -115,6 +124,21 @@ public class ArrayListUtil {
       }
     threadsModelList.clear();
     threadsModelList.addAll(filteredList);
+  }
+
+  private void filterThreadListByCourseProvider(List<ThreadModel> threadsModelList) {
+    List<ThreadModel> filteredList = new ArrayList<>();
+    for (int i = 0; i < threadsModelList.size(); i++) {
+      if (threadsModelList.get(i).getCreatorId() == this.actualMeeting.getValue().getCreatorId()) {
+        filteredList.add(threadsModelList.get(i));
+      }
+    }
+    threadsModelList.clear();
+    threadsModelList.addAll(filteredList);
+  }
+
+  public void setMutableLiveDataActualMeeting(MutableLiveData<MeetingsModel> meeting) {
+    this.actualMeeting = meeting;
   }
 
 
