@@ -1,16 +1,19 @@
 package com.example.unserhoersaal.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
 import androidx.lifecycle.ViewModel;
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
-
 import java.util.Collections;
 import java.util.Comparator;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
 import java.util.List;
 
 /** This class is the ViewModel for the joined course. */
@@ -19,12 +22,12 @@ public class CurrentCourseViewModel extends ViewModel {
   private static final String TAG = "CurrentCourseViewModel";
 
   private CurrentCourseRepository currentCourseRepository;
-  private MutableLiveData<List<MessageModel>> messages;
-  private MutableLiveData<String> threadId = new MutableLiveData<>();
-  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
-  private MutableLiveData<ThreadModel> thread = new MutableLiveData<>();
-  public MutableLiveData<String> userId;
-  public MutableLiveData<MessageModel> dataBindingMessageInput;
+  private StateLiveData<List<MessageModel>> messages;
+  private StateLiveData<String> threadId = new StateLiveData<>();
+  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
+  private StateLiveData<ThreadModel> thread = new StateLiveData<>();
+  public StateLiveData<String> userId;
+  public StateLiveData<MessageModel> messageModelInputState = new StateLiveData<>();
 
   /** This method initializes the database access. */
   public void init() {
@@ -37,16 +40,17 @@ public class CurrentCourseViewModel extends ViewModel {
     this.thread = this.currentCourseRepository.getThread();
     this.currentCourseRepository.setUserId();
     this.userId = this.currentCourseRepository.getUserId();
-    this.dataBindingMessageInput = new MutableLiveData<>(new MessageModel());
+    this.messageModelInputState.postCreate(new MessageModel());
 
     // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
     // the messages and only set the courseId can init the CurrentCourseViewModel
     if (this.threadId.getValue() != null) {
+      Log.d(TAG, "threadId: " + this.threadId.getValue().getData());
       this.messages = this.currentCourseRepository.getMessages();
     }
   }
 
-  public LiveData<List<MessageModel>> getMessages() {
+  public StateLiveData<List<MessageModel>> getMessages() {
     return this.messages;
   }
 
@@ -60,30 +64,40 @@ public class CurrentCourseViewModel extends ViewModel {
     });
   }
 
-  public LiveData<String> getThreadId() {
+  public StateLiveData<String> getThreadId() {
     return this.threadId;
   }
 
-  public LiveData<MeetingsModel> getMeeting() {
+  public StateLiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }
 
-  public LiveData<ThreadModel> getThread() {
+  public StateLiveData<ThreadModel> getThread() {
     return  this.thread;
   }
 
   /** Send a new message in a thread. */
   public void sendMessage() {
-    //TODO: handle status to view
-    if (this.dataBindingMessageInput.getValue() == null) {
-      return;
-    }
-    //no empty messages
-    if (this.dataBindingMessageInput.getValue().getText() == null) {
+    MessageModel messageModel = Validation.checkStateLiveData(this.messageModelInputState, TAG);
+    if (messageModel == null) {
+      Log.e(TAG, "messageModel is null.");
       return;
     }
 
-    MessageModel messageModel = this.dataBindingMessageInput.getValue();
+    if (messageModel.getText() == null) {
+      Log.d(TAG, "title is null.");
+      this.messageModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.VM);
+      return;
+    } else if (!Validation.stringHasPattern(messageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
+      Log.d(TAG, "title has wrong pattern.");
+      this.messageModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
+      return;
+    }
+
+    messageModel.setCreationTime(System.currentTimeMillis());
+
+    this.messageModelInputState.postCreate(new MessageModel());
     this.currentCourseRepository.sendMessage(messageModel);
   }
 

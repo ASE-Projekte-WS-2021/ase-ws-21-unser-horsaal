@@ -12,19 +12,23 @@ import java.util.Date;
 /** BindingAdapters used in CreateMeetingFragment that lets the user choose a date and time. */
 public class DateTimePicker {
 
+  private static final String TAG = "DateTimePicker";
+
   /** opens a date picker dialog. */
   //code reference: https://github.com/codeWithCal/DatePickerTutorial/blob/master/app/src/main/java/codewithcal/au/datepickertutorial/MainActivity.java
   @BindingAdapter("datePicker")
   public static void datePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
-      //TODO: handle error to view!
-      if (courseHistoryViewModel.dataBindingMeetingInput.getValue() == null) {
+      MeetingModel meetingModel = 
+              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState);
+      if (meetingModel == null) {
+        Log.e(TAG, "MeetingModel is null");
         return;
       }
 
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setYearInput(year);
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setMonthInput(month);
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setDayOfMonthInput(day);
+      meetingModel.setYearInput(year);
+      meetingModel.setMonthInput(month);
+      meetingModel.setDayOfMonthInput(day);
       String time = day + "." + (month + 1) + "." + year;
       view.setText(time);
     };
@@ -45,13 +49,15 @@ public class DateTimePicker {
   @BindingAdapter("timePicker")
   public static void timePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     TimePickerDialog.OnTimeSetListener timeSetListener = (datePicker, hour, minute) -> {
-      //TODO: handle error to view!
-      if (courseHistoryViewModel.dataBindingMeetingInput.getValue() == null) {
+      MeetingModel meetingModel = 
+              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState);
+      if (meetingModel == null) {
+        Log.e(TAG, "MeetingModel is null");
         return;
       }
 
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setHourInput(hour);
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setMinuteInput(minute);
+      meetingModel.setHourInput(hour);
+      meetingModel.setMinuteInput(minute);
       String time = hour + ":" + minute;
       view.setText(time);
     };

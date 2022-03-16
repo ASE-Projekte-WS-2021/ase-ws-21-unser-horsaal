@@ -2,6 +2,7 @@ package com.example.unserhoersaal.utils;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.ViewModelProvider;
@@ -38,6 +39,7 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseHistoryViewModel.class);
     courseHistoryViewModel.init();
+    Log.d("test", model.getKey());
     courseHistoryViewModel.setCourse(model);
 
     NavController navController = Navigation.findNavController(view);
@@ -91,6 +93,7 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseDescriptionViewModel.class);
     courseDescriptionViewModel.init();
+    Log.d("NAVUTIL", courseId);
     courseDescriptionViewModel.setCourseId(courseId);
 
     NavController navController = Navigation.findNavController(view);

@@ -39,6 +39,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"/>
 
+        <ProgressBar
+            android:id="@+id/coursesHistoryFragmentProgressSpinner"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.95" />
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/courseHistoryFragmentToolbar"
             android:layout_width="match_parent"
@@ -53,8 +66,8 @@
                 android:id="@+id/courseHistoryFragmentToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_history_fragment_subtitle"
-                style="@style/toolbarTitleStyle" />
+                android:text="@{vm.course.data.title}"
+                style="@style/toolbarTitleStyle"/>
         </com.google.android.material.appbar.MaterialToolbar>
 
         <LinearLayout
@@ -117,7 +130,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/white"
-            android:visibility="@{vm.course.creatorId.equals(vm.userId) ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{vm.course.data.creatorId.equals(vm.userId) ? View.VISIBLE : View.GONE}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

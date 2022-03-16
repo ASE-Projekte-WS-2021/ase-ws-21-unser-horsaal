@@ -92,13 +92,28 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/enterCourseFragmentCourseNumberEditText"
-                        android:text="@={vm.dataBindingCourseIdInput}"
+                        android:text="@={vm.courseIdInputState.data.codeMapping}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:background="@color/white"/>
 
+                    <TextView
+                        android:id="@+id/enterCourseFragmentPasswordErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <ProgressBar
+                    android:id="@+id/enterCourseFragmentProgressSpinner"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_gravity="center"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/enterCourseFragmentEnterButton"
@@ -108,8 +123,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/enter_course_fragment_button_string" />
-
-
 
                 <ImageView
                     android:id="@+id/enterCourseFragmentQrImage"

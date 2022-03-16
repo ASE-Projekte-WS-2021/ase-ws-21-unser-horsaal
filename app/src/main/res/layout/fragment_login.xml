@@ -7,16 +7,9 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.LoginViewModel"/>
-
-        <import
-            type="com.example.unserhoersaal.enums.LogRegErrorMessEnum" />
-
-        <import
-            type="com.example.unserhoersaal.Config" />
-
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
-
         <import type="android.view.View"/>
     </data>
 
@@ -62,15 +55,15 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentUserEmailEditText"
-                        android:text="@={vm.dataBindingUserInput.email}"
+                        android:text="@={vm.userInputState.data.email}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:background="@color/white" />
 
                     <TextView
-                        android:text="@{vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_EMPTY ? Config.EMAIL_EMPTY : Config.EMAIL_PATTERN_WRONG}"
-                        android:visibility="@{vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_EMPTY || vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:id="@+id/loginFragmentUserEmailErrorText"
+                        android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -88,7 +81,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentPasswordEditText"
-                        android:text="@={vm.dataBindingPasswordInput}"
+                        android:text="@={vm.passwordInputState.data.currentPassword}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
@@ -96,13 +89,30 @@
                         android:background="@color/white"/>
 
                     <TextView
-                        android:text="@{vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.PASSWORD_PATTERN_WRONG}"
-                        android:visibility="@{vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_EMPTY || vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:id="@+id/loginFragmentPasswordErrorText"
+                        android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/loginFragmentGeneralErrorMessage"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center" />
+
+                <ProgressBar
+                    android:id="@+id/loginFragmentProgressSpinner"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginFragmentLoginButton"
@@ -115,16 +125,7 @@
                     android:layout_gravity="center"
                     app:backgroundTint="@null"
                     app:icon="@drawable/ic_baseline_login_24"
-                    app:iconGravity="textStart" />
-
-                <TextView
-                    android:text="@string/login_fragment_login_failure"
-                    android:visibility="@{vm.errorMessageLogProcess == LogRegErrorMessEnum.WRONG_LOGIN_INPUT ? View.VISIBLE : View.GONE}"
-                    android:textColor="@color/red"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="10dp"
+                    app:iconGravity="textStart"
                     android:layout_gravity="center"/>
 
                 <TextView

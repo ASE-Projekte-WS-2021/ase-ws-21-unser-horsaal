@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentResetPasswordBinding;
-import com.example.unserhoersaal.enums.ResetPasswordEnum;
+import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
+import com.google.firebase.auth.FirebaseUser;
 
 /** JavaDoc for this Fragment. */
 public class ResetPasswordFragment extends Fragment {
@@ -37,11 +40,10 @@ public class ResetPasswordFragment extends Fragment {
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_reset_password, container,
             false);
-    // Inflate the layout for this fragment
     return this.binding.getRoot();
   }
 
@@ -58,29 +60,56 @@ public class ResetPasswordFragment extends Fragment {
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     this.loginViewModel.init();
-
     this.loginViewModel
-            .getEmailExistency().observe(getViewLifecycleOwner(), existency -> {
-              if (existency == ResetPasswordEnum.SUCCESS) {
-                loginViewModel.sendPasswordResetMail();
-                Toast.makeText(getContext(), Config.DIALOG_PASSWORD_RESET_SUCCESS,
-                        Toast.LENGTH_LONG).show();
-              } else if (existency == ResetPasswordEnum.ERROR) {
-                Toast.makeText(getContext(), Config.DIALOG_EMAIL_PATTERN_WRONG, Toast.LENGTH_LONG)
-                        .show();
-              }
-            });
+            .getEmailSentLiveData()
+            .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
+    this.loginViewModel
+            .getUserInputState()
+            .observe(getViewLifecycleOwner(), this::userInputState);
+  }
+
+
+  private void userLiveDataCallback(StateData<Boolean> booleanStateData) {
+    this.resetBindings();
+
+    if (booleanStateData == null) {
+      this.binding.resetPasswordErrorText.setText(Config.UNSPECIFIC_ERROR);
+      this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
+      return;
+    }
+
+    if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
+      Toast.makeText(getContext(),
+              Config.AUTH_VERIFICATION_EMAIL_SENT,
+              Toast.LENGTH_LONG)
+              .show();
+
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.resetPasswordFragmentSpinner.setVisibility(View.VISIBLE);
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.resetPasswordErrorText
+              .setText(booleanStateData.getError().getMessage());
+      this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void userInputState(StateData<UserModel> userModelStateData) {
+    this.resetBindings();
+
+    if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.resetPasswordErrorText.setText(userModelStateData.getError().getMessage());
+      this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
+    this.binding.resetPasswordErrorText.setVisibility(View.GONE);
   }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.loginViewModel);
-  }
-
-  @Override
-  public void onPause() {
-    super.onPause();
-    this.loginViewModel.resetPasswordReseter();
   }
 
 }

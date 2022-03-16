@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -15,10 +16,13 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.MeetingAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseHistoryBinding;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
+import java.util.List;
 
 /** Fragment contains list of course-meetings.*/
 public class CourseHistoryFragment extends Fragment {
@@ -61,7 +65,6 @@ public class CourseHistoryFragment extends Fragment {
     this.initToolbar();
   }
 
-  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
             .get(CourseHistoryViewModel.class);
@@ -73,28 +76,47 @@ public class CourseHistoryFragment extends Fragment {
     this.courseMeetingViewModel.init();
     this.courseDescriptionViewModel.init();
 
-    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
-      this.courseHistoryViewModel.sortMeetingByEventTime(meetingsModels);
-      meetingAdapter.notifyDataSetChanged();
-      if (meetingsModels.size() == 0) {
-        this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
-      } else {
-        this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
-      }
-    });
+    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
+            this::meetingsLiveDataCallback);
     this.courseHistoryViewModel.getMeetingsModel()
-            .observe(getViewLifecycleOwner(), meetingsModel -> {
-              if (meetingsModel != null) {
-                KeyboardUtil.hideKeyboard(getActivity());
-                this.courseHistoryViewModel.resetMeetingData();
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::meetingModelInputStateCallback);
+  }
+
+  @SuppressLint("NotifyDataSetChanged")
+  private void meetingsLiveDataCallback(StateData<List<MeetingsModel>> listStateData) {
+    if (listStateData == null) {
+      return;
+    }
+    this.resetBindings();
+    this.meetingAdapter.notifyDataSetChanged();
+
+    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    if (listStateData.getData().size() == 0) {
+      this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
+    } else {
+      this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
+    }
+  }
+
+  private void meetingModelInputStateCallback(StateData<MeetingsModel> meetingsModelStateData) {
+    if (meetingsModelStateData != null) {
+      KeyboardUtil.hideKeyboard(getActivity());
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
 
   private void connectAdapter() {
     this.meetingAdapter =
-            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue());
+            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData());
   }
 
   private void connectBinding() {
@@ -115,7 +137,7 @@ public class CourseHistoryFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    courseHistoryViewModel.resetMeetingData();
+    this.courseHistoryViewModel.resetMeetingData();
   }
 
 }

@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     Drawable background = ResourcesCompat.getDrawable(getResources(),
             R.drawable.app_background, null);
     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-    window.setStatusBarColor(this.getResources().getColor(android.R.color.transparent));
-    window.setNavigationBarColor(this.getResources().getColor(android.R.color.transparent));
+    window.setStatusBarColor(ContextCompat.getColor(this, android.R.color.transparent));
+    window.setNavigationBarColor(ContextCompat.getColor(this, android.R.color.transparent));
     window.setBackgroundDrawable(background);
   }
 

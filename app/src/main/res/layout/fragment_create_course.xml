@@ -87,12 +87,19 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseTitleEditText"
-                        android:text="@={vm.dataBindingCourseModelInput.title}"
+                        android:text="@={vm.courseModelInputState.data.title}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:background="@color/white"
                         android:maxLength="100"/>
+
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseTitleErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,13 +112,20 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseDescriptionEditText"
-                        android:text="@={vm.dataBindingCourseModelInput.description}"
+                        android:text="@={vm.courseModelInputState.data.description}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
                         android:singleLine="false"
                         android:background="@color/white"
                         android:maxLength="500"/>
+
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseDescriptionErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,7 +138,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseInstitutionEditText"
-                        android:text="@={vm.dataBindingCourseModelInput.institution}"
+                        android:text="@={vm.courseModelInputState.data.institution}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
@@ -132,7 +146,32 @@
                         android:background="@color/white"
                         android:maxLength="75"/>
 
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseInstitutionErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/createCourseFragmentCourseGeneralErrorText"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <ProgressBar
+                    android:id="@+id/coursesCreateFragmentProgressSpinner"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
 
                 <com.google.android.material.button.MaterialButton

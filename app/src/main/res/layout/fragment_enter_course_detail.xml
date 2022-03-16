@@ -46,7 +46,7 @@
                     android:id="@+id/enterCourseDetailFragmentCourseTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.course.title}"
+                    android:text="@{vm.course.data.title}"
                     android:layout_marginTop="16dp"
                     style="@style/toolbarSubtitleStyle" />
 
@@ -54,7 +54,7 @@
                     android:id="@+id/enterCourseDetailFragmentCourseCreator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.course.creatorName}"
+                    android:text="@{vm.course.data.creatorName}"
                     android:layout_marginTop="8dp"
                     style="@style/toolbarSubtitleStyle" />
 
@@ -62,7 +62,7 @@
                     android:id="@+id/enterCourseDetailFragmentCourseInstitution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.course.institution}"
+                    android:text="@{vm.course.data.institution}"
                     android:layout_marginTop="8dp"
                     style="@style/toolbarSubtitleStyle" />
 

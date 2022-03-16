@@ -51,7 +51,7 @@
 
             <ImageView
                 android:id="@+id/profileFragmentProfileImage"
-                setImage="@{vm.profileLiveData.photoUrl}"
+                setImage="@{vm.profileLiveData.data.photoUrl}"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:maxWidth="100dp"
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:text="@={vm.profileLiveData.displayName}"
+                    android:text="@={vm.profileLiveData.data.displayName}"
                     android:textAlignment="textEnd"
                     android:layout_marginEnd="16dp"
                     android:textStyle="bold" />
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginEnd="16dp"
-                    android:text="@={vm.profileLiveData.institution}"
+                    android:text="@={vm.profileLiveData.data.institution}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold" />
 
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginEnd="16dp"
-                    android:text="@{vm.profileLiveData.email}"
+                    android:text="@{vm.profileLiveData.data.email}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold" />
 

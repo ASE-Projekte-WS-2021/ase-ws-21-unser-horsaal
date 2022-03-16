@@ -2,7 +2,12 @@ package com.example.unserhoersaal.utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.example.unserhoersaal.enums.ErrorTag;
 
+/** Wrapper Class for Data in StateLiveData. Extends Data with Error and Status so that
+ *  we can observe this Data in any desired Fragment for different cases and display Error or
+ *  Warning Messages accordingly to the User. */
+//code reference: https://stackoverflow.com/a/53420462/13620136
 public class StateData<T> {
 
   @NonNull
@@ -14,46 +19,81 @@ public class StateData<T> {
   @Nullable
   private Throwable error;
 
+  @NonNull
+  private ErrorTag errorTag;
+
+  /** TODO. */
+  @Deprecated
   public StateData(@Nullable T data) {
     this.status = DataStatus.CREATED;
     this.data = data;
     this.error = null;
+    this.errorTag = ErrorTag.NULL;
   }
 
+  /** TODO. */
   public StateData() {
     this.status = DataStatus.CREATED;
-    this.data = null;
     this.error = null;
+    this.errorTag = ErrorTag.NULL;
   }
 
-  public StateData<T> setData(T data) {
-    this.data = data;
+  /** Instantiate or reset data using the constructor. Status, Error and ErrorTag is created here.*/
+  public StateData<T> create(T modelInstance) {
+    this.status = DataStatus.CREATED;
+    this.data = modelInstance;
+    this.error = null;
+    this.errorTag = ErrorTag.NULL;
     return this;
   }
 
+  /** Set DataStatus to loading. */
   public StateData<T> loading() {
     this.status = DataStatus.LOADING;
-    this.data = null;
     this.error = null;
+    this.errorTag = ErrorTag.NULL;
     return this;
   }
 
-  public StateData<T> success(@NonNull T data) {
-    this.status = DataStatus.SUCCESS;
+  /**
+   * Updates the current data in this class.
+   *
+   * @param data update data
+   * */
+  public StateData<T> update(@Nullable T data) {
+    this.status = DataStatus.UPDATE;
     this.data = data;
     this.error = null;
+    this.errorTag = ErrorTag.NULL;
     return this;
   }
 
-  public StateData<T> error(@NonNull Throwable error) {
+  /** TODO. */
+  @Deprecated
+  public StateData<T> success() {
+    this.status = DataStatus.CREATED;
+    this.error = null;
+    this.errorTag = ErrorTag.NULL;
+    return this;
+  }
+
+  /**
+   * Method to set an error message.
+   * Removed this.data = null because it would lead to many null pointer exceptions.
+   * Better call postCreate to wipe data.
+   *
+   * @param error error to be handled
+   * @param errorTag to help differentiate ErrorTextViews
+   * */
+  public StateData<T> error(@NonNull Throwable error, ErrorTag errorTag) {
     this.status = DataStatus.ERROR;
-    this.data = null;
     this.error = error;
+    this.errorTag = errorTag;
     return this;
   }
 
+  @Deprecated
   public StateData<T> complete() {
-    this.status = DataStatus.COMPLETE;
     return this;
   }
 
@@ -72,11 +112,17 @@ public class StateData<T> {
     return error;
   }
 
+  @NonNull
+  public ErrorTag getErrorTag() {
+    return errorTag;
+  }
+
+  /** TODO. */
   public enum DataStatus {
     CREATED,
-    SUCCESS,
-    ERROR,
     LOADING,
-    COMPLETE
+    ERROR,
+    UPDATE
   }
+
 }

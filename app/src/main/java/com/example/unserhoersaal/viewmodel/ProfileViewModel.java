@@ -1,12 +1,14 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.repository.ProfileRepository;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,12 +19,11 @@ public class ProfileViewModel extends ViewModel {
 
   private AuthAppRepository authAppRepository;
   private ProfileRepository profileRepository;
-  private MutableLiveData<FirebaseUser> userLiveData;
-  private MutableLiveData<UserModel> profileLiveData;
-  public MutableLiveData<UserModel> dataBindingProfileInput;
-  public MutableLiveData<String> dataBindingOldPasswordInput;
-  public MutableLiveData<String> dataBindingNewPasswordInput;
-  public MutableLiveData<Boolean> profileChanged;
+  private StateLiveData<FirebaseUser> userLiveData;
+  private StateLiveData<UserModel> profileLiveData;
+  public StateLiveData<UserModel> userInputState = new StateLiveData<>();
+  public StateLiveData<PasswordModel> passwordInputState = new StateLiveData<>();
+  public StateLiveData<Boolean> profileChanged;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
@@ -30,37 +31,37 @@ public class ProfileViewModel extends ViewModel {
       return;
     }
     this.authAppRepository = AuthAppRepository.getInstance();
-    this.userLiveData = this.authAppRepository.getUserLiveData();
-
-    //this live data loads profile data into the text views
     this.profileRepository = ProfileRepository.getInstance();
+    this.userLiveData = this.authAppRepository.getUserStateLiveData();
     this.profileLiveData = this.profileRepository.getUser();
 
-    this.dataBindingProfileInput = new MutableLiveData<>(new UserModel());
-    this.dataBindingOldPasswordInput = new MutableLiveData<>();
-    this.dataBindingNewPasswordInput = new MutableLiveData<>();
-
+    this.userInputState.postCreate(new UserModel());
+    this.passwordInputState.postCreate(new PasswordModel());
     this.profileChanged = this.profileRepository.getProfileChanged();
   }
 
-  public void loadProfile() {
-    this.profileRepository.loadUser();
-  }
-
   /** Give back the user data. */
-  public LiveData<FirebaseUser> getUserLiveData() {
+  public StateLiveData<FirebaseUser> getUserLiveData() {
     return this.userLiveData;
   }
 
-  public LiveData<UserModel> getProfileLiveData() {
+  public StateLiveData<UserModel> getProfileLiveData() {
     return this.profileLiveData;
   }
 
-  public LiveData<Boolean> getProfileChanged() {
+  public StateLiveData<Boolean> getProfileChanged() {
     return this.profileChanged;
   }
 
-  /** Signs out the user and resets the displayed data. */
+  public void resetProfileInput() {
+    this.userInputState.postCreate(new UserModel());
+  }
+
+  /** JavaDoc for this method. */
+  public void resetPasswordInput() {
+    this.passwordInputState.postCreate(new PasswordModel());
+  }
+
   public void logout() {
     //TODO better way? statusLiveData
     this.profileLiveData.setValue(new UserModel());
@@ -73,53 +74,90 @@ public class ProfileViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void changeDisplayName() {
-    if (this.dataBindingProfileInput.getValue() == null) {
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    if (userModel == null) {
+      Log.e(TAG, "userModel is null.");
       return;
     }
-    String displayName = this.dataBindingProfileInput.getValue().getDisplayName();
-    //TODO: check if displayName matches our policy
 
+    String displayName = userModel.getDisplayName();
+
+    if (Validation.emptyString(displayName)) {
+      Log.d(TAG, "displayName is null.");
+      this.profileChanged.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
+      return;
+    } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
+      Log.d(TAG, "displayName has wrong pattern.");
+      this.profileChanged.postError(
+              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      return;
+    }
+
+    this.userInputState.postCreate(new UserModel());
     this.profileRepository.changeDisplayName(displayName);
   }
 
   /** JavaDoc for this method. */
   public void changeInstitution() {
-    if (this.dataBindingProfileInput.getValue() == null) {
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    if (userModel == null) {
+      Log.e(TAG, "userModel is null.");
       return;
     }
-    String institution = this.dataBindingProfileInput.getValue().getInstitution();
-    //TODO: check if institution matches our policy
 
+    String institution = userModel.getInstitution();
+
+    if (Validation.emptyString(institution)) {
+      Log.d(TAG, "institution is null.");
+      this.profileChanged.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
+      return;
+    } else if (!Validation.stringHasPattern(institution, Config.REGEX_PATTERN_INSTITUTION)) {
+      Log.d(TAG, "institution has wrong pattern.");
+      this.profileChanged.postError(
+              new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
+      return;
+    }
+
+    this.userInputState.postCreate(new UserModel());
     this.profileRepository.changeInstitution(institution);
   }
 
   /** JavaDoc for this method. */
   public void changePassword() {
-    if (this.dataBindingOldPasswordInput.getValue() == null
-            || this.dataBindingNewPasswordInput.getValue() == null) {
+    PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
+    if (passwordModel == null) {
+      Log.e(TAG, "passwordModel is null.");
       return;
     }
-    String oldPassword = this.dataBindingOldPasswordInput.getValue();
-    String newPassword = this.dataBindingNewPasswordInput.getValue();
-    //TODO: check if they match our policy; Feedback
-    if (Validation.passwordHasPattern(oldPassword) && Validation.passwordHasPattern(newPassword)) {
-      this.profileRepository.changePassword(oldPassword, newPassword);
-    } else {
-      //TODO: check if they match our policy; Feedback
-      Log.d(TAG, "changePassword: " + "password doesn't match pattern");
+
+    String oldPassword = passwordModel.getCurrentPassword();
+    String newPassword = passwordModel.getNewPassword();
+
+    if (Validation.emptyString(oldPassword)) {
+      Log.d(TAG, "oldPassword is null.");
+      this.profileChanged.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return;
+    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, "oldPassword has wrong pattern.");
+      this.profileChanged.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return;
     }
-  }
 
-  public void resetProfileInput() {
-    this.dataBindingProfileInput.setValue(new UserModel());
-    this.profileChanged.setValue(Boolean.FALSE);
-  }
+    if (Validation.emptyString(newPassword)) {
+      Log.d(TAG, "newPassword is null.");
+      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
+      return;
+    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, "newPassword has wrong pattern.");
+      this.profileChanged.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
+      return;
+    }
 
-  /** JavaDoc for this method. */
-  public void resetPasswordInput() {
-    this.dataBindingNewPasswordInput.setValue(null);
-    this.dataBindingOldPasswordInput.setValue(null);
-    this.profileChanged.setValue(Boolean.FALSE);
+    this.passwordInputState.postCreate(new PasswordModel());
+    this.profileRepository.changePassword(oldPassword, newPassword);
   }
 
 }
