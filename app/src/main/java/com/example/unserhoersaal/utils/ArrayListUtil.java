@@ -18,10 +18,6 @@ public class ArrayListUtil {
    */
 
   /** Sorting options for MeetingsModel lists*/
-  private MutableLiveData<MeetingsModel> actualMeeting = new MutableLiveData<>();
-
-  public ArrayListUtil() {}
-
   public void sortMeetingList(List<MeetingsModel> meetingsModelList, String sortingOption) {
 
     switch (sortingOption) {
@@ -49,7 +45,8 @@ public class ArrayListUtil {
     }
   }
 
-  public void filterThreadList(List<ThreadModel> threadsModelList, String filterOption) {
+  public void filterThreadList(List<ThreadModel> threadsModelList, String filterOption,
+                               MeetingsModel currentMeeting, String userId) {
 
     switch (filterOption) {
       case "answered":
@@ -59,7 +56,10 @@ public class ArrayListUtil {
         filterThreadListByAnswerStatus(threadsModelList, false);
         break;
       case "course provider":
-        filterThreadListByCourseProvider(threadsModelList);
+        filterThreadListByCourseProvider(threadsModelList, currentMeeting);
+        break;
+      case "own":
+        filterThreadListByOwnThreads(threadsModelList, userId);
         break;
     }
   }
@@ -126,10 +126,11 @@ public class ArrayListUtil {
     threadsModelList.addAll(filteredList);
   }
 
-  private void filterThreadListByCourseProvider(List<ThreadModel> threadsModelList) {
+  private void filterThreadListByCourseProvider(List<ThreadModel> threadsModelList,
+                                                MeetingsModel currentMeeting) {
     List<ThreadModel> filteredList = new ArrayList<>();
     for (int i = 0; i < threadsModelList.size(); i++) {
-      if (threadsModelList.get(i).getCreatorId() == this.actualMeeting.getValue().getCreatorId()) {
+      if (threadsModelList.get(i).getCreatorId() == currentMeeting.getCreatorId()) {
         filteredList.add(threadsModelList.get(i));
       }
     }
@@ -137,8 +138,16 @@ public class ArrayListUtil {
     threadsModelList.addAll(filteredList);
   }
 
-  public void setMutableLiveDataActualMeeting(MutableLiveData<MeetingsModel> meeting) {
-    this.actualMeeting = meeting;
+  private void filterThreadListByOwnThreads(List<ThreadModel> threadsModelList,
+                                            String userId) {
+    List<ThreadModel> filteredList = new ArrayList<>();
+    for (int i = 0; i < threadsModelList.size(); i++) {
+      if (threadsModelList.get(i).getCreatorId() == userId) {
+        filteredList.add(threadsModelList.get(i));
+      }
+    }
+    threadsModelList.clear();
+    threadsModelList.addAll(filteredList);
   }
 
 

@@ -99,6 +99,12 @@ public class CourseMeetingRepository {
             });
   }
 
+  public String getUserId() {
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    return firebaseAuth.getCurrentUser().getUid();
+  }
+
   /** get the author for each thread in the provided list. */
   public void getAuthor(List<ThreadModel> threadList) {
     List<Task<DataSnapshot>> authorNames = new ArrayList<>();

@@ -77,6 +77,8 @@ public class CourseHistoryViewModel extends ViewModel {
     return this.meetingsModelMutableLiveData;
   }
 
+  public LiveData<String> getUser() {return this.userId;}
+
   public void setCourse(CourseModel course) {
     this.courseHistoryRepository.setCourse(course);
   }
