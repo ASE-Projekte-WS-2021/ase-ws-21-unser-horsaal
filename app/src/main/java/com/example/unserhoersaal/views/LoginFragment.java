@@ -70,7 +70,6 @@ public class LoginFragment extends Fragment {
 
     this.navController = Navigation.findNavController(view);
 
-
     this.initDeepLinkMode();
     this.initViewModel();
     this.connectBinding();
@@ -156,4 +155,9 @@ public class LoginFragment extends Fragment {
     this.binding.setVm(this.loginViewModel);
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    this.resetBindings();
+  }
 }

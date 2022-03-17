@@ -14,6 +14,7 @@ import com.google.android.play.core.tasks.Task;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -86,8 +87,6 @@ public class AuthAppRepository {
 
   /** This method registers a new user.*/
   public void register(String username, String email, String password) {
-    this.userLiveData.postLoading();
-
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {

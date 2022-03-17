@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +18,8 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.enums.ErrorTag;
-import com.example.unserhoersaal.model.PasswordModel;
-import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.DeepLinkMode;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 import com.google.firebase.auth.FirebaseUser;
@@ -71,22 +69,15 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel = new ViewModelProvider(requireActivity())
             .get(RegistrationViewModel.class);
     this.registrationViewModel.init();
-
-    //Todo: automatic redirect to the course page after verification.
     this.registrationViewModel
             .getUserStateLiveData().observe(getViewLifecycleOwner(), this::userLiveStateCallback);
-    this.registrationViewModel
-            .getUserInputState()
-            .observe(getViewLifecycleOwner(), this::userInputStateCallback);
-    this.registrationViewModel
-            .getPasswordInputState()
-            .observe(getViewLifecycleOwner(), this::passwordInputStateCallback);
   }
 
   private void userLiveStateCallback(StateData<FirebaseUser> firebaseUserStateData) {
     this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
 
-    if (firebaseUserStateData == null) {
+    if (firebaseUserStateData == null) { //-> move to other method
       Log.e(TAG, "FirebaseUser object is null");
       this.binding.registrationFragmentGeneralErrorText.setText(Config.UNSPECIFIC_ERROR);
       this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
@@ -94,54 +85,33 @@ public class RegistrationFragment extends Fragment {
     }
 
     if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE) {
-      if (firebaseUserStateData.getData() == null) {
-        return;
-      }
-      FirebaseUser firebaseUser = firebaseUserStateData.getData();
-
-      if (firebaseUser.isEmailVerified()
-              && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
-        navController.navigate(R.id.action_registrationFragment_to_enterCourseFragment);
-      } else if (firebaseUser.isEmailVerified()) {
-        navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
-      } else if (!firebaseUser.isEmailVerified()) {
-        navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
-      }
+      //TODO: removed navigation to courses fragment and entercoursefragment because will also be
+      // in verification fragment after registration. am i right?
+      navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.registrationFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.registrationFragmentButton.setEnabled(false);
+      this.binding.registrationFragmentButton.setBackgroundColor(Color.GRAY);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.registrationFragmentGeneralErrorText
-              .setText(firebaseUserStateData.getError().getMessage());
-      this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
-    }
-
-  }
-
-  private void userInputStateCallback(StateData<UserModel> userModelStateData) {
-    this.resetBindings();
-
-    if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (userModelStateData.getErrorTag() == ErrorTag.EMAIL) {
+      if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
         this.binding.registrationFragmentUserEmailErrorText
-                .setText(userModelStateData.getError().getMessage());
+                .setText(firebaseUserStateData.getError().getMessage());
         this.binding.registrationFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
-      } else if (userModelStateData.getErrorTag() == ErrorTag.USERNAME) {
+      } else if (firebaseUserStateData.getErrorTag() == ErrorTag.USERNAME) {
         this.binding.registrationFragmentUserErrorText
-                .setText(userModelStateData.getError().getMessage());
+                .setText(firebaseUserStateData.getError().getMessage());
         this.binding.registrationFragmentUserErrorText.setVisibility(View.VISIBLE);
+      } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+        this.binding.registrationFragmentPasswordErrorText
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.registrationFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+      } else {
+        this.binding.registrationFragmentGeneralErrorText
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
       }
-
     }
-  }
 
-  private void passwordInputStateCallback(StateData<PasswordModel> passwordModelStateData) {
-    this.resetBindings();
-
-    if (passwordModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.registrationFragmentPasswordErrorText
-              .setText(passwordModelStateData.getError().getMessage());
-      this.binding.registrationFragmentPasswordErrorText.setVisibility(View.VISIBLE);
-    }
   }
 
   private void resetBindings() {
@@ -150,6 +120,8 @@ public class RegistrationFragment extends Fragment {
     this.binding.registrationFragmentUserErrorText.setVisibility(View.GONE);
     this.binding.registrationFragmentPasswordErrorText.setVisibility(View.GONE);
     this.binding.registrationFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.registrationFragmentButton.setEnabled(true);
+    this.binding.registrationFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
 
@@ -158,4 +130,9 @@ public class RegistrationFragment extends Fragment {
     this.binding.setVm(this.registrationViewModel);
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    this.resetBindings();
+  }
 }
