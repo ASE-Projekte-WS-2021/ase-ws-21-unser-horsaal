@@ -180,5 +180,7 @@
     <string name="create_thread_fragment_button_send">Nachricht senden</string>
     <string name="startzeit">Startzeit</string>
     <string name="endzeit">Endzeit</string>
+    <string name="fehler">Fehler</string>
+    <string name="pr_fung">Prüfung</string>
 
 </resources>

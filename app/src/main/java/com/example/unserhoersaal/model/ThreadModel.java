@@ -1,6 +1,10 @@
 package com.example.unserhoersaal.model;
 
 import com.example.unserhoersaal.enums.LikeStatus;
+import com.example.unserhoersaal.enums.TagEnum;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** Model for a thread. */
 public class ThreadModel {
@@ -20,6 +24,7 @@ public class ThreadModel {
   public LikeStatus likeStatus;
   public String pageNumber;
   public String hashtag;
+  public List<TagEnum> tags = new ArrayList<>();
 
   public ThreadModel() {}
 
@@ -125,5 +130,13 @@ public class ThreadModel {
 
   public void setHashtag(String hashtag) {
     this.hashtag = hashtag;
+  }
+
+  public List<TagEnum> getTags() {
+    return this.tags;
+  }
+
+  public void setTags(List<TagEnum> tags) {
+    this.tags = tags;
   }
 }

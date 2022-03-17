@@ -13,6 +13,7 @@
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="com.example.unserhoersaal.enums.TagEnum"/>
 
     </data>
 
@@ -90,10 +91,43 @@
                 app:layout_constraintEnd_toStartOf="@id/threadCardVoteContainer">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/threadCardFirstTag"
+                    android:id="@+id/threadCardSubjectMatter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="firstTag"
+                    android:text="@string/course_meeting_fragment_chip_subject"
+                    android:visibility="@{model.tags.contains(TagEnum.SUBJECT_MATTER) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCarMistake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_mistake"
+                    android:visibility="@{model.tags.contains(TagEnum.MISTAKE) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCardExamination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_exam"
+                    android:visibility="@{model.tags.contains(TagEnum.EXAMINATION) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCardOrganisation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_organizational"
+                    android:visibility="@{model.tags.contains(TagEnum.ORGANISATION) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCardOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_other"
+                    android:visibility="@{model.tags.contains(TagEnum.OTHER) ? View.VISIBLE : View.GONE}"
                     android:layout_marginEnd="8dp" />
 
                 <com.google.android.material.chip.Chip
