@@ -177,8 +177,6 @@ public class AuthAppRepository {
 
   /** Method to (re)send a email verification.*/
   public void resendVerificationEmail() {
-    this.userLiveData.postLoading();
-
     if (this.firebaseUser == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.userLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);

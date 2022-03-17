@@ -104,4 +104,9 @@ public class ResetPasswordFragment extends Fragment {
     this.binding.setVm(this.loginViewModel);
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    this.resetBindings();
+  }
 }

@@ -138,6 +138,7 @@ public class LoginViewModel extends ViewModel {
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
   public void resendVerificationEmail() {
+    this.userLiveData.postLoading();
     this.authAppRepository.resendVerificationEmail();
   }
 
