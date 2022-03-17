@@ -84,7 +84,6 @@ public class CurrentCourseFragment extends Fragment {
   }
 
   private void initRecyclerView() {
-    //TODO: assert != null
     this.chatAdapter = new ChatAdapter(
             this.currentCourseViewModel.getMessages().getValue().getData(),
             this.currentCourseViewModel);

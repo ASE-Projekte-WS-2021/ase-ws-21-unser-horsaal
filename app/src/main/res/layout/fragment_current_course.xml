@@ -258,7 +258,6 @@
                 android:insetTop="0dp"
                 app:icon="@drawable/ic_baseline_send_24" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
