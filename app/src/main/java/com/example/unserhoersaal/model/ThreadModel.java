@@ -18,6 +18,8 @@ public class ThreadModel {
   public int answersCount;
   public String photoUrl;
   public LikeStatus likeStatus;
+  public String pageNumber;
+  public String hashtag;
 
   public ThreadModel() {}
 
@@ -107,5 +109,21 @@ public class ThreadModel {
 
   public void setLikeStatus(LikeStatus likeStatus) {
     this.likeStatus = likeStatus;
+  }
+
+  public String getPageNumber() {
+    return this.pageNumber;
+  }
+
+  public void setPageNumber(String pageNumber) {
+    this.pageNumber = pageNumber;
+  }
+
+  public String getHashtag() {
+    return this.hashtag;
+  }
+
+  public void setHashtag(String hashtag) {
+    this.hashtag = hashtag;
   }
 }

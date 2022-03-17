@@ -155,7 +155,8 @@
                         android:singleLine="true"
                         android:background="@color/white"
                         android:maxLength="500"
-                        android:hint="#..."/>
+                        android:hint="#..."
+                        android:text="@={vm.threadModelInput.hashtag}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,7 +206,8 @@
                         android:background="@color/white"
                         android:maxLength="500"
                         android:hint="Seitenzahl"
-                        android:inputType="numberSigned"/>
+                        android:inputType="numberSigned"
+                        android:text="@={vm.threadModelInput.pageNumber}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
