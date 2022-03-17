@@ -61,13 +61,14 @@ public class EnterCourseRepository {
         if (dataSnapshot.exists()) {
           loadCourse((String) dataSnapshot.getValue());
         } else {
-          courseModel.postValue(new StateData<>(new CourseModel()));
+          courseModel.postCreate(new CourseModel());
         }
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.d(TAG, "onCancelled: " + error.getMessage());
+        courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
   }

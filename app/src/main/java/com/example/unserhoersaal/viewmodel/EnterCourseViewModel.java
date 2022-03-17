@@ -57,20 +57,23 @@ public class EnterCourseViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void checkCode() {
+    this.courseModelStateLiveData.postLoading();
+
     CourseModel courseModel = Validation.checkStateLiveData(this.courseIdInputState, TAG);
     if (courseModel == null) {
       Log.e(TAG, "courseModel is null.");
+      this.courseModelStateLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (courseModel.getCodeMapping() == null) {
-      this.courseIdInputState.postError(
+      this.courseModelStateLiveData.postError(
               new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
       Log.d(TAG, "codeMapping is null.");
       return;
     } else if (!Validation.stringHasPattern(
             courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.courseIdInputState.postError(
+      this.courseModelStateLiveData.postError(
               new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
       Log.d(TAG, "codeMapping has wrong pattern.");
       return;

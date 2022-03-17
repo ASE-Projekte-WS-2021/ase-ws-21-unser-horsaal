@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,16 +75,16 @@ public class EnterCourseFragment extends Fragment {
     this.enterCourseViewModel.init();
     this.enterCourseViewModel.getCourse()
             .observe(getViewLifecycleOwner(), this::courseLiveDataCallback);
-    this.enterCourseViewModel.getCourseIdInputState()
-            .observe(getViewLifecycleOwner(), this::courseIdInputStateCallback);
   }
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
     this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
 
     if (courseModelStateData == null) {
       this.binding.enterCourseFragmentPasswordErrorText.setText(Config.UNSPECIFIC_ERROR);
       this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+      return;
     }
 
     if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
@@ -92,12 +93,13 @@ public class EnterCourseFragment extends Fragment {
       this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
     } else if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.enterCourseFragmentEnterButton.setEnabled(false);
+      this.binding.enterCourseFragmentEnterButton.setBackgroundColor(Color.GRAY);
     } else {
       if (courseModelStateData.getData() == null) {
         return;
       }
       if (courseModelStateData.getData().getKey() != null) {
-        KeyboardUtil.hideKeyboard(getActivity());
         navController.navigate(
                 R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
       } else {
@@ -107,19 +109,11 @@ public class EnterCourseFragment extends Fragment {
     }
   }
 
-  private void courseIdInputStateCallback(StateData<CourseModel> courseModelStateData) {
-    this.resetBindings();
-
-    if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.enterCourseFragmentPasswordErrorText
-              .setText(courseModelStateData.getError().getMessage());
-      this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
-    }
-  }
-
   private void resetBindings() {
     this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.GONE);
     this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.enterCourseFragmentEnterButton.setEnabled(true);
+    this.binding.enterCourseFragmentEnterButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {
