@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,6 +17,8 @@ public class CourseDescriptionViewModel extends ViewModel {
 
   private MutableLiveData<String> courseId = new MutableLiveData<>();
   private MutableLiveData<CourseModel> courseModel;
+
+  private Bitmap qrCodeBitmap;
 
   /** Initialize the ViewModel. */
   public void init() {
@@ -42,5 +46,9 @@ public class CourseDescriptionViewModel extends ViewModel {
   public void unregisterFromCourse() {
     String id = courseId.getValue();
     this.courseDescriptionRepository.unregisterFromCourse(id);
+  }
+
+  public void setQrCodeBitmap(Bitmap qrCodeBitmap) {
+    this.qrCodeBitmap = qrCodeBitmap;
   }
 }
