@@ -1,7 +1,7 @@
 package com.example.unserhoersaal.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +17,9 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentResetPasswordBinding;
 import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
-import com.google.firebase.auth.FirebaseUser;
 
 /** JavaDoc for this Fragment. */
 public class ResetPasswordFragment extends Fragment {
@@ -63,14 +63,12 @@ public class ResetPasswordFragment extends Fragment {
     this.loginViewModel
             .getEmailSentLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
-    this.loginViewModel
-            .getUserInputState()
-            .observe(getViewLifecycleOwner(), this::userInputState);
   }
 
 
   private void userLiveDataCallback(StateData<Boolean> booleanStateData) {
     this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
 
     if (booleanStateData == null) {
       this.binding.resetPasswordErrorText.setText(Config.UNSPECIFIC_ERROR);
@@ -83,9 +81,10 @@ public class ResetPasswordFragment extends Fragment {
               Config.AUTH_VERIFICATION_EMAIL_SENT,
               Toast.LENGTH_LONG)
               .show();
-
     } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.resetPasswordFragmentSpinner.setVisibility(View.VISIBLE);
+      this.binding.resetPasswordFragmentButton.setEnabled(false);
+      this.binding.resetPasswordFragmentButton.setBackgroundColor(Color.GRAY);
     } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
       this.binding.resetPasswordErrorText
               .setText(booleanStateData.getError().getMessage());
@@ -93,18 +92,11 @@ public class ResetPasswordFragment extends Fragment {
     }
   }
 
-  private void userInputState(StateData<UserModel> userModelStateData) {
-    this.resetBindings();
-
-    if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.resetPasswordErrorText.setText(userModelStateData.getError().getMessage());
-      this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
-    }
-  }
-
   private void resetBindings() {
     this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
     this.binding.resetPasswordErrorText.setVisibility(View.GONE);
+    this.binding.resetPasswordFragmentButton.setEnabled(true);
+    this.binding.resetPasswordFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

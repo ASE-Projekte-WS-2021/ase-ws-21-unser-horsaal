@@ -202,8 +202,6 @@ public class AuthAppRepository {
 
   /** JavaDoc. */
   public void sendPasswordResetMail(String email) {
-    this.emailSentLiveData.postLoading();
-
     this.firebaseAuth
             .sendPasswordResetEmail(email)
             .addOnCompleteListener(task -> {
