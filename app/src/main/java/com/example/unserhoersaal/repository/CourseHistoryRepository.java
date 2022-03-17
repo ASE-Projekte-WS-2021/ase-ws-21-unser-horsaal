@@ -119,8 +119,6 @@ public class CourseHistoryRepository {
 
   /** Creates a new meeting in the course. */
   public void createMeeting(MeetingsModel meetingsModel) {
-    this.meetingsModelMutableLiveData.postLoading();
-
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.meetingsModelMutableLiveData.postError(
@@ -137,9 +135,6 @@ public class CourseHistoryRepository {
     }
 
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    //TODO: eventTimeInput -> eventTime umschreiben;
-    // startTimeInput -> startTime umschreiben; bzw auf datapicker warten
-    // (micha: wusste nicht was ich hier machen soll)
     meetingsModel.setCreatorId(uid);
     meetingsModel.setCreationTime(System.currentTimeMillis());
 

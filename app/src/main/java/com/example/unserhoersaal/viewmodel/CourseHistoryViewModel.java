@@ -7,7 +7,6 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.Calendar;
@@ -83,29 +82,32 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Create a new Meeting. */
   public void createMeeting() {
-    this.meetingModelInputState.postLoading();
+    this.meetingsModelMutableLiveData.postLoading();
 
     MeetingsModel meetingsModel = Validation.checkStateLiveData(this.meetingModelInputState, TAG);
     if (meetingsModel == null) {
       Log.e(TAG, "meetingsModel is null.");
+      this.meetingsModelMutableLiveData.postError(
+              new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (meetingsModel.getTitle() == null) {
       Log.d(TAG, "title is null.");
       this.meetingsModelMutableLiveData.postError(
-              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
+              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
       return;
     } else if (!Validation.stringHasPattern(meetingsModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
       Log.d(TAG, "title wrong pattern.");
       this.meetingsModelMutableLiveData.postError(
-              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
+              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
       return;
     }
 
     meetingsModel.setEventTime(this.parseEventTime(meetingsModel));
     meetingsModel.setMeetingDate(this.parseMeetingDate(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
+
     this.meetingModelInputState.postCreate(new MeetingsModel());
     this.courseHistoryRepository.createMeeting(meetingsModel);
   }
