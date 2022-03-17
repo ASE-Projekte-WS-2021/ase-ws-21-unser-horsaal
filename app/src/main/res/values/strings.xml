@@ -178,5 +178,7 @@
     <string name="create_thread_fragment_hashtag_text">Gibt es einen Hashtag, der deine Nachricht besonders gut beschreibt? (optional)</string>
     <string name="create_thread_fragment_pagenumber_text">Bezieht sich deine Nachricht auf eine Seite im Skript? (optional)</string>
     <string name="create_thread_fragment_button_send">Nachricht senden</string>
+    <string name="startzeit">Startzeit</string>
+    <string name="endzeit">Endzeit</string>
 
 </resources>

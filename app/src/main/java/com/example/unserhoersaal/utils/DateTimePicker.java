@@ -50,8 +50,14 @@ public class DateTimePicker {
         return;
       }
 
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setHourInput(hour);
-      courseHistoryViewModel.dataBindingMeetingInput.getValue().setMinuteInput(minute);
+      //TODO maybe dont save everything extra in the model and push to database
+      if (view.getId() == R.id.createCourseMeetingTimePicker) {
+        courseHistoryViewModel.dataBindingMeetingInput.getValue().setHourInput(hour);
+        courseHistoryViewModel.dataBindingMeetingInput.getValue().setMinuteInput(minute);
+      } else if (view.getId() == R.id.createCourseMeetingEndTimePicker) {
+        courseHistoryViewModel.dataBindingMeetingInput.getValue().setHourEndInput(hour);
+        courseHistoryViewModel.dataBindingMeetingInput.getValue().setMinuteEndInput(minute);
+      }
       String time = hour + ":" + minute;
       view.setText(time);
     };

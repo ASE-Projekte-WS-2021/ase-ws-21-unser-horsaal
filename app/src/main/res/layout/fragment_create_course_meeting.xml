@@ -130,7 +130,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
-                    android:text="@string/current_time_placeholder" />
+                    android:text="@string/startzeit" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/createCourseMeetingEndTimePickerTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:onClick="@{() -> DateTimePicker.timePicker(createCourseMeetingEndTimePicker, vm)}"
+                android:padding="8dp"
+                android:layout_margin="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createCourseMeetingTimePickerTableRow">
+
+                <TextView
+                    android:id="@+id/createCourseMeetingEndTimePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:text="@string/endzeit" />
 
             </TableRow>
 
@@ -143,7 +164,7 @@
                 android:layout_margin="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/createCourseMeetingTimePickerTableRow" />
+                app:layout_constraintTop_toBottomOf="@+id/createCourseMeetingEndTimePickerTableRow" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

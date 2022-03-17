@@ -30,6 +30,15 @@ public class Format {
     return Config.DATE_TIME_FORMAT.format(new Date(time));
   }
 
+  /** time formater. */
+  @BindingAdapter("getFormatedTime")
+  public static String getFormatedTime(View view, Long time) {
+    if (time == null) {
+      return "";
+    }
+    return Config.RECENT_FORMAT.format(new Date(time));
+  }
+
   /** datetime formater that formats to date after 24h passed. */
   @BindingAdapter("calculateDate")
   public static String calculateDate(TextView view, Long timeInMillis) {
