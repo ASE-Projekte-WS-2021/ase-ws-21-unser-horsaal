@@ -1,17 +1,16 @@
 package com.example.unserhoersaal.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,9 +18,9 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
-import com.example.unserhoersaal.model.PasswordModel;
-import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
@@ -92,43 +91,25 @@ public class LoginFragment extends Fragment {
     this.loginViewModel = new ViewModelProvider(requireActivity())
             .get(LoginViewModel.class);
     this.loginViewModel.init();
-    /*
-     * If user successfully logged in (login input correct and email is verified)
-     *  navigate to the course screen.
-     */
     this.loginViewModel
             .getUserLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
-    this.loginViewModel
-            .getUserInputState()
-            .observe(getViewLifecycleOwner(), this::userInputStateCallback);
-    this.loginViewModel
-            .getPasswordInputState()
-            .observe(getViewLifecycleOwner(), this::passwordInputStateCallback);
   }
 
   private void userLiveDataCallback(StateData<FirebaseUser> firebaseUserStateData) {
     this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
 
-    if (firebaseUserStateData == null) {
+    if (firebaseUserStateData == null) { //-> move to other method
       Log.e(TAG, "FirebaseUser object is null");
       this.binding.loginFragmentGeneralErrorMessage.setText(Config.UNSPECIFIC_ERROR);
       this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
       return;
     }
+    FirebaseUser firebaseUser = firebaseUserStateData.getData();
 
-    if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.loginFragmentGeneralErrorMessage
-              .setText(firebaseUserStateData.getError().getMessage());
-      this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
-    } else {
-      if (firebaseUserStateData.getData() == null) {
-        return;
-      }
-      FirebaseUser firebaseUser = firebaseUserStateData.getData();
-
+    if (firebaseUser != null && (firebaseUserStateData.getStatus() == StateData.DataStatus.CREATED
+            || firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE)) {
       if (firebaseUser.isEmailVerified()
               && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
         navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
@@ -137,26 +118,27 @@ public class LoginFragment extends Fragment {
       } else if (!firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_loginFragment_to_verificationFragment);
       }
-    }
-  }
-
-  private void userInputStateCallback(StateData<UserModel> userModelStateData) {
-    this.resetBindings();
-
-    if (userModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.loginFragmentUserEmailErrorText
-              .setText(userModelStateData.getError().getMessage());
-      this.binding.loginFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
-    }
-  }
-
-  private void passwordInputStateCallback(StateData<PasswordModel> passwordModelStateData) {
-    this.resetBindings();
-
-    if (passwordModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.loginFragmentPasswordErrorText
-              .setText(passwordModelStateData.getError().getMessage());
-      this.binding.loginFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.loginFragmentLoginButton.setEnabled(false);
+      this.binding.loginFragmentLoginButton.setBackgroundColor(Color.GRAY);
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+      if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
+        this.binding.loginFragmentUserEmailErrorText
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.loginFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
+      }
+      if (firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
+        this.binding.loginFragmentPasswordErrorText
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.loginFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+      }
+      if (firebaseUserStateData.getErrorTag() == ErrorTag.REPO
+              || firebaseUserStateData.getErrorTag() == ErrorTag.VM){
+        this.binding.loginFragmentGeneralErrorMessage
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
+      }
     }
   }
 
@@ -165,6 +147,8 @@ public class LoginFragment extends Fragment {
     this.binding.loginFragmentPasswordErrorText.setVisibility(View.GONE);
     this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.GONE);
     this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.loginFragmentLoginButton.setEnabled(true);
+    this.binding.loginFragmentLoginButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

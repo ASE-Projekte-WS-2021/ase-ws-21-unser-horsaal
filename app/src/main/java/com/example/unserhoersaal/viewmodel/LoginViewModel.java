@@ -69,11 +69,13 @@ public class LoginViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void login() {
+    this.userLiveData.postLoading();
+
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
       Log.e(TAG, "userModel or passwordModel is null.");
-      this.userInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
+      this.userLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
@@ -82,22 +84,22 @@ public class LoginViewModel extends ViewModel {
 
     if (Validation.emptyString(email)) {
       Log.d(TAG, "email is null.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      this.userLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
       return;
     } else if (!Validation.emailHasPattern(email)) {
       Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(
+      this.userLiveData.postError(
               new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
       return;
     }
     if (Validation.emptyString(password)) {
       Log.d(TAG, "password is null.");
-      this.passwordInputState.postError(
+      this.userLiveData.postError(
               new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
       return;
     } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
       Log.d(TAG, "password has wrong pattern.");
-      this.passwordInputState.postError(
+      this.userLiveData.postError(
               new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
       return;
     }

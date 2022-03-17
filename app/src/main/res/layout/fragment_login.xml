@@ -107,25 +107,45 @@
                     android:layout_marginStart="10dp"
                     android:layout_gravity="center" />
 
-                <ProgressBar
-                    android:id="@+id/loginFragmentProgressSpinner"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/loginFragmentButtonWrapper"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/loginFragmentLoginButton"
-                    android:onClick="@{() -> vm.login()}"
-                    android:background="@drawable/app_background"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:text="@string/login_fragment_login_button_string"
-                    app:backgroundTint="@null"
-                    app:icon="@drawable/ic_baseline_login_24"
-                    app:iconGravity="textStart"
-                    android:layout_gravity="center"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/loginFragmentLoginButton"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> vm.login()}"
+                        android:background="@drawable/app_background"
+                        android:layout_marginTop="32dp"
+                        android:text="@string/login_fragment_login_button_string"
+                        app:backgroundTint="@null"
+                        app:icon="@drawable/ic_baseline_login_24"
+                        app:iconGravity="textStart"
+                        android:layout_gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ProgressBar
+                        android:id="@+id/loginFragmentProgressSpinner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/white"
+                        android:indeterminateTintMode="src_in"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/loginFragmentLoginButton"
+                        app:layout_constraintEnd_toEndOf="@+id/loginFragmentLoginButton"
+                        app:layout_constraintHorizontal_bias="0.975"
+                        app:layout_constraintStart_toStartOf="@+id/loginFragmentLoginButton"
+                        app:layout_constraintTop_toTopOf="@+id/loginFragmentLoginButton" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/loginFragmentForgotPasswortTextView"

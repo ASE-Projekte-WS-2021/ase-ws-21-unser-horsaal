@@ -1,11 +1,18 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -60,7 +67,6 @@ public class AuthAppRepository {
 
   /** This method is logging in the user.*/
   public void login(String email, String password) {
-    this.userLiveData.postLoading();
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
