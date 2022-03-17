@@ -44,4 +44,8 @@ public class CourseDescriptionViewModel extends ViewModel {
     this.courseDescriptionRepository.unregisterFromCourse(id);
   }
 
+  public void createQrCode(){
+    
+  }
+
 }
