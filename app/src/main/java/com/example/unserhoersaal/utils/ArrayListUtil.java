@@ -13,8 +13,8 @@ import java.util.List;
 public class ArrayListUtil {
 
   /**
-   * Utility class for the sortings options of model lists.
-   * Used to sort meetings, threads and answers by various parameters.
+   * Utility class for the sorting and filter options for model lists.
+   * Used to sort and filter meetings, threads and answers by various parameters.
    */
 
   /** Sorting options for MeetingsModel lists*/
@@ -45,7 +45,8 @@ public class ArrayListUtil {
     }
   }
 
-  public void filterThreadList(List<ThreadModel> threadsModelList, String filterOption,
+  public void filterThreadList(List<ThreadModel> threadsModelList,
+                               List<ThreadModel> fullThreadsList, String filterOption,
                                MeetingsModel currentMeeting, String userId) {
 
     switch (filterOption) {
@@ -60,6 +61,9 @@ public class ArrayListUtil {
         break;
       case "own":
         filterThreadListByOwnThreads(threadsModelList, userId);
+        break;
+      case "reset":
+        resetThreadList(threadsModelList, fullThreadsList);
         break;
     }
   }
@@ -126,6 +130,7 @@ public class ArrayListUtil {
     threadsModelList.addAll(filteredList);
   }
 
+  /** filter threads and just show threads created by the course provider */
   private void filterThreadListByCourseProvider(List<ThreadModel> threadsModelList,
                                                 MeetingsModel currentMeeting) {
     List<ThreadModel> filteredList = new ArrayList<>();
@@ -138,6 +143,7 @@ public class ArrayListUtil {
     threadsModelList.addAll(filteredList);
   }
 
+  /** filter threads and just show threads created by the current user */
   private void filterThreadListByOwnThreads(List<ThreadModel> threadsModelList,
                                             String userId) {
     List<ThreadModel> filteredList = new ArrayList<>();
@@ -150,5 +156,10 @@ public class ArrayListUtil {
     threadsModelList.addAll(filteredList);
   }
 
-
+  /** reset filter/show all threads */
+  private void resetThreadList(List<ThreadModel> threadModelList,
+                               List<ThreadModel> fullThreadModelList) {
+    threadModelList.clear();
+    threadModelList.addAll(fullThreadModelList);
+  }
 }

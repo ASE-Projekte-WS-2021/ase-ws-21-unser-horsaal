@@ -8,6 +8,7 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** ViewModel for the CourseMeetingFragment. */
@@ -61,8 +62,10 @@ public class CourseMeetingViewModel extends ViewModel {
    */
   public void filterThreads(List<ThreadModel> threadsModelList, String filterOption) {
     MeetingsModel actualMeeting = this.meeting.getValue();
+    List<ThreadModel> fullThreadsModelList = new ArrayList<>(this.threads.getValue());
     String userId = courseMeetingRepository.getUserId();
-    this.arrayListUtil.filterThreadList(threadsModelList, filterOption, actualMeeting, userId);
+    this.arrayListUtil.filterThreadList(threadsModelList, fullThreadsModelList, filterOption,
+            actualMeeting, userId);
   }
 
   public LiveData<MeetingsModel> getMeeting() {
