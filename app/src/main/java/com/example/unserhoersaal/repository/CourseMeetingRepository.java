@@ -6,6 +6,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
+import com.example.unserhoersaal.model.UserModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,26 +103,27 @@ public class CourseMeetingRepository {
 
   /** get the author for each thread in the provided list. */
   public void getAuthor(List<ThreadModel> threadList) {
-    List<Task<DataSnapshot>> authorNames = new ArrayList<>();
+    List<Task<DataSnapshot>> authors = new ArrayList<>();
     for (ThreadModel thread : threadList) {
-      authorNames.add(getAuthorName(thread.getCreatorId()));
+      authors.add(getAuthorData(thread.getCreatorId()));
     }
-    Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
+    Tasks.whenAll(authors).addOnSuccessListener(unused -> {
       for (int i = 0; i < threadList.size(); i++) {
-        String name = authorNames.get(i).getResult().getValue(String.class);
-        if (name == null) {
+        UserModel author = authors.get(i).getResult().getValue(UserModel.class);
+        if (author == null) {
           threadList.get(i).setCreatorName(Config.UNKNOWN_USER);
         } else {
-          threadList.get(i).setCreatorName(name);
+          threadList.get(i).setCreatorName(author.getDisplayName());
+          threadList.get(i).setPhotoUrl(author.getPhotoUrl());
         }
       }
       getLikeStatus(threadList);
     });
   }
 
-  public Task<DataSnapshot> getAuthorName(String authorId) {
+  public Task<DataSnapshot> getAuthorData(String authorId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    return reference.child(Config.CHILD_USER).child(authorId).child(Config.CHILD_USER_NAME).get();
+    return reference.child(Config.CHILD_USER).child(authorId).get();
   }
 
   private void getLikeStatus(List<ThreadModel> threadList) {
