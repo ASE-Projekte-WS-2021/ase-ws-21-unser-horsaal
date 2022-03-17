@@ -109,4 +109,7 @@ public class Config {
   public static final int READABILITY_ITEM_POSITION_1 = 3;
   public static final int READABILITY_ITEM_POSITION_2 = 6;
 
+  /** QrCode. */
+  public static final int DIMEN = 400;
+
 }
