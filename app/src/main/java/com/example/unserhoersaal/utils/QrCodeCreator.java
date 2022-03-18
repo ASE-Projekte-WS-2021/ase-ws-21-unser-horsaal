@@ -26,7 +26,7 @@ public class QrCodeCreator {
   public static void generateQrCode(View view, String text,
                                     CourseDescriptionViewModel courseDescriptionViewModel,
                                     Context context) {
-    saveText(context);
+    //saveText(context);
     Bitmap bitmap;
     String deepLink = Config.DEEP_LINK_URL + text;
     QRGEncoder qrgEncoder = new QRGEncoder(deepLink, null, QRGContents.Type.TEXT, Config.DIMEN);
@@ -34,7 +34,7 @@ public class QrCodeCreator {
       bitmap = qrgEncoder.encodeAsBitmap();
       //Log.d(Config.QR_CODE, "created bitmap with qr code");
       //Log.d(Config.QR_CODE, bitmap.toString());
-      saveBitmap(bitmap);
+      saveBitmap(bitmap, context);
       //Log.d(Config.QR_CODE, "saved bitmap");
       courseDescriptionViewModel.setQrCodeBitmap(bitmap);
     } catch (WriterException e) {
@@ -49,15 +49,33 @@ public class QrCodeCreator {
     iv.setImageBitmap(bitmap);
   }
 
-  private static void saveBitmap(Bitmap bitmap) {
+  private static void saveBitmap(Bitmap bitmap, Context context) {
     qrCodeFilesCount++;
+    FileOutputStream fileOutputStream = null;
+    try {
+      fileOutputStream = context.openFileOutput("qrCode3", Context.MODE_PRIVATE);
+      bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+      Log.d(Config.QR_CODE, "compressed Bitmap");
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } finally {
+      if (fileOutputStream != null) {
+        try {
+          fileOutputStream.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
+    /*
     String filename = "qrCode" + qrCodeFilesCount;
     try (FileOutputStream out = new FileOutputStream(filename)) {
       bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
       //Log.d(Config.QR_CODE, "saving bitmap");
     } catch (IOException e) {
       e.printStackTrace();
-    }
+    } */
   }
 
   private static void saveText(Context context) {
@@ -67,7 +85,7 @@ public class QrCodeCreator {
     try {
       fileOutputStream = context.openFileOutput("dateiName1", Context.MODE_PRIVATE);
       fileOutputStream.write(text.getBytes());
-      Log.d(Config.QR_CODE, "speicher Text");
+      Log.d(Config.QR_CODE, "speicher Text 1");
       Log.d(Config.QR_CODE, context.getFilesDir().toString());
     } catch (FileNotFoundException e) {
       e.printStackTrace();

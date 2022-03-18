@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
     window.setStatusBarColor(ContextCompat.getColor(this, android.R.color.transparent));
     window.setNavigationBarColor(ContextCompat.getColor(this, android.R.color.transparent));
     window.setBackgroundDrawable(background);
-    saveText(getApplicationContext());
+
+    //saveText(getApplicationContext());
   }
 
   private static void saveText(Context context) {
