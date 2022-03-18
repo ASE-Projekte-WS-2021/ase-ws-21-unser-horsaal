@@ -12,45 +12,47 @@
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.utils.Clipboard" />
         <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="com.example.unserhoersaal.utils.QrCodeCreator"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.CourseDescriptionFragment"
         android:orientation="vertical"
-        android:background="@color/app_background">
+        android:background="@color/app_background"
+        tools:context=".views.CourseDescriptionFragment">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/courseDescriptionFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/app_background"
-            app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="@color/white">
 
             <TextView
+                style="@style/toolbarTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_description_fragment_description"
-                style="@style/toolbarTitleStyle"/>
+                android:text="@string/course_description_fragment_description" />
         </com.google.android.material.appbar.MaterialToolbar>
 
         <TextView
             android:id="@+id/courseDescriptionCourseTitle"
+            style="@style/toolbarSubtitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{vm.courseModel.data.title}"
             android:background="@drawable/app_background"
             android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentToolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/toolbarSubtitleStyle"/>
+            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentToolbar" />
 
         <TableLayout
+            android:id="@+id/tableLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:stretchColumns="2"
@@ -140,8 +142,8 @@
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:src="@drawable/ic_baseline_description_24"
-                    app:tint="@color/app_blue"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    app:tint="@color/app_blue" />
 
                 <TextView
                     android:id="@+id/courseDescriptionFragmentCourseDescriptionTextViewTextView"
@@ -273,9 +275,21 @@
 
         </TableLayout>
 
+        <Button
+            android:id="@+id/qrCodeButton"
+            android:onClick="@{(view) -> QrCodeCreator.generateQrCode(view, vm.courseModel.data.codeMapping, vm)}"
+            android:text="qrCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="31dp"
+            android:layout_marginStart="23dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/courseDescriptionFragmentShareCourseFab"
             android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.data.codeMapping)}"
+            style="@style/fabStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_share_24"
@@ -283,8 +297,18 @@
             android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/white"
-            style="@style/fabStyle" />
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="292dp"
+            android:layout_height="314dp"
+            android:layout_marginBottom="174dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/courseDescriptionFragmentToolbar"
+            tools:srcCompat="@{(view) -> QrCodeCreator.setImageView(view, vm.getQrCodeBitmap)}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

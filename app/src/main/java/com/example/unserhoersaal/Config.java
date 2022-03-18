@@ -219,4 +219,7 @@ public class Config {
    *  Verification Check
    * ======================= */
   public static final int VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL = 2000;
+
+  /** QrCode. */
+  public static final int DIMEN = 400;
 }
