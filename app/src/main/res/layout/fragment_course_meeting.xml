@@ -37,6 +37,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"/>
 
+        <ProgressBar
+            android:id="@+id/courseMeetingFragmentProgressSpinner"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.95" />
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/courseMeetingFragmentToolbar"
             android:layout_width="match_parent"
@@ -47,10 +60,10 @@
             app:layout_constraintTop_toTopOf="parent" >
 
             <TextView
-                style="@style/toolbarTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_meeting_subtitle" />
+                android:text="@string/course_meeting_subtitle"
+                style="@style/toolbarTitleStyle"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -68,7 +81,7 @@
                 android:id="@+id/courseMeetingFragmentToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@={vm.meeting.title}"
+                android:text="@={vm.meeting.data.title}"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 style="@style/toolbarSubtitleStyle"
@@ -253,110 +266,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/white" />
-
-        <ScrollView
-            android:id="@+id/courseMeetingFragmentCreateThreadContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:layout_marginTop="64dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/courseMeetingFragmentFab"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:background="@color/app_background"
-                android:elevation="20dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:id="@+id/courseMeetingFragmentCreateThreadTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:text="@string/create_thread_title"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/app_blue"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/courseMeetingFragmentQuestionTitleTextInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="@string/create_thread_screen_question_title_hing">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/courseMeetingFragmentQuestionTitleEditText"
-                        android:text="@={vm.threadModelInput.title}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:background="@color/white"
-                        android:maxLength="100"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/courseMeetingFragmentQuestionTextTextInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="@string/create_thread_screen_question_text_hint">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/courseMeetingFragmentQuestionTextEditText"
-                        android:text="@={vm.threadModelInput.text}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="6"
-                        android:singleLine="false"
-                        android:background="@color/white"
-                        android:maxLength="500"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/courseMeetingFragmentSendThreadButton"
-                    android:onClick="@{() -> vm.createThread()}"
-                    style="@style/wideOrangeButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/create_thread_send_message" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/courseMeetingFragmentCancelButton"
-                    android:onClick="@{(view) -> VisibilityAdapter.closeCreationLayout(courseMeetingFragmentFab, courseMeetingFragmentCreateThreadContainer)}"
-                    style="@style/wideRedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="32dp"
-                    android:text="@string/abbrechen" />
-
-            </LinearLayout>
-
-        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

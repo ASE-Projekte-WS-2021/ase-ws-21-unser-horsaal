@@ -1,11 +1,19 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
+import java.util.Collections;
+import java.util.Comparator;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 
 import java.util.ArrayList;
@@ -19,10 +27,10 @@ public class CourseMeetingViewModel extends ViewModel {
   private CourseMeetingRepository courseMeetingRepository;
   private ArrayListUtil arrayListUtil = new ArrayListUtil();
 
-  private MutableLiveData<MeetingsModel> meeting = new MutableLiveData<>();
-  private MutableLiveData<List<ThreadModel>> threads;
-  private MutableLiveData<ThreadModel> threadModelMutableLiveData;
-  public MutableLiveData<ThreadModel> threadModelInput;
+  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
+  private StateLiveData<List<ThreadModel>> threads;
+  private StateLiveData<ThreadModel> threadModelMutableLiveData;
+  public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -39,10 +47,10 @@ public class CourseMeetingViewModel extends ViewModel {
     if (this.meeting.getValue() != null) {
       this.threads = this.courseMeetingRepository.getThreads();
     }
-    this.threadModelInput = new MutableLiveData<>(new ThreadModel());
+    this.threadModelInputState.postCreate(new ThreadModel());
   }
 
-  public LiveData<List<ThreadModel>> getThreads() {
+  public StateLiveData<List<ThreadModel>> getThreads() {
     return this.threads;
   }
 
@@ -68,17 +76,21 @@ public class CourseMeetingViewModel extends ViewModel {
             actualMeeting, userId);
   }
 
-  public LiveData<MeetingsModel> getMeeting() {
+  public StateLiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }
 
-  public LiveData<ThreadModel> getThreadModel() {
+  public StateLiveData<ThreadModel> getThreadModel() {
     return this.threadModelMutableLiveData;
   }
 
+  public StateLiveData<ThreadModel> getThreadModelInputState() {
+    return this.threadModelInputState;
+  }
+
   public void resetThreadModelInput() {
-    this.threadModelInput.setValue(new ThreadModel());
-    this.threadModelMutableLiveData.setValue(null);
+    this.threadModelInputState.postCreate(new ThreadModel());
+    this.threadModelMutableLiveData.postCreate(null);
   }
 
   public void setMeeting(MeetingsModel meeting) {
@@ -87,20 +99,25 @@ public class CourseMeetingViewModel extends ViewModel {
 
   /** Create a new Thread. */
   public void createThread() {
-    //TODO: error -> view
-    if (this.threadModelInput.getValue() == null) {
+    ThreadModel threadModel = Validation.checkStateLiveData(this.threadModelInputState, TAG);
+    if (threadModel == null) {
+      Log.e(TAG, "threadModel is null.");
       return;
     }
-
-    //TODO: error -> view
-    ThreadModel threadModel = this.threadModelInput.getValue();
-    if (threadModel.getTitle() == null) {
-      return;
-    }
+    
     if (threadModel.getText() == null) {
+      Log.d(TAG, "text is null.");
+      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
+      return;
+    } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
+      Log.d(TAG, "text wrong pattern.");
+      this.threadModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
       return;
     }
 
+    this.threadModelInputState.postCreate(new ThreadModel());
     this.courseMeetingRepository.createThread(threadModel);
   }
+
 }

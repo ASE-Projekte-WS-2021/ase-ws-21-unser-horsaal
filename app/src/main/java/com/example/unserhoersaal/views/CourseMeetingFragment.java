@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -17,9 +18,13 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseMeetingBinding;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import java.util.List;
 
 /** Course-Meeting. */
 public class CourseMeetingFragment extends Fragment {
@@ -62,7 +67,6 @@ public class CourseMeetingFragment extends Fragment {
   }
 
   /** Initialise all ViewModels for the Fragment. */
-  @SuppressLint("NotifyDataSetChanged")
   public void initViewModel() {
     this.courseMeetingViewModel = new ViewModelProvider(requireActivity())
             .get(CourseMeetingViewModel.class);
@@ -70,6 +74,45 @@ public class CourseMeetingFragment extends Fragment {
             .get(CurrentCourseViewModel.class);
     this.courseMeetingViewModel.init();
     this.currentCourseViewModel.init();
+    this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(),
+            this::meetingsLiveStateCallback);
+    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(),
+            this::threadLiveStateCallback);
+  }
+
+  @SuppressLint("NotifyDataSetChanged")
+  private void meetingsLiveStateCallback(StateData<List<ThreadModel>> listStateData) {
+    this.resetBindings();
+    this.threadAdapter.notifyDataSetChanged();
+
+    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    if (listStateData.getData().size() == 0) {
+      this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
+    } else {
+      this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
+    }
+  }
+
+  private void threadLiveStateCallback(StateData<ThreadModel> threadModelStateData) {
+    this.resetBindings();
+
+    if (threadModelStateData.getData() != null) {
+      KeyboardUtil.hideKeyboard(getActivity());
+      this.currentCourseViewModel.setThreadId(threadModelStateData.getData().getKey());
+      this.courseMeetingViewModel.resetThreadModelInput();
+      this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
+      this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
+
     this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
       this.courseMeetingViewModel.sortThreads(messageList, "newest");
       threadAdapter.notifyDataSetChanged();
@@ -93,7 +136,8 @@ public class CourseMeetingFragment extends Fragment {
 
   private void connectAdapter() {
     this.threadAdapter =
-            new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue());
+            new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue().getData(),
+                    currentCourseViewModel);
   }
 
   private void connectBinding() {

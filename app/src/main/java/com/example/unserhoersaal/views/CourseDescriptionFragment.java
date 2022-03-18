@@ -68,8 +68,9 @@ public class CourseDescriptionFragment extends Fragment {
               //course navigate back to course history
               if (courseModel == null) {
                 navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
-              } else if (courseModel.getKey() != null) {
-                courseParticipantsViewModel.setCourseId(courseModel.getKey());
+                //TODO: assert != null
+              } else if (courseModel.getData().getKey() != null) {
+                courseParticipantsViewModel.setCourseId(courseModel.getData().getKey());
               }
 
             });

@@ -10,10 +10,13 @@ public class MeetingsModel {
   private int dayOfMonthInput;
   private int hourInput;
   private int minuteInput;
+  private int hourEndInput;
+  private int minuteEndInput;
   private Long creationTime;
   private String creatorId;
   private String description;
   private Long eventTime;
+  private Long eventEndTime;
   private String title;
   private String key;
   private String meetingDate;
@@ -62,6 +65,22 @@ public class MeetingsModel {
     this.minuteInput = minuteInput;
   }
 
+  public int getHourEndInput() {
+    return this.hourEndInput;
+  }
+
+  public void setHourEndInput(int hourEndInput) {
+    this.hourEndInput = hourEndInput;
+  }
+
+  public int getMinuteEndInput() {
+    return this.hourEndInput;
+  }
+
+  public void setMinuteEndInput(int minuteEndInput) {
+    this.minuteEndInput = minuteEndInput;
+  }
+
   public Long getCreationTime() {
     return this.creationTime;
   }
@@ -94,6 +113,14 @@ public class MeetingsModel {
     this.eventTime = eventTime;
   }
 
+  public Long getEventEndTime() {
+    return this.eventEndTime;
+  }
+
+  public void setEventEndTime(Long eventEndTime) {
+    this.eventEndTime = eventEndTime;
+  }
+
   public String getTitle() {
     return this.title;
   }
@@ -117,5 +144,6 @@ public class MeetingsModel {
   public void setMeetingDate(String meetingDate) {
     this.meetingDate = meetingDate;
   }
+
 }
 

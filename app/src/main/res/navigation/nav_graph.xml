@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_loginFragment_to_enterCourseFragment"
             app:destination="@+id/enterCourseFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_verificationFragment"
+            app:destination="@id/verificationFragment"/>
         <argument
             android:name="codeMapping"
             android:defaultValue="@null"
@@ -48,6 +51,9 @@
         <action
             android:id="@+id/action_registrationFragment_to_enterCourseFragment"
             app:destination="@+id/enterCourseFragment" />
+        <action
+            android:id="@+id/action_registrationFragment_to_verificationFragment"
+            app:destination="@id/verificationFragment"/>
     </fragment>
     <fragment
         android:id="@+id/enterCourseFragment"
@@ -434,5 +440,16 @@
             app:popUpTo="@id/courseMeetingFragment"
             app:popUpToInclusive="true" />
     </fragment>
-
+    <fragment
+        android:id="@+id/verificationFragment"
+        android:name="com.example.unserhoersaal.views.VerificationFragment"
+        android:label="fragment_verification"
+        tools:layout="@layout/fragment_verification">
+        <action
+            android:id="@+id/action_verificationFragment_to_loginFragment"
+            app:destination="@id/loginFragment"/>
+        <action
+            android:id="@+id/action_verificationFragment_to_coursesFragment"
+            app:destination="@id/coursesFragment" />
+    </fragment>
 </navigation>

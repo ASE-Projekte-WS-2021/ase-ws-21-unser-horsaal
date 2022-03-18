@@ -1,11 +1,13 @@
 package com.example.unserhoersaal.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.databinding.CourseItemCardBinding;
 import com.example.unserhoersaal.databinding.SimpleCourseItemBinding;
 import com.example.unserhoersaal.model.CourseModel;
 import java.util.List;
@@ -24,9 +26,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    SimpleCourseItemBinding binding = DataBindingUtil
+    CourseItemCardBinding binding = DataBindingUtil
             .inflate(LayoutInflater.from(viewGroup.getContext()),
-                    R.layout.simple_course_item,
+                    R.layout.course_item_card,
                     viewGroup,
                     false);
     return new ViewHolder(binding);
@@ -45,10 +47,10 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
 
   /** Viewholder. */
   public static class ViewHolder extends RecyclerView.ViewHolder {
-    private final SimpleCourseItemBinding binding;
+    private final CourseItemCardBinding binding;
 
     /** Constructor. */
-    public ViewHolder(SimpleCourseItemBinding binding) {
+    public ViewHolder(CourseItemCardBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }

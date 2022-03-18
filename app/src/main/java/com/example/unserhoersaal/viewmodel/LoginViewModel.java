@@ -1,13 +1,13 @@
 package com.example.unserhoersaal.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.enums.EmailVerificationEnum;
-import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
-import com.example.unserhoersaal.enums.ResetPasswordEnum;
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -19,18 +19,10 @@ public class LoginViewModel extends ViewModel {
   private static final String TAG = "LoginRegisterViewModel";
 
   private AuthAppRepository authAppRepository;
-  private MutableLiveData<FirebaseUser> userLiveData;
-
-  public MutableLiveData<LogRegErrorMessEnum> errorMessageLogEmail;
-  public MutableLiveData<LogRegErrorMessEnum> errorMessageLogPassword;
-  public MutableLiveData<LogRegErrorMessEnum> errorMessageLogProcess;
-  public MutableLiveData<EmailVerificationEnum> verificationStatus;
-  public MutableLiveData<ResetPasswordEnum> resetPasswordStatus;
-  public MutableLiveData<ResetPasswordEnum> emailExistency;
-
-  public MutableLiveData<UserModel> dataBindingUserInput;
-  public MutableLiveData<String> dataBindingPasswordInput;
-
+  private StateLiveData<FirebaseUser> userLiveData;
+  public StateLiveData<UserModel> userInputState;
+  public StateLiveData<PasswordModel> passwordInputState;
+  public StateLiveData<Boolean> emailSentLiveData;
 
   /**
    * Initialize the LoginRegisterViewModel.
@@ -40,124 +32,147 @@ public class LoginViewModel extends ViewModel {
       return;
     }
     this.authAppRepository = AuthAppRepository.getInstance();
-    this.userLiveData = this.authAppRepository.getUserLiveData();
-    this.errorMessageLogEmail = new MutableLiveData<>();
-    this.errorMessageLogPassword = new MutableLiveData<>();
-    this.errorMessageLogProcess = new MutableLiveData<>();
-    this.verificationStatus = new MutableLiveData<>();
-    this.resetPasswordStatus = new MutableLiveData<>();
-    this.emailExistency = new MutableLiveData<>();
-    this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageLogProcess.setValue(LogRegErrorMessEnum.NONE);
-    this.verificationStatus.setValue(EmailVerificationEnum.NONE);
-    this.emailExistency = this.authAppRepository.getExistency();
-
-    //Databinding containers
-    this.dataBindingUserInput = new MutableLiveData<>();
-    this.dataBindingPasswordInput = new MutableLiveData<>();
-    this.resetDatabindingData();
+    this.userLiveData = this.authAppRepository.getUserStateLiveData();
+    this.emailSentLiveData = this.authAppRepository.getEmailSentLiveData();
+    this.userInputState = new StateLiveData<>();
+    this.passwordInputState = new StateLiveData<>();
+    this.setDefaultInputState();
   }
 
   /** Give Back the current user. */
-  public LiveData<FirebaseUser> getUserLiveData() {
-    //remove user data from mutablelivedata after successful firebase interaction
-    //TODO: is this best practice?
-    this.resetDatabindingData();
-
+  public StateLiveData<FirebaseUser> getUserLiveData() {
+    this.setDefaultInputState();
     return this.userLiveData;
   }
 
-  private void resetDatabindingData() {
-    this.dataBindingUserInput.setValue(new UserModel());
-    this.dataBindingPasswordInput.setValue("");
+  /** Returns UserInput to the Fragment to observe DataStatus changes. */
+  public StateLiveData<UserModel> getUserInputState() {
+    return this.userInputState;
   }
 
-  /** JavaDoc for this method. */
-  public void resetErrorMessageLiveData() {
-    this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageLogProcess.setValue(LogRegErrorMessEnum.NONE);
+  /** Returns PasswordInput to the Fragment to observe DataStatus changes. */
+  public StateLiveData<PasswordModel> getPasswordInputState() {
+    return this.passwordInputState;
   }
 
-  /* login process
-   *
-   * check email and password input
-   * show error message if a input is empty or the pattern is wrong
-   * if not -> log in -> if login process fails -> show error message
-   *
-   */
+  public StateLiveData<Boolean> getEmailSentLiveData() {
+    return this.emailSentLiveData;
+  }
+
+  /** Sets the values in StateLiveData to their default values. These StateLiveData are connected
+   * to multiple Databinding Fragments. (Registration, ResetPassword, Login)
+   * Used when initialising this Fragment and when leaving the Fragment. */
+  public void setDefaultInputState() {
+    this.userInputState.postCreate(new UserModel());
+    this.passwordInputState.postCreate(new PasswordModel());
+  }
 
   /** JavaDoc for this method. */
   public void login() {
-    if (this.dataBindingUserInput.getValue() == null) {
+    this.userLiveData.postLoading();
+
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
+    if (userModel == null || passwordModel == null) {
+      Log.e(TAG, "userModel or passwordModel is null.");
+      this.userLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
-    String email = this.dataBindingUserInput.getValue().getEmail();
-    String password = this.dataBindingPasswordInput.getValue();
+    String email = userModel.getEmail();
+    String password = passwordModel.getCurrentPassword();
 
-    /* Check if email input is empty or has wrong pattern.*/
-    if (Validation.emptyEmail(email)) {
-      this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.EMAIL_EMPTY);
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, "email is null.");
+      this.userLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      return;
     } else if (!Validation.emailHasPattern(email)) {
-      this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.EMAIL_WRONG_PATTERN);
-    } else {
-      this.errorMessageLogEmail.setValue(LogRegErrorMessEnum.NONE);
+      Log.d(TAG, "email has wrong pattern.");
+      this.userLiveData.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
+      return;
     }
-    /* Check if password is empty or has wrong pattern.*/
-    if (Validation.emptyPassword(password)) {
-      this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.PASSWORD_EMPTY);
-    } else if (!Validation.passwordHasPattern(password)) {
-      this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.PASSWORD_WRONG_PATTERN);
-    } else {
-      this.errorMessageLogPassword.setValue(LogRegErrorMessEnum.NONE);
+    if (Validation.emptyString(password)) {
+      Log.d(TAG, "password is null.");
+      this.userLiveData.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return;
+    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, "password has wrong pattern.");
+      this.userLiveData.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return;
     }
-    /* Log in or throw error message if login process fails.*/
-    if (!Validation.emptyEmail(email) && Validation.emailHasPattern(email)
-            && !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
-      this.authAppRepository.login(email, password, errorMessageLogProcess, verificationStatus);
-    }
+
+    this.setDefaultInputState();
+    this.authAppRepository.login(email, password);
   }
 
   /** Send reset password email.*/
   public void sendPasswordResetMail() {
-    String email = this.dataBindingUserInput.getValue().getEmail();
-    this.authAppRepository.sendPasswordResetMail(email);
+    this.emailSentLiveData.postLoading();
 
-  }
-
-  /** JavaDoc for this method. */
-  public void checkEmailExists() {
-    String email = this.dataBindingUserInput.getValue().getEmail();
-    if (email == null) {
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    if (userModel == null) {
+      Log.e(TAG, "LoginViewModel>sendPasswordResetMail userModel is null.");
+      this.emailSentLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
-    if (Validation.emailHasPattern(email)) {
-      this.authAppRepository.emailExist(email);
-    } else {
-      this.emailExistency.setValue(ResetPasswordEnum.ERROR);
 
+    String email = userModel.getEmail();
+
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, "email is null.");
+      this.emailSentLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+    } else if (!Validation.emailHasPattern(email)) {
+      Log.d(TAG, "email has wrong pattern.");
+      this.emailSentLiveData.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
+    } else {
+
+      this.setDefaultInputState();
+      this.authAppRepository.sendPasswordResetMail(email);
     }
   }
 
-  /** Set email verification status on completed.*/
-  public void setVerificationStatusOnNull() {
-    verificationStatus.setValue(EmailVerificationEnum.NONE);
+  /** Resend email verification email. Requires a logged in user! Cant send an email without
+   * the user being logged in! */
+  public void resendVerificationEmail() {
+    this.userLiveData.postLoading();
+    this.authAppRepository.resendVerificationEmail();
   }
 
-  /** Resend email verification email.*/
-  public void resendEmailVerification() {
-    authAppRepository.resendEmailVerification();
+  /** Changes the password of the user. */
+  public void resetPassword() {
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    if (userModel == null) {
+      Log.e(TAG, "userModel is null.");
+      this.userInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
+      return;
+    }
+
+    String email = userModel.getEmail();
+
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, "email is null.");
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+    } else if (!Validation.emailHasPattern(email)) {
+      Log.d(TAG, "email has wrong pattern.");
+      this.userInputState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
+    } else {
+
+      this.setDefaultInputState();
+      this.authAppRepository.resetPassword(email);
+    }
   }
 
-  public LiveData<ResetPasswordEnum> getEmailExistency() {
-    return emailExistency;
+  public void reloadFirebaseUser() {
+    this.authAppRepository.reloadFirebaseUser();
   }
 
-  public void resetPasswordReseter() {
-    this.emailExistency.setValue(ResetPasswordEnum.DEFAULT);
-    this.dataBindingUserInput.setValue(new UserModel());
+  public void logout() {
+    this.authAppRepository.logOut();
   }
 
 }

@@ -35,7 +35,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editProfileNameFragmentTextInput"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/edit_profile_name_hint"
@@ -47,14 +46,46 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editProfileNameFragmentEditText"
-                android:text="@={vm.dataBindingProfileInput.displayName}"
+                android:text="@={vm.userInputState.data.displayName}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:background="@color/white"
                 android:maxLength="15"/>
 
+            <TextView
+                android:id="@+id/editProfileUserNameErrorText"
+                android:visibility="gone"
+                android:textColor="@color/red"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/editProfileUserNameGeneralErrorText"
+            android:visibility="gone"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentTextInput"/>
+
+        <ProgressBar
+            android:id="@+id/editProfileUserNameFragmentProgressSpinner"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentTextInput"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editProfileNameFragmentSaveFab"

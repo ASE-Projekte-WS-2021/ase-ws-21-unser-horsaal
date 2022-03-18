@@ -1,6 +1,12 @@
 package com.example.unserhoersaal.model;
 
+/** model class for passwords for databinding and livedata. */
 public class PasswordModel {
+
+  private String currentPassword;
+  private String newPassword;
+
+  public PasswordModel() {}
 
   public String getCurrentPassword() {
     return currentPassword;
@@ -17,9 +23,4 @@ public class PasswordModel {
   public void setNewPassword(String newPassword) {
     this.newPassword = newPassword;
   }
-
-  private String currentPassword;
-  private String newPassword;
-
-  public PasswordModel() {}
 }

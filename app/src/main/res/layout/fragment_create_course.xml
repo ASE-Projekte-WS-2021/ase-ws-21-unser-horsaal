@@ -87,12 +87,19 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseTitleEditText"
-                        android:text="@={vm.dataBindingCourseModelInput.title}"
+                        android:text="@={vm.courseModelInputState.data.title}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:background="@color/white"
                         android:maxLength="100"/>
+
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseTitleErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,13 +112,20 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseDescriptionEditText"
-                        android:text="@={vm.dataBindingCourseModelInput.description}"
+                        android:text="@={vm.courseModelInputState.data.description}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
                         android:singleLine="false"
                         android:background="@color/white"
                         android:maxLength="500"/>
+
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseDescriptionErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,7 +138,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseInstitutionEditText"
-                        android:text="@={vm.dataBindingCourseModelInput.institution}"
+                        android:text="@={vm.courseModelInputState.data.institution}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
@@ -132,18 +146,59 @@
                         android:background="@color/white"
                         android:maxLength="75"/>
 
+                    <TextView
+                        android:id="@+id/createCourseFragmentCourseInstitutionErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.textfield.TextInputLayout>
 
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/createCourseFragmentCreateButton"
-                    android:onClick="@{() -> vm.createCourse()}"
+                <TextView
+                    android:id="@+id/createCourseFragmentCourseGeneralErrorText"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/createCourseFragmentCreateButtonWrapper"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="64dp"
-                    android:text="@string/create_course_create_button"
-                    style="@style/wideOrangeButton" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/createCourseFragmentCreateButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(view) -> vm.createCourse()}"
+                        android:text="@string/create_course_create_button"
+                        style="@style/wideOrangeButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ProgressBar
+                        android:id="@+id/coursesCreateFragmentProgressSpinner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/white"
+                        android:indeterminateTintMode="src_in"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/createCourseFragmentCreateButtonWrapper"
+                        app:layout_constraintEnd_toEndOf="@+id/createCourseFragmentCreateButtonWrapper"
+                        app:layout_constraintHorizontal_bias="0.975"
+                        app:layout_constraintStart_toStartOf="@+id/createCourseFragmentCreateButtonWrapper"
+                        app:layout_constraintTop_toTopOf="@+id/createCourseFragmentCreateButtonWrapper" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
