@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.databinding.BindingAdapter;
@@ -34,6 +35,11 @@ public class QrCodeCreator {
     }
     Toast.makeText(view.getContext(),
             Config.COURSE_CODE_MAPPING_CLIPBOARD_TOAST_TEXT, Toast.LENGTH_SHORT).show();
+  }
+
+  @BindingAdapter("setImageView")
+  public static void setImageView(ImageView iv, Bitmap bitmap) {
+    iv.setImageBitmap(bitmap);
   }
 
 

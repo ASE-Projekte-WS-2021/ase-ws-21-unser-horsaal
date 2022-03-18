@@ -12,6 +12,7 @@
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.utils.Clipboard" />
         <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="com.example.unserhoersaal.utils.QrCodeCreator"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -276,6 +277,7 @@
 
         <Button
             android:id="@+id/qrCodeButton"
+            android:onClick="@{(view) -> QrCodeCreator.generateQrCode(view, vm.courseModel.codeMapping, vm)}"
             android:text="qrCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -299,14 +301,14 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+            android:layout_width="292dp"
+            android:layout_height="314dp"
+            android:layout_marginBottom="174dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            app:layout_constraintTop_toBottomOf="@+id/courseDescriptionFragmentToolbar"
+            tools:srcCompat="@{(view) -> QrCodeCreator.setImageView(view, vm.getQrCodeBitmap)}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
