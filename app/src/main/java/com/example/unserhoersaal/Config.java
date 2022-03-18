@@ -1,5 +1,7 @@
 package com.example.unserhoersaal;
 
+import android.os.ParcelUuid;
+
 import java.text.SimpleDateFormat;
 
 /** Config Class. */
@@ -223,4 +225,7 @@ public class Config {
   /** QrCode. */
   public static final int DIMEN = 400;
   public static final String QR_CODE = "Qr_Code";
+  public static final String QR_CODE_TOAST = "Created QR code";
+  public static final String QR_CODE_FILE_NAME = "qrCodeImage";
+  public static final int QR_CODE_COMPRESSION = 100;
 }

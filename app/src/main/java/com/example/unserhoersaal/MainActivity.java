@@ -12,10 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 /**
  * Initiates the main activity.
  */
@@ -44,31 +40,5 @@ public class MainActivity extends AppCompatActivity {
     window.setStatusBarColor(ContextCompat.getColor(this, android.R.color.transparent));
     window.setNavigationBarColor(ContextCompat.getColor(this, android.R.color.transparent));
     window.setBackgroundDrawable(background);
-
-    //saveText(getApplicationContext());
-  }
-
-  private static void saveText(Context context) {
-    String text = "Beispiel Text";
-    FileOutputStream fileOutputStream = null;
-
-    try {
-      fileOutputStream = context.openFileOutput("dateiName2", Context.MODE_PRIVATE);
-      fileOutputStream.write(text.getBytes());
-      Log.d(Config.QR_CODE, "speicher Text 2");
-      Log.d(Config.QR_CODE, context.getFilesDir().toString());
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      if (fileOutputStream != null) {
-        try {
-          fileOutputStream.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-    }
   }
 }
