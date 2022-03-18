@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.model.UserModel;
@@ -156,17 +157,41 @@ public class CourseMeetingRepository {
   public void getAuthor(List<ThreadModel> threadList) {
     this.threads.postLoading();
 
-    List<Task<DataSnapshot>> authorNames = new ArrayList<>();
+    List<Task<DataSnapshot>> authors = new ArrayList<>();
     for (ThreadModel thread : threadList) {
-      authorNames.add(getAuthorName(thread.getCreatorId()));
+      authors.add(getAuthorData(thread.getCreatorId()));
     }
-    Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
+    Tasks.whenAll(authors).addOnSuccessListener(unused -> {
       for (int i = 0; i < threadList.size(); i++) {
-        String name = authorNames.get(i).getResult().getValue(String.class);
-        if (name == null) {
+        UserModel author = authors.get(i).getResult().getValue(UserModel.class);
+        if (author == null) {
           threadList.get(i).setCreatorName(Config.UNKNOWN_USER);
         } else {
-          threadList.get(i).setCreatorName(name);
+          threadList.get(i).setCreatorName(author.getDisplayName());
+          threadList.get(i).setPhotoUrl(author.getPhotoUrl());
+        }
+      }
+      getLikeStatus(threadList);
+    });
+  }
+
+  public Task<DataSnapshot> getAuthorData(String authorId) {
+    return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
+  }
+
+  private void getLikeStatus(List<ThreadModel> threadList) {
+    List<Task<DataSnapshot>> likeList = new ArrayList<>();
+    for (ThreadModel thread : threadList) {
+      likeList.add(getLikeStatusThread(thread.getKey()));
+    }
+    Tasks.whenAll(likeList).addOnSuccessListener(unused -> {
+      for (int i = 0; i < likeList.size(); i++) {
+        if(!likeList.get(i).getResult().exists()) {
+          threadList.get(i).setLikeStatus(LikeStatus.NEUTRAL);
+        } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.LIKE) {
+          threadList.get(i).setLikeStatus(LikeStatus.LIKE);
+        } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.DISLIKE) {
+          threadList.get(i).setLikeStatus(LikeStatus.DISLIKE);
         }
       }
       threadModelList.clear();
@@ -175,13 +200,9 @@ public class CourseMeetingRepository {
     });
   }
 
-  /** JavaDoc. */
-  public Task<DataSnapshot> getAuthorName(String authorId) {
-    return this.databaseReference
-            .child(Config.CHILD_USER)
-            .child(authorId)
-            .child(Config.CHILD_USER_NAME)
-            .get();
+  private Task<DataSnapshot> getLikeStatusThread(String id) {
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    return this.databaseReference.child(Config.CHILD_USER_LIKE).child(uid).child(id).get();
   }
 
   /** Initialise the listener for the database access. */

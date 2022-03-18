@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 /** This class is the database access needed to enter a new course. */
@@ -174,7 +175,17 @@ public class EnterCourseRepository {
                             .child(course.getKey())
                             .child(uid)
                     .setValue(Boolean.TRUE)
-                    .addOnSuccessListener(unused1 -> enteredCourse.postUpdate(course)))
+                    .addOnSuccessListener(unused1 -> {
+                      this.databaseReference.child(Config.CHILD_COURSES)
+                              .child(course.getKey())
+                              .child(Config.CHILD_MEMBER_COUNT)
+                              .setValue(ServerValue.increment(1))
+                              .addOnSuccessListener(unused2 -> enteredCourse.postUpdate(course))
+                              .addOnFailureListener(e -> {
+                                Log.e(TAG, e.getMessage());
+                                enteredCourse.postError(
+                                        new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+                              })
                     .addOnFailureListener(e -> {
                       Log.e(TAG, e.getMessage());
                       enteredCourse.postError(

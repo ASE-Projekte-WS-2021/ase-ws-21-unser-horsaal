@@ -6,6 +6,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.model.UserModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -105,15 +106,16 @@ public class CoursesRepository {
   public void getAuthor(List<CourseModel> authorList) {
     List<Task<DataSnapshot>> authorNames = new ArrayList<>();
     for (CourseModel course : authorList) {
-      authorNames.add(getAuthorName(course.getCreatorId()));
+      authorNames.add(getAuthorData(course.getCreatorId()));
     }
     Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
       for (int i = 0; i < authorList.size(); i++) {
-        String name = authorNames.get(i).getResult().getValue(String.class);
-        if (name == null) {
+        UserModel author = authorNames.get(i).getResult().getValue(UserModel.class);
+        if (author == null) {
           authorList.get(i).setCreatorName(Config.UNKNOWN_USER);
         } else {
-          authorList.get(i).setCreatorName(name);
+          authorList.get(i).setCreatorName(author.getDisplayName());
+          authorList.get(i).setPhotoUrl(author.getPhotoUrl());
         }
       }
       userCoursesList.clear();
@@ -123,13 +125,8 @@ public class CoursesRepository {
     });
   }
 
-  /** JavaDoc. */
-  public Task<DataSnapshot> getAuthorName(String authorId) {
-    return this.databaseReference
-            .child(Config.CHILD_USER)
-            .child(authorId)
-            .child(Config.CHILD_USER_NAME)
-            .get();
+  public Task<DataSnapshot> getAuthorData(String authorId) {
+    return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
   }
 
 }

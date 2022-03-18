@@ -1,183 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="16dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CurrentCourseViewModel" />
+        <variable
+            name="model"
+            type="com.example.unserhoersaal.model.ThreadModel" />
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="com.example.unserhoersaal.enums.TagEnum"/>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:onClick="@{(view) -> NavUtil.navigateToThread(view, model)}"
+        android:layout_margin="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/threadCardVoteContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/threadCardSolvedImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_baseline_check_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                android:id="@+id/threadCardUpvote"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/threadCardLikes"/>
-
-            <TextView
-                android:id="@+id/threadCardLikes"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/threadCardVoteContainer"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <ImageView
-                android:id="@+id/threadCardDownvote"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/threadCardLikes"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:id="@+id/threadCardTagContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/threadCardVoteContainer">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/threadCardFirstTag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="firstTag"
-                android:layout_marginEnd="8dp"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/threadCardPageTag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="22"
-                android:layout_marginEnd="8dp"
-                app:chipIcon="@drawable/ic_baseline_insert_drive_file_24"
-                app:chipIconTint="@color/white"/>
-
-            <TextView
-                android:id="@+id/threadCardHashtagOne"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#hashtag1m #hashtagtwoandsoon"
-                android:layout_marginEnd="8dp" />
-
-            <!--
-            <TextView
-                android:id="@+id/threadCardHashtagTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#hashtag1"/>
-            -->
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/threadCardText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Ich weiß, dass das Design-Pattern gerne in Android benutzt wird, kenne mich damit aber nicht aus. Was genau macht denn das ViewModel und wie kommuniziert es mit den Views? Wäre sehr sehr dankbar für eine schnelle Antwort"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/threadCardTagContainer"
-            app:layout_constraintEnd_toStartOf="@id/threadCardVoteContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/threadCardThreadInfoContainer"
-            />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/threadCardThreadInfoContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <ImageView
-                android:id="@+id/threadCardCommentsImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_comment_24"
-                app:tint="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <TextView
-                android:id="@+id/threadCardNumberComments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="8"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/threadCardCommentsImage"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <ImageView
-                    android:id="@+id/threadCardAuthorImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_account_circle_24"
-                    app:tint="@color/black" />
+                    android:id="@+id/threadCardSolvedImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_baseline_check_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    setColor="@{model.answered}"/>
+
+                <ImageView
+                    android:id="@+id/threadCardUpvote"
+                    setLikeStatus="@{model.likeStatus}"
+                    android:onClick="@{(view) -> vm.likeThread(model)}"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/threadCardLikes" />
 
                 <TextView
-                    android:id="@+id/threadCardAuthor"
+                    android:id="@+id/threadCardLikes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ThreadErsteller"
-                    android:layout_marginStart="8dp"
-                    android:layout_gravity="center_vertical"/>
+                    android:text="@{Integer.toString(model.likes)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
+                <ImageView
+                    android:id="@+id/threadCardDownvote"
+                    android:onClick="@{(view) -> vm.dislikeThread(model)}"
+                    setDisLikeStatus="@{model.likeStatus}"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/threadCardLikes" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/threadCardTagContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/threadCardVoteContainer">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCardSubjectMatter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_subject"
+                    android:visibility="@{model.tags.contains(TagEnum.SUBJECT_MATTER) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCarMistake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_mistake"
+                    android:visibility="@{model.tags.contains(TagEnum.MISTAKE) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCardExamination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_exam"
+                    android:visibility="@{model.tags.contains(TagEnum.EXAMINATION) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCardOrganisation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_organizational"
+                    android:visibility="@{model.tags.contains(TagEnum.ORGANISATION) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCardOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_meeting_fragment_chip_other"
+                    android:visibility="@{model.tags.contains(TagEnum.OTHER) ? View.VISIBLE : View.GONE}"
+                    android:layout_marginEnd="8dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/threadCardPageTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{model.pageNumber}"
+                    android:layout_marginEnd="8dp"
+                    app:chipIcon="@drawable/ic_baseline_insert_drive_file_24"
+                    app:chipIconTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/threadCardHashtagOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{model.hashtag}"
+                    android:layout_marginEnd="8dp" />
+
+                <!--
+                <TextView
+                    android:id="@+id/threadCardHashtagTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#hashtag1"/>
+                -->
             </LinearLayout>
 
             <TextView
-                android:id="@+id/threadCardTime"
-                android:layout_width="wrap_content"
+                android:id="@+id/threadCardText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="16:30"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@id/threadCardTagContainer"
+                app:layout_constraintEnd_toStartOf="@id/threadCardVoteContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/threadCardThreadInfoContainer"
+                tools:text="@{model.text}"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/threadCardThreadInfoContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/threadCardCommentsImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_comment_24"
+                    app:tint="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/threadCardNumberComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/threadCardCommentsImage"
+                    tools:text="@{Integer.toString(model.answersCount)}"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <ImageView
+                        android:id="@+id/threadCardAuthorImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        setImage="@{model.photoUrl}" />
+
+                    <TextView
+                        android:id="@+id/threadCardAuthor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_gravity="center_vertical"
+                        tools:text="@{model.creatorName}"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/threadCardTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{Format.getFormatedDateTime(threadCardTime, model.creationTime)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

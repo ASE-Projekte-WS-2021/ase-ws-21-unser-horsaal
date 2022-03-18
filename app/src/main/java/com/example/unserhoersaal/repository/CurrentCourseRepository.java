@@ -219,6 +219,7 @@ public class CurrentCourseRepository {
     for (MessageModel message : mesList) {
       likeList.add(getLikeStatusMessage(message.getKey()));
     }
+    //TODO optimize if else also in other classes
     Tasks.whenAll(likeList).addOnSuccessListener(unused -> {
       for (int i = 0; i < likeList.size(); i++) {
         if (!likeList.get(i).getResult().exists()) {

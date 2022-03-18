@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,9 +155,20 @@ public class CourseHistoryRepository {
             .setValue(meetingsModel)
             .addOnSuccessListener(unused -> {
               meetingsModel.setKey(meetingId);
-              meetingsModelMutableLiveData.postUpdate(meetingsModel);
+              this.databaseReference.child(Config.CHILD_COURSES)
+                      .child(courseObj.getKey())
+                      .child(Config.CHILD_MEETINGS_COUNT)
+                      .setValue(ServerValue.increment(1))
+                      .addOnSuccessListener(unused1 -> {
+                        meetingsModel.setKey(meetingId);
+                        meetingsModelMutableLiveData.postUpdate(meetingsModel);
+                      }).addOnFailureListener(e -> {
+                        Log.e(TAG, e.getMessage());
+                        meetingsModelMutableLiveData.postError(
+                                new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
+            });
             }).addOnFailureListener(e -> {
-              Log.e(TAG, "Meeting konnte nicht erstellt werden.");
+              Log.e(TAG, e.getMessage());
               meetingsModelMutableLiveData.postError(
                       new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
             });

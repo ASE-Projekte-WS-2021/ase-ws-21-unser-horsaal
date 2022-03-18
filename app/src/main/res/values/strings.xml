@@ -185,5 +185,7 @@
     <string name="auto_login_after_verification">Nach der Verifizierung werden Sie automatisch eingeloggt.</string>
 
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
+    <string name="startzeit">Startzeit</string>
+    <string name="endzeit">Endzeit</string>
 
 </resources>

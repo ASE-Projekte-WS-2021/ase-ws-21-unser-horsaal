@@ -47,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/simple_course_item" />
+            tools:listitem="@layout/course_item_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

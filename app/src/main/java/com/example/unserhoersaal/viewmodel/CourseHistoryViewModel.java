@@ -103,8 +103,13 @@ public class CourseHistoryViewModel extends ViewModel {
               new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
       return;
     }
+    //TODO: handle error if all values are 0
+    //TODO: handle empty fields
+    //TODO: handle end time for start time
+    //TODO: Use only eventTime and eventEndTime; remove meetingDate and ...Input
 
     meetingsModel.setEventTime(this.parseEventTime(meetingsModel));
+    meetingsModel.setEventEndTime(this.parseEventEndTime(meetingsModel));
     meetingsModel.setMeetingDate(this.parseMeetingDate(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
 
@@ -126,6 +131,17 @@ public class CourseHistoryViewModel extends ViewModel {
     calendar.set(Calendar.DAY_OF_MONTH, meetingsModel.getDayOfMonthInput());
     calendar.set(Calendar.HOUR_OF_DAY, meetingsModel.getHourInput());
     calendar.set(Calendar.MINUTE, meetingsModel.getMinuteInput());
+
+    return calendar.getTimeInMillis();
+  }
+
+  private long parseEventEndTime(MeetingsModel meetingsModel) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.YEAR, meetingsModel.getYearInput());
+    calendar.set(Calendar.MONTH, meetingsModel.getMonthInput());
+    calendar.set(Calendar.DAY_OF_MONTH, meetingsModel.getDayOfMonthInput());
+    calendar.set(Calendar.HOUR_OF_DAY, meetingsModel.getHourEndInput());
+    calendar.set(Calendar.MINUTE, meetingsModel.getMinuteEndInput());
 
     return calendar.getTimeInMillis();
   }
