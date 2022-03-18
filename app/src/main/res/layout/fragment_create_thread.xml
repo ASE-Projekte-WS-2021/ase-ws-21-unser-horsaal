@@ -66,7 +66,7 @@
                         android:background="@color/white"
                         android:maxLength="500"
                         android:hint="Nachricht eingeben"
-                        android:text="@={vm.threadModelInput.text}"/>
+                        android:text="@={vm.threadModelInputState.data.text}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,35 +90,35 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_subject"
-                        android:onClick="@{() -> TagUtil.setTag(chipTagSubjectMatter, vm.threadModelInput)}"/>
+                        android:onClick="@{() -> TagUtil.setTag(chipTagSubjectMatter, vm.threadModelInputState.data)}"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagMistake"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_mistake"
-                        android:onClick="@{() -> TagUtil.setTag(chipTagMistake, vm.threadModelInput)}"/>
+                        android:onClick="@{() -> TagUtil.setTag(chipTagMistake, vm.threadModelInputState.data)}"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagExamination"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_exam"
-                        android:onClick="@{() -> TagUtil.setTag(chipTagExamination, vm.threadModelInput)}"/>
+                        android:onClick="@{() -> TagUtil.setTag(chipTagExamination, vm.threadModelInputState.data)}"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagOrganisation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_organizational"
-                        android:onClick="@{() -> TagUtil.setTag(chipTagOrganisation, vm.threadModelInput)}"/>
+                        android:onClick="@{() -> TagUtil.setTag(chipTagOrganisation, vm.threadModelInputState.data)}"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagOther"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_other"
-                        android:onClick="@{() -> TagUtil.setTag(chipTagOther, vm.threadModelInput)}"/>
+                        android:onClick="@{() -> TagUtil.setTag(chipTagOther, vm.threadModelInputState.data)}"/>
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -168,7 +168,7 @@
                         android:background="@color/white"
                         android:maxLength="500"
                         android:hint="#..."
-                        android:text="@={vm.threadModelInput.hashtag}"/>
+                        android:text="@={vm.threadModelInputState.data.hashtag}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -219,7 +219,7 @@
                         android:maxLength="500"
                         android:hint="Seitenzahl"
                         android:inputType="numberSigned"
-                        android:text="@={vm.threadModelInput.pageNumber}"/>
+                        android:text="@={vm.threadModelInputState.data.pageNumber}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

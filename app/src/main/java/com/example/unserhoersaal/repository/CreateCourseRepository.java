@@ -87,10 +87,10 @@ public class CreateCourseRepository {
                                       .child(course.getKey())
                                       .child(Config.CHILD_MEMBER_COUNT)
                                       .setValue(ServerValue.increment(1))
-                                      .addOnSuccessListener(unused2 -> addMapping(course)
+                                      .addOnSuccessListener(unused2 -> addMapping(course))
                                       .addOnFailureListener(e -> {
-                                        Log.e(TAG, e.getMessage())
-                                      }));
+                                        Log.e(TAG, e.getMessage());
+                                      });
                             })
                             .addOnFailureListener(e -> {
                               Log.e(TAG, "User konnte dem Kurs nicht hinzugefügt werden: "

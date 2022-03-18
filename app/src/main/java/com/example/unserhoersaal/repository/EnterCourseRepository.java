@@ -169,7 +169,7 @@ public class EnterCourseRepository {
             .child(uid)
             .child(course.getKey())
             .setValue(Boolean.TRUE)
-            .addOnSuccessListener(unused ->
+            .addOnSuccessListener(unused -> {
                     databaseReference
                             .child(Config.CHILD_COURSES_USER)
                             .child(course.getKey())
@@ -185,13 +185,13 @@ public class EnterCourseRepository {
                                 Log.e(TAG, e.getMessage());
                                 enteredCourse.postError(
                                         new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
-                              })
-                    .addOnFailureListener(e -> {
+                              });
+                    }).addOnFailureListener(e -> {
                       Log.e(TAG, e.getMessage());
                       enteredCourse.postError(
                               new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
-                    })
-            .addOnFailureListener(e -> {
+                    });
+            }).addOnFailureListener(e -> {
               Log.e(TAG, e.getMessage());
               enteredCourse.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
             });

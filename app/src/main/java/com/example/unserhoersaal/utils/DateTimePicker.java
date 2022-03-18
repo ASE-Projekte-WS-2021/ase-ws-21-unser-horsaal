@@ -61,11 +61,11 @@ public class DateTimePicker {
 
       //TODO maybe dont save everything extra in the model and push to database
       if (view.getId() == R.id.createCourseMeetingTimePicker) {
-        courseHistoryViewModel.dataBindingMeetingInput.getValue().setHourInput(hour);
-        courseHistoryViewModel.dataBindingMeetingInput.getValue().setMinuteInput(minute);
+        meetingModel.setHourInput(hour);
+        meetingModel.setMinuteInput(minute);
       } else if (view.getId() == R.id.createCourseMeetingEndTimePicker) {
-        courseHistoryViewModel.dataBindingMeetingInput.getValue().setHourEndInput(hour);
-        courseHistoryViewModel.dataBindingMeetingInput.getValue().setMinuteEndInput(minute);
+        meetingModel.setHourEndInput(hour);
+        meetingModel.setMinuteEndInput(minute);
       }
       String time = hour + ":" + minute;
       view.setText(time);

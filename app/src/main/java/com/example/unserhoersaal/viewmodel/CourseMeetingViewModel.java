@@ -87,18 +87,7 @@ public class CourseMeetingViewModel extends ViewModel {
       Log.e(TAG, "threadModel is null.");
       return;
     }
-
-    if (threadModel.getTitle() == null) {
-      Log.d(TAG, "title is null.");
-      this.threadModelInputState.postError(
-              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
-      return;
-    } else if (!Validation.stringHasPattern(threadModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
-      Log.d(TAG, "title wrong pattern.");
-      this.threadModelInputState.postError(
-              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
-      return;
-    }
+    
     if (threadModel.getText() == null) {
       Log.d(TAG, "text is null.");
       this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);

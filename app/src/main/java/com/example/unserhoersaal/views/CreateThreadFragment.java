@@ -67,10 +67,10 @@ public class CreateThreadFragment extends Fragment {
     this.courseMeetingViewModel.init();
     //this.currentCourseViewModel.init();
     this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
-      if (threadModel != null) {
+      if (threadModel.getData() != null) {
         KeyboardUtil.hideKeyboard(getActivity());
         //this.currentCourseViewModel.setThreadId(threadModel.getKey());
-        this.courseMeetingViewModel.resetThreadModelInput();
+        //this.courseMeetingViewModel.resetThreadModelInput();
         this.navController.navigate(R.id.action_createThreadFragment_to_courseMeetingFragment);
       }
     });
