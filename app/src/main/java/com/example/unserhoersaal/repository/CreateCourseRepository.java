@@ -38,8 +38,6 @@ public class CreateCourseRepository {
 
   /**Method creates an course.**/
   public void createNewCourse(CourseModel courseModel) {
-    this.courseModelMutableLiveData.postLoading();
-
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.courseModelMutableLiveData.postError(

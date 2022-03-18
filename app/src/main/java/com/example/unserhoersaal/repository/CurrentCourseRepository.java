@@ -3,6 +3,7 @@ package com.example.unserhoersaal.repository;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
@@ -109,7 +110,7 @@ public class CurrentCourseRepository {
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      //TODO: which live data is updated when a message is created?
+      this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
     String uid = this.firebaseAuth.getCurrentUser().getUid();
@@ -119,6 +120,7 @@ public class CurrentCourseRepository {
 
     if (messageId == null) {
       Log.e(TAG, "messageid is null");
+      this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
 
@@ -140,12 +142,14 @@ public class CurrentCourseRepository {
     String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
     if (threadKey == null) {
       Log.e(TAG, "threadKey is null.");
+      this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
 
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
       Log.e(TAG, "threadKey is null.");
+      this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
 
@@ -286,6 +290,7 @@ public class CurrentCourseRepository {
 
           if (model == null) {
             Log.e(TAG, "model is null");
+            messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
             return;
           }
 

@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,8 @@ public class CreateCourseFragment extends Fragment {
 
     if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesCreateFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.createCourseFragmentCreateButton.setEnabled(false);
+      this.binding.createCourseFragmentCreateButton.setBackgroundColor(Color.GRAY);
     } else if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (courseModelStateData.getErrorTag() == ErrorTag.TITLE) {
         System.out.println(courseModelStateData.getError().getMessage());
@@ -104,6 +107,8 @@ public class CreateCourseFragment extends Fragment {
     this.binding.createCourseFragmentCourseInstitutionErrorText.setVisibility(View.GONE);
     this.binding.createCourseFragmentCourseDescriptionErrorText.setVisibility(View.GONE);
     this.binding.createCourseFragmentCourseTitleErrorText.setVisibility(View.GONE);
+    this.binding.createCourseFragmentCreateButton.setEnabled(true);
+    this.binding.createCourseFragmentCreateButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {
@@ -113,9 +118,9 @@ public class CreateCourseFragment extends Fragment {
 
   private void initToolbar() {
     this.binding.createCourseToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    this.binding.createCourseToolbar.setNavigationOnClickListener(v -> {
-      this.navController.navigate(R.id.action_createCourseFragment_to_coursesFragment);
-    });
+    this.binding.createCourseToolbar.setNavigationOnClickListener(v ->
+      this.navController.navigate(R.id.action_createCourseFragment_to_coursesFragment)
+    );
   }
 
   /** Signs the creator in the course. */

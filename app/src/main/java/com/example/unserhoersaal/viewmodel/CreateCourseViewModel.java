@@ -40,9 +40,12 @@ public class CreateCourseViewModel extends ViewModel {
 
   /** Create a new course. */
   public void createCourse() {
+    this.courseModel.postLoading();
+
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
     if (courseModel == null) {
       Log.e(TAG, "courseModel is null.");
+      this.courseModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 

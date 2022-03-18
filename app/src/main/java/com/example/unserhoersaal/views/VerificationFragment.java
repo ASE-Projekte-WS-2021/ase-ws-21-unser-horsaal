@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -23,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 /** TODO. */
 public class VerificationFragment extends Fragment {
 
-  private static final String TAG = "ResetPasswordFragment";
+  private static final String TAG = "VerificationFragment";
 
   private FragmentVerificationBinding binding;
   private NavController navController;
@@ -57,6 +58,8 @@ public class VerificationFragment extends Fragment {
     this.emailVerifiedChecker();
   }
 
+  /** checks if the user has verified his email so the live data can update and navigate the user
+   * into the application. */
   private void emailVerifiedChecker() {
     this.handler = new Handler();
     this.handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
@@ -87,6 +90,8 @@ public class VerificationFragment extends Fragment {
 
     if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.verificationFragmentSpinner.setVisibility(View.VISIBLE);
+      this.binding.verificationFragmentResendEmailButton.setEnabled(false);
+      this.binding.verificationFragmentResendEmailButton.setBackgroundColor(Color.GRAY);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
       this.binding.verificationFragmentErrorText
               .setText(firebaseUserStateData.getError().getMessage());
@@ -106,6 +111,8 @@ public class VerificationFragment extends Fragment {
   private void resetBindings() {
     this.binding.verificationFragmentErrorText.setVisibility(View.GONE);
     this.binding.verificationFragmentSpinner.setVisibility(View.GONE);
+    this.binding.verificationFragmentResendEmailButton.setEnabled(true);
+    this.binding.verificationFragmentResendEmailButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

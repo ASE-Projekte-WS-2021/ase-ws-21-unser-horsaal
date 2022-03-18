@@ -11,7 +11,6 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
 import java.util.Collections;
 import java.util.Comparator;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.List;
@@ -78,20 +77,22 @@ public class CurrentCourseViewModel extends ViewModel {
 
   /** Send a new message in a thread. */
   public void sendMessage() {
+    //TODO: removed loading because there is no place for it
     MessageModel messageModel = Validation.checkStateLiveData(this.messageModelInputState, TAG);
     if (messageModel == null) {
       Log.e(TAG, "messageModel is null.");
+      this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (messageModel.getText() == null) {
       Log.d(TAG, "title is null.");
-      this.messageModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.VM);
+      this.messages.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
       return;
     } else if (!Validation.stringHasPattern(messageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
       Log.d(TAG, "title has wrong pattern.");
-      this.messageModelInputState.postError(
-              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.VM);
+      this.messages.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
       return;
     }
 

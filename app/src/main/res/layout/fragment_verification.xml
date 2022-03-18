@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -53,22 +54,41 @@
             android:textAlignment="center"
             android:visibility="gone"/>
 
-        <ProgressBar
-            android:id="@+id/verificationFragmentSpinner"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/createCourseFragmentButtonWrapper"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/verificationFragmentResendEmail"
-            android:text="@string/send_again"
-            android:onClick="@{() -> vm.resendVerificationEmail()}"
-            android:layout_width="300dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="32dp"
-            android:layout_height="wrap_content">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/verificationFragmentResendEmailButton"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.resendVerificationEmail()}"
+                    android:text="@string/send_again"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-        </com.google.android.material.button.MaterialButton>
+                <ProgressBar
+                    android:id="@+id/verificationFragmentSpinner"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:elevation="8dp"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/white"
+                    android:indeterminateTintMode="src_in"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/verificationFragmentResendEmailButton"
+                    app:layout_constraintEnd_toEndOf="@+id/verificationFragmentResendEmailButton"
+                    app:layout_constraintHorizontal_bias="0.975"
+                    app:layout_constraintStart_toStartOf="@+id/verificationFragmentResendEmailButton"
+                    app:layout_constraintTop_toTopOf="@+id/verificationFragmentResendEmailButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/verificationFragmentReturnToLogin"

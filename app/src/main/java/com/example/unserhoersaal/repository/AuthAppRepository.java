@@ -1,12 +1,20 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -60,7 +68,6 @@ public class AuthAppRepository {
 
   /** This method is logging in the user.*/
   public void login(String email, String password) {
-    this.userLiveData.postLoading();
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
@@ -80,8 +87,6 @@ public class AuthAppRepository {
 
   /** This method registers a new user.*/
   public void register(String username, String email, String password) {
-    this.userLiveData.postLoading();
-
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
@@ -172,8 +177,6 @@ public class AuthAppRepository {
 
   /** Method to (re)send a email verification.*/
   public void resendVerificationEmail() {
-    this.userLiveData.postLoading();
-
     if (this.firebaseUser == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.userLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
@@ -197,8 +200,6 @@ public class AuthAppRepository {
 
   /** JavaDoc. */
   public void sendPasswordResetMail(String email) {
-    this.emailSentLiveData.postLoading();
-
     this.firebaseAuth
             .sendPasswordResetEmail(email)
             .addOnCompleteListener(task -> {

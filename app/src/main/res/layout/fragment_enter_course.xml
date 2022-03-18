@@ -93,6 +93,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/enterCourseFragmentCourseNumberEditText"
                         android:text="@={vm.courseIdInputState.data.codeMapping}"
+                        android:inputType="textCapCharacters"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
@@ -107,22 +108,40 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ProgressBar
-                    android:id="@+id/enterCourseFragmentProgressSpinner"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/createCourseFragmentButtonWrapper"
                     android:layout_marginTop="32dp"
-                    android:layout_gravity="center"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/enterCourseFragmentEnterButton"
-                    android:onClick="@{() -> vm.checkCode()}"
-                    style="@style/wideOrangeButton"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:text="@string/enter_course_fragment_button_string" />
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/enterCourseFragmentEnterButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> vm.checkCode()}"
+                        android:text="@string/enter_course_fragment_button_string"
+                        style="@style/wideOrangeButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ProgressBar
+                        android:id="@+id/enterCourseFragmentProgressSpinner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/white"
+                        android:indeterminateTintMode="src_in"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/enterCourseFragmentEnterButton"
+                        app:layout_constraintEnd_toEndOf="@+id/enterCourseFragmentEnterButton"
+                        app:layout_constraintHorizontal_bias="0.975"
+                        app:layout_constraintStart_toStartOf="@+id/enterCourseFragmentEnterButton"
+                        app:layout_constraintTop_toTopOf="@+id/enterCourseFragmentEnterButton" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
                     android:id="@+id/enterCourseFragmentQrImage"

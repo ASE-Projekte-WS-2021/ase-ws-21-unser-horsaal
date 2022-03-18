@@ -58,7 +58,8 @@ public class Config {
   public static final String REGEX_PATTERN_TITLE = ".*";
   public static final String REGEX_PATTERN_INSTITUTION = ".*";
   public static final String REGEX_PATTERN_TEXT = ".*";
-  public static final String REGEX_PATTERN_CODE_MAPPING = ".*";
+  public static final String REGEX_PATTERN_CODE_MAPPING =
+          "^([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})$";
 
   /**=======================.
    * Date / Time Formats

@@ -70,13 +70,10 @@ public class CourseThreadFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void messageLiveDataCallback(StateData<List<MessageModel>> listStateData) {
-    this.resetBindings();
     this.currentCourseViewModel.sortAnswersByLikes(listStateData.getData());
     this.chatAdapter.notifyDataSetChanged();
 
-    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.coursesThreadFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+    if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
               listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
     }
@@ -85,11 +82,6 @@ public class CourseThreadFragment extends Fragment {
     } else {
       this.binding.currentCourseFragmentNoAnswersTextView.setVisibility(View.GONE);
     }
-  }
-
-
-  private void resetBindings() {
-    this.binding.coursesThreadFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectAdapter() {

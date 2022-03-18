@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import com.bumptech.glide.util.Util;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseMeetingBinding;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
@@ -66,17 +66,28 @@ public class CreateCourseMeetingFragment extends Fragment {
   private void meetingModelLiveDataCallback(StateData<MeetingsModel> meetingsModelStateData) {
     this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
+
     if (meetingsModelStateData.getStatus() == StateData.DataStatus.LOADING) {
-      //TODO spinner
+      this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.createCourseMeetingFragmentButton.setEnabled(false);
+      this.binding.createCourseMeetingFragmentButton.setBackgroundColor(Color.GRAY);
     } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      //TODO error inclusive errortags
+      if (meetingsModelStateData.getErrorTag() == ErrorTag.TITLE) {
+        this.binding.createCourseMeetingFragmentTitleErrorText
+                .setText(meetingsModelStateData.getError().getMessage());
+        this.binding.createCourseMeetingFragmentTitleErrorText.setVisibility(View.VISIBLE);
+      }
     } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
     }
   }
 
   private void resetBindings() {
-    //TODO: spinner, errortext
+    this.binding.createCourseMeetingFragmentTitleErrorText.setVisibility(View.GONE);
+    this.binding.createCourseMeetingFragmentGeneralErrorText.setVisibility(View.GONE);
+    this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.createCourseMeetingFragmentButton.setEnabled(true);
+    this.binding.createCourseMeetingFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {
