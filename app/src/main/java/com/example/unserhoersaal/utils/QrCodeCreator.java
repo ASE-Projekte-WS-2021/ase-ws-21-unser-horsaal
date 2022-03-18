@@ -1,27 +1,21 @@
 package com.example.unserhoersaal.utils;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.databinding.BindingAdapter;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.google.zxing.WriterException;
-
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
 public class QrCodeCreator {
 
   /** JavaDoc for this method. */
-  @BindingAdapter("generateQrCode")
+  @BindingAdapter({"codeMapping", "viewmodel"})
   public static void generateQrCode(View view, String text,
                                     CourseDescriptionViewModel courseDescriptionViewModel) {
     Bitmap bitmap;
@@ -41,6 +35,5 @@ public class QrCodeCreator {
   public static void setImageView(ImageView iv, Bitmap bitmap) {
     iv.setImageBitmap(bitmap);
   }
-
 
 }

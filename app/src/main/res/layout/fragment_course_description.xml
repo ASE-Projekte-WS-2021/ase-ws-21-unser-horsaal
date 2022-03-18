@@ -308,7 +308,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/courseDescriptionFragmentToolbar"
-            tools:srcCompat="@{(view) -> QrCodeCreator.setImageView(view, vm.getQrCodeBitmap)}" />
+            app:setImageView="@{vm.getQrCodeBitmap}" />
+            <!--tools:srcCompat="@{(view) -> QrCodeCreator.setImageView(view, vm.getQrCodeBitmap)}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
