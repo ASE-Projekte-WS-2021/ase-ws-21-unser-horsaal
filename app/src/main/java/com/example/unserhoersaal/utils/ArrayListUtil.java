@@ -3,6 +3,7 @@ package com.example.unserhoersaal.utils;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.unserhoersaal.model.MeetingsModel;
+import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 
 import java.util.ArrayList;
@@ -66,6 +67,16 @@ public class ArrayListUtil {
         resetThreadList(threadsModelList, fullThreadsList);
         break;
     }
+  }
+
+  public void sortAnswersByLikes(List<MessageModel> messageModelList) {
+    messageModelList.sort(new Comparator<MessageModel>() {
+      @Override
+      public int compare(MessageModel messageModel, MessageModel t1) {
+        if (messageModel.getLikes() == n)
+        return t1.getLikes() - messageModel.getLikes();
+      }
+    });
   }
 
 
