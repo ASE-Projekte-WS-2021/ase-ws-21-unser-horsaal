@@ -78,18 +78,6 @@ public class CourseHistoryFragment extends Fragment {
 
     this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
             this::meetingsLiveDataCallback);
-
-    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
-      this.courseHistoryViewModel.sortMeetings(meetingsModels, "oldest");
-      meetingAdapter.notifyDataSetChanged();
-      if (meetingsModels.size() == 0) {
-        this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
-      } else {
-        this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
-      }
-    });
-    this.courseHistoryViewModel.getMeetingsModel()
-            .observe(getViewLifecycleOwner(), this::meetingModelInputStateCallback);
   }
 
   @SuppressLint("NotifyDataSetChanged")
@@ -98,6 +86,7 @@ public class CourseHistoryFragment extends Fragment {
       return;
     }
     this.resetBindings();
+    this.courseHistoryViewModel.sortMeetings(listStateData.getData(), "oldest");
     this.meetingAdapter.notifyDataSetChanged();
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
@@ -110,12 +99,6 @@ public class CourseHistoryFragment extends Fragment {
       this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
     } else {
       this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
-    }
-  }
-
-  private void meetingModelInputStateCallback(StateData<MeetingsModel> meetingsModelStateData) {
-    if (meetingsModelStateData != null) {
-      KeyboardUtil.hideKeyboard(getActivity());
     }
   }
 

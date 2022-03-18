@@ -28,12 +28,6 @@ public class CourseHistoryViewModel extends ViewModel {
   public StateLiveData<String> userId;
   private ArrayListUtil arrayListUtil = new ArrayListUtil();
 
-  private MutableLiveData<CourseModel> course = new MutableLiveData<>();
-  private MutableLiveData<List<MeetingsModel>> meetings;
-  private MutableLiveData<MeetingsModel> meetingsModelMutableLiveData;
-  public MutableLiveData<MeetingsModel> dataBindingMeetingInput;
-  public MutableLiveData<String> userId;
-
   /** Initialise the ViewModel. */
   public void init() {
     Log.d(TAG, "init: ");
@@ -80,7 +74,7 @@ public class CourseHistoryViewModel extends ViewModel {
     return this.meetingsModelMutableLiveData;
   }
 
-  public LiveData<String> getUser() {return this.userId;}
+  public StateLiveData<String> getUser() {return this.userId;}
 
   public void setCourse(CourseModel course) {
     Log.d(TAG, course.getKey());

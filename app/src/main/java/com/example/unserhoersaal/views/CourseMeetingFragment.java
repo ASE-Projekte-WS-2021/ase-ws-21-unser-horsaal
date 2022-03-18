@@ -83,6 +83,7 @@ public class CourseMeetingFragment extends Fragment {
   @SuppressLint("NotifyDataSetChanged")
   private void meetingsLiveStateCallback(StateData<List<ThreadModel>> listStateData) {
     this.resetBindings();
+    this.courseMeetingViewModel.sortThreads(listStateData.getData(), "newest");
     this.threadAdapter.notifyDataSetChanged();
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
@@ -112,26 +113,6 @@ public class CourseMeetingFragment extends Fragment {
 
   private void resetBindings() {
     this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
-
-    this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
-      this.courseMeetingViewModel.sortThreads(messageList, "newest");
-      threadAdapter.notifyDataSetChanged();
-      if (messageList.size() == 0) {
-        this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
-      } else {
-        this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
-      }
-    });
-    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
-      if (threadModel != null) {
-        KeyboardUtil.hideKeyboard(getActivity());
-        this.currentCourseViewModel.setThreadId(threadModel.getKey());
-        this.courseMeetingViewModel.resetThreadModelInput();
-        this.binding.courseMeetingFragmentCreateThreadContainer.setVisibility(View.GONE);
-        this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
-        this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
-      }
-    });
   }
 
   private void connectAdapter() {

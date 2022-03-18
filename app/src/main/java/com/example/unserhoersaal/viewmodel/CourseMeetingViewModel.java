@@ -69,8 +69,8 @@ public class CourseMeetingViewModel extends ViewModel {
    *  filter options: "answered" and "not answered"
    */
   public void filterThreads(List<ThreadModel> threadsModelList, String filterOption) {
-    MeetingsModel actualMeeting = this.meeting.getValue();
-    List<ThreadModel> fullThreadsModelList = new ArrayList<>(this.threads.getValue());
+    MeetingsModel actualMeeting = Validation.checkStateLiveData(this.meeting, TAG);
+    List<ThreadModel> fullThreadsModelList = Validation.checkStateLiveData(this.threads, TAG);
     String userId = courseMeetingRepository.getUserId();
     this.arrayListUtil.filterThreadList(threadsModelList, fullThreadsModelList, filterOption,
             actualMeeting, userId);

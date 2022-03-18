@@ -73,7 +73,6 @@ public class ArrayListUtil {
     messageModelList.sort(new Comparator<MessageModel>() {
       @Override
       public int compare(MessageModel messageModel, MessageModel t1) {
-        if (messageModel.getLikes() == n)
         return t1.getLikes() - messageModel.getLikes();
       }
     });
