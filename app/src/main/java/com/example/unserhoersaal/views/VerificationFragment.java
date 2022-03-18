@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 /** TODO. */
 public class VerificationFragment extends Fragment {
 
-  private static final String TAG = "ResetPasswordFragment";
+  private static final String TAG = "VerificationFragment";
 
   private FragmentVerificationBinding binding;
   private NavController navController;

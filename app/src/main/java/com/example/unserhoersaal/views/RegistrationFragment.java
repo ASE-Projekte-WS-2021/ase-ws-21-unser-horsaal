@@ -78,15 +78,14 @@ public class RegistrationFragment extends Fragment {
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (firebaseUserStateData == null) { //-> move to other method
-      Log.e(TAG, "FirebaseUser object is null");
+      Log.e(TAG, "FirebaseUserStateData is null");
       this.binding.registrationFragmentGeneralErrorText.setText(Config.UNSPECIFIC_ERROR);
       this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
       return;
     }
 
-    if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE) {
-      //TODO: removed navigation to courses fragment and entercoursefragment because will also be
-      // in verification fragment after registration. am i right?
+    if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE
+            && firebaseUserStateData.getData() != null) {
       navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.registrationFragmentProgressSpinner.setVisibility(View.VISIBLE);
@@ -101,7 +100,7 @@ public class RegistrationFragment extends Fragment {
         this.binding.registrationFragmentUserErrorText
                 .setText(firebaseUserStateData.getError().getMessage());
         this.binding.registrationFragmentUserErrorText.setVisibility(View.VISIBLE);
-      } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+      } else if (firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
         this.binding.registrationFragmentPasswordErrorText
                 .setText(firebaseUserStateData.getError().getMessage());
         this.binding.registrationFragmentPasswordErrorText.setVisibility(View.VISIBLE);
