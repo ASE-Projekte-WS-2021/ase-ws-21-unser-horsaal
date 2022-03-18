@@ -78,6 +78,16 @@ public class CourseHistoryFragment extends Fragment {
 
     this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
             this::meetingsLiveDataCallback);
+
+    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(), meetingsModels -> {
+      this.courseHistoryViewModel.sortMeetings(meetingsModels, "oldest");
+      meetingAdapter.notifyDataSetChanged();
+      if (meetingsModels.size() == 0) {
+        this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
+      } else {
+        this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
+      }
+    });
     this.courseHistoryViewModel.getMeetingsModel()
             .observe(getViewLifecycleOwner(), this::meetingModelInputStateCallback);
   }

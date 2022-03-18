@@ -9,9 +9,9 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
+import com.example.unserhoersaal.utils.ArrayListUtil;
+
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +26,13 @@ public class CourseHistoryViewModel extends ViewModel {
   private StateLiveData<MeetingsModel> meetingsModelMutableLiveData;
   public StateLiveData<MeetingsModel> meetingModelInputState = new StateLiveData<>();
   public StateLiveData<String> userId;
+  private ArrayListUtil arrayListUtil = new ArrayListUtil();
 
+  private MutableLiveData<CourseModel> course = new MutableLiveData<>();
+  private MutableLiveData<List<MeetingsModel>> meetings;
+  private MutableLiveData<MeetingsModel> meetingsModelMutableLiveData;
+  public MutableLiveData<MeetingsModel> dataBindingMeetingInput;
+  public MutableLiveData<String> userId;
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -57,14 +63,13 @@ public class CourseHistoryViewModel extends ViewModel {
     return this.meetings;
   }
 
-  /** Sort the meetings list by event time. */
-  public void sortMeetingByEventTime(List<MeetingsModel> meetingsModelList) {
-    Collections.sort(meetingsModelList, new Comparator<MeetingsModel>() {
-      @Override
-      public int compare(MeetingsModel meetingsModel, MeetingsModel t1) {
-        return meetingsModel.getEventTime().compareTo(t1.getEventTime());
-      }
-    });
+  /** Sort the meetings list.
+   *  First parameter is the meeting list to sort.
+   *  The second parameter is a sort option.
+   *  Sort options: newest, oldest
+   */
+  public void sortMeetings(List<MeetingsModel> meetingsModelList, String sortOption) {
+   this.arrayListUtil.sortMeetingList(meetingsModelList, sortOption);
   }
 
   public StateLiveData<CourseModel> getCourse() {
@@ -74,6 +79,8 @@ public class CourseHistoryViewModel extends ViewModel {
   public StateLiveData<MeetingsModel> getMeetingsModel() {
     return this.meetingsModelMutableLiveData;
   }
+
+  public LiveData<String> getUser() {return this.userId;}
 
   public void setCourse(CourseModel course) {
     Log.d(TAG, course.getKey());

@@ -112,6 +112,26 @@ public class CourseMeetingFragment extends Fragment {
 
   private void resetBindings() {
     this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
+
+    this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
+      this.courseMeetingViewModel.sortThreads(messageList, "newest");
+      threadAdapter.notifyDataSetChanged();
+      if (messageList.size() == 0) {
+        this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
+      } else {
+        this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
+      }
+    });
+    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
+      if (threadModel != null) {
+        KeyboardUtil.hideKeyboard(getActivity());
+        this.currentCourseViewModel.setThreadId(threadModel.getKey());
+        this.courseMeetingViewModel.resetThreadModelInput();
+        this.binding.courseMeetingFragmentCreateThreadContainer.setVisibility(View.GONE);
+        this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
+        this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
+      }
+    });
   }
 
   private void connectAdapter() {
@@ -135,7 +155,8 @@ public class CourseMeetingFragment extends Fragment {
                     this.navController.navigate(
                             R.id.action_courseMeetingFragment_to_courseHistoryFragment)
     );
-    this.binding.courseMeetingFragmentToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+    this.binding.courseMeetingFragmentToolbar.setOnMenuItemClickListener
+            (new Toolbar.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.courseMeetingToolbarFilter){

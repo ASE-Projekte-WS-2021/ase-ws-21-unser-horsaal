@@ -14,6 +14,9 @@ import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.Collections;
 import java.util.Comparator;
+import com.example.unserhoersaal.utils.ArrayListUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /** ViewModel for the CourseMeetingFragment. */
@@ -22,6 +25,7 @@ public class CourseMeetingViewModel extends ViewModel {
   private static final String TAG = "CourseMeetingViewModel";
 
   private CourseMeetingRepository courseMeetingRepository;
+  private ArrayListUtil arrayListUtil = new ArrayListUtil();
 
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<List<ThreadModel>> threads;
@@ -35,6 +39,7 @@ public class CourseMeetingViewModel extends ViewModel {
     }
 
     this.courseMeetingRepository = CourseMeetingRepository.getInstance();
+    this.arrayListUtil = new ArrayListUtil();
     this.meeting = this.courseMeetingRepository.getMeeting();
     this.threadModelMutableLiveData =
             this.courseMeetingRepository.getThreadModelMutableLiveData();
@@ -49,14 +54,26 @@ public class CourseMeetingViewModel extends ViewModel {
     return this.threads;
   }
 
-  /** Sort the threads list by likes. */
-  public void sortThreadsByLikes(List<ThreadModel> threadsModelList) {
-    Collections.sort(threadsModelList, new Comparator<ThreadModel>() {
-      @Override
-      public int compare(ThreadModel threadModel, ThreadModel t1) {
-        return t1.getLikes() - threadModel.getLikes();
-      }
-    });
+  /** sort the threads list.
+   *  First parameter is the treads list to sort.
+   *  The second parameter is a sort option (String).
+   *  Sort options: "newest", "likes" and "answers"
+   */
+  public void sortThreads(List<ThreadModel> threadsModelList, String sortOption) {
+    this.arrayListUtil.sortThreadList(threadsModelList, sortOption);
+  }
+
+  /** filter the threads list.
+   *  First parameter is the treads list to filter.
+   *  The second parameter is a filter option (String).
+   *  filter options: "answered" and "not answered"
+   */
+  public void filterThreads(List<ThreadModel> threadsModelList, String filterOption) {
+    MeetingsModel actualMeeting = this.meeting.getValue();
+    List<ThreadModel> fullThreadsModelList = new ArrayList<>(this.threads.getValue());
+    String userId = courseMeetingRepository.getUserId();
+    this.arrayListUtil.filterThreadList(threadsModelList, fullThreadsModelList, filterOption,
+            actualMeeting, userId);
   }
 
   public StateLiveData<MeetingsModel> getMeeting() {
