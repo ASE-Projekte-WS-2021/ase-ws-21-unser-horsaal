@@ -62,10 +62,14 @@ public class CourseDescriptionViewModel extends ViewModel {
   }
 
   public void setQrCodeBitmap(Bitmap qrCodeBitmap) {
+    Log.d(Config.QR_CODE, "setting qr code bitmap");
+    Log.d(Config.QR_CODE, qrCodeBitmap.toString());
     this.qrCodeBitmap = qrCodeBitmap;
   }
 
   public Bitmap getQrCodeBitmap() {
+    Log.d(Config.QR_CODE, "get qr code bitmap");
+    //Log.d(Config.QR_CODE, this.qrCodeBitmap.toString());
     return this.qrCodeBitmap;
   }
 }

@@ -23,6 +23,8 @@ public class QrCodeCreator {
     QRGEncoder qrgEncoder = new QRGEncoder(deepLink, null, QRGContents.Type.TEXT, Config.DIMEN);
     try {
       bitmap = qrgEncoder.encodeAsBitmap();
+      Log.d(Config.QR_CODE, "created bitmap with qr code");
+      Log.d(Config.QR_CODE, bitmap.toString());
       courseDescriptionViewModel.setQrCodeBitmap(bitmap);
     } catch (WriterException e) {
       Log.e("Tag", e.toString());

@@ -222,4 +222,5 @@ public class Config {
 
   /** QrCode. */
   public static final int DIMEN = 400;
+  public static final String QR_CODE = "Qr_Code";
 }
