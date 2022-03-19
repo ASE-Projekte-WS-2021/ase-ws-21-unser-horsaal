@@ -1,9 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -12,11 +9,8 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
-import java.util.Collections;
-import java.util.Comparator;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** ViewModel for the CourseMeetingFragment. */
