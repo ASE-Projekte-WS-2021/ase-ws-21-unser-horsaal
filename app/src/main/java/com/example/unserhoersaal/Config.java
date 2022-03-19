@@ -228,4 +228,8 @@ public class Config {
   public static final String QR_CODE_TOAST = "Created QR code";
   public static final String QR_CODE_FILE_NAME = "qrCodeImage";
   public static final int QR_CODE_COMPRESSION = 100;
+
+  /** QrCode. */
+  public static final String NO_REPLY_PASSWORD = "ASE-2022";
+  public static final String NO_REPLY_EMAIL = "noreply.unserhoersaal@gmail.com";
 }

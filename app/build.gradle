@@ -59,4 +59,5 @@ dependencies {
     implementation 'com.github.yuriy-budiyev:code-scanner:2.1.1'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
+    implementation 'com.github.yesidlazaro:GmailBackground:1.2.0'
 }
