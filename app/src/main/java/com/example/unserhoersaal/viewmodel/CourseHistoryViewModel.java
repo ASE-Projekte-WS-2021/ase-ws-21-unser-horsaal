@@ -59,8 +59,8 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Sort the meetings list.
    *  First parameter is the meeting list to sort.
-   *  The second parameter is a sort option.
-   *  Sort options: newest, oldest
+   *  The second parameter is a sort option (String).
+   *  Sort options: "newest" and "oldest"
    */
   public void sortMeetings(List<MeetingsModel> meetingsModelList, String sortOption) {
    this.arrayListUtil.sortMeetingList(meetingsModelList, sortOption);

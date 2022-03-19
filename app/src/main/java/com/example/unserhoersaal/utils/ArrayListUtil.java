@@ -1,7 +1,10 @@
 package com.example.unserhoersaal.utils;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.unserhoersaal.enums.TagEnum;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
@@ -18,7 +21,7 @@ public class ArrayListUtil {
    * Used to sort and filter meetings, threads and answers by various parameters.
    */
 
-  /** Sorting options for MeetingsModel lists*/
+  /** Sorting options for MeetingsModel lists. */
   public void sortMeetingList(List<MeetingsModel> meetingsModelList, String sortingOption) {
 
     switch (sortingOption) {
@@ -31,6 +34,7 @@ public class ArrayListUtil {
     }
   }
 
+  /** Sorting options for ThreadModel lists. */
   public void sortThreadList(List<ThreadModel> threadsModelList, String sortingOption) {
 
     switch (sortingOption) {
@@ -43,9 +47,16 @@ public class ArrayListUtil {
       case "answers":
         sortThreadListByAnswersDesc(threadsModelList);
         break;
+      case "page number asc":
+        sortThreadListByPageNumber(threadsModelList, "ascending");
+        break;
+      case "page number desc":
+        sortThreadListByPageNumber(threadsModelList, "descending");
+        break;
     }
   }
 
+  /** Filter options for ThreadModel lists. */
   public void filterThreadList(List<ThreadModel> threadsModelList,
                                List<ThreadModel> fullThreadsList, String filterOption,
                                MeetingsModel currentMeeting, String userId) {
@@ -63,12 +74,28 @@ public class ArrayListUtil {
       case "own":
         filterThreadListByOwnThreads(threadsModelList, userId);
         break;
+      case "tag subject matter":
+        filterThreadListByTag(threadsModelList, TagEnum.SUBJECT_MATTER);
+        break;
+      case "tag organisation":
+        filterThreadListByTag(threadsModelList, TagEnum.ORGANISATION);
+        break;
+      case "tag error":
+        filterThreadListByTag(threadsModelList, TagEnum.MISTAKE);
+        break;
+      case "tag examination":
+        filterThreadListByTag(threadsModelList, TagEnum.EXAMINATION);
+        break;
+      case "tag other":
+        filterThreadListByTag(threadsModelList, TagEnum.OTHER);
+        break;
       case "reset":
         resetThreadList(threadsModelList, fullThreadsList);
         break;
     }
   }
 
+  /** Sort answers by likes. */
   public void sortAnswersByLikes(List<MessageModel> messageModelList) {
     messageModelList.sort(new Comparator<MessageModel>() {
       @Override
@@ -79,7 +106,7 @@ public class ArrayListUtil {
   }
 
 
-  /** sort by event time. */
+  /** Sort meetings by event time. */
   private void sortMeetingListByEventTime(List<MeetingsModel> meetingsModelList, String order) {
     meetingsModelList.sort(new Comparator<MeetingsModel>() {
       @Override
@@ -92,9 +119,7 @@ public class ArrayListUtil {
     });
   }
 
-  /** Sorting options for ThreadModel lists*/
-
-  /** sort by creation time -descending */
+  /** Sort threads by creation time -descending */
   private void sortThreadListByEventTimeDesc(List<ThreadModel> threadsModelList) {
     threadsModelList.sort(new Comparator<ThreadModel>() {
       @Override
@@ -107,7 +132,7 @@ public class ArrayListUtil {
     });
   }
 
-  /** sort by likes -descending */
+  /** Sort threads by likes -descending */
   private void sortThreadListByLikesDesc(List<ThreadModel> threadsModelList) {
     threadsModelList.sort(new Comparator<ThreadModel>() {
       @Override
@@ -117,7 +142,7 @@ public class ArrayListUtil {
     });
   }
 
-  /** sort by comments/answers -descending */
+  /** Sort threads by comments/answers -descending */
   private void sortThreadListByAnswersDesc(List<ThreadModel> threadsModelList) {
     threadsModelList.sort(new Comparator<ThreadModel>() {
       @Override
@@ -127,7 +152,23 @@ public class ArrayListUtil {
     });
   }
 
-  /** filter threads by answered status */
+  /** Sort threads by the page number. */
+  private void sortThreadListByPageNumber(List<ThreadModel> threadsModelList, String order) {
+    threadsModelList.sort(new Comparator<ThreadModel>() {
+      @Override
+      public int compare(ThreadModel threadModel, ThreadModel t1) {
+        if (order.equals("ascending")) {
+          return Integer.parseInt(threadModel.getPageNumber()) -
+                  Integer.parseInt(t1.getPageNumber());
+        } else {
+          return Integer.parseInt(t1.getPageNumber()) -
+                  Integer.parseInt(threadModel.getPageNumber());
+        }
+      }
+    });
+  }
+
+  /** Filter threads by answered status. */
   private void filterThreadListByAnswerStatus(List<ThreadModel> threadsModelList,
                                               Boolean answered) {
     List<ThreadModel> filteredList = new ArrayList<>();
@@ -140,7 +181,7 @@ public class ArrayListUtil {
     threadsModelList.addAll(filteredList);
   }
 
-  /** filter threads and just show threads created by the course provider */
+  /** Filter threads and just show threads created by the course provider. */
   private void filterThreadListByCourseProvider(List<ThreadModel> threadsModelList,
                                                 MeetingsModel currentMeeting) {
     List<ThreadModel> filteredList = new ArrayList<>();
@@ -153,7 +194,7 @@ public class ArrayListUtil {
     threadsModelList.addAll(filteredList);
   }
 
-  /** filter threads and just show threads created by the current user */
+  /** Filter threads and just show threads created by the current user. */
   private void filterThreadListByOwnThreads(List<ThreadModel> threadsModelList,
                                             String userId) {
     List<ThreadModel> filteredList = new ArrayList<>();
@@ -166,7 +207,22 @@ public class ArrayListUtil {
     threadsModelList.addAll(filteredList);
   }
 
-  /** reset filter/show all threads */
+  /** Filter threads by tag. */
+  private void filterThreadListByTag(List<ThreadModel> threadsModelList, TagEnum tagEnum) {
+    List<ThreadModel> filteredList = new ArrayList<>();
+    for (int i = 0; i < threadsModelList.size(); i++) {
+      List<TagEnum> usedTags = new ArrayList<>(threadsModelList.get(i).getTags());
+      for (int j = 0; j < usedTags.size(); j++) {
+        if (usedTags.get(j) == tagEnum) {
+          filteredList.add(threadsModelList.get(i));
+        }
+      }
+      }
+    threadsModelList.clear();
+    threadsModelList.addAll(filteredList);
+    }
+
+  /** Reset filter/show all threads */
   private void resetThreadList(List<ThreadModel> threadModelList,
                                List<ThreadModel> fullThreadModelList) {
     threadModelList.clear();

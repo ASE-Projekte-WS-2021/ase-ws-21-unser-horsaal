@@ -57,7 +57,8 @@ public class CourseMeetingViewModel extends ViewModel {
   /** sort the threads list.
    *  First parameter is the treads list to sort.
    *  The second parameter is a sort option (String).
-   *  Sort options: "newest", "likes" and "answers"
+   *  Sort options: "newest", "likes", "answers", "page number asc" (ascending) and
+   *  "page number desc" (descending)
    */
   public void sortThreads(List<ThreadModel> threadsModelList, String sortOption) {
     this.arrayListUtil.sortThreadList(threadsModelList, sortOption);
@@ -66,7 +67,8 @@ public class CourseMeetingViewModel extends ViewModel {
   /** filter the threads list.
    *  First parameter is the treads list to filter.
    *  The second parameter is a filter option (String).
-   *  filter options: "answered" and "not answered"
+   *  filter options: "answered", "not answered", "course provider", "own", "tag subject matter",
+   *  "tag organisation", "tag error", "tag examination", "tag other" and "reset" (show all)
    */
   public void filterThreads(List<ThreadModel> threadsModelList, String filterOption) {
     MeetingsModel actualMeeting = Validation.checkStateLiveData(this.meeting, TAG);

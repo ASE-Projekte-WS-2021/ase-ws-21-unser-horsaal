@@ -83,6 +83,7 @@ public class CourseMeetingFragment extends Fragment {
   @SuppressLint("NotifyDataSetChanged")
   private void meetingsLiveStateCallback(StateData<List<ThreadModel>> listStateData) {
     this.resetBindings();
+    //sort threads by newest
     this.courseMeetingViewModel.sortThreads(listStateData.getData(), "newest");
     this.threadAdapter.notifyDataSetChanged();
 

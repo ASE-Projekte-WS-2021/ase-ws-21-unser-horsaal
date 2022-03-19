@@ -70,6 +70,7 @@ public class CourseThreadFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void messageLiveDataCallback(StateData<List<MessageModel>> listStateData) {
+    //sort answers by likes
     this.currentCourseViewModel.sortAnswersByLikes(listStateData.getData());
     this.chatAdapter.notifyDataSetChanged();
 
