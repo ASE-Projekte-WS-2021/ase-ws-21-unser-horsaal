@@ -1,9 +1,16 @@
 package com.example.unserhoersaal.views;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -33,6 +40,18 @@ public class CourseDescriptionFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+              @Override
+              public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                  // There are no request codes
+                  Intent data = result.getData();
+                 // doSomeOperations();
+                }
+              }
+            });
   }
 
   @Override
@@ -89,5 +108,7 @@ public class CourseDescriptionFragment extends Fragment {
             .setNavigationOnClickListener(v ->
             navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment));
   }
+
+
 
 }

@@ -228,8 +228,11 @@ public class Config {
   public static final String QR_CODE_TOAST = "Created QR code";
   public static final String QR_CODE_FILE_NAME = "qrCodeImage";
   public static final int QR_CODE_COMPRESSION = 100;
-
-  /** QrCode. */
+  public static final String TYPE_PNG = "image/png";
+  public static final String PATH_FOR_QR_CODE = "DCIM/";
   public static final String NO_REPLY_PASSWORD = "ASE-2022";
   public static final String NO_REPLY_EMAIL = "noreply.unserhoersaal@gmail.com";
+  public static final String TYPE_IMAGE = "image/*";
+  public static final String GALLERY_INTENT_TITLE = "Betrachte generierten Qr-Code";
+  public static final String PNG_FILE_ENDING = ".png";
 }
