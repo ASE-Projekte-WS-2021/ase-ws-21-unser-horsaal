@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 /** Utility class for keyboard-events.*/
-public class KeyboardUtil {
+public class  KeyboardUtil {
 
   private static final String TAG = "KeyboardUtil";
 

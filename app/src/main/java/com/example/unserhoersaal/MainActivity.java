@@ -1,9 +1,11 @@
 package com.example.unserhoersaal;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,5 +41,4 @@ public class MainActivity extends AppCompatActivity {
     window.setNavigationBarColor(ContextCompat.getColor(this, android.R.color.transparent));
     window.setBackgroundDrawable(background);
   }
-
 }

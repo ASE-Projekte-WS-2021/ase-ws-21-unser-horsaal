@@ -4,8 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/answer_item.xml" value="0.1" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/course_item_card.xml" value="0.1" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description.xml" value="0.18" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description_detail.xml" value="0.1" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_courses.xml" value="0.21" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course.xml" value="0.1" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.1" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_current_course.xml" value="0.33" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_course.xml" value="0.1" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_or_create_course.xml" value="0.1" />
@@ -91,8 +96,6 @@
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_courses.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_courses_object.xml" value="0.22" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course.xml" value="0.17654508611955422" />
-        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.17552083333333332" />
-        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_current_course.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_thread.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_current_course.xml" value="0.1621376811594203" />
@@ -106,7 +109,6 @@
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_owned_courses.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_todays_courses.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_verification.xml" value="0.17239583333333333" />
-        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/meeting_card.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/meeting_card.xml" value="0.13697916666666668" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/participant_list_item.xml" value="0.18958333333333333" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_course_meeting.xml" value="0.17654508611955422" />
