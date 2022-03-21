@@ -136,6 +136,7 @@
         <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.2128623188405797" />
         <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.2341485507246377" />
         <entry key="app/src/main/res/layout/fragment_verification.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/meeting_card.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/participant_list_item.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/simple_course_item.xml" value="0.18" />
         <entry key="app/src/main/res/layout/simple_course_meeting.xml" value="0.35260416666666666" />

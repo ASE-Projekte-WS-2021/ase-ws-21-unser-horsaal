@@ -59,11 +59,11 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
             .get(CourseHistoryViewModel.class);
     this.courseHistoryViewModel.init();
-    this.courseHistoryViewModel.getMeetingsModel()
-            .observe(getViewLifecycleOwner(), this::meetingModelLiveDataCallback);
+    this.courseHistoryViewModel.getCurrentMeetingRepoState()
+            .observe(getViewLifecycleOwner(), this::currentMeetingRepoStateCallback);
   }
 
-  private void meetingModelLiveDataCallback(StateData<MeetingsModel> meetingsModelStateData) {
+  private void currentMeetingRepoStateCallback(StateData<MeetingsModel> meetingsModelStateData) {
     this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
 

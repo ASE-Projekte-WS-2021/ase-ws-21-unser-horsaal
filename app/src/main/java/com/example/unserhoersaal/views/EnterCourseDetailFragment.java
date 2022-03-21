@@ -80,7 +80,7 @@ public class EnterCourseDetailFragment extends Fragment {
   /** Creates a new course if the code is correct. */
   public void openNewCourse(CourseModel model) {
     KeyboardUtil.hideKeyboard(getActivity());
-    this.courseHistoryViewModel.setCourse(model);
+    this.courseHistoryViewModel.setCourseRepoState(model);
     this.enterCourseViewModel.resetEnterCourseId();
     this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
     this.navController.navigate(R.id.action_enterCourseDetailFragment_to_courseHistoryFragment);

@@ -125,7 +125,7 @@ public class CreateCourseFragment extends Fragment {
 
   /** Signs the creator in the course. */
   public void courseCreated(CourseModel course) {
-    this.courseHistoryViewModel.setCourse(course);
+    this.courseHistoryViewModel.setCourseRepoState(course);
     this.createCourseViewModel.resetCourseModelInput();
     this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
   }

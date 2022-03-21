@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import java.util.Calendar;
@@ -23,7 +22,7 @@ public class DateTimePicker {
   public static void datePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
       MeetingsModel meetingModel =
-              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState, TAG);
+              Validation.checkStateLiveData(courseHistoryViewModel.meetingInputState, TAG);
       if (meetingModel == null) {
         Log.e(TAG, "MeetingModel is null");
         return;
@@ -53,7 +52,7 @@ public class DateTimePicker {
   public static void timePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     TimePickerDialog.OnTimeSetListener timeSetListener = (datePicker, hour, minute) -> {
       MeetingsModel meetingModel =
-              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState, TAG);
+              Validation.checkStateLiveData(courseHistoryViewModel.meetingInputState, TAG);
       if (meetingModel == null) {
         Log.e(TAG, "MeetingModel is null");
         return;

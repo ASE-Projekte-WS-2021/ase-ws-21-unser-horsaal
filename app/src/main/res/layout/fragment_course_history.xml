@@ -77,7 +77,7 @@
             android:orientation="vertical"
             android:background="@drawable/custom_ripple_blue"
             android:paddingBottom="8dp"
-            android:onClick="@{(view) -> NavUtil.navigateToDescription(view, vm.course.data.key)}"
+            android:onClick="@{(view) -> NavUtil.navigateToDescription(view, vm.courseRepoState.data.key)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentToolbar">
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="@{vm.course.data.title}"
+                android:text="@{vm.courseRepoState.data.title}"
                 style="@style/toolbarSubtitleStyle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +130,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/white"
-            android:visibility="@{vm.course.data.creatorId.equals(vm.userId.data) ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{vm.courseRepoState.data.creatorId.equals(vm.currentUserIdRepoState.data) ? View.VISIBLE : View.GONE}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

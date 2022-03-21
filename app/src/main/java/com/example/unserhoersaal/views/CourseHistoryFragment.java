@@ -75,15 +75,12 @@ public class CourseHistoryFragment extends Fragment {
     this.courseHistoryViewModel.init();
     this.courseMeetingViewModel.init();
     this.courseDescriptionViewModel.init();
-
-    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
-            this::meetingsLiveDataCallback);
-    this.courseHistoryViewModel.getMeetingsModel()
-            .observe(getViewLifecycleOwner(), this::meetingModelInputStateCallback);
+    this.courseHistoryViewModel.getAllMeetingsRepoState().observe(getViewLifecycleOwner(),
+            this::allMeetingsRepoStateCallback);
   }
 
   @SuppressLint("NotifyDataSetChanged")
-  private void meetingsLiveDataCallback(StateData<List<MeetingsModel>> listStateData) {
+  private void allMeetingsRepoStateCallback(StateData<List<MeetingsModel>> listStateData) {
     if (listStateData == null) {
       return;
     }
@@ -103,12 +100,6 @@ public class CourseHistoryFragment extends Fragment {
     }
   }
 
-  private void meetingModelInputStateCallback(StateData<MeetingsModel> meetingsModelStateData) {
-    if (meetingsModelStateData != null) {
-      KeyboardUtil.hideKeyboard(getActivity());
-    }
-  }
-
   private void resetBindings() {
     this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.GONE);
   }
@@ -116,7 +107,7 @@ public class CourseHistoryFragment extends Fragment {
 
   private void connectAdapter() {
     this.meetingAdapter =
-            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData());
+            new MeetingAdapter(this.courseHistoryViewModel.getAllMeetingsRepoState().getValue().getData());
   }
 
   private void connectBinding() {

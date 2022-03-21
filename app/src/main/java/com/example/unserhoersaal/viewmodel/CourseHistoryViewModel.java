@@ -21,40 +21,47 @@ public class CourseHistoryViewModel extends ViewModel {
   private static final String TAG = "CourseHistoryViewModel";
 
   private CourseHistoryRepository courseHistoryRepository;
-  private StateLiveData<CourseModel> course = new StateLiveData<>();
-  private StateLiveData<List<MeetingsModel>> meetings;
-  private StateLiveData<MeetingsModel> meetingsModelMutableLiveData;
-  public StateLiveData<MeetingsModel> meetingModelInputState = new StateLiveData<>();
-  public StateLiveData<String> userId;
+  private StateLiveData<CourseModel> courseRepoState = new StateLiveData<>();
+  private StateLiveData<List<MeetingsModel>> allMeetingsRepoState;
+  private StateLiveData<MeetingsModel> currentMeetingRepoState;
+  public StateLiveData<MeetingsModel> meetingInputState = new StateLiveData<>();
+  public StateLiveData<String> currentUserIdRepoState;
 
 
   /** Initialise the ViewModel. */
   public void init() {
-    Log.d(TAG, "init: ");
-    if (this.meetings != null) {
+    if (this.allMeetingsRepoState != null) {
       return;
     }
 
     this.courseHistoryRepository = CourseHistoryRepository.getInstance();
-    this.course = this.courseHistoryRepository.getCourse();
-    this.meetingsModelMutableLiveData
-            = this.courseHistoryRepository.getMeetingsModelMutableLiveData();
+    this.courseRepoState = this.courseHistoryRepository.getCourseRepoState();
+    this.currentMeetingRepoState
+            = this.courseHistoryRepository.getCurrentMeetingRepoState();
     this.courseHistoryRepository.setUserId();
-    this.userId = this.courseHistoryRepository.getUserId();
+    this.currentUserIdRepoState = this.courseHistoryRepository.getCurrentUserIdRepoState();
 
-    if (this.course.getValue() != null) {
-      this.meetings = this.courseHistoryRepository.getMeetings();
+    if (this.courseRepoState.getValue() != null) {
+      this.allMeetingsRepoState = this.courseHistoryRepository.getAllMeetingsRepoState();
     }
-    this.meetingModelInputState.postCreate(new MeetingsModel());
+    this.meetingInputState.postCreate(new MeetingsModel());
   }
 
   public void resetMeetingData() {
-    this.meetingModelInputState.postCreate(new MeetingsModel());
-    this.meetingsModelMutableLiveData.postCreate(new MeetingsModel());
+    this.meetingInputState.postCreate(new MeetingsModel());
+    this.currentMeetingRepoState.postCreate(new MeetingsModel());
   }
 
-  public StateLiveData<List<MeetingsModel>> getMeetings() {
-    return this.meetings;
+  public StateLiveData<List<MeetingsModel>> getAllMeetingsRepoState() {
+    return this.allMeetingsRepoState;
+  }
+
+  public StateLiveData<CourseModel> getCourseRepoState() {
+    return this.courseRepoState;
+  }
+
+  public StateLiveData<MeetingsModel> getCurrentMeetingRepoState() {
+    return this.currentMeetingRepoState;
   }
 
   /** Sort the meetings list by event time. */
@@ -67,39 +74,31 @@ public class CourseHistoryViewModel extends ViewModel {
     });
   }
 
-  public StateLiveData<CourseModel> getCourse() {
-    return this.course;
-  }
-
-  public StateLiveData<MeetingsModel> getMeetingsModel() {
-    return this.meetingsModelMutableLiveData;
-  }
-
-  public void setCourse(CourseModel course) {
-    Log.d(TAG, course.getKey());
-    this.courseHistoryRepository.setCourse(course);
+  public void setCourseRepoState(CourseModel courseRepoState) {
+    Log.d(TAG, courseRepoState.getKey());
+    this.courseHistoryRepository.setCourseRepoState(courseRepoState);
   }
 
   /** Create a new Meeting. */
   public void createMeeting() {
-    this.meetingsModelMutableLiveData.postLoading();
+    this.currentMeetingRepoState.postLoading();
 
-    MeetingsModel meetingsModel = Validation.checkStateLiveData(this.meetingModelInputState, TAG);
+    MeetingsModel meetingsModel = Validation.checkStateLiveData(this.meetingInputState, TAG);
     if (meetingsModel == null) {
-      Log.e(TAG, "meetingsModel is null.");
-      this.meetingsModelMutableLiveData.postError(
+      Log.e(TAG, Config.HISTORY_NO_MEETING_MODEL);
+      this.currentMeetingRepoState.postError(
               new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (meetingsModel.getTitle() == null) {
-      Log.d(TAG, "title is null.");
-      this.meetingsModelMutableLiveData.postError(
+      Log.d(TAG, Config.HISTORY_NO_TITLE);
+      this.currentMeetingRepoState.postError(
               new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
       return;
     } else if (!Validation.stringHasPattern(meetingsModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
-      Log.d(TAG, "title wrong pattern.");
-      this.meetingsModelMutableLiveData.postError(
+      Log.d(TAG, Config.HISTORY_WRONG_TITLE_PATTERN);
+      this.currentMeetingRepoState.postError(
               new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
       return;
     }
@@ -113,7 +112,7 @@ public class CourseHistoryViewModel extends ViewModel {
     meetingsModel.setMeetingDate(this.parseMeetingDate(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
 
-    this.meetingModelInputState.postCreate(new MeetingsModel());
+    this.meetingInputState.postCreate(new MeetingsModel());
     this.courseHistoryRepository.createMeeting(meetingsModel);
   }
 

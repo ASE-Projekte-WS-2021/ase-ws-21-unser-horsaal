@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:singleLine="true"
-                    android:text="@={vm.meetingModelInputState.data.title}"
+                    android:text="@={vm.meetingInputState.data.title}"
                     android:maxLength="100"/>
 
                 <TextView

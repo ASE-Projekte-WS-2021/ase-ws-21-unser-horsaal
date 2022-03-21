@@ -25,13 +25,13 @@ public class CourseHistoryRepository {
   private static final String TAG = "CourseHistoryRepo";
 
   private static CourseHistoryRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private ArrayList<MeetingsModel> meetingsModelList = new ArrayList<>();
-  private StateLiveData<List<MeetingsModel>> meetings = new StateLiveData<>();
-  private StateLiveData<CourseModel> course = new StateLiveData<>();
-  private StateLiveData<MeetingsModel> meetingsModelMutableLiveData = new StateLiveData<>();
-  private StateLiveData<String> userId = new StateLiveData<>();
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<MeetingsModel> meetingsModelList = new ArrayList<>(); //TODO: replace or rename
+  private final StateLiveData<List<MeetingsModel>> allMeetingsRepoState = new StateLiveData<>();
+  private final StateLiveData<CourseModel> courseRepoState = new StateLiveData<>();
+  private final StateLiveData<MeetingsModel> currentMeetingRepoState = new StateLiveData<>();
+  private final StateLiveData<String> currentUserIdRepoState = new StateLiveData<>();
   private ValueEventListener listener;
 
   /** JavaDoc. */
@@ -39,8 +39,8 @@ public class CourseHistoryRepository {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    this.course.postCreate(new CourseModel());
-    this.meetingsModelMutableLiveData.postCreate(new MeetingsModel());
+    this.courseRepoState.postCreate(new CourseModel());
+    this.currentMeetingRepoState.postCreate(new MeetingsModel());
   }
 
   /** Generate an instance of the class. */
@@ -52,28 +52,33 @@ public class CourseHistoryRepository {
   }
 
   /** This method gives back all meetings of the course. */
-  public StateLiveData<List<MeetingsModel>> getMeetings() {
-    this.meetings.postCreate(this.meetingsModelList);
-    return this.meetings;
+  public StateLiveData<List<MeetingsModel>> getAllMeetingsRepoState() {
+    this.allMeetingsRepoState.postCreate(this.meetingsModelList);
+    return this.allMeetingsRepoState;
   }
 
-  public StateLiveData<CourseModel> getCourse() {
-    return this.course;
+  public StateLiveData<CourseModel> getCourseRepoState() {
+    return this.courseRepoState;
   }
 
-  public StateLiveData<String> getUserId() {
-    return this.userId;
+  public StateLiveData<String> getCurrentUserIdRepoState() {
+    return this.currentUserIdRepoState;
   }
 
-  public StateLiveData<MeetingsModel> getMeetingsModelMutableLiveData() {
-    return this.meetingsModelMutableLiveData;
+  public StateLiveData<MeetingsModel> getCurrentMeetingRepoState() {
+    return this.currentMeetingRepoState;
   }
 
   /** Setts the Id of the course. */
-  public void setCourse(CourseModel courseModel) {
+  public void setCourseRepoState(CourseModel courseModel) {
     String courseId = courseModel.getKey();
 
-    CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
+    CourseModel courseObj = Validation.checkStateLiveData(this.courseRepoState, TAG);
+    if (courseObj ==  null) {
+      Log.e(TAG, Config.HISTORY_NO_COURSE_MODEL);
+      this.courseRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+      return;
+    }
 
     if (courseObj.getKey() != null) {
       this.databaseReference
@@ -87,25 +92,25 @@ public class CourseHistoryRepository {
             .child(courseId)
             .addValueEventListener(this.listener);
 
-    this.course.postCreate(courseModel);
+    this.courseRepoState.postCreate(courseModel);
   }
 
   /** JavaDoc. */
   public void setUserId() {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.userId.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      this.currentUserIdRepoState.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
       return;
     }
 
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.userId.postCreate(uid);
+    this.currentUserIdRepoState.postCreate(uid);
   }
 
   /** Loads all meetings of the course. */
   //Query veraltert
   public void loadMeetings() {
-    CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
+    CourseModel courseObj = Validation.checkStateLiveData(this.courseRepoState, TAG);
     if (courseObj == null) {
       Log.e(TAG, "courseObj is null.");
       return;
@@ -122,15 +127,15 @@ public class CourseHistoryRepository {
   public void createMeeting(MeetingsModel meetingsModel) {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.meetingsModelMutableLiveData.postError(
+      this.currentMeetingRepoState.postError(
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
 
-    CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
+    CourseModel courseObj = Validation.checkStateLiveData(this.courseRepoState, TAG);
     if (courseObj == null) {
-      Log.e(TAG, "userModel is null.");
-      this.meetingsModelMutableLiveData.postError(
+      Log.e(TAG, Config.HISTORY_NO_USER_MODEL);
+      this.currentMeetingRepoState.postError(
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
@@ -142,8 +147,8 @@ public class CourseHistoryRepository {
     String meetingId = this.databaseReference.getRoot().push().getKey();
 
     if (meetingId == null) {
-      Log.e(TAG, "meeting id is null");
-      this.meetingsModelMutableLiveData.postError(
+      Log.e(TAG, Config.HISTORY_NO_MEETING_ID);
+      this.currentMeetingRepoState.postError(
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
@@ -161,15 +166,15 @@ public class CourseHistoryRepository {
                       .setValue(ServerValue.increment(1))
                       .addOnSuccessListener(unused1 -> {
                         meetingsModel.setKey(meetingId);
-                        meetingsModelMutableLiveData.postUpdate(meetingsModel);
+                        currentMeetingRepoState.postUpdate(meetingsModel);
                       }).addOnFailureListener(e -> {
                         Log.e(TAG, e.getMessage());
-                        meetingsModelMutableLiveData.postError(
+                        currentMeetingRepoState.postError(
                                 new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
             });
             }).addOnFailureListener(e -> {
               Log.e(TAG, e.getMessage());
-              meetingsModelMutableLiveData.postError(
+              currentMeetingRepoState.postError(
                       new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
             });
   }
@@ -186,7 +191,7 @@ public class CourseHistoryRepository {
 
           if (model == null) {
             Log.e(TAG, Config.COURSE_HISTORY_MEETING_CREATION_FAILURE);
-            meetings.postError(
+            allMeetingsRepoState.postError(
                     new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
             return;
           }
@@ -194,13 +199,13 @@ public class CourseHistoryRepository {
           model.setKey(snapshot.getKey());
           meetingsModelList.add(model);
         }
-        meetings.postUpdate(meetingsModelList);
+        allMeetingsRepoState.postUpdate(meetingsModelList);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "Course History Listener Failure");
-        meetings.postError(
+        Log.e(TAG, Config.HISTORY_LISTENER_FAILURE);
+        allMeetingsRepoState.postError(
                 new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       }
     };

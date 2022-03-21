@@ -196,6 +196,11 @@ public class Config {
   public static final String DESCRIPTION_NO_COURSE_MODEL = "Model is null.";
   public static final String DESCRIPTION_SET_COURSE_ID_FAILED = "Setcourseid task failed.";
   public static final String DESCRIPTION_SIGN_OUT_FAILED = "Could not unregister User from course.";
+  public static final String HISTORY_NO_COURSE_MODEL = "courseObj is null.";
+  public static final String HISTORY_NO_USER_MODEL = "userModel is null.";
+  public static final String HISTORY_NO_MEETING_ID = "meeting id is null.";
+  public static final String HISTORY_LISTENER_FAILURE = "Course History Listener Failure";
+
 
 
 
@@ -207,6 +212,10 @@ public class Config {
   public static final String LOGIN_VW_PASSWORD_WRONG_PATTERN = "Password has wrong pattern.";
   public static final String DESCRIPTION_NO_TITLE = "title is null.";
   public static final String DESCRIPTION_WRONG_TITLE_PATTERN = "title has wrong pattern.";
+  public static final String HISTORY_NO_MEETING_MODEL = "meetingsModel is null.";
+  public static final String HISTORY_NO_TITLE = "title is null.";
+  public static final String HISTORY_WRONG_TITLE_PATTERN = "title wrong pattern.";
+
 
 
 
