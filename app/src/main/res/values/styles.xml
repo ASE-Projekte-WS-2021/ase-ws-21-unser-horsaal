@@ -9,7 +9,7 @@
 
     <style name="wideOrangeButton" parent="TextAppearance.MaterialComponents.Button">
         <item name="cornerRadius">4dp</item>
-        <item name="background">@drawable/app_background</item>
+        <item name="backgroundTint">@color/call_to_action_orange</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -42,7 +42,7 @@
     </style>
 
     <style name="fabStyle" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="backgroundTint">@color/app_blue</item>
+        <item name="backgroundTint">@color/call_to_action_orange</item>
     </style>
 
     <style name="toolbarTitleStyle" parent="Widget.MaterialComponents.TextView">

@@ -3,5 +3,5 @@
     android:color="@color/dark_grey">
     <!--Source: https://stackoverflow.com/questions/30931889/adding-ripple-effect-to-recyclerview-item -->
     <item
-        android:drawable="@drawable/app_background" />
+        android:drawable="@color/app_blue" />
 </ripple>

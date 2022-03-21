@@ -128,7 +128,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/registrationFragmentRegistrationButton"
                     android:onClick="@{() -> vm.register()}"
-                    android:background="@drawable/app_background"
+                    android:backgroundTint="@color/call_to_action_orange"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -143,8 +143,8 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -168,7 +168,7 @@
                         android:layout_marginBottom="16dp"
                         android:text="@string/registration_fragment_login_string"
                         android:layout_marginStart="16dp"
-                        android:textColor="@color/app_blue"
+                        android:textColor="@color/call_to_action_darker_orange"
                         android:textStyle="bold" />
 
                 </LinearLayout>

@@ -16,7 +16,7 @@
             android:id="@+id/currentCourseFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/current_course_fragment_subtitle"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -251,7 +251,8 @@
             android:insetLeft="0dp"
             android:insetRight="0dp"
             android:insetTop="0dp"
-            app:icon="@drawable/ic_baseline_send_24"/>
+            app:icon="@drawable/ic_baseline_send_24"
+            app:backgroundTint="@color/call_to_action_orange"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

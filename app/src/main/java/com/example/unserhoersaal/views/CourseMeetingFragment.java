@@ -84,7 +84,6 @@ public class CourseMeetingFragment extends Fragment {
         KeyboardUtil.hideKeyboard(getActivity());
         this.currentCourseViewModel.setThreadId(threadModel.getKey());
         this.courseMeetingViewModel.resetThreadModelInput();
-        this.binding.courseMeetingFragmentCreateThreadContainer.setVisibility(View.GONE);
         this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
         this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
       }

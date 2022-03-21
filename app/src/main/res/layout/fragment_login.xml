@@ -107,13 +107,12 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginFragmentLoginButton"
                     android:onClick="@{() -> vm.login()}"
-                    android:background="@drawable/app_background"
+                    android:backgroundTint="@color/call_to_action_orange"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/login_fragment_login_button_string"
                     android:layout_gravity="center"
-                    app:backgroundTint="@null"
                     app:icon="@drawable/ic_baseline_login_24"
                     app:iconGravity="textStart" />
 
@@ -134,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/login_fragment_forgot_password"
-                    android:textColor="@color/app_blue"
+                    android:textColor="@color/call_to_action_darker_orange"
                     android:textStyle="bold"
                     android:layout_gravity="center" />
 
@@ -158,7 +157,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/login_fragment_registration_string"
-                        android:textColor="@color/app_blue"
+                        android:textColor="@color/call_to_action_darker_orange"
                         android:textStyle="bold"
                         android:layout_marginStart="32dp" />
 

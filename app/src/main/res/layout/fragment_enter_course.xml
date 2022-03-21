@@ -24,7 +24,7 @@
             android:id="@+id/enterCourseFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/enterCourseFragmentToolbar">
@@ -126,7 +126,9 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/enter_course_fragment_enter_via_qr_code"
                     android:textAlignment="center"
-                    android:layout_marginBottom="64dp"/>
+                    android:layout_marginBottom="64dp"
+                    android:textColor="@color/call_to_action_darker_orange"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
