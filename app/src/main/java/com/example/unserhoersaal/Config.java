@@ -205,6 +205,15 @@ public class Config {
   public static final String CREATE_COURSE_CREATION_FAILED = "Kurs konnte nicht erstellt werden: ";
   public static final String CREAT_COURSE_ADDING_USER_FAILED = "User konnte dem Kurs nicht hinzugefügt werden: ";
   public static final String CREAT_COURSE_MAPPING_FAILED = "Das Mapping konnte nicht erstellt werden: ";
+  public static final String CURRENT_COURSE_NO_THREAD_ID =  "threadKey is null.";
+  public static final String CURRENT_COURSE_NO_MESSAGE_ID = "messageid is null";
+  public static final String CURRENT_COURSE_SEND_MESSAGE_FAILED = "Nachricht konnte nicht versendet werden: ";
+  public static final String CURRENT_COURSE_NO_MEETING_MODEL = "meetingObj is null.";
+  public static final String CURRENT_COURSE_NO_USER_ID = "userKey is null.";
+  public static final String CURRENT_COURSE_NO_MODEL = "model is null.";
+  public static final String CURRENT_COURSE_NO_THREAD_MODEL = "threadModel is null.";
+  public static final String CURRENT_COURSE_NO_THREAD_OBJECT = "threadObj is null.";
+  public static final String CURRENT_COURSE_MESSAGE_MARKED = "a message is already marked.";
 
 
 
@@ -229,6 +238,10 @@ public class Config {
   public static final String CREATE_COURSE_WRONG_DESCRIPTION_PATTERN = "description has wrong pattern.";
   public static final String CREATE_COURSE_NO_INSTITUTION = "institution is null.";
   public static final String CREATE_COURSE_WRONG_INSTITUTION_PATTERN = "institution has wrong pattern.";
+  public static final String CURRENT_COURSE_NO_MESSAGE_MODEL = "messageModel is null.";
+  public static final String CURRENT_COURSE_NO_TITLE = "title is null.";
+  public static final String CURRENT_COURSE_WORNG_TITLE_PATTERN = "title has wrong pattern.";
+
 
 
 

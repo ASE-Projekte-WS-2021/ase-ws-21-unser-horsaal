@@ -11,17 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
-import com.example.unserhoersaal.model.MessageModel;
-import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
-import java.util.List;
 
 /** Fragment for current course.*/
 public class CurrentCourseFragment extends Fragment {
@@ -64,10 +60,10 @@ public class CurrentCourseFragment extends Fragment {
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
     this.currentCourseViewModel.init();
-    this.currentCourseViewModel.getThreadId().observe(getViewLifecycleOwner(), id -> {
-      this.courseKeyTextView.setText(id.getData());
-    });
-    this.currentCourseViewModel.getMessages()
+    this.currentCourseViewModel.getCurrentThreadRepoState().observe(getViewLifecycleOwner(), id ->
+      this.courseKeyTextView.setText(id.getData().text)
+    );
+    this.currentCourseViewModel.getAllMessagesRepoState()
             .observe(getViewLifecycleOwner(),
                     list -> chatAdapter.notifyDataSetChanged());
   }
@@ -85,7 +81,7 @@ public class CurrentCourseFragment extends Fragment {
 
   private void initRecyclerView() {
     this.chatAdapter = new ChatAdapter(
-            this.currentCourseViewModel.getMessages().getValue().getData(),
+            this.currentCourseViewModel.getAllMessagesRepoState().getValue().getData(),
             this.currentCourseViewModel);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
     this. recyclerView.setLayoutManager(layoutManager);

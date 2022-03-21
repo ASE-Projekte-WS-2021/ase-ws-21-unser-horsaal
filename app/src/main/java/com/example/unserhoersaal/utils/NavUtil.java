@@ -59,7 +59,7 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner)
             view.getContext()).get(CurrentCourseViewModel.class);
     currentCourseViewModel.init();
-    currentCourseViewModel.setMeeting(model);
+    currentCourseViewModel.setCurrentMeetingRepoState(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_courseMeetingFragment);
@@ -75,7 +75,7 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CurrentCourseViewModel.class);
     currentCourseViewModel.init();
-    currentCourseViewModel.setThreadId(model.getKey());
+    currentCourseViewModel.setCurrentThreadRepoState(model.getKey());
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);

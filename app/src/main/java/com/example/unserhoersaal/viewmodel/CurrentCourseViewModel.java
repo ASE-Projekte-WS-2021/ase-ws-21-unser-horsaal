@@ -21,36 +21,36 @@ public class CurrentCourseViewModel extends ViewModel {
   private static final String TAG = "CurrentCourseViewModel";
 
   private CurrentCourseRepository currentCourseRepository;
-  private StateLiveData<List<MessageModel>> messages;
-  private StateLiveData<String> threadId = new StateLiveData<>();
-  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
-  private StateLiveData<ThreadModel> thread = new StateLiveData<>();
-  public StateLiveData<String> userId;
+  private StateLiveData<List<MessageModel>> allMessagesRepoState;
+  private StateLiveData<String> currentThreadIdRepoState = new StateLiveData<>();
+  private StateLiveData<MeetingsModel> currentMeetingRepoState = new StateLiveData<>();
+  private StateLiveData<ThreadModel> currentThreadRepoState = new StateLiveData<>();
+  public StateLiveData<String> currentUserIdRepoState;
   public StateLiveData<MessageModel> messageModelInputState = new StateLiveData<>();
 
   /** This method initializes the database access. */
   public void init() {
-    if (this.messages != null) {
+    if (this.allMessagesRepoState != null) {
       return;
     }
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
-    this.threadId = this.currentCourseRepository.getThreadId();
-    this.meeting = this.currentCourseRepository.getMeeting();
-    this.thread = this.currentCourseRepository.getThread();
+    this.currentThreadIdRepoState = this.currentCourseRepository.getCurrentThreadIdRepoState();
+    this.currentMeetingRepoState = this.currentCourseRepository.getCurrentMeetingRepoState();
+    this.currentThreadRepoState = this.currentCourseRepository.getCurrentThreadRepoState();
     this.currentCourseRepository.setUserId();
-    this.userId = this.currentCourseRepository.getUserId();
+    this.currentUserIdRepoState = this.currentCourseRepository.getCurrentUserIdRepoState();
     this.messageModelInputState.postCreate(new MessageModel());
 
     // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
     // the messages and only set the courseId can init the CurrentCourseViewModel
-    if (this.threadId.getValue() != null) {
-      Log.d(TAG, "threadId: " + this.threadId.getValue().getData());
-      this.messages = this.currentCourseRepository.getMessages();
+    if (this.currentThreadRepoState.getValue() != null) {
+      Log.d(TAG, "threadId: " + this.currentThreadRepoState.getValue().getData());
+      this.allMessagesRepoState = this.currentCourseRepository.getAllMessagesRepoState();
     }
   }
 
-  public StateLiveData<List<MessageModel>> getMessages() {
-    return this.messages;
+  public StateLiveData<List<MessageModel>> getAllMessagesRepoState() {
+    return this.allMessagesRepoState;
   }
 
   /** Sort the messages list by likes. */
@@ -63,16 +63,16 @@ public class CurrentCourseViewModel extends ViewModel {
     });
   }
 
-  public StateLiveData<String> getThreadId() {
-    return this.threadId;
+  public StateLiveData<String> getCurrentThreadIdRepoState() {
+    return this.currentThreadIdRepoState;
   }
 
-  public StateLiveData<MeetingsModel> getMeeting() {
-    return this.meeting;
+  public StateLiveData<MeetingsModel> getCurrentMeetingRepoState() {
+    return this.currentMeetingRepoState;
   }
 
-  public StateLiveData<ThreadModel> getThread() {
-    return  this.thread;
+  public StateLiveData<ThreadModel> getCurrentThreadRepoState() {
+    return  this.currentThreadRepoState;
   }
 
   /** Send a new message in a thread. */
@@ -80,18 +80,18 @@ public class CurrentCourseViewModel extends ViewModel {
     //TODO: removed loading because there is no place for it
     MessageModel messageModel = Validation.checkStateLiveData(this.messageModelInputState, TAG);
     if (messageModel == null) {
-      Log.e(TAG, "messageModel is null.");
-      this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
+      Log.e(TAG, Config.CURRENT_COURSE_NO_MESSAGE_MODEL);
+      this.allMessagesRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (messageModel.getText() == null) {
-      Log.d(TAG, "title is null.");
-      this.messages.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
+      Log.d(TAG, Config.CURRENT_COURSE_NO_TITLE);
+      this.allMessagesRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
       return;
     } else if (!Validation.stringHasPattern(messageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "title has wrong pattern.");
-      this.messages.postError(
+      Log.d(TAG, Config.CURRENT_COURSE_WORNG_TITLE_PATTERN);
+      this.allMessagesRepoState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
       return;
     }
@@ -102,12 +102,12 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository.sendMessage(messageModel);
   }
 
-  public void setThreadId(String threadId) {
-    this.currentCourseRepository.setThreadId(threadId);
+  public void setCurrentThreadRepoState(String currentThreadRepoState) {
+    this.currentCourseRepository.setCurrentThreadIdRepoState(currentThreadRepoState);
   }
 
-  public void setMeeting(MeetingsModel meeting) {
-    this.currentCourseRepository.setMeetingId(meeting);
+  public void setCurrentMeetingRepoState(MeetingsModel currentMeetingRepoState) {
+    this.currentCourseRepository.setMeetingId(currentMeetingRepoState);
   }
 
   /** JavaDoc for this method. */

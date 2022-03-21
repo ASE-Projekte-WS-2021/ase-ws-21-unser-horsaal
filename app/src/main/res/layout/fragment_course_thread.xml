@@ -38,7 +38,7 @@
                     android:id="@+id/currentCourseFragmentTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.meeting.data.title}"
+                    android:text="@{vm.currentMeetingRepoState.data.title}"
                     style="@style/toolbarTitleStyle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
                 style="@style/toolbarSubtitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{vm.thread.data.title}"
+                android:text="@{vm.currentThreadRepoState.data.title}"
                 android:background="@drawable/app_background"
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +114,7 @@
                             android:layout_height="50dp"
                             android:maxWidth="50dp"
                             android:maxHeight="50dp"
-                            setImage="@{vm.thread.data.photoUrl}"
+                            setImage="@{vm.currentThreadRepoState.data.photoUrl}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/currentCourseFragmentAuthor" />
 
@@ -124,7 +124,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
-                            android:text="@{vm.thread.data.creatorName}"
+                            android:text="@{vm.currentThreadRepoState.data.creatorName}"
                             android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@+id/currentCourseFragmentItemUserImage"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -133,7 +133,7 @@
                             android:id="@+id/currentCourseFragmentTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{Format.getFormatedDateTime(currentCourseFragmentTime, vm.thread.data.creationTime)}"
+                            android:text="@{Format.getFormatedDateTime(currentCourseFragmentTime, vm.currentThreadRepoState.data.creationTime)}"
                             android:layout_marginTop="16dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -142,7 +142,7 @@
                             android:id="@+id/currentCourseFragmentAnswerText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@{vm.thread.data.text}"
+                            android:text="@{vm.currentThreadRepoState.data.text}"
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="@+id/currentCourseFragmentAuthor"
                             app:layout_constraintTop_toBottomOf="@+id/currentCourseFragmentAuthor"
@@ -170,8 +170,8 @@
 
                             <ImageView
                                 android:id="@+id/currentCourseFragmentLikeIcon"
-                                android:onClick="@{(view) -> vm.likeThread(vm.thread.data)}"
-                                setLikeStatus="@{vm.thread.data.likeStatus}"
+                                android:onClick="@{(view) -> vm.likeThread(vm.currentThreadRepoState.data)}"
+                                setLikeStatus="@{vm.currentThreadRepoState.data.likeStatus}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:clickable="true"
@@ -182,12 +182,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="@{Integer.toString(vm.thread.data.likes)}" />
+                                android:text="@{Integer.toString(vm.currentThreadRepoState.data.likes)}" />
 
                             <ImageView
                                 android:id="@+id/currentCourseFragmentDislikeIcon"
-                                android:onClick="@{(view) -> vm.dislikeThread(vm.thread.data)}"
-                                setDisLikeStatus="@{vm.thread.data.likeStatus}"
+                                android:onClick="@{(view) -> vm.dislikeThread(vm.currentThreadRepoState.data)}"
+                                setDisLikeStatus="@{vm.currentThreadRepoState.data.likeStatus}"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
@@ -198,7 +198,7 @@
 
                         <ImageView
                             android:id="@+id/currentCourseFragmentSolvedIcon"
-                            setColor="@{vm.thread.data.answered}"
+                            setColor="@{vm.currentThreadRepoState.data.answered}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_baseline_check_24"

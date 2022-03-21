@@ -64,7 +64,7 @@ public class CourseThreadFragment extends Fragment {
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
     this.currentCourseViewModel.init();
-    this.currentCourseViewModel.getMessages()
+    this.currentCourseViewModel.getAllMessagesRepoState()
             .observe(getViewLifecycleOwner(), this::messageLiveDataCallback);
   }
 
@@ -86,7 +86,7 @@ public class CourseThreadFragment extends Fragment {
 
   private void connectAdapter() {
     this.chatAdapter =
-            new ChatAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
+            new ChatAdapter(this.currentCourseViewModel.getAllMessagesRepoState().getValue().getData(),
                     this.currentCourseViewModel);
   }
 
