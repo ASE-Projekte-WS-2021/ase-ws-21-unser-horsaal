@@ -5,10 +5,13 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
 
+import java.nio.charset.MalformedInputException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,6 +27,8 @@ public class CourseMeetingViewModel extends ViewModel {
   private MutableLiveData<List<ThreadModel>> threads;
   private MutableLiveData<ThreadModel> threadModelMutableLiveData;
   public MutableLiveData<ThreadModel> threadModelInput;
+
+  private MutableLiveData<SortEnum> sortEnum = new MutableLiveData<>();
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -54,6 +59,14 @@ public class CourseMeetingViewModel extends ViewModel {
         return t1.getLikes() - threadModel.getLikes();
       }
     });
+  }
+
+  public LiveData<SortEnum> getSortEnum() {
+    return this.sortEnum;
+  }
+
+  public void setSortEnum(SortEnum sortEnum) {
+    this.sortEnum.postValue(sortEnum);
   }
 
   public LiveData<MeetingsModel> getMeeting() {

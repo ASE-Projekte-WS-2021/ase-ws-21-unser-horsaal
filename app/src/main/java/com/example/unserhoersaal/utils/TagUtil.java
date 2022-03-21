@@ -1,30 +1,21 @@
 package com.example.unserhoersaal.utils;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
-
 import androidx.databinding.BindingAdapter;
-
-import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.enums.TagEnum;
 import com.example.unserhoersaal.model.ThreadModel;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class TagUtil {
 
   private static final String TAG = "TagUtil";
 
-  @BindingAdapter("setTag")
-  public static void setTag(Chip chip, ThreadModel threadModel) {
+  @BindingAdapter({"threadModel", "tagEnum"})
+  public static void setTag(View view, ThreadModel threadModel, TagEnum tagEnum) {
     List<TagEnum> tags = threadModel.getTags();
-    TagEnum tagEnum = null;
+    Log.d(TAG, "setTag: " + tagEnum);
+    /*TagEnum tagEnum = null;
     switch (chip.getId()) {
       case R.id.chipTagSubjectMatter:
         tagEnum = TagEnum.SUBJECT_MATTER;
@@ -43,7 +34,7 @@ public class TagUtil {
         break;
       default:
         break;
-    }
+    }*/
     if (tagEnum != null) {
       if (tags.contains(tagEnum)) {
         tags.remove(tagEnum);

@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseMeetingBinding;
+import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
@@ -79,7 +80,8 @@ public class CourseMeetingFragment extends Fragment {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
       }
     });
-
+    //TODO better way than observing
+    this.courseMeetingViewModel.getSortEnum().observe(getViewLifecycleOwner(), this::toggleChips);
   }
 
   private void connectAdapter() {
@@ -129,4 +131,26 @@ public class CourseMeetingFragment extends Fragment {
     }
   }
 
+  private void toggleChips(SortEnum sortEnum) {
+    if (sortEnum != SortEnum.NEWEST) {
+      this.binding.courseMeetingChipNewest.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipNewestActivated.setVisibility(View.GONE);
+    }
+    if (sortEnum != SortEnum.MOST_LIKES) {
+      this.binding.courseMeetingChipMostLiked.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipMostLikedActivated.setVisibility(View.GONE);
+    }
+    if (sortEnum != SortEnum.MOST_COMMENTED) {
+      this.binding.courseMeetingChipMostCommented.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipMostCommentedActivated.setVisibility(View.GONE);
+    }
+    if (sortEnum != SortEnum.PAGE_COUNT_UP) {
+      this.binding.courseMeetingChipPageCountUp.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipPageCountUpActivated.setVisibility(View.GONE);
+    }
+    if (sortEnum != SortEnum.PAGE_COUNT_DOWN) {
+      this.binding.courseMeetingChipPageCountDown.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipPageCountDownActivated.setVisibility(View.GONE);
+    }
+  }
 }
