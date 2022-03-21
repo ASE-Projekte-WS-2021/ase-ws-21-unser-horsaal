@@ -18,7 +18,6 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseMeetingBinding;
-import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
@@ -74,9 +73,9 @@ public class CourseMeetingFragment extends Fragment {
             .get(CurrentCourseViewModel.class);
     this.courseMeetingViewModel.init();
     this.currentCourseViewModel.init();
-    this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(),
+    this.courseMeetingViewModel.getAllThreadsRepoState().observe(getViewLifecycleOwner(),
             this::meetingsLiveStateCallback);
-    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(),
+    this.courseMeetingViewModel.getCurrentThreadRepoState().observe(getViewLifecycleOwner(),
             this::threadLiveStateCallback);
   }
 
@@ -116,7 +115,7 @@ public class CourseMeetingFragment extends Fragment {
 
   private void connectAdapter() {
     this.threadAdapter =
-            new ThreadAdapter(this.courseMeetingViewModel.getThreads().getValue().getData(),
+            new ThreadAdapter(this.courseMeetingViewModel.getAllThreadsRepoState().getValue().getData(),
                     currentCourseViewModel);
   }
 

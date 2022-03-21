@@ -8,7 +8,6 @@ import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.model.UserModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
@@ -29,12 +28,12 @@ public class CourseMeetingRepository {
   private static final String TAG = "CourseMeetingRepository";
 
   private static CourseMeetingRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private ArrayList<ThreadModel> threadModelList = new ArrayList<>();
-  private StateLiveData<List<ThreadModel>> threads = new StateLiveData<>();
-  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
-  private StateLiveData<ThreadModel> threadModelMutableLiveData = new StateLiveData<>();
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<ThreadModel> threadModelList = new ArrayList<>(); //TODO: replace or rename
+  private final StateLiveData<List<ThreadModel>> allThreadsRepoState = new StateLiveData<>();
+  private final StateLiveData<MeetingsModel> currentMeetingRepoState = new StateLiveData<>();
+  private final StateLiveData<ThreadModel> currentThreadRepoState = new StateLiveData<>();
   private ValueEventListener listener;
 
   /** JavaDoc. */
@@ -42,7 +41,7 @@ public class CourseMeetingRepository {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    this.meeting.postCreate(new MeetingsModel());
+    this.currentMeetingRepoState.postCreate(new MeetingsModel());
   }
 
   /** Generate an instance of the class. */
@@ -54,22 +53,26 @@ public class CourseMeetingRepository {
   }
 
   /** Give back all threads of the Meeting. */
-  public StateLiveData<List<ThreadModel>> getThreads() {
-    this.threads.postCreate(this.threadModelList);
-    return this.threads;
+  public StateLiveData<List<ThreadModel>> getAllThreadsRepoState() {
+    this.allThreadsRepoState.postCreate(this.threadModelList);
+    return this.allThreadsRepoState;
   }
 
-  public StateLiveData<MeetingsModel> getMeeting() {
-    return this.meeting;
+  public StateLiveData<MeetingsModel> getCurrentMeetingRepoState() {
+    return this.currentMeetingRepoState;
   }
 
-  public StateLiveData<ThreadModel> getThreadModelMutableLiveData() {
-    return this.threadModelMutableLiveData;
+  public StateLiveData<ThreadModel> getCurrentThreadRepoState() {
+    return this.currentThreadRepoState;
   }
 
   /** Set the id of the current meeting. */
-  public void setMeeting(MeetingsModel meeting) {
-    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+  public void setCurrentMeetingRepoState(MeetingsModel currentMeetingRepoState) {
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.currentMeetingRepoState, TAG);
+    if (meetingObj == null) {
+      Log.e(TAG, Config.MEETING_NO_MEETING_MODEL);
+      return;
+    }
 
     if (meetingObj.getKey() != null) {
       this.databaseReference
@@ -80,21 +83,21 @@ public class CourseMeetingRepository {
 
     this.databaseReference
             .child(Config.CHILD_THREADS)
-            .child(meeting.getKey())
+            .child(currentMeetingRepoState.getKey())
             .addValueEventListener(this.listener);
 
-    this.meeting.postUpdate(meeting);
+    this.currentMeetingRepoState.postUpdate(currentMeetingRepoState);
   }
 
   /** Loads all threads of the current meeting from the database. */
   //Query is not updated
   public void loadThreads() {
-    this.meeting.postLoading();
+    this.currentMeetingRepoState.postLoading();
 
-    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.currentMeetingRepoState, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
-      this.meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+      Log.e(TAG, Config.MEETING_NO_MEETING_MODEL);
+      this.currentMeetingRepoState.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
       return;
     }
 
@@ -107,19 +110,19 @@ public class CourseMeetingRepository {
 
   /** Creates a new threat in the meeting. */
   public void createThread(ThreadModel threadModel) {
-    this.threadModelMutableLiveData.postLoading();
+    this.currentThreadRepoState.postLoading();
 
-    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.currentMeetingRepoState, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
-      this.threadModelMutableLiveData.postError(
+      Log.e(TAG, Config.MEETING_NO_MEETING_MODEL);
+      this.currentThreadRepoState.postError(
               new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.threadModelMutableLiveData.postError(
+      this.currentThreadRepoState.postError(
               new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
@@ -133,7 +136,7 @@ public class CourseMeetingRepository {
 
     if (threadId == null) {
       Log.e(TAG, Config.COURSE_MEETING_THREAD_CREATION_FAILURE);
-      this.threadModelMutableLiveData.postError(
+      this.currentThreadRepoState.postError(
               new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
@@ -144,18 +147,18 @@ public class CourseMeetingRepository {
             .setValue(threadModel)
             .addOnSuccessListener(unused -> {
               threadModel.setKey(threadId);
-              threadModelMutableLiveData.postUpdate(threadModel);
+              currentThreadRepoState.postUpdate(threadModel);
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, Config.COURSE_MEETING_THREAD_CREATION_FAILURE);
-              threadModelMutableLiveData.postError(
+              currentThreadRepoState.postError(
                       new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
             });
   }
 
   /** get the author for each thread in the provided list. */
   public void getAuthor(List<ThreadModel> threadList) {
-    this.threads.postLoading();
+    this.allThreadsRepoState.postLoading();
 
     List<Task<DataSnapshot>> authors = new ArrayList<>();
     for (ThreadModel thread : threadList) {
@@ -196,7 +199,7 @@ public class CourseMeetingRepository {
       }
       threadModelList.clear();
       threadModelList.addAll(threadList);
-      threads.postUpdate(threadModelList);
+      allThreadsRepoState.postUpdate(threadModelList);
     });
   }
 
@@ -216,7 +219,7 @@ public class CourseMeetingRepository {
 
           if (model == null) {
             Log.e(TAG, Config.THREADS_FAILED_TO_LOAD);
-            meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+            currentMeetingRepoState.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
             return;
           }
 
@@ -229,7 +232,7 @@ public class CourseMeetingRepository {
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.e(TAG, Config.THREADS_FAILED_TO_LOAD);
-        meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+        currentMeetingRepoState.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     };
   }

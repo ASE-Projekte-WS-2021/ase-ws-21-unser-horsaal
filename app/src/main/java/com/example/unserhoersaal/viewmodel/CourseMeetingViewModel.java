@@ -1,9 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -22,31 +19,42 @@ public class CourseMeetingViewModel extends ViewModel {
   private static final String TAG = "CourseMeetingViewModel";
 
   private CourseMeetingRepository courseMeetingRepository;
-
-  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
-  private StateLiveData<List<ThreadModel>> threads;
-  private StateLiveData<ThreadModel> threadModelMutableLiveData;
+  private StateLiveData<MeetingsModel> currentMeetingRepoState;
+  private StateLiveData<List<ThreadModel>> allThreadsRepoState;
+  private StateLiveData<ThreadModel> currentThreadRepoState;
   public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
 
   /** Initialise the ViewModel. */
   public void init() {
-    if (this.threads != null) {
+    if (this.allThreadsRepoState != null) {
       return;
     }
 
     this.courseMeetingRepository = CourseMeetingRepository.getInstance();
-    this.meeting = this.courseMeetingRepository.getMeeting();
-    this.threadModelMutableLiveData =
-            this.courseMeetingRepository.getThreadModelMutableLiveData();
+    this.currentMeetingRepoState = this.courseMeetingRepository.getCurrentMeetingRepoState();
+    this.currentThreadRepoState =
+            this.courseMeetingRepository.getCurrentThreadRepoState();
 
-    if (this.meeting.getValue() != null) {
-      this.threads = this.courseMeetingRepository.getThreads();
+    if (this.currentMeetingRepoState.getValue() != null) {
+      this.allThreadsRepoState = this.courseMeetingRepository.getAllThreadsRepoState();
     }
     this.threadModelInputState.postCreate(new ThreadModel());
   }
 
-  public StateLiveData<List<ThreadModel>> getThreads() {
-    return this.threads;
+  public StateLiveData<List<ThreadModel>> getAllThreadsRepoState() {
+    return this.allThreadsRepoState;
+  }
+
+  public StateLiveData<MeetingsModel> getCurrentMeetingRepoState() {
+    return this.currentMeetingRepoState;
+  }
+
+  public StateLiveData<ThreadModel> getCurrentThreadRepoState() {
+    return this.currentThreadRepoState;
+  }
+
+  public StateLiveData<ThreadModel> getThreadModelInputState() {
+    return this.threadModelInputState;
   }
 
   /** Sort the threads list by likes. */
@@ -59,42 +67,31 @@ public class CourseMeetingViewModel extends ViewModel {
     });
   }
 
-  public StateLiveData<MeetingsModel> getMeeting() {
-    return this.meeting;
-  }
-
-  public StateLiveData<ThreadModel> getThreadModel() {
-    return this.threadModelMutableLiveData;
-  }
-
-  public StateLiveData<ThreadModel> getThreadModelInputState() {
-    return this.threadModelInputState;
-  }
-
   public void resetThreadModelInput() {
     this.threadModelInputState.postCreate(new ThreadModel());
-    this.threadModelMutableLiveData.postCreate(null);
+    this.currentThreadRepoState.postCreate(null);
   }
 
-  public void setMeeting(MeetingsModel meeting) {
-    this.courseMeetingRepository.setMeeting(meeting);
+  public void setCurrentMeetingRepoState(MeetingsModel currentMeetingRepoState) {
+    this.courseMeetingRepository.setCurrentMeetingRepoState(currentMeetingRepoState);
   }
 
   /** Create a new Thread. */
   public void createThread() {
     ThreadModel threadModel = Validation.checkStateLiveData(this.threadModelInputState, TAG);
     if (threadModel == null) {
-      Log.e(TAG, "threadModel is null.");
+      Log.e(TAG, Config.MEETING_NO_THREAD_MODEL);
+      this.currentThreadRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
     
     if (threadModel.getText() == null) {
-      Log.d(TAG, "text is null.");
-      this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
+      Log.d(TAG, Config.MEETING_NO_TEXT);
+      this.currentThreadRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
       return;
     } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "text wrong pattern.");
-      this.threadModelInputState.postError(
+      Log.d(TAG, Config.MEETING_WRONG_TEXT_PATTERN);
+      this.currentThreadRepoState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
       return;
     }

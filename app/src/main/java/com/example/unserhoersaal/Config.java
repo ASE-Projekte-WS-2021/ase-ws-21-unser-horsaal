@@ -200,8 +200,7 @@ public class Config {
   public static final String HISTORY_NO_USER_MODEL = "userModel is null.";
   public static final String HISTORY_NO_MEETING_ID = "meeting id is null.";
   public static final String HISTORY_LISTENER_FAILURE = "Course History Listener Failure";
-
-
+  public static final String MEETING_NO_MEETING_MODEL = "meetingObj is null.";
 
 
   /** ViewModels */
@@ -215,8 +214,9 @@ public class Config {
   public static final String HISTORY_NO_MEETING_MODEL = "meetingsModel is null.";
   public static final String HISTORY_NO_TITLE = "title is null.";
   public static final String HISTORY_WRONG_TITLE_PATTERN = "title wrong pattern.";
-
-
+  public static final String MEETING_NO_THREAD_MODEL = "threadModel is null.";
+  public static final String MEETING_NO_TEXT = "text is null.";
+  public static final String MEETING_WRONG_TEXT_PATTERN = "text wrong pattern.";
 
 
   /**=======================.

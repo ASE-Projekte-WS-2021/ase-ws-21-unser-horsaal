@@ -18,7 +18,6 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateThreadBinding;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
-import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 
 /**Create Thread.*/
 public class CreateThreadFragment extends Fragment {
@@ -66,7 +65,7 @@ public class CreateThreadFragment extends Fragment {
     //        .get(CurrentCourseViewModel.class);
     this.courseMeetingViewModel.init();
     //this.currentCourseViewModel.init();
-    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
+    this.courseMeetingViewModel.getCurrentThreadRepoState().observe(getViewLifecycleOwner(), threadModel -> {
       if (threadModel.getData() != null) {
         KeyboardUtil.hideKeyboard(getActivity());
         //this.currentCourseViewModel.setThreadId(threadModel.getKey());

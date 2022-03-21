@@ -54,7 +54,7 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseMeetingViewModel.class);
     courseMeetingViewModel.init();
-    courseMeetingViewModel.setMeeting(model);
+    courseMeetingViewModel.setCurrentMeetingRepoState(model);
     CurrentCourseViewModel currentCourseViewModel =
             new ViewModelProvider((ViewModelStoreOwner)
             view.getContext()).get(CurrentCourseViewModel.class);
