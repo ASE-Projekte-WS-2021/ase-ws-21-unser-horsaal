@@ -61,15 +61,17 @@ public class CourseParticipantsFragment extends Fragment {
     this.courseParticipantsViewModel = new ViewModelProvider(requireActivity())
             .get(CourseParticipantsViewModel.class);
     this.courseParticipantsViewModel.init();
-    this.courseParticipantsViewModel.getUserList().observe(getViewLifecycleOwner(), userList -> {
-      participantAdapter.notifyDataSetChanged();
-    });
+    this.courseParticipantsViewModel
+            .getAllUsersRepoState()
+            .observe(getViewLifecycleOwner(), userList ->
+                    participantAdapter.notifyDataSetChanged()
+            );
   }
 
   private void connectAdapter() {
     this.participantAdapter =
             new ParticipantAdapter(
-                    this.courseParticipantsViewModel.getUserList().getValue().getData());
+                    this.courseParticipantsViewModel.getAllUsersRepoState().getValue().getData());
   }
 
   private void connectBinding() {

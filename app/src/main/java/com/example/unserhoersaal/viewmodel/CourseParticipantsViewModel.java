@@ -12,30 +12,30 @@ public class CourseParticipantsViewModel extends ViewModel {
   private static final String TAG = "courseParticipantsViewModel";
 
   private CourseParticipantsRepository courseParticipantsRepository;
-  private StateLiveData<String> courseId = new StateLiveData<>();
-  private StateLiveData<List<UserModel>> userList;
+  private StateLiveData<String> currentCourseIdRepoState = new StateLiveData<>();
+  private StateLiveData<List<UserModel>> allUsersRepoState;
 
   /** Description for init method. */
   public void init() {
-    if (this.userList != null) {
+    if (this.allUsersRepoState != null) {
       return;
     }
 
     this.courseParticipantsRepository = CourseParticipantsRepository.getInstance();
-    this.courseId = this.courseParticipantsRepository.getCourseId();
-    this.userList = this.courseParticipantsRepository.getUsers();
+    this.currentCourseIdRepoState = this.courseParticipantsRepository.getCurrentCourseIdRepoState();
+    this.allUsersRepoState = this.courseParticipantsRepository.getAllUsersRepoState();
   }
 
-  public StateLiveData<String> getCourseId() {
-    return this.courseId;
+  public StateLiveData<String> getCurrentCourseIdRepoState() {
+    return this.currentCourseIdRepoState;
   }
 
-  public StateLiveData<List<UserModel>> getUserList() {
-    return this.userList;
+  public StateLiveData<List<UserModel>> getAllUsersRepoState() {
+    return this.allUsersRepoState;
   }
 
-  public void setCourseId(String courseId) {
-    this.courseParticipantsRepository.setCourseId(courseId);
+  public void setCurrentCourseIdRepoState(String currentCourseIdRepoState) {
+    this.courseParticipantsRepository.setCurrentCourseIdRepoState(currentCourseIdRepoState);
   }
 
 }

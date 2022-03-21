@@ -94,7 +94,7 @@ public class CourseDescriptionFragment extends Fragment {
       }
 
       String newCourseId = courseModelStateData.getData().getKey();
-      this.courseParticipantsViewModel.setCourseId(newCourseId);
+      this.courseParticipantsViewModel.setCurrentCourseIdRepoState(newCourseId);
   }
 
   private void connectBinding() {

@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -23,9 +22,9 @@ public class CourseParticipantsRepository {
   private static final String TAG = "CourseParticipantsRepo";
 
   private static CourseParticipantsRepository instance;
-  private DatabaseReference databaseReference;
-  private StateLiveData<String> courseId = new StateLiveData<>();
-  private StateLiveData<List<UserModel>> users = new StateLiveData<>();
+  private final DatabaseReference databaseReference;
+  private final StateLiveData<String> currentCourseIdRepoState = new StateLiveData<>();
+  private final StateLiveData<List<UserModel>> allUsersRepoState = new StateLiveData<>();
 
   private ValueEventListener listener;
 
@@ -33,7 +32,7 @@ public class CourseParticipantsRepository {
   public CourseParticipantsRepository() {
     this.initListener();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    this.users.postCreate(new ArrayList<>());
+    this.allUsersRepoState.postCreate(new ArrayList<>());
   }
 
   /** Returns the instance of this singleton class. */
@@ -44,29 +43,29 @@ public class CourseParticipantsRepository {
     return instance;
   }
 
-  public StateLiveData<String> getCourseId() {
-    return this.courseId;
+  public StateLiveData<String> getCurrentCourseIdRepoState() {
+    return this.currentCourseIdRepoState;
   }
 
-  public StateLiveData<List<UserModel>> getUsers() {
-    return this.users;
+  public StateLiveData<List<UserModel>> getAllUsersRepoState() {
+    return this.allUsersRepoState;
   }
 
   /** TODO. */
-  public void setCourseId(String courseId) {
-    if (this.courseId.getValue() != null) {
+  public void setCurrentCourseIdRepoState(String currentCourseIdRepoState) {
+    if (this.currentCourseIdRepoState.getValue() != null) {
       this.databaseReference
               .child(Config.CHILD_COURSES_USER)
-              .child(courseId)
+              .child(currentCourseIdRepoState)
               .removeEventListener(this.listener);
     }
 
     this.databaseReference
             .child(Config.CHILD_COURSES_USER)
-            .child(courseId)
+            .child(currentCourseIdRepoState)
             .addValueEventListener(this.listener);
 
-    this.courseId.postCreate(courseId);
+    this.currentCourseIdRepoState.postCreate(currentCourseIdRepoState);
   }
 
   private Task<DataSnapshot> getUserTask(String uid) {
@@ -89,13 +88,13 @@ public class CourseParticipantsRepository {
 
             if (model == null) {
               Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
-              users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
+              allUsersRepoState.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
               return;
             }
             model.setKey(task.getResult().getKey());
             userList.add(model);
           }
-          users.postUpdate(userList);
+          allUsersRepoState.postUpdate(userList);
         });
 
       }
@@ -103,7 +102,7 @@ public class CourseParticipantsRepository {
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
-        users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
+        allUsersRepoState.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
       }
     };
   }
