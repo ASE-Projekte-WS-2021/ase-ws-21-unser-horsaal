@@ -44,7 +44,7 @@
             style="@style/toolbarSubtitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{vm.courseModel.data.title}"
+            android:text="@{vm.courseRepoState.data.title}"
             android:background="@drawable/app_background"
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:text="@{vm.courseModel.data.creatorName}"
+                    android:text="@{vm.courseRepoState.data.creatorName}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold"
                     android:layout_marginEnd="8dp"
@@ -121,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:text="@{vm.courseModel.data.institution}"
+                    android:text="@{vm.courseRepoState.data.institution}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold"
                     android:layout_marginEnd="8dp"
@@ -158,7 +158,7 @@
                     android:id="@+id/courseDescriptionFragmentCourseDescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.courseModel.data.description}"
+                    android:text="@{vm.courseRepoState.data.description}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold"
                     android:maxLines="2"
@@ -202,14 +202,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:text="@{Format.formatEnterKey(courseDescriptionFragmentEnterKey, vm.courseModel.data.codeMapping)}"
+                    android:text="@{Format.formatEnterKey(courseDescriptionFragmentEnterKey, vm.courseRepoState.data.codeMapping)}"
                     android:textAlignment="viewEnd"
                     android:textStyle="bold"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp" />
 
                 <ImageView
-                    android:onClick="@{(view) -> Clipboard.copyCodeToClipboard(view, vm.courseModel.data.codeMapping)}"
+                    android:onClick="@{(view) -> Clipboard.copyCodeToClipboard(view, vm.courseRepoState.data.codeMapping)}"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_content_copy_24"
@@ -277,7 +277,7 @@
 
         <Button
             android:id="@+id/qrCodeButton"
-            android:onClick="@{(view) -> QrCodeCreator.generateQrCode(view, vm.courseModel.data.codeMapping, vm)}"
+            android:onClick="@{(view) -> QrCodeCreator.generateQrCode(view, vm.courseRepoState.data.codeMapping, vm)}"
             android:text="qrCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/courseDescriptionFragmentShareCourseFab"
-            android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.data.codeMapping)}"
+            android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseRepoState.data.codeMapping)}"
             style="@style/fabStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -16,7 +16,6 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentResetPasswordBinding;
-import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
@@ -61,7 +60,7 @@ public class ResetPasswordFragment extends Fragment {
     this.loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     this.loginViewModel.init();
     this.loginViewModel
-            .getEmailSentLiveData()
+            .getEmailSentStatus()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
   }
 

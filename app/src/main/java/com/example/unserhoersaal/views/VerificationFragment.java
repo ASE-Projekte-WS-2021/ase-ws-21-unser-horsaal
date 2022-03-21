@@ -74,7 +74,7 @@ public class VerificationFragment extends Fragment {
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     this.loginViewModel.init();
-    this.loginViewModel.getUserLiveData()
+    this.loginViewModel.getFirebaseUserRepoState()
             .observe(getViewLifecycleOwner(), this::userLiveStateCallback);
   }
 

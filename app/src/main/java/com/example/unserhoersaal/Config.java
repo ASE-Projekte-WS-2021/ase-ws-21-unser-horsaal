@@ -1,7 +1,5 @@
 package com.example.unserhoersaal;
 
-import android.os.ParcelUuid;
-
 import java.text.SimpleDateFormat;
 
 /** Config Class. */
@@ -16,26 +14,12 @@ public class Config {
   public static final int INSTITUTION_LENGTH_MIN = 0; //optional
   public static final int INSTITUTION_LENGTH_MAX = 75;
 
-  public static final int COURSE_TITLE_LENGTH_MIN = 3;
-  public static final int COURSE_TITLE_LENGTH_MAX = 100;
-  public static final int MEETING_TITLE_LENGTH_MIN = 3;
-  public static final int MEETING_TITLE_LENGTH_MAX = 100;
-  public static final int THREAD_TITLE_LENGTH_MIN = 3;
-  public static final int THREAD_TITLE_LENGTH_MAX = 100;
-
-  public static final int COURSE_TEXT_LENGTH_MIN = 1;
-  public static final int COURSE_TEXT_LENGTH_MAX = 500;
-  public static final int MEETING_TEXT_LENGTH_MIN = 1;
-  public static final int MEETING_TEXT_LENGTH_MAX = 500;
-  public static final int THREAD_TEXT_LENGTH_MIN = 1;
-  public static final int THREAD_TEXT_LENGTH_MAX = 500;
-  public static final int MESSAGE_TEXT_LENGTH_MIN = 1;
-  public static final int MESSAGE_TEXT_LENGTH_MAX = 500;
-
-  public static final int COURSE_DESCRIPTION_LENGTH_MIN = 0; //optional
-  public static final int COURSE_DESCRIPTION_LENGTH_MAX = 500;
-  public static final int MEETING_DESCRIPTION_LENGTH_MIN = 0; //optional
-  public static final int MEETING_DESCRIPTION_LENGTH_MAX = 500;
+  public static final int TITLE_LENGTH_MIN = 3;
+  public static final int TITLE_LENGTH_MAX = 100;
+  public static final int TEXT_LENGTH_MIN = 1;
+  public static final int TEXT_LENGTH_MAX = 500;
+  public static final int DESCRIPTION_LENGTH_MIN = 0; //optional
+  public static final int DESCRIPTION_LENGTH_MAX = 500;
 
   public static final int CODE_MAPPING_LENGTH = 9;
 
@@ -57,9 +41,12 @@ public class Config {
   public static final String REGEX_PATTERN_PASSWORD =
           String.format("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{%s,%s}$",
                   PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
-  public static final String REGEX_PATTERN_TITLE = ".*";
-  public static final String REGEX_PATTERN_INSTITUTION = ".*";
-  public static final String REGEX_PATTERN_TEXT = ".*";
+  public static final String REGEX_PATTERN_TITLE =
+          String.format("^.{%s,%s}$", TITLE_LENGTH_MIN, TITLE_LENGTH_MAX);
+  public static final String REGEX_PATTERN_INSTITUTION =
+          String.format("^.{%s,%s}$", INSTITUTION_LENGTH_MIN, INSTITUTION_LENGTH_MAX);
+  public static final String REGEX_PATTERN_TEXT =
+          String.format("^.{%s,%s}$", TEXT_LENGTH_MIN, TEXT_LENGTH_MAX);
   public static final String REGEX_PATTERN_CODE_MAPPING =
           "^([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})$";
 
@@ -120,7 +107,6 @@ public class Config {
    * ======================= */
   public static final String UNSPECIFIC_ERROR =
           "Ein Fehler ist aufgetreten!"; //hide too specific error from user
-
 
   public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
   public static final String DATABINDING_TITLE_WRONG_PATTERN =
@@ -194,6 +180,35 @@ public class Config {
   public static final String THREADS_FAILED_TO_LOAD = "Threads konnten nicht geladen werden!";
   public static final String MEETINGS_FAILED_TO_LOAD = "Meeting konnten nicht geladen werden!";
   public static final String MESSAGES_FAILED_TO_LOAD = "Nachrichten konnten nicht geladen werden!";
+
+  /**=======================.
+   * Internal Error Messages
+   * ======================= */
+  public static final String AUTH_LOGIN_FIREBASE_USER_NULL = "Firebase did not authenticate a user";
+  public static final String AUTH_LOGIN_SUCCESSFUL = "Login with Firebase Auth was successful";
+  public static final String AUTH_REGISTRATION_SUCCESSFUL = "Successfully registered with Firebase Auth.";
+  public static final String AUTH_REGISTRATION_USER_CREATED = "A new user was created in the database.";
+  public static final String AUTH_REGISTRATION_NO_USER_CREATED = "Could not create a new user!";
+  public static final String AUTH_LISTENER_STATE_CHANGE = "Firebase Auth State changed!";
+  public static final String AUTH_USER_VERIFIED = "User was successfully verified.";
+  public static final String AUTH_USER_NOT_VERIFIED = "User could not but verified.";
+  public static final String AUTH_CURRENT_USER_RELOADED = "Reloaded current user.";
+  public static final String DESCRIPTION_NO_COURSE_MODEL = "Model is null.";
+  public static final String DESCRIPTION_SET_COURSE_ID_FAILED = "Setcourseid task failed.";
+  public static final String DESCRIPTION_SIGN_OUT_FAILED = "Could not unregister User from course.";
+
+
+
+  /** ViewModels */
+  public static final String LOGIN_VW_MODEL_NULL = "One of the preceding models is null.";
+  public static final String LOGIN_VW_EMAIL_NULL = "Email is null.";
+  public static final String LOGIN_VW_EMAIL_WRONG_PATTERN = "Email has wrong pattern.";
+  public static final String LOGIN_VW_PASSWORD_NULL = "Password is null.";
+  public static final String LOGIN_VW_PASSWORD_WRONG_PATTERN = "Password has wrong pattern.";
+  public static final String DESCRIPTION_NO_TITLE = "title is null.";
+  public static final String DESCRIPTION_WRONG_TITLE_PATTERN = "title has wrong pattern.";
+
+
 
   /**=======================.
    *  Avatar Placeholder Ids

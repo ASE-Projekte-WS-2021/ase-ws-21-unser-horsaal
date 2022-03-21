@@ -32,7 +32,7 @@ public class ProfileViewModel extends ViewModel {
     }
     this.authAppRepository = AuthAppRepository.getInstance();
     this.profileRepository = ProfileRepository.getInstance();
-    this.userLiveData = this.authAppRepository.getUserStateLiveData();
+    this.userLiveData = this.authAppRepository.getFirebaseUserRepoState();
     this.profileLiveData = this.profileRepository.getUser();
 
     this.userInputState.postCreate(new UserModel());

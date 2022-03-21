@@ -1,41 +1,31 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.play.core.tasks.Task;
-import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 // source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/tree/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/model [30.12.2021]
 
-/** This class manages the data base access for the user identification. */
+/** This repository manages the authentication related work. */
 public class AuthAppRepository {
 
   private static final String TAG = "AuthAppRepo";
 
   private static AuthAppRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
+  private final DatabaseReference databaseReference;
+  private final FirebaseAuth firebaseAuth;
   private FirebaseUser firebaseUser = null;
-  private StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
-  private StateLiveData<Boolean> emailSentLiveData = new StateLiveData<>();
+  private final StateLiveData<FirebaseUser> firebaseUserRepoState = new StateLiveData<>();
+  private final StateLiveData<Boolean> emailSentStatus = new StateLiveData<>();
 
   /** Gives back an Instance of AuthAppRepository. */
   public static AuthAppRepository getInstance() {
@@ -45,25 +35,24 @@ public class AuthAppRepository {
     return instance;
   }
 
-  /** Constructor Description. */
-  public AuthAppRepository() {
-    this.firebaseAuth = FirebaseAuth.getInstance();
+  /** Constructor which is only accessible in class to achieve singleton design patterns. */
+  private AuthAppRepository() {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    this.firebaseAuth = FirebaseAuth.getInstance();
 
     if (this.firebaseAuth.getCurrentUser() != null) {
-      this.userLiveData.postCreate(this.firebaseAuth.getCurrentUser());
+      this.firebaseUserRepoState.postCreate(this.firebaseAuth.getCurrentUser());
     }
 
-    this.emailSentLiveData.postCreate(Boolean.FALSE);
+    this.emailSentStatus.postCreate(Boolean.FALSE);
   }
 
-  /** Gives back the current UserModel. */
-  public StateLiveData<FirebaseUser> getUserStateLiveData() {
-    return this.userLiveData;
+  public StateLiveData<FirebaseUser> getFirebaseUserRepoState() {
+    return this.firebaseUserRepoState;
   }
 
-  public StateLiveData<Boolean> getEmailSentLiveData() {
-    return this.emailSentLiveData;
+  public StateLiveData<Boolean> getEmailSentStatus() {
+    return this.emailSentStatus;
   }
 
   /** This method is logging in the user.*/
@@ -72,15 +61,17 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 if (this.firebaseAuth.getCurrentUser() == null) {
-                  Log.e(TAG, "firebase did not authenticated a user.");
-                  this.userLiveData.postError(new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
+                  Log.e(TAG, Config.AUTH_LOGIN_FIREBASE_USER_NULL);
+                  this.firebaseUserRepoState.postError(
+                          new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
                 } else {
-                  Log.d(TAG, "Login with firebase auth was successful");
-                  this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
+                  Log.d(TAG, Config.AUTH_LOGIN_SUCCESSFUL);
+                  this.firebaseUserRepoState.postUpdate(this.firebaseAuth.getCurrentUser());
                 }
               } else {
-                Log.e(TAG, "authentication failed.");
-                this.userLiveData.postError(new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
+                Log.e(TAG, Config.AUTH_LOGIN_FAILED);
+                this.firebaseUserRepoState.postError(
+                        new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
               }
             });
   }
@@ -92,13 +83,13 @@ public class AuthAppRepository {
               if (task.isSuccessful()) {
                 this.firebaseUser = this.firebaseAuth.getCurrentUser();
                 if (this.firebaseUser == null) {
-                  Log.e(TAG, "firebase did not authenticated a user.");
+                  Log.e(TAG, Config.AUTH_LOGIN_FIREBASE_USER_NULL);
                 }
-                Log.d(TAG, "Successfully registered with firebase auth.");
+                Log.d(TAG, Config.AUTH_REGISTRATION_SUCCESSFUL);
                 this.createNewUser(username, email, this.firebaseUser.getUid());
               } else {
-                Log.e(TAG, "user registration failed.");
-                this.userLiveData.postError(
+                Log.e(TAG, Config.AUTH_REGISTRATION_FAILED);
+                this.firebaseUserRepoState.postError(
                         new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
               }
             });
@@ -115,12 +106,12 @@ public class AuthAppRepository {
             .child(uid)
             .setValue(newUser)
             .addOnSuccessListener(unused -> {
-              Log.d(TAG, "A new user was created in the database");
+              Log.d(TAG, Config.AUTH_REGISTRATION_USER_CREATED);
               this.sendVerificationEmail();
             })
             .addOnFailureListener(e -> {
-              Log.e(TAG, "Could not create a new user!");
-              this.userLiveData.postError(
+              Log.e(TAG, Config.AUTH_REGISTRATION_NO_USER_CREATED);
+              this.firebaseUserRepoState.postError(
                       new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
             });
   }
@@ -132,44 +123,44 @@ public class AuthAppRepository {
             .addOnCompleteListener(task1 -> {
               if (task1.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                this.userLiveData.postUpdate(this.firebaseUser);
+                this.firebaseUserRepoState.postUpdate(this.firebaseUser);
                 this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
               } else {
-                Log.e(TAG,  Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
-                this.userLiveData.postError(
+                Log.e(TAG, Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
+                this.firebaseUserRepoState.postError(
                         new Error(Config.AUTH_VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
               }
             });
   }
 
-  /** listenr: changes on firebase user status. */
+  /** listener: changes on firebase user status. */
   private FirebaseAuth.AuthStateListener authStateListenerVerification() {
     return firebaseAuth1 -> {
-      Log.d(TAG, "Firebase Auth State changed");
+      Log.d(TAG, Config.AUTH_LISTENER_STATE_CHANGE);
       this.firebaseUser = firebaseAuth1.getCurrentUser();
       if (this.firebaseUser != null && this.firebaseUser.isEmailVerified()) {
-        Log.d(TAG, "User verified.");
-        this.userLiveData.postUpdate(this.firebaseUser);
+        Log.d(TAG, Config.AUTH_USER_VERIFIED);
+        this.firebaseUserRepoState.postUpdate(this.firebaseUser);
         this.firebaseAuth.removeAuthStateListener(this.authStateListenerVerification());
       } else {
-        Log.w(TAG, "User konnte nicht verifiziert werden.");
+        Log.w(TAG, Config.AUTH_USER_NOT_VERIFIED);
       }
     };
   }
 
   /** Method to reset the password via password reset email.*/
   public void resetPassword(String mail) {
-    this.userLiveData.postLoading();
+    this.firebaseUserRepoState.postLoading();
 
     this.firebaseAuth
             .sendPasswordResetEmail(mail)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_SUCCESS);
-                this.userLiveData.postUpdate(this.firebaseUser);
+                this.firebaseUserRepoState.postUpdate(this.firebaseUser);
               } else {
                 Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED);
-                this.userLiveData.postError(
+                this.firebaseUserRepoState.postError(
                         new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
               }
             });
@@ -179,19 +170,19 @@ public class AuthAppRepository {
   public void resendVerificationEmail() {
     if (this.firebaseUser == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.userLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      this.firebaseUserRepoState.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
     } else {
       this.firebaseUser
               .sendEmailVerification()
               .addOnCompleteListener(task1 -> {
                 if (task1.isSuccessful()) {
                   Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                  this.userLiveData.postUpdate(this.firebaseUser);
+                  this.firebaseUserRepoState.postUpdate(this.firebaseUser);
                   //add an authstatelistener so we can live observe when user clicks the email
                   this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
                 } else {
                   Log.e(TAG, Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
-                  this.userLiveData.postError(
+                  this.firebaseUserRepoState.postError(
                           new Error(Config.AUTH_VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
                 }
               });
@@ -205,12 +196,11 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_PASSWORD_RESET_MAIL_SENT);
-
-                this.emailSentLiveData.postUpdate(Boolean.TRUE);
-                this.emailSentLiveData.postCreate(Boolean.FALSE);
+                this.emailSentStatus.postUpdate(Boolean.TRUE);
+                this.emailSentStatus.postCreate(Boolean.FALSE);
               } else {
                 Log.e(TAG, Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT);
-                this.emailSentLiveData.postError(
+                this.emailSentStatus.postError(
                         new Error(Config.AUTH_PASSWORD_RESET_MAIL_NOT_SENT), ErrorTag.REPO);
               }
             });
@@ -219,15 +209,22 @@ public class AuthAppRepository {
   /** Logging out the current user. */
   public void logOut() {
     this.firebaseAuth.signOut();
-    this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
+    this.firebaseUserRepoState.postUpdate(this.firebaseAuth.getCurrentUser());
   }
 
   /** Method to delete an user account. */
   public void deleteAccount() {
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
-    this.userLiveData.postLoading();
-    String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.databaseReference.child(Config.CHILD_USER)
+    this.firebaseUserRepoState.postLoading();
+
+    if (this.firebaseUser == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.firebaseUserRepoState.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      return;
+    }
+    String uid = this.firebaseUser.getUid();
+    this.databaseReference
+            .child(Config.CHILD_USER)
             .child(uid)
             .removeValue()
             .addOnSuccessListener(unused -> removeCourses(uid));
@@ -238,7 +235,8 @@ public class AuthAppRepository {
   private void removeCourses(String uid) {
     List<String> courseIdList = new ArrayList<>();
 
-    this.databaseReference.child(Config.CHILD_USER_COURSES)
+    this.databaseReference
+            .child(Config.CHILD_USER_COURSES)
             .child(uid)
             .get()
             .addOnSuccessListener(dataSnapshot -> {
@@ -250,7 +248,6 @@ public class AuthAppRepository {
                       .removeValue()
                       .addOnSuccessListener(unused -> removeUserFromCourses(courseIdList, uid));
             });
-
   }
 
   /** Remove the user from all courses the user is signed in. */
@@ -267,21 +264,21 @@ public class AuthAppRepository {
   }
 
   /** Delete the user data in firebase auth. */
+  //TODO@Julian: https://stackoverflow.com/a/38114865/13620136
   private void deleteUser() {
-    FirebaseUser user = this.firebaseAuth.getCurrentUser();
+    //FirebaseUser user = this.firebaseAuth.getCurrentUser();
     this.firebaseAuth.signOut();
-    user.delete().addOnCompleteListener(task -> {
+    this.firebaseUser.delete().addOnCompleteListener(task -> {
       if (task.isSuccessful()) {
-        this.userLiveData.postUpdate(null);
+        this.firebaseUserRepoState.postUpdate(null);
       }
     });
   }
 
-
   /** Reloads the current FirebaseUser object so that we can see if the email was verified. */
   public void reloadFirebaseUser() {
     if (this.firebaseAuth.getCurrentUser() !=  null) {
-      Log.d(TAG, "reloaded current user");
+      Log.d(TAG, Config.AUTH_CURRENT_USER_RELOADED);
       this.firebaseAuth.getCurrentUser().reload();
       this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
     }

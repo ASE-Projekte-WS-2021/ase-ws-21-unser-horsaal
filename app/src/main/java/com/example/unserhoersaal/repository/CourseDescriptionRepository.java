@@ -20,11 +20,11 @@ public class CourseDescriptionRepository {
 
   private static final String TAG = "CourseDescriptionRepository";
 
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
   private static CourseDescriptionRepository instance;
-  private StateLiveData<String> courseId = new StateLiveData<>();
-  private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
+  private final StateLiveData<String> currentCourseIdRepoState = new StateLiveData<>();
+  private final StateLiveData<CourseModel> courseRepoState = new StateLiveData<>();
   private ValueEventListener listener;
 
   /** JavaDoc. */
@@ -32,8 +32,8 @@ public class CourseDescriptionRepository {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    this.courseModel.postCreate(new CourseModel());
-    this.courseId.postCreate(null);
+    this.courseRepoState.postCreate(new CourseModel());
+    this.currentCourseIdRepoState.postCreate(null);
   }
 
   /** Generates an instance of CourseDescriptionRepository. */
@@ -44,17 +44,17 @@ public class CourseDescriptionRepository {
     return instance;
   }
 
-  public StateLiveData<String> getCourseId() {
-    return this.courseId;
+  public StateLiveData<String> getCurrentCourseIdRepoState() {
+    return this.currentCourseIdRepoState;
   }
 
-  public StateLiveData<CourseModel> getCourseModel() {
-    return this.courseModel;
+  public StateLiveData<CourseModel> getCourseRepoState() {
+    return this.courseRepoState;
   }
 
   /** Sets the current course. */
   public void setCourseId(String newCourseId) {
-    String oldKey = Validation.checkStateLiveData(this.courseId, TAG);
+    String oldKey = Validation.checkStateLiveData(this.currentCourseIdRepoState, TAG);
 
     if (oldKey != null) {
       this.databaseReference
@@ -68,8 +68,8 @@ public class CourseDescriptionRepository {
             .child(newCourseId)
             .addValueEventListener(this.listener);
 
-    this.courseModel.postUpdate(new CourseModel());
-    this.courseId.postCreate(newCourseId);
+    this.courseRepoState.postUpdate(new CourseModel());
+    this.currentCourseIdRepoState.postCreate(newCourseId);
   }
 
   /** Initializes the listener for the database access. */
@@ -80,8 +80,8 @@ public class CourseDescriptionRepository {
         CourseModel model = snapshot.getValue(CourseModel.class);
 
         if (model == null) {
-          Log.e(TAG, "model is null");
-          courseModel.postError(
+          Log.e(TAG, Config.DESCRIPTION_NO_COURSE_MODEL);
+          courseRepoState.postError(
                   new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
           return;
         }
@@ -92,8 +92,8 @@ public class CourseDescriptionRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "setcourseid task failed.");
-        courseModel.postError(
+        Log.e(TAG, Config.DESCRIPTION_SET_COURSE_ID_FAILED);
+        courseRepoState.postError(
                 new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
     };
@@ -112,21 +112,21 @@ public class CourseDescriptionRepository {
       } else {
         course.setCreatorName(Config.UNKNOWN_USER);
       }
-      this.courseModel.postUpdate(course);
+      this.courseRepoState.postUpdate(course);
     }).addOnFailureListener(e -> {
       Log.e(TAG, e.getMessage());
-      this.courseModel.postError(
+      this.courseRepoState.postError(
               new Error(Config.COURSE_DESCRIPTION_COULD_NOT_LOAD_USER), ErrorTag.REPO);
     });
   }
 
   /** unregisters a user from a course in real time database. */
   public void unregisterFromCourse(String id) {
-    this.courseModel.postLoading();
+    this.courseRepoState.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.courseModel.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      this.courseRepoState.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
       return;
     }
 
@@ -141,16 +141,17 @@ public class CourseDescriptionRepository {
                             .child(id)
                             .child(uid)
                             .removeValue()
-                            .addOnSuccessListener(unused1 -> courseModel.postUpdate(null))
+                            .addOnSuccessListener(unused1 ->
+                                    courseRepoState.postUpdate(null))
                             .addOnFailureListener(e -> {
-                              Log.e(TAG, "Could not unregister User from course");
-                              this.courseModel.postError(
+                              Log.e(TAG, Config.DESCRIPTION_SIGN_OUT_FAILED);
+                              this.courseRepoState.postError(
                                       new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED),
                                       ErrorTag.REPO);
                             })
             ).addOnFailureListener(e -> {
-              Log.e(TAG, "Could not unregister User from course");
-              this.courseModel.postError(
+              Log.e(TAG, Config.DESCRIPTION_SIGN_OUT_FAILED);
+              this.courseRepoState.postError(
                       new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
             });
   }

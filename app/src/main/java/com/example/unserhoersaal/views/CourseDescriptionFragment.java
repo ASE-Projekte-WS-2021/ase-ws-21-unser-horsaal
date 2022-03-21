@@ -1,16 +1,10 @@
 package com.example.unserhoersaal.views;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,8 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCourseDescriptionBinding;
+import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 
@@ -81,26 +78,29 @@ public class CourseDescriptionFragment extends Fragment {
             .get(CourseParticipantsViewModel.class);
     this.courseDescriptionViewModel.init();
     this.courseParticipantsViewModel.init();
-    this.courseDescriptionViewModel.getCourseModel()
-            .observe(getViewLifecycleOwner(), courseModel -> {
+    this.courseDescriptionViewModel.getCourseRepoState()
+            .observe(getViewLifecycleOwner(), this::courseRepoStateCallback);
+  }
 
-              //use to navigate the user out of the fragment
-              //course navigate back to course history
-              if (courseModel == null) {
-                navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
-                //TODO: assert != null
-              } else if (courseModel.getData().getKey() != null) {
-                courseParticipantsViewModel.setCourseId(courseModel.getData().getKey());
-              }
+  private void courseRepoStateCallback(StateData<CourseModel> courseModelStateData) {
+      if (courseModelStateData == null) {
+        this.navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
+        return;
+      }
 
-            });
+      if (courseModelStateData.getData() == null) {
+        Log.e(TAG, Config.COURSES_FAILED_TO_LOAD);
+        return;
+      }
+
+      String newCourseId = courseModelStateData.getData().getKey();
+      this.courseParticipantsViewModel.setCourseId(newCourseId);
   }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.courseDescriptionViewModel);
   }
-
 
   private void initToolbar() {
     this.binding.courseDescriptionFragmentToolbar
@@ -109,7 +109,5 @@ public class CourseDescriptionFragment extends Fragment {
             .setNavigationOnClickListener(v ->
             navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment));
   }
-
-
 
 }

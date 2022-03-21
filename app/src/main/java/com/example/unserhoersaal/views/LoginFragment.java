@@ -20,7 +20,6 @@ import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
@@ -35,7 +34,6 @@ public class LoginFragment extends Fragment {
   private static final String TAG = "LoginFragment";
 
   private LoginViewModel loginViewModel;
-  private CoursesViewModel coursesViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -91,53 +89,67 @@ public class LoginFragment extends Fragment {
             .get(LoginViewModel.class);
     this.loginViewModel.init();
     this.loginViewModel
-            .getUserLiveData()
+            .getFirebaseUserRepoState()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
   }
 
-  private void userLiveDataCallback(StateData<FirebaseUser> firebaseUserStateData) {
+  private void userLiveDataCallback(StateData<FirebaseUser> firebaseUserRepoState) {
     this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
 
-    if (firebaseUserStateData == null) { //-> move to other method
-      Log.e(TAG, "FirebaseUser object is null");
+    if (firebaseUserRepoState == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.binding.loginFragmentGeneralErrorMessage.setText(Config.UNSPECIFIC_ERROR);
       this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
       return;
     }
-    FirebaseUser firebaseUser = firebaseUserStateData.getData();
 
-    if (firebaseUser != null && (firebaseUserStateData.getStatus() == StateData.DataStatus.CREATED
-            || firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE)) {
-      if (firebaseUser.isEmailVerified()
-              && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
-        navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
-      } else if (firebaseUser.isEmailVerified()) {
-        navController.navigate(R.id.action_loginFragment_to_coursesFragment);
-      } else if (!firebaseUser.isEmailVerified()) {
-        navController.navigate(R.id.action_loginFragment_to_verificationFragment);
-      }
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
-      this.binding.loginFragmentLoginButton.setEnabled(false);
-      this.binding.loginFragmentLoginButton.setBackgroundColor(Color.GRAY);
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
-        this.binding.loginFragmentUserEmailErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.loginFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
-      }
-      if (firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
-        this.binding.loginFragmentPasswordErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.loginFragmentPasswordErrorText.setVisibility(View.VISIBLE);
-      }
-      if (firebaseUserStateData.getErrorTag() == ErrorTag.REPO
-              || firebaseUserStateData.getErrorTag() == ErrorTag.VM){
-        this.binding.loginFragmentGeneralErrorMessage
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
-      }
+    FirebaseUser firebaseUser = firebaseUserRepoState.getData();
+
+    if (firebaseUser != null
+            && (firebaseUserRepoState.getStatus() == StateData.DataStatus.CREATED
+            || firebaseUserRepoState.getStatus() == StateData.DataStatus.UPDATE)) {
+      this.handleStatusUpdate(firebaseUser);
+    } else if (firebaseUserRepoState.getStatus() == StateData.DataStatus.LOADING) {
+      this.handleLoading();
+    } else if (firebaseUserRepoState.getStatus() == StateData.DataStatus.ERROR) {
+      this.handleError(firebaseUserRepoState);
+    }
+  }
+
+  private void handleStatusUpdate(FirebaseUser firebaseUser) {
+    if (firebaseUser.isEmailVerified()
+            && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+      navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
+    } else if (firebaseUser.isEmailVerified()) {
+      navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+    } else if (!firebaseUser.isEmailVerified()) {
+      navController.navigate(R.id.action_loginFragment_to_verificationFragment);
+    }
+  }
+
+  private void handleLoading() {
+    this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    this.binding.loginFragmentLoginButton.setEnabled(false);
+    this.binding.loginFragmentLoginButton.setBackgroundColor(Color.GRAY);
+  }
+
+  private void handleError(StateData<FirebaseUser> firebaseUserStateData) {
+    if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
+      this.binding.loginFragmentUserEmailErrorText
+              .setText(firebaseUserStateData.getError().getMessage());
+      this.binding.loginFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
+    }
+    if (firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
+      this.binding.loginFragmentPasswordErrorText
+              .setText(firebaseUserStateData.getError().getMessage());
+      this.binding.loginFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+    }
+    if (firebaseUserStateData.getErrorTag() == ErrorTag.REPO
+            || firebaseUserStateData.getErrorTag() == ErrorTag.VM){
+      this.binding.loginFragmentGeneralErrorMessage
+              .setText(firebaseUserStateData.getError().getMessage());
+      this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
     }
   }
 
