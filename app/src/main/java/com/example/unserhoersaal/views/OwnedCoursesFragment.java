@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,12 +41,14 @@ public class OwnedCoursesFragment extends Fragment {
     this.connectBinding();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.ownedCoursesViewModel = new ViewModelProvider(getActivity())
             .get(OwnedCoursesViewModel.class);
     this.ownedCoursesViewModel.init();
     this.ownedCoursesViewModel.loadOwnedCourses();
-    this.ownedCoursesViewModel.getOwnedCourses()
+    this.ownedCoursesViewModel
+            .getOwnedCoursesRepoState()
             .observe(getViewLifecycleOwner(), ownedCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
               if (ownedCourses.size() == 0) {
@@ -58,7 +61,7 @@ public class OwnedCoursesFragment extends Fragment {
 
   private void connectAdapter() {
     this.coursesAdapter = new CoursesAdapter(
-            this.ownedCoursesViewModel.getOwnedCourses().getValue());
+            this.ownedCoursesViewModel.getOwnedCoursesRepoState().getValue());
   }
 
   private void connectBinding() {

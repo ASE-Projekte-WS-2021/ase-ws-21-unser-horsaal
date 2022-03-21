@@ -13,20 +13,20 @@ public class OwnedCoursesViewModel extends ViewModel {
   private static final String TAG = "OwnedCoursesViewModel";
 
   private OwnedCoursesRepository ownedCoursesRepository;
-  private MutableLiveData<List<CourseModel>> ownedCourses;
+  private MutableLiveData<List<CourseModel>> ownedCoursesRepoState;
 
   /** Initialize the ViewModel. */
   public void init() {
-    if (this.ownedCourses != null) {
+    if (this.ownedCoursesRepoState != null) {
       return;
     }
 
     this.ownedCoursesRepository = OwnedCoursesRepository.getInstance();
-    this.ownedCourses = this.ownedCoursesRepository.getOwnedCourses();
+    this.ownedCoursesRepoState = this.ownedCoursesRepository.getOwnedCoursesRepoState();
   }
 
-  public LiveData<List<CourseModel>> getOwnedCourses() {
-    return this.ownedCourses;
+  public LiveData<List<CourseModel>> getOwnedCoursesRepoState() {
+    return this.ownedCoursesRepoState;
   }
 
   public void loadOwnedCourses() {

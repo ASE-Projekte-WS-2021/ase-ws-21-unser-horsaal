@@ -24,9 +24,8 @@ public class OwnedCoursesRepository {
   private static final String TAG = "OwnedCoursesRepo";
 
   private static OwnedCoursesRepository instance;
-
-  private ArrayList<CourseModel> ownedCoursesList = new ArrayList<>();
-  private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
+  private final ArrayList<CourseModel> ownedCoursesList = new ArrayList<>();
+  private final MutableLiveData<List<CourseModel>> ownedCoursesRepoState = new MutableLiveData<>();
 
   /** Generate an instance of the repo. */
   public static OwnedCoursesRepository getInstance() {
@@ -37,12 +36,12 @@ public class OwnedCoursesRepository {
   }
 
   /** Give back the owned courses of the user. */
-  public MutableLiveData<List<CourseModel>> getOwnedCourses() {
+  public MutableLiveData<List<CourseModel>> getOwnedCoursesRepoState() {
     if (this.ownedCoursesList.size() == 0) {
       this.loadOwnedCourses();
     }
-    this.courses.setValue(ownedCoursesList);
-    return this.courses;
+    this.ownedCoursesRepoState.setValue(ownedCoursesList);
+    return this.ownedCoursesRepoState;
   }
 
   /** Load all owned courses. */
@@ -51,7 +50,7 @@ public class OwnedCoursesRepository {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     String id = auth.getCurrentUser().getUid();
     this.ownedCoursesList.clear();
-    this.courses.postValue(ownedCoursesList);
+    this.ownedCoursesRepoState.postValue(ownedCoursesList);
 
     Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
@@ -106,7 +105,7 @@ public class OwnedCoursesRepository {
       }
       ownedCoursesList.clear();
       ownedCoursesList.addAll(authorList);
-      courses.postValue(ownedCoursesList);
+      ownedCoursesRepoState.postValue(ownedCoursesList);
     });
   }
 
