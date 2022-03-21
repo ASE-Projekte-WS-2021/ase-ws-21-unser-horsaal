@@ -27,8 +27,8 @@ public class TodaysCoursesRepository {
 
   private static TodaysCoursesRepository instance;
 
-  private ArrayList<CourseModel> todaysCoursesList = new ArrayList<>();
-  private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
+  private final ArrayList<CourseModel> todaysCoursesList = new ArrayList<>();
+  private final MutableLiveData<List<CourseModel>> allCoursesRepoState = new MutableLiveData<>();
 
   /** Get an instance of the repo. */
   public static TodaysCoursesRepository getInstance() {
@@ -39,13 +39,13 @@ public class TodaysCoursesRepository {
   }
 
   /** Give back all courses with a meeting today. */
-  public MutableLiveData<List<CourseModel>> getTodaysCourses() {
+  public MutableLiveData<List<CourseModel>> getAllCoursesRepoState() {
     if (this.todaysCoursesList.size() == 0) {
       this.loadTodaysCourses();
     }
 
-    this.courses.setValue(todaysCoursesList);
-    return this.courses;
+    this.allCoursesRepoState.setValue(todaysCoursesList);
+    return this.allCoursesRepoState;
   }
 
 
@@ -55,7 +55,7 @@ public class TodaysCoursesRepository {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     String id = auth.getCurrentUser().getUid();
     this.todaysCoursesList.clear();
-    this.courses.postValue(todaysCoursesList);
+    this.allCoursesRepoState.postValue(todaysCoursesList);
 
     Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
@@ -144,7 +144,7 @@ public class TodaysCoursesRepository {
       }
       todaysCoursesList.clear();
       todaysCoursesList.addAll(authorList);
-      courses.postValue(todaysCoursesList);
+      allCoursesRepoState.postValue(todaysCoursesList);
     });
   }
 

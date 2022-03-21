@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ public class TodaysCoursesFragment extends Fragment {
   private FragmentTodaysCoursesBinding binding;
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_todays_courses, container,
             false);
@@ -36,12 +37,13 @@ public class TodaysCoursesFragment extends Fragment {
     this.connectBinding();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.todaysCoursesViewModel = new ViewModelProvider(getActivity())
             .get(TodaysCoursesViewModel.class);
     this.todaysCoursesViewModel.init();
     this.todaysCoursesViewModel.loadTodaysCourses();
-    this.todaysCoursesViewModel.getTodaysCourses()
+    this.todaysCoursesViewModel.getAllCoursesRepoState()
             .observe(getViewLifecycleOwner(), todaysCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
               if (todaysCourses.size() == 0) {
@@ -54,7 +56,7 @@ public class TodaysCoursesFragment extends Fragment {
 
   private void connectAdapter() {
     this.coursesAdapter = new CoursesAdapter(
-            this.todaysCoursesViewModel.getTodaysCourses().getValue());
+            this.todaysCoursesViewModel.getAllCoursesRepoState().getValue());
   }
 
   private void connectBinding() {

@@ -13,19 +13,19 @@ public class TodaysCoursesViewModel extends ViewModel {
   private static final String TAG = "TodaysCoursesViewModel";
 
   private TodaysCoursesRepository todaysCoursesRepository;
-  private MutableLiveData<List<CourseModel>> todaysCourses;
+  private MutableLiveData<List<CourseModel>> allCoursesRepoState;
 
   /** Initialize the ViewModel. */
   public void init() {
-    if (this.todaysCourses != null) {
+    if (this.allCoursesRepoState != null) {
       return;
     }
     this.todaysCoursesRepository = TodaysCoursesRepository.getInstance();
-    this.todaysCourses = this.todaysCoursesRepository.getTodaysCourses();
+    this.allCoursesRepoState = this.todaysCoursesRepository.getAllCoursesRepoState();
   }
 
-  public LiveData<List<CourseModel>> getTodaysCourses() {
-    return this.todaysCourses;
+  public LiveData<List<CourseModel>> getAllCoursesRepoState() {
+    return this.allCoursesRepoState;
   }
 
   public void loadTodaysCourses() {
