@@ -13,19 +13,19 @@ public class CoursesViewModel extends ViewModel {
   private static final String TAG = "CoursesViewModel";
 
   private CoursesRepository coursesRepository;
-  private StateLiveData<List<CourseModel>> userCourses;
+  private StateLiveData<List<CourseModel>> allCoursesRepoState;
 
   /** Initializes the database access. */
   public void init() {
-    if (this.userCourses != null) {
+    if (this.allCoursesRepoState != null) {
       return;
     }
     this.coursesRepository = CoursesRepository.getInstance();
-    this.userCourses = this.coursesRepository.getUserCourses();
+    this.allCoursesRepoState = this.coursesRepository.getAllCoursesRepoState();
   }
 
-  public StateLiveData<List<CourseModel>> getUserCourses() {
-    return this.userCourses;
+  public StateLiveData<List<CourseModel>> getAllCoursesRepoState() {
+    return this.allCoursesRepoState;
   }
 
   /** Determine the name of the tabs. */

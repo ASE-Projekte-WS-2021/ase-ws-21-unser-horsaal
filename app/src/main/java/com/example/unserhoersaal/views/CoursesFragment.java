@@ -1,11 +1,9 @@
 package com.example.unserhoersaal.views;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,12 +16,9 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.adapter.ViewPagerAdapter;
 import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
-import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import java.util.List;
 
 /** Courses. */
 public class CoursesFragment extends Fragment {
@@ -32,7 +27,6 @@ public class CoursesFragment extends Fragment {
 
   private ViewPagerAdapter viewPagerAdapter;
   private ViewPager2 viewPager;
-
   private FragmentCoursesBinding binding;
   private CoursesViewModel coursesViewModel;
   private NavController navController;
@@ -108,7 +102,7 @@ public class CoursesFragment extends Fragment {
 
   private void connectAdapter() {
     this.coursesAdapter = new CoursesAdapter(
-            this.coursesViewModel.getUserCourses().getValue().getData());
+            this.coursesViewModel.getAllCoursesRepoState().getValue().getData());
   }
 
   private void connectBinding() {

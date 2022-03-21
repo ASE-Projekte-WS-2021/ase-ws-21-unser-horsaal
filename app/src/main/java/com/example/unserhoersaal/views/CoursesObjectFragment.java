@@ -45,7 +45,7 @@ public class CoursesObjectFragment extends Fragment {
             .get(CoursesViewModel.class);
     this.coursesViewModel.init();
     this.coursesViewModel.loadUserCourses();
-    this.coursesViewModel.getUserCourses()
+    this.coursesViewModel.getAllCoursesRepoState()
             .observe(getViewLifecycleOwner(), userCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
               if (userCourses.getData().size() == 0) {
@@ -58,7 +58,7 @@ public class CoursesObjectFragment extends Fragment {
 
   private void connectAdapter() {
     this.coursesAdapter =
-            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue().getData());
+            new CoursesAdapter(this.coursesViewModel.getAllCoursesRepoState().getValue().getData());
   }
 
   private void connectBinding() {

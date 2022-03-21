@@ -25,10 +25,10 @@ public class CoursesRepository {
   private static final String TAG = "CoursesRepo";
 
   private static CoursesRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private ArrayList<CourseModel> userCoursesList = new ArrayList<>();
-  private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<CourseModel> userCoursesList = new ArrayList<>(); //TODO: replace or rename
+  private final StateLiveData<List<CourseModel>> allCoursesRepoState = new StateLiveData<>();
 
   public CoursesRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
@@ -44,22 +44,22 @@ public class CoursesRepository {
   }
 
   /** This method provides all courses a user has signed up for. */
-  public StateLiveData<List<CourseModel>> getUserCourses() {
+  public StateLiveData<List<CourseModel>> getAllCoursesRepoState() {
     if (this.userCoursesList.size() == 0) {
       this.loadUserCourses();
     }
 
-    this.courses.postCreate(this.userCoursesList);
-    return this.courses;
+    this.allCoursesRepoState.postCreate(this.userCoursesList);
+    return this.allCoursesRepoState;
   }
 
   /** This method loads all courses in which the user is signed in. */
   public void loadUserCourses() {
-    this.courses.postLoading();
+    this.allCoursesRepoState.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      this.allCoursesRepoState.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       return;
     }
 
@@ -80,7 +80,7 @@ public class CoursesRepository {
             CourseModel model = task.getResult().getValue(CourseModel.class);
 
             if (model == null) {
-              courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              allCoursesRepoState.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
               return;
             }
             model.setKey(task.getResult().getKey());
@@ -93,7 +93,7 @@ public class CoursesRepository {
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.e(TAG, "onCancelled: " + error.getMessage());
-        courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+        allCoursesRepoState.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
   }
@@ -121,7 +121,7 @@ public class CoursesRepository {
       userCoursesList.clear();
       userCoursesList.addAll(authorList);
 
-      courses.postUpdate(userCoursesList);
+      allCoursesRepoState.postUpdate(userCoursesList);
     });
   }
 
