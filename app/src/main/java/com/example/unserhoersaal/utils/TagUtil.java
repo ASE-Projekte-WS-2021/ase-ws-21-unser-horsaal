@@ -47,17 +47,13 @@ public class TagUtil {
     if (tagEnum != null) {
       if (tags.contains(tagEnum)) {
         tags.remove(tagEnum);
-        chip.setChipBackgroundColor(ColorStateList.valueOf(Color.LTGRAY));
+        //chip.setChipBackgroundColor(ColorStateList.valueOf(Color.LTGRAY));
       } else {
         tags.add(tagEnum);
-        chip.setChipBackgroundColor(ColorStateList.valueOf(Color.GRAY));
+        //chip.setChipBackgroundColor(ColorStateList.valueOf(Color.GRAY));
       }
       Log.d(TAG, "setTag: " + threadModel.getTags().size());
     }
   }
 
-  @BindingAdapter("addTags")
-  public static void addTags(LinearLayout linearLayout, List<TagEnum> tags) {
-
-  }
 }
