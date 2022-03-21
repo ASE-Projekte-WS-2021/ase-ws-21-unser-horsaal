@@ -30,7 +30,6 @@ public class EnterCourseFragment extends Fragment {
   private EnterCourseViewModel enterCourseViewModel;
   private NavController navController;
   private FragmentEnterCourseBinding binding;
-  private DeepLinkMode deepLinkMode;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -54,15 +53,15 @@ public class EnterCourseFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    this.deepLinkMode = DeepLinkMode.getInstance();
+    DeepLinkMode deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
     this.setupToolbar();
 
-    if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+    if (deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
       CourseModel courseModel = new CourseModel();
-      courseModel.setCodeMapping(this.deepLinkMode.getCodeMapping());
+      courseModel.setCodeMapping(deepLinkMode.getCodeMapping());
       this.enterCourseViewModel
               .courseIdInputState.postCreate(courseModel);
       this.enterCourseViewModel.checkCode();
@@ -73,7 +72,7 @@ public class EnterCourseFragment extends Fragment {
     this.enterCourseViewModel = new ViewModelProvider(requireActivity())
             .get(EnterCourseViewModel.class);
     this.enterCourseViewModel.init();
-    this.enterCourseViewModel.getCourse()
+    this.enterCourseViewModel.getFoundCourseRepoState()
             .observe(getViewLifecycleOwner(), this::courseLiveDataCallback);
   }
 
@@ -96,16 +95,20 @@ public class EnterCourseFragment extends Fragment {
       this.binding.enterCourseFragmentEnterButton.setEnabled(false);
       this.binding.enterCourseFragmentEnterButton.setBackgroundColor(Color.GRAY);
     } else {
-      if (courseModelStateData.getData() == null) {
-        return;
-      }
-      if (courseModelStateData.getData().getKey() != null) {
-        navController.navigate(
-                R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
-      } else {
-        navController.navigate(
-                R.id.action_enterCourseFragment_to_noCourseFoundFragment);
-      }
+      this.handleUpdate(courseModelStateData);
+    }
+  }
+
+  private void handleUpdate(StateData<CourseModel> courseModelStateData) {
+    if (courseModelStateData.getData() == null) {
+      return;
+    }
+    if (courseModelStateData.getData().getKey() != null) {
+      navController.navigate(
+              R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
+    } else {
+      navController.navigate(
+              R.id.action_enterCourseFragment_to_noCourseFoundFragment);
     }
   }
 

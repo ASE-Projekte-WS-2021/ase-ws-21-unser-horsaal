@@ -6,7 +6,6 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.EnterCourseRepository;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 
@@ -16,29 +15,28 @@ public class EnterCourseViewModel extends ViewModel {
   private static final String TAG = "EnterCourseViewModel";
 
   private EnterCourseRepository enterCourseRepository;
-  private StateLiveData<CourseModel> courseModelStateLiveData;
-  private StateLiveData<CourseModel> enteredCourse;
-  public StateLiveData<CourseModel> courseIdInputState;
+  private StateLiveData<CourseModel> foundCourseRepoState;
+  private StateLiveData<CourseModel> enteredCourseRepoState;
+  public StateLiveData<CourseModel> courseIdInputState = new StateLiveData<>();
 
 
   /** Initialize the EnterCourseViewModel. */
   public void init() {
-    if (this.courseModelStateLiveData != null) {
+    if (this.foundCourseRepoState != null) {
       return;
     }
     this.enterCourseRepository = EnterCourseRepository.getInstance();
-    this.courseModelStateLiveData = this.enterCourseRepository.getCourse();
-    this.enteredCourse = this.enterCourseRepository.getEnteredCourse();
-    this.courseIdInputState = new StateLiveData<>();
+    this.foundCourseRepoState = this.enterCourseRepository.getFoundCourseRepoState();
+    this.enteredCourseRepoState = this.enterCourseRepository.getEnteredCourseRepoState();
     this.courseIdInputState.postCreate(new CourseModel());
   }
 
-  public StateLiveData<CourseModel> getCourse() {
-    return this.courseModelStateLiveData;
+  public StateLiveData<CourseModel> getFoundCourseRepoState() {
+    return this.foundCourseRepoState;
   }
 
-  public StateLiveData<CourseModel> getEnteredCourse() {
-    return this.enteredCourse;
+  public StateLiveData<CourseModel> getEnteredCourseRepoState() {
+    return this.enteredCourseRepoState;
   }
 
   public StateLiveData<CourseModel> getCourseIdInputState() {
@@ -51,31 +49,31 @@ public class EnterCourseViewModel extends ViewModel {
   }
 
   public void resetEnterCourse() {
-    this.courseModelStateLiveData.postCreate(null);
-    this.enteredCourse.postCreate(null);
+    this.foundCourseRepoState.postCreate(null);
+    this.enteredCourseRepoState.postCreate(null);
   }
 
   /** JavaDoc for this method. */
   public void checkCode() {
-    this.courseModelStateLiveData.postLoading();
+    this.foundCourseRepoState.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseIdInputState, TAG);
     if (courseModel == null) {
-      Log.e(TAG, "courseModel is null.");
-      this.courseModelStateLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
+      Log.e(TAG, Config.ENTER_COURSE_NO_COURSE_MODEL);
+      this.foundCourseRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (courseModel.getCodeMapping() == null) {
-      this.courseModelStateLiveData.postError(
+      this.foundCourseRepoState.postError(
               new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
-      Log.d(TAG, "codeMapping is null.");
+      Log.d(TAG, Config.ENTER_COURSE_NO_CODE_MAPPING);
       return;
     } else if (!Validation.stringHasPattern(
             courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.courseModelStateLiveData.postError(
+      this.foundCourseRepoState.postError(
               new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
-      Log.d(TAG, "codeMapping has wrong pattern.");
+      Log.d(TAG, Config.ENTER_COURSE_NO_CODE_MAPPING);
       return;
     }
 
@@ -90,26 +88,26 @@ public class EnterCourseViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void enterCourse() {
-    CourseModel courseModel = Validation.checkStateLiveData(this.courseModelStateLiveData, TAG);
+    CourseModel courseModel = Validation.checkStateLiveData(this.foundCourseRepoState, TAG);
     if (courseModel == null) {
-      Log.e(TAG, "courseModel is null.");
+      Log.e(TAG, Config.ENTER_COURSE_NO_COURSE_MODEL);
       return;
     }
 
     if (courseModel.getCodeMapping() == null) {
-      this.courseModelStateLiveData.postError(
+      this.foundCourseRepoState.postError(
               new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
-      Log.d(TAG, "codeMapping is null.");
+      Log.d(TAG, Config.ENTER_COURSE_NO_CODE_MAPPING);
       return;
     } else if (!Validation.stringHasPattern(
             courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.courseModelStateLiveData.postError(
+      this.foundCourseRepoState.postError(
               new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
-      Log.d(TAG, "codeMapping has wrong pattern.");
+      Log.d(TAG, Config.ENTER_COURSE_WRONG_CODE_MAPPING_PATTERN);
       return;
     }
 
-    this.courseModelStateLiveData.postCreate(new CourseModel());
+    this.foundCourseRepoState.postCreate(new CourseModel());
     this.enterCourseRepository.isUserInCourse(courseModel);
   }
 

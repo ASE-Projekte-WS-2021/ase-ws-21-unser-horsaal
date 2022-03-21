@@ -214,7 +214,7 @@ public class Config {
   public static final String CURRENT_COURSE_NO_THREAD_MODEL = "threadModel is null.";
   public static final String CURRENT_COURSE_NO_THREAD_OBJECT = "threadObj is null.";
   public static final String CURRENT_COURSE_MESSAGE_MARKED = "a message is already marked.";
-
+  public static final String ENTER_COURSE_LOADING_FAILURE = "Loading Course failed: ";
 
 
   /** ViewModels */
@@ -241,6 +241,10 @@ public class Config {
   public static final String CURRENT_COURSE_NO_MESSAGE_MODEL = "messageModel is null.";
   public static final String CURRENT_COURSE_NO_TITLE = "title is null.";
   public static final String CURRENT_COURSE_WORNG_TITLE_PATTERN = "title has wrong pattern.";
+  public static final String ENTER_COURSE_NO_COURSE_MODEL = "courseModel is null.";
+  public static final String ENTER_COURSE_NO_CODE_MAPPING = "codeMapping is null.";
+  public static final String ENTER_COURSE_WRONG_CODE_MAPPING_PATTERN = "codeMapping has wrong pattern.";
+
 
 
 

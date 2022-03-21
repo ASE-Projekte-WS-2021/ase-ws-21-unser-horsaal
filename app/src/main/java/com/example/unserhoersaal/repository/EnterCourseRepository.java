@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,12 +22,10 @@ public class EnterCourseRepository {
   private static final String TAG = "EnterCourseRepo";
 
   private static EnterCourseRepository instance;
-
-  private DatabaseReference databaseReference;
-  private FirebaseAuth firebaseAuth;
-
-  private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
-  private StateLiveData<CourseModel> enteredCourse = new StateLiveData<>();
+  private final DatabaseReference databaseReference;
+  private final FirebaseAuth firebaseAuth;
+  private final StateLiveData<CourseModel> foundCourseRepoState = new StateLiveData<>();
+  private final StateLiveData<CourseModel> enteredCourseRepoState = new StateLiveData<>();
 
   /** Generates an Instance of the EnterCourseRepository. */
   public static EnterCourseRepository getInstance() {
@@ -44,13 +41,13 @@ public class EnterCourseRepository {
     this.firebaseAuth = FirebaseAuth.getInstance();
   }
 
-  public StateLiveData<CourseModel> getCourse() {
-    return this.courseModel;
+  public StateLiveData<CourseModel> getFoundCourseRepoState() {
+    return this.foundCourseRepoState;
   }
 
   /** Gives back the current course id. */
-  public StateLiveData<CourseModel> getEnteredCourse() {
-    return this.enteredCourse;
+  public StateLiveData<CourseModel> getEnteredCourseRepoState() {
+    return this.enteredCourseRepoState;
   }
 
   /** Checks if the course exists. */
@@ -62,21 +59,21 @@ public class EnterCourseRepository {
         if (dataSnapshot.exists()) {
           loadCourse((String) dataSnapshot.getValue());
         } else {
-          courseModel.postCreate(new CourseModel());
+          foundCourseRepoState.postCreate(new CourseModel());
         }
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.d(TAG, "onCancelled: " + error.getMessage());
-        courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+        foundCourseRepoState.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
   }
 
   /** Loads a course by its id from the data base. */
   public void loadCourse(String courseId) {
-    this.courseModel.postLoading();
+    this.foundCourseRepoState.postLoading();
 
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     Query query = reference.child(Config.CHILD_COURSES).child(courseId);
@@ -87,7 +84,7 @@ public class EnterCourseRepository {
 
         if (course == null) {
           Log.e(TAG, Config.COURSES_FAILED_TO_LOAD);
-          courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+          foundCourseRepoState.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
           return;
         }
 
@@ -97,8 +94,8 @@ public class EnterCourseRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "Loading Course failed: " + error.getMessage());
-        courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+        Log.e(TAG, Config.ENTER_COURSE_LOADING_FAILURE + error.getMessage());
+        foundCourseRepoState.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
   }
@@ -115,16 +112,16 @@ public class EnterCourseRepository {
       } else {
         course.setCreatorName(Config.UNKNOWN_USER);
       }
-      courseModel.postUpdate(course);
+      foundCourseRepoState.postUpdate(course);
     }).addOnFailureListener(e -> {
       Log.e(TAG, "Loading Course failed: " + e.getMessage());
-      courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      foundCourseRepoState.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
     });
   }
 
   /** Checks if user is in course. */
   public void isUserInCourse(CourseModel course) {
-    this.enteredCourse.postLoading();
+    this.enteredCourseRepoState.postLoading();
 
     ValueEventListener eventListener = new ValueEventListener() {
       @Override
@@ -133,20 +130,20 @@ public class EnterCourseRepository {
           saveCourseInUser(course);
         } else {
           //if user has already entered the course just open it
-          enteredCourse.postUpdate(course);
+          enteredCourseRepoState.postUpdate(course);
         }
       }
 
       @Override
       public void onCancelled(DatabaseError databaseError) {
         Log.d(TAG, "onCancelled: " + databaseError.getMessage());
-        enteredCourse.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+        enteredCourseRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       }
     };
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.enteredCourse.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+      this.enteredCourseRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
 
@@ -159,7 +156,7 @@ public class EnterCourseRepository {
   public void saveCourseInUser(CourseModel course) {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.enteredCourse.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+      this.enteredCourseRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
 
@@ -180,20 +177,20 @@ public class EnterCourseRepository {
                               .child(course.getKey())
                               .child(Config.CHILD_MEMBER_COUNT)
                               .setValue(ServerValue.increment(1))
-                              .addOnSuccessListener(unused2 -> enteredCourse.postUpdate(course))
+                              .addOnSuccessListener(unused2 -> enteredCourseRepoState.postUpdate(course))
                               .addOnFailureListener(e -> {
                                 Log.e(TAG, e.getMessage());
-                                enteredCourse.postError(
+                                enteredCourseRepoState.postError(
                                         new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
                               });
                     }).addOnFailureListener(e -> {
                       Log.e(TAG, e.getMessage());
-                      enteredCourse.postError(
+                      enteredCourseRepoState.postError(
                               new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
                     });
             }).addOnFailureListener(e -> {
               Log.e(TAG, e.getMessage());
-              enteredCourse.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+              enteredCourseRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
             });
   }
 
