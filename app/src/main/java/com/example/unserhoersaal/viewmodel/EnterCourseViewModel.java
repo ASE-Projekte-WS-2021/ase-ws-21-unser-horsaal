@@ -64,16 +64,7 @@ public class EnterCourseViewModel extends ViewModel {
       return;
     }
 
-    if (courseModel.getCodeMapping() == null) {
-      this.foundCourseRepoState.postError(
-              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
-      Log.d(TAG, Config.ENTER_COURSE_NO_CODE_MAPPING);
-      return;
-    } else if (!Validation.stringHasPattern(
-            courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.foundCourseRepoState.postError(
-              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
-      Log.d(TAG, Config.ENTER_COURSE_NO_CODE_MAPPING);
+    if (this.validateCodeMapping(courseModel.getCodeMapping())) {
       return;
     }
 
@@ -86,6 +77,22 @@ public class EnterCourseViewModel extends ViewModel {
     this.enterCourseRepository.checkCode(codeMapping);
   }
 
+  private boolean validateCodeMapping(String codeMapping) {
+    if (codeMapping == null) {
+      this.foundCourseRepoState.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
+      Log.d(TAG, Config.ENTER_COURSE_NO_CODE_MAPPING);
+      return true;
+    } else if (!Validation.stringHasPattern(
+            codeMapping, Config.REGEX_PATTERN_CODE_MAPPING)) {
+      this.foundCourseRepoState.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
+      Log.d(TAG, Config.ENTER_COURSE_NO_CODE_MAPPING);
+      return true;
+    }
+    return false;
+  }
+
   /** JavaDoc for this method. */
   public void enterCourse() {
     CourseModel courseModel = Validation.checkStateLiveData(this.foundCourseRepoState, TAG);
@@ -94,16 +101,7 @@ public class EnterCourseViewModel extends ViewModel {
       return;
     }
 
-    if (courseModel.getCodeMapping() == null) {
-      this.foundCourseRepoState.postError(
-              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
-      Log.d(TAG, Config.ENTER_COURSE_NO_CODE_MAPPING);
-      return;
-    } else if (!Validation.stringHasPattern(
-            courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.foundCourseRepoState.postError(
-              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
-      Log.d(TAG, Config.ENTER_COURSE_WRONG_CODE_MAPPING_PATTERN);
+    if (this.validateCodeMapping(courseModel.getCodeMapping())) {
       return;
     }
 

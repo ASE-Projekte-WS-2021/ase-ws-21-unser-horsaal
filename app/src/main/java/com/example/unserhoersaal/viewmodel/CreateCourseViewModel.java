@@ -49,35 +49,9 @@ public class CreateCourseViewModel extends ViewModel {
       return;
     }
 
-    if (courseModel.getTitle() == null) {
-      Log.d(TAG, Config.CREATE_COURSE_NO_TITLE);
-      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
-      return;
-    } else if (!Validation.stringHasPattern(courseModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
-      Log.d(TAG, Config.CREATE_COURSE_WRONG_TITLE_PATTERN);
-      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
-      return;
-    }
-    if (courseModel.getDescription() == null) {
-      Log.d(TAG, Config.CREATE_COURSE_NO_DESCRIPTION);
-      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
-      return;
-    } else if (!Validation.stringHasPattern(
-            courseModel.getDescription(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, Config.CREATE_COURSE_WRONG_DESCRIPTION_PATTERN);
-      this.currentCourseRepoState.postError(
-              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
-      return;
-    }
-    if (courseModel.getInstitution() == null) {
-      Log.d(TAG, Config.CREATE_COURSE_NO_INSTITUTION);
-      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
-      return;
-    } else if (!Validation.stringHasPattern(
-            courseModel.getInstitution(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, Config.CREATE_COURSE_WRONG_INSTITUTION_PATTERN);
-      this.currentCourseRepoState.postError(
-              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.INSTITUTION);
+    if (this.validateTitle(courseModel.getTitle())
+            && this.validateDescription(courseModel.getDescription())
+            && this.validateInstitution(courseModel.getInstitution())) {
       return;
     }
 
@@ -85,6 +59,47 @@ public class CreateCourseViewModel extends ViewModel {
 
     this.courseModelInputState.postCreate(new CourseModel());
     this.createCourseRepository.createNewCourse(courseModel);
+  }
+
+  private boolean validateTitle(String title) {
+    if (title == null) {
+      Log.d(TAG, Config.CREATE_COURSE_NO_TITLE);
+      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
+      return true;
+    } else if (!Validation.stringHasPattern(title, Config.REGEX_PATTERN_TITLE)) {
+      Log.d(TAG, Config.CREATE_COURSE_WRONG_TITLE_PATTERN);
+      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+      return true;
+    }
+    return false;
+  }
+  private boolean validateDescription(String description) {
+    if (description == null) {
+      Log.d(TAG, Config.CREATE_COURSE_NO_DESCRIPTION);
+      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
+      return true;
+    } else if (!Validation.stringHasPattern(
+            description, Config.REGEX_PATTERN_TEXT)) {
+      Log.d(TAG, Config.CREATE_COURSE_WRONG_DESCRIPTION_PATTERN);
+      this.currentCourseRepoState.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
+      return true;
+    }
+    return false;
+  }
+  private boolean validateInstitution(String institution) {
+    if (institution == null) {
+      Log.d(TAG, Config.CREATE_COURSE_NO_INSTITUTION);
+      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
+      return true;
+    } else if (!Validation.stringHasPattern(
+            institution, Config.REGEX_PATTERN_TEXT)) {
+      Log.d(TAG, Config.CREATE_COURSE_WRONG_INSTITUTION_PATTERN);
+      this.currentCourseRepoState.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.INSTITUTION);
+      return true;
+    }
+    return false;
   }
 
   //https://www.codegrepper.com/code-examples/java/how+to+generate+random+letters+in+java

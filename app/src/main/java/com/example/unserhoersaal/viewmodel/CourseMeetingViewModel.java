@@ -85,19 +85,26 @@ public class CourseMeetingViewModel extends ViewModel {
       return;
     }
     
-    if (threadModel.getText() == null) {
-      Log.d(TAG, Config.MEETING_NO_TEXT);
-      this.currentThreadRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-      return;
-    } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, Config.MEETING_WRONG_TEXT_PATTERN);
-      this.currentThreadRepoState.postError(
-              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
+    if (this.validateText(threadModel.text)) {
       return;
     }
 
     this.threadModelInputState.postCreate(new ThreadModel());
     this.courseMeetingRepository.createThread(threadModel);
+  }
+
+  private boolean validateText(String text) {
+    if (text == null) {
+      Log.d(TAG, Config.MEETING_NO_TEXT);
+      this.currentThreadRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
+      return true;
+    } else if (!Validation.stringHasPattern(text, Config.REGEX_PATTERN_TEXT)) {
+      Log.d(TAG, Config.MEETING_WRONG_TEXT_PATTERN);
+      this.currentThreadRepoState.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
+      return true;
+    }
+    return false;
   }
 
 }

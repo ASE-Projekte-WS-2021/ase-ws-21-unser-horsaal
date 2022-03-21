@@ -19,7 +19,7 @@ public class RegistrationViewModel extends ViewModel {
   private static final String TAG = "LoginRegisterViewModel";
 
   private AuthAppRepository authAppRepository;
-  private StateLiveData<FirebaseUser> userLiveData;
+  private StateLiveData<FirebaseUser> firebaseUserRepoState;
   public StateLiveData<UserModel> userInputState;
   public StateLiveData<PasswordModel> passwordInputState;
 
@@ -27,11 +27,11 @@ public class RegistrationViewModel extends ViewModel {
    * Initialize the LoginRegisterViewModel.
    */
   public void init() {
-    if (this.userLiveData != null) {
+    if (this.firebaseUserRepoState != null) {
       return;
     }
     this.authAppRepository = AuthAppRepository.getInstance();
-    this.userLiveData = this.authAppRepository.getFirebaseUserRepoState();
+    this.firebaseUserRepoState = this.authAppRepository.getFirebaseUserRepoState();
 
     this.userInputState = new StateLiveData<>();
     this.passwordInputState = new StateLiveData<>();
@@ -42,7 +42,7 @@ public class RegistrationViewModel extends ViewModel {
   public StateLiveData<FirebaseUser> getUserStateLiveData() {
     this.setDefaultInputState();
 
-    return this.userLiveData;
+    return this.firebaseUserRepoState;
   }
 
   /** Returns UserInput to the Fragment to observe DataStatus changes. */
@@ -62,53 +62,23 @@ public class RegistrationViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void register() {
-    this.userLiveData.postLoading();
+    this.firebaseUserRepoState.postLoading();
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
-      Log.e(TAG, "userModel or passwordModel is null.");
-      this.userLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
+      Log.e(TAG, Config.REGISTRATION_USER_MODEL_NULL);
+      this.firebaseUserRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
-    /* User input*/
     String userName = userModel.getDisplayName();
     String email = userModel.getEmail();
     String password = passwordModel.getCurrentPassword();
 
-    /* Check if username input is empty or has wrong pattern.*/
-    if (Validation.emptyString(userName)) {
-      Log.d(TAG, "userName is null.");
-      this.userLiveData.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
-      return;
-    } else if (!Validation.stringHasPattern(userName, Config.REGEX_PATTERN_USERNAME)) {
-      Log.d(TAG, "userName has wrong pattern.");
-      this.userLiveData.postError(
-              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
-      return;
-    }
-    /* Check if email input is empty or has wrong pattern.*/
-    if (Validation.emptyString(email)) {
-      Log.d(TAG, "email has is null.");
-      this.userLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-      return;
-    } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, "email has wrong pattern.");
-      this.userLiveData.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_REGISTRATION), ErrorTag.EMAIL);
-      return;
-    }
-    /* Check if password input is empty or has wrong pattern.*/
-    if (Validation.emptyString(password)) {
-      Log.d(TAG, "password has is null.");
-      this.userLiveData.postError(
-              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
-      return;
-    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, "password has wrong pattern.");
-      this.userLiveData.postError(
-              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+    if (this.validateDisplayName(userName)
+            && this.validateEmail(email)
+            && this.validatePassword(password)) {
       return;
     }
 
@@ -116,6 +86,49 @@ public class RegistrationViewModel extends ViewModel {
     //do not listen for this status because we would get two spinner loops
     this.passwordInputState.postCreate(new PasswordModel());
     this.authAppRepository.register(userName, email, password);
+  }
+
+  private boolean validateDisplayName(String displayName) {
+    if (Validation.emptyString(displayName)) {
+      Log.d(TAG, Config.REGISTRATION_USERNAME_NULL);
+      this.firebaseUserRepoState.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
+      return true;
+    } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
+      Log.d(TAG, Config.REGISTRATION_USERNAME_WRONG_PATTERN);
+      this.firebaseUserRepoState.postError(
+              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean validateEmail(String email) {
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, Config.REGISTRATION_EMAIL_NULL);
+      this.firebaseUserRepoState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      return true;
+    } else if (!Validation.emailHasPattern(email)) {
+      Log.d(TAG, Config.REGISTRATION_EMAIL_WRONG_PATTERN);
+      this.firebaseUserRepoState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_REGISTRATION), ErrorTag.EMAIL);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean validatePassword(String password) {
+    if (Validation.emptyString(password)) {
+      Log.d(TAG, Config.REGISTRATION_PASSWORD_NULL);
+      this.firebaseUserRepoState.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return true;
+    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, Config.REGISTRATION_PASSWORD_WRONG_PATTERN);
+      this.firebaseUserRepoState.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return true;
+    }
+    return false;
   }
 
 }

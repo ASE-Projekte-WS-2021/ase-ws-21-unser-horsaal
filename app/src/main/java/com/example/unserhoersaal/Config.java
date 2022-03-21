@@ -255,6 +255,13 @@ public class Config {
   public static final String PROFILE_WRONG_OLD_PASSWORD_PATTERN = "oldPassword has wrong pattern.";
   public static final String PROFILE_NO_NEW_PASSWORD = "newPassword is null.";
   public static final String PROFILE_WRONG_NEW_PASSWORD_PATTERN = "newPassword has wrong pattern.";
+  public static final String REGISTRATION_USER_MODEL_NULL = "userModel or passwordModel is null.";
+  public static final String REGISTRATION_USERNAME_NULL = "";
+  public static final String REGISTRATION_USERNAME_WRONG_PATTERN = "";
+  public static final String REGISTRATION_EMAIL_NULL = "";
+  public static final String REGISTRATION_EMAIL_WRONG_PATTERN = "";
+  public static final String REGISTRATION_PASSWORD_NULL = "";
+  public static final String REGISTRATION_PASSWORD_WRONG_PATTERN = "";
 
   /**=======================.
    *  Avatar Placeholder Ids

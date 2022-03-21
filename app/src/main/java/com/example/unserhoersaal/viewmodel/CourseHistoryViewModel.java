@@ -91,15 +91,7 @@ public class CourseHistoryViewModel extends ViewModel {
       return;
     }
 
-    if (meetingsModel.getTitle() == null) {
-      Log.d(TAG, Config.HISTORY_NO_TITLE);
-      this.currentMeetingRepoState.postError(
-              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
-      return;
-    } else if (!Validation.stringHasPattern(meetingsModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
-      Log.d(TAG, Config.HISTORY_WRONG_TITLE_PATTERN);
-      this.currentMeetingRepoState.postError(
-              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+    if (this.validateTitle(meetingsModel.getTitle())) {
       return;
     }
     //TODO: handle error if all values are 0
@@ -114,6 +106,21 @@ public class CourseHistoryViewModel extends ViewModel {
 
     this.meetingInputState.postCreate(new MeetingsModel());
     this.courseHistoryRepository.createMeeting(meetingsModel);
+  }
+
+  private boolean validateTitle(String title) {
+    if (title == null) {
+      Log.d(TAG, Config.HISTORY_NO_TITLE);
+      this.currentMeetingRepoState.postError(
+              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
+      return true;
+    } else if (!Validation.stringHasPattern(title, Config.REGEX_PATTERN_TITLE)) {
+      Log.d(TAG, Config.HISTORY_WRONG_TITLE_PATTERN);
+      this.currentMeetingRepoState.postError(
+              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+      return true;
+    }
+    return false;
   }
 
   private String parseMeetingDate(MeetingsModel meetingsModel) {

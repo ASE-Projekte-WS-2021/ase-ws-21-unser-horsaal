@@ -79,17 +79,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     String displayName = userModel.getDisplayName();
-
-    if (Validation.emptyString(displayName)) {
-      Log.d(TAG, Config.PROFILE_NO_NAME);
-      this.profileChangedRepoState.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
-      return;
-    } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
-      Log.d(TAG, Config.PROFILE_WRONG_NAME_PATTERN);
-      this.profileChangedRepoState.postError(
-              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
-      return;
-    }
+    if (this.validateDisplayName(displayName)) {return;}
 
     this.userInputState.postCreate(new UserModel());
     this.profileRepository.changeDisplayName(displayName);
@@ -104,17 +94,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     String institution = userModel.getInstitution();
-
-    if (Validation.emptyString(institution)) {
-      Log.d(TAG, Config.PROFILE_NO_INSTITUTION);
-      this.profileChangedRepoState.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
-      return;
-    } else if (!Validation.stringHasPattern(institution, Config.REGEX_PATTERN_INSTITUTION)) {
-      Log.d(TAG, Config.PROFILE_WRONG_INSTITUTION_PATTERN);
-      this.profileChangedRepoState.postError(
-              new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
-      return;
-    }
+    if (this.validateInstitution(institution)) {return;}
 
     this.userInputState.postCreate(new UserModel());
     this.profileRepository.changeInstitution(institution);
@@ -131,31 +111,71 @@ public class ProfileViewModel extends ViewModel {
     String oldPassword = passwordModel.getCurrentPassword();
     String newPassword = passwordModel.getNewPassword();
 
-    if (Validation.emptyString(oldPassword)) {
-      Log.d(TAG, Config.PROFILE_NO_OLD_PASSWORD);
-      this.profileChangedRepoState.postError(
-              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
-      return;
-    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, Config.PROFILE_WRONG_OLD_PASSWORD_PATTERN);
-      this.profileChangedRepoState.postError(
-              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
-      return;
-    }
-
-    if (Validation.emptyString(newPassword)) {
-      Log.d(TAG, Config.PROFILE_NO_NEW_PASSWORD);
-      this.profileChangedRepoState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
-      return;
-    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, Config.PROFILE_WRONG_NEW_PASSWORD_PATTERN);
-      this.profileChangedRepoState.postError(
-              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
+    if (this.validateOldPassword(oldPassword)
+            && this.validateNewPassword(newPassword)) {
       return;
     }
 
     this.passwordInputState.postCreate(new PasswordModel());
     this.profileRepository.changePassword(oldPassword, newPassword);
+  }
+
+  private boolean validateDisplayName(String displayName) {
+    if (Validation.emptyString(displayName)) {
+      Log.d(TAG, Config.PROFILE_NO_NAME);
+      this.profileChangedRepoState.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
+      return true;
+    } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
+      Log.d(TAG, Config.PROFILE_WRONG_NAME_PATTERN);
+      this.profileChangedRepoState.postError(
+              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean validateInstitution(String institution) {
+    if (Validation.emptyString(institution)) {
+      Log.d(TAG, Config.PROFILE_NO_INSTITUTION);
+      this.profileChangedRepoState.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
+      return true;
+    } else if (!Validation.stringHasPattern(institution, Config.REGEX_PATTERN_INSTITUTION)) {
+      Log.d(TAG, Config.PROFILE_WRONG_INSTITUTION_PATTERN);
+      this.profileChangedRepoState.postError(
+              new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean validateOldPassword(String oldPassword) {
+    if (Validation.emptyString(oldPassword)) {
+      Log.d(TAG, Config.PROFILE_NO_OLD_PASSWORD);
+      this.profileChangedRepoState.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return true;
+    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, Config.PROFILE_WRONG_OLD_PASSWORD_PATTERN);
+      this.profileChangedRepoState.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean validateNewPassword(String newPassword) {
+    if (Validation.emptyString(newPassword)) {
+      Log.d(TAG, Config.PROFILE_NO_NEW_PASSWORD);
+      this.profileChangedRepoState.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
+      return true;
+    } else if (!Validation.stringHasPattern(newPassword, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, Config.PROFILE_WRONG_NEW_PASSWORD_PATTERN);
+      this.profileChangedRepoState.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
+      return true;
+    }
+    return false;
   }
 
 }

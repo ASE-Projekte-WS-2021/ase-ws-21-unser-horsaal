@@ -82,25 +82,8 @@ public class LoginViewModel extends ViewModel {
     String email = userModel.getEmail();
     String password = passwordModel.getCurrentPassword();
 
-    if (Validation.emptyString(email)) {
-      Log.d(TAG, Config.LOGIN_VW_EMAIL_NULL);
-      this.firebaseUserRepoState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-      return;
-    } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, Config.LOGIN_VW_EMAIL_WRONG_PATTERN);
-      this.firebaseUserRepoState.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
-      return;
-    }
-    if (Validation.emptyString(password)) {
-      Log.d(TAG, Config.LOGIN_VW_PASSWORD_NULL);
-      this.firebaseUserRepoState.postError(
-              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
-      return;
-    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, Config.LOGIN_VW_PASSWORD_WRONG_PATTERN);
-      this.firebaseUserRepoState.postError(
-              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+    if (this.validateEmail(email)
+            && this.validatePassword(password)) {
       return;
     }
 
@@ -121,18 +104,53 @@ public class LoginViewModel extends ViewModel {
 
     String email = userModel.getEmail();
 
-    if (Validation.emptyString(email)) {
-      Log.d(TAG, Config.LOGIN_VW_EMAIL_NULL);
-      this.emailSentStatus.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-    } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, Config.LOGIN_VW_EMAIL_WRONG_PATTERN);
-      this.emailSentStatus.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
-    } else {
-
+    if (!this.validateEmail(email))  {
       this.setDefaultInputState();
       this.authAppRepository.sendPasswordResetMail(email);
     }
+  }
+
+  private boolean validateDisplayName(String displayName) {
+    if (Validation.emptyString(displayName)) {
+      Log.d(TAG, Config.REGISTRATION_USERNAME_NULL);
+      this.firebaseUserRepoState.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
+      return true;
+    } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
+      Log.d(TAG, Config.REGISTRATION_USERNAME_WRONG_PATTERN);
+      this.firebaseUserRepoState.postError(
+              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean validateEmail(String email) {
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, Config.REGISTRATION_EMAIL_NULL);
+      this.firebaseUserRepoState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      return true;
+    } else if (!Validation.emailHasPattern(email)) {
+      Log.d(TAG, Config.REGISTRATION_EMAIL_WRONG_PATTERN);
+      this.firebaseUserRepoState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_REGISTRATION), ErrorTag.EMAIL);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean validatePassword(String password) {
+    if (Validation.emptyString(password)) {
+      Log.d(TAG, Config.REGISTRATION_PASSWORD_NULL);
+      this.firebaseUserRepoState.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return true;
+    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, Config.REGISTRATION_PASSWORD_WRONG_PATTERN);
+      this.firebaseUserRepoState.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return true;
+    }
+    return false;
   }
 
   /** Resend email verification email. Requires a logged in user! Cant send an email without
