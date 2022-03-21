@@ -9,7 +9,6 @@ import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,17 +22,17 @@ public class ProfileRepository {
   private static final String TAG = "ProfileRepo";
 
   private static ProfileRepository instance;
-  private DatabaseReference databaseReference;
-  private FirebaseAuth firebaseAuth;
-  private StateLiveData<UserModel> user = new StateLiveData<>();
-  private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
+  private final DatabaseReference databaseReference;
+  private final FirebaseAuth firebaseAuth;
+  private final StateLiveData<UserModel> currentUserRepoState = new StateLiveData<>();
+  private final StateLiveData<Boolean> profileChangedRepoState = new StateLiveData<>();
 
   /** TODO. */
   public ProfileRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.loadUser();
-    this.profileChanged.postCreate(Boolean.FALSE);
+    this.profileChangedRepoState.postCreate(Boolean.FALSE);
   }
 
   /** Generate an instance of the class. */
@@ -44,21 +43,21 @@ public class ProfileRepository {
     return instance;
   }
 
-  public StateLiveData<UserModel> getUser() {
-    return this.user;
+  public StateLiveData<UserModel> getCurrentUserRepoState() {
+    return this.currentUserRepoState;
   }
 
-  public StateLiveData<Boolean> getProfileChanged() {
-    return this.profileChanged;
+  public StateLiveData<Boolean> getProfileChangedRepoState() {
+    return this.profileChangedRepoState;
   }
 
   /** Loads an user from the database. */
   public void loadUser() {
-    this.user.postLoading();
+    this.currentUserRepoState.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+      this.currentUserRepoState.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
       return;
     }
 
@@ -71,29 +70,29 @@ public class ProfileRepository {
         UserModel userModel = snapshot.getValue(UserModel.class);
 
         if (userModel == null) {
-          Log.e(TAG, "user model null");
-          user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+          Log.e(TAG, Config.PROFILE_NO_USER_MODEL);
+          currentUserRepoState.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
           return;
         }
         userModel.setKey(snapshot.getKey());
-        user.postUpdate(userModel);
+        currentUserRepoState.postUpdate(userModel);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.d(TAG, "onCancelled: " + error.getMessage());
-        user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+        currentUserRepoState.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
       }
     });
   }
 
   /** TODO. */
   public void changeDisplayName(String displayName) {
-    this.profileChanged.postLoading();
+    this.profileChangedRepoState.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.profileChanged.postError(
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
       return;
     }
@@ -102,7 +101,7 @@ public class ProfileRepository {
 
     if (uid == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.profileChanged.postError(
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
       return;
     }
@@ -113,23 +112,23 @@ public class ProfileRepository {
             .child(Config.CHILD_DISPLAY_NAME)
             .setValue(displayName)
             .addOnSuccessListener(unused -> {
-              profileChanged.postUpdate(Boolean.TRUE);
-              profileChanged.postCreate(Boolean.FALSE);
+              profileChangedRepoState.postUpdate(Boolean.TRUE);
+              profileChangedRepoState.postCreate(Boolean.FALSE);
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, e.getMessage());
-              profileChanged.postError(
+              profileChangedRepoState.postError(
                       new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
             });
   }
 
   /** TODO. */
   public void changeInstitution(String institution) {
-    this.profileChanged.postLoading();
+    this.profileChangedRepoState.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.profileChanged.postError(
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO);
       return;
     }
@@ -138,7 +137,7 @@ public class ProfileRepository {
 
     if (uid == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.profileChanged.postError(
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO);
       return;
     }
@@ -148,21 +147,21 @@ public class ProfileRepository {
             .child(Config.CHILD_INSTITUTION)
             .setValue(institution)
             .addOnSuccessListener(unused -> {
-              profileChanged.postUpdate(Boolean.TRUE);
-              profileChanged.postCreate(Boolean.FALSE);
+              profileChangedRepoState.postUpdate(Boolean.TRUE);
+              profileChangedRepoState.postCreate(Boolean.FALSE);
             })
             .addOnFailureListener(e ->
-                    profileChanged.postError(
+                    profileChangedRepoState.postError(
                             new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO));
   }
 
   /** TODO. */
   public void changePassword(String oldPassword, String newPassword) {
-    this.profileChanged.postLoading();
+    this.profileChangedRepoState.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.profileChanged.postError(
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
       return;
     }
@@ -171,7 +170,7 @@ public class ProfileRepository {
 
     if (email == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.profileChanged.postError(
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
       return;
     }
@@ -188,18 +187,18 @@ public class ProfileRepository {
                         .updatePassword(newPassword)
                         .addOnCompleteListener(task1 -> {
                           if (task1.isSuccessful()) {
-                            profileChanged.postUpdate(Boolean.TRUE);
-                            profileChanged.postCreate(Boolean.FALSE);
+                            profileChangedRepoState.postUpdate(Boolean.TRUE);
+                            profileChangedRepoState.postCreate(Boolean.FALSE);
                           } else {
-                            Log.e(TAG, "onComplete: " + "reset failed");
-                            profileChanged.postError(
+                            Log.e(TAG, "onComplete: " + Config.PROFILE_PASSWORD_RESET_FAILED);
+                            profileChangedRepoState.postError(
                                     new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED),
                                     ErrorTag.REPO);
                           }
                         });
               } else {
-                Log.e(TAG, "onComplete: " + "old password wrong");
-                profileChanged.postError(
+                Log.e(TAG, "onComplete: " + Config.PROFILE_OLD_PASSWORD_FALSE);
+                profileChangedRepoState.postError(
                         new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
               }
             });

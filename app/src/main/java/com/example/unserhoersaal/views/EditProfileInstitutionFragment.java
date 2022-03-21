@@ -56,7 +56,7 @@ public class EditProfileInstitutionFragment extends Fragment {
     this.profileViewModel
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
-    this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(),
+    this.profileViewModel.profileChangedRepoState.observe(getViewLifecycleOwner(),
             this::profileChangedCallback);
   }
 

@@ -19,38 +19,38 @@ public class ProfileViewModel extends ViewModel {
 
   private AuthAppRepository authAppRepository;
   private ProfileRepository profileRepository;
-  private StateLiveData<FirebaseUser> userLiveData;
-  private StateLiveData<UserModel> profileLiveData;
+  private StateLiveData<FirebaseUser> firebaseUserRepoState;
+  private StateLiveData<UserModel> currentUserRepoState;
   public StateLiveData<UserModel> userInputState = new StateLiveData<>();
   public StateLiveData<PasswordModel> passwordInputState = new StateLiveData<>();
-  public StateLiveData<Boolean> profileChanged;
+  public StateLiveData<Boolean> profileChangedRepoState;
 
   /** Initialize the LoginRegisterViewModel. */
   public void init() {
-    if (this.userLiveData != null) {
+    if (this.firebaseUserRepoState != null) {
       return;
     }
     this.authAppRepository = AuthAppRepository.getInstance();
     this.profileRepository = ProfileRepository.getInstance();
-    this.userLiveData = this.authAppRepository.getFirebaseUserRepoState();
-    this.profileLiveData = this.profileRepository.getUser();
+    this.firebaseUserRepoState = this.authAppRepository.getFirebaseUserRepoState();
+    this.currentUserRepoState = this.profileRepository.getCurrentUserRepoState();
 
     this.userInputState.postCreate(new UserModel());
     this.passwordInputState.postCreate(new PasswordModel());
-    this.profileChanged = this.profileRepository.getProfileChanged();
+    this.profileChangedRepoState = this.profileRepository.getProfileChangedRepoState();
   }
 
   /** Give back the user data. */
-  public StateLiveData<FirebaseUser> getUserLiveData() {
-    return this.userLiveData;
+  public StateLiveData<FirebaseUser> getFirebaseUserRepoState() {
+    return this.firebaseUserRepoState;
   }
 
-  public StateLiveData<UserModel> getProfileLiveData() {
-    return this.profileLiveData;
+  public StateLiveData<UserModel> getCurrentUserRepoState() {
+    return this.currentUserRepoState;
   }
 
-  public StateLiveData<Boolean> getProfileChanged() {
-    return this.profileChanged;
+  public StateLiveData<Boolean> getProfileChangedRepoState() {
+    return this.profileChangedRepoState;
   }
 
   public void resetProfileInput() {
@@ -74,19 +74,19 @@ public class ProfileViewModel extends ViewModel {
   public void changeDisplayName() {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
+      Log.e(TAG, Config.PROFILE_NO_USER_MODEL);
       return;
     }
 
     String displayName = userModel.getDisplayName();
 
     if (Validation.emptyString(displayName)) {
-      Log.d(TAG, "displayName is null.");
-      this.profileChanged.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
+      Log.d(TAG, Config.PROFILE_NO_NAME);
+      this.profileChangedRepoState.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
       return;
     } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
-      Log.d(TAG, "displayName has wrong pattern.");
-      this.profileChanged.postError(
+      Log.d(TAG, Config.PROFILE_WRONG_NAME_PATTERN);
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
       return;
     }
@@ -99,19 +99,19 @@ public class ProfileViewModel extends ViewModel {
   public void changeInstitution() {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
+      Log.e(TAG, Config.PROFILE_NO_USER_MODEL);
       return;
     }
 
     String institution = userModel.getInstitution();
 
     if (Validation.emptyString(institution)) {
-      Log.d(TAG, "institution is null.");
-      this.profileChanged.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
+      Log.d(TAG, Config.PROFILE_NO_INSTITUTION);
+      this.profileChangedRepoState.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
       return;
     } else if (!Validation.stringHasPattern(institution, Config.REGEX_PATTERN_INSTITUTION)) {
-      Log.d(TAG, "institution has wrong pattern.");
-      this.profileChanged.postError(
+      Log.d(TAG, Config.PROFILE_WRONG_INSTITUTION_PATTERN);
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
       return;
     }
@@ -124,7 +124,7 @@ public class ProfileViewModel extends ViewModel {
   public void changePassword() {
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (passwordModel == null) {
-      Log.e(TAG, "passwordModel is null.");
+      Log.e(TAG, Config.PROFILE_PASSWORD_MODEL_NULL);
       return;
     }
 
@@ -132,24 +132,24 @@ public class ProfileViewModel extends ViewModel {
     String newPassword = passwordModel.getNewPassword();
 
     if (Validation.emptyString(oldPassword)) {
-      Log.d(TAG, "oldPassword is null.");
-      this.profileChanged.postError(
+      Log.d(TAG, Config.PROFILE_NO_OLD_PASSWORD);
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
       return;
     } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, "oldPassword has wrong pattern.");
-      this.profileChanged.postError(
+      Log.d(TAG, Config.PROFILE_WRONG_OLD_PASSWORD_PATTERN);
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
       return;
     }
 
     if (Validation.emptyString(newPassword)) {
-      Log.d(TAG, "newPassword is null.");
-      this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
+      Log.d(TAG, Config.PROFILE_NO_NEW_PASSWORD);
+      this.profileChangedRepoState.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
       return;
     } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, "newPassword has wrong pattern.");
-      this.profileChanged.postError(
+      Log.d(TAG, Config.PROFILE_WRONG_NEW_PASSWORD_PATTERN);
+      this.profileChangedRepoState.postError(
               new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
       return;
     }

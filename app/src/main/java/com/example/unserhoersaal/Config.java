@@ -215,7 +215,9 @@ public class Config {
   public static final String CURRENT_COURSE_NO_THREAD_OBJECT = "threadObj is null.";
   public static final String CURRENT_COURSE_MESSAGE_MARKED = "a message is already marked.";
   public static final String ENTER_COURSE_LOADING_FAILURE = "Loading Course failed: ";
-
+  public static final String PROFILE_NO_USER_MODEL = "user model null.";
+  public static final String PROFILE_PASSWORD_RESET_FAILED = "reset failed.";
+  public static final String PROFILE_OLD_PASSWORD_FALSE = "old password wrong.";
 
   /** ViewModels */
   public static final String LOGIN_VW_MODEL_NULL = "One of the preceding models is null.";
@@ -244,10 +246,15 @@ public class Config {
   public static final String ENTER_COURSE_NO_COURSE_MODEL = "courseModel is null.";
   public static final String ENTER_COURSE_NO_CODE_MAPPING = "codeMapping is null.";
   public static final String ENTER_COURSE_WRONG_CODE_MAPPING_PATTERN = "codeMapping has wrong pattern.";
-
-
-
-
+  public static final String PROFILE_NO_NAME = "displayName is null.";
+  public static final String PROFILE_WRONG_NAME_PATTERN = "displayName has wrong pattern.";
+  public static final String PROFILE_NO_INSTITUTION = "institution is null.";
+  public static final String PROFILE_WRONG_INSTITUTION_PATTERN = "institution has wrong pattern.";
+  public static final String PROFILE_PASSWORD_MODEL_NULL = "passwordModel is null.";
+  public static final String PROFILE_NO_OLD_PASSWORD = "oldPassword is null.";
+  public static final String PROFILE_WRONG_OLD_PASSWORD_PATTERN = "oldPassword has wrong pattern.";
+  public static final String PROFILE_NO_NEW_PASSWORD = "newPassword is null.";
+  public static final String PROFILE_WRONG_NEW_PASSWORD_PATTERN = "newPassword has wrong pattern.";
 
   /**=======================.
    *  Avatar Placeholder Ids
