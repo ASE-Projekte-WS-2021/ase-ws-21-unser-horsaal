@@ -23,8 +23,8 @@
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
                 android:id="@+id/courseItemCardImage"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_baseline_account_circle_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +38,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toEndOf="@+id/courseItemCardImage"
                 app:layout_constraintTop_toTopOf="@id/courseItemCardImage"
                 tools:text="@{model.title}"/>
@@ -64,11 +63,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_assignment_24"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/courseItemCardImage"
                 app:layout_constraintTop_toBottomOf="@+id/courseItemCardInstitution"
                 app:tint="@color/black" />
 
@@ -76,7 +74,7 @@
                 android:id="@+id/courseItemCardNumberMeetings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/courseItemCardMeetingsImage"
+                app:layout_constraintStart_toStartOf="@id/courseItemCardTitle"
                 app:layout_constraintTop_toTopOf="@id/courseItemCardMeetingsImage"
                 app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsImage"
                 app:layout_constraintEnd_toStartOf="@id/courseItemCardMeetingsTextView"
@@ -87,7 +85,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meetings"
-                app:layout_constraintStart_toStartOf="@+id/courseItemCardInstitution"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@+id/courseItemCardNumberMeetings"
                 app:layout_constraintTop_toTopOf="@id/courseItemCardNumberMeetings" />
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -95,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_people_24"
-                android:layout_marginEnd="12dp"
+                android:layout_marginEnd="8dp"
                 app:tint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsImage"
                 app:layout_constraintEnd_toStartOf="@id/courseItemCardNumberParticipants" />
@@ -104,7 +103,7 @@
                 android:id="@+id/courseItemCardNumberParticipants"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toStartOf="@id/courseItemCardParticipantsTextView"
                 app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsTextView"
                 tools:text="@{Integer.toString(model.memberCount)}"/>
