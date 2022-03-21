@@ -40,7 +40,7 @@ public class CourseDescriptionFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    /*ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
               @Override
@@ -52,6 +52,7 @@ public class CourseDescriptionFragment extends Fragment {
                 }
               }
             });
+     */
   }
 
   @Override

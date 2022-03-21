@@ -4,13 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/answer_item.xml" value="0.1" />
-        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/course_item_card.xml" value="0.1" />
-        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description.xml" value="0.18" />
-        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description_detail.xml" value="0.1" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_courses.xml" value="0.21" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course.xml" value="0.1" />
-        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.1" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_current_course.xml" value="0.33" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_course.xml" value="0.1" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_or_create_course.xml" value="0.1" />
@@ -118,7 +113,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/answer_item.xml" value="0.31068840579710144" />
         <entry key="app/src/main/res/layout/enter_course_detail_screen.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/fragment_course_description.xml" value="0.254981884057971" />
+        <entry key="app/src/main/res/layout/fragment_course_description.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_course_description_detail.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/fragment_course_history.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_course_meeting.xml" value="0.25" />
@@ -127,6 +122,7 @@
         <entry key="app/src/main/res/layout/fragment_courses.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_create_course.xml" value="0.21829710144927536" />
         <entry key="app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.2341485507246377" />
+        <entry key="app/src/main/res/layout/fragment_create_thread.xml" value="0.1921875" />
         <entry key="app/src/main/res/layout/fragment_current_course.xml" value="0.254981884057971" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_institution.xml" value="0.35260416666666666" />

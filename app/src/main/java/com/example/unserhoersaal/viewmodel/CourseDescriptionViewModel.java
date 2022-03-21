@@ -17,8 +17,7 @@ public class CourseDescriptionViewModel extends ViewModel {
   private CourseDescriptionRepository courseDescriptionRepository;
   private StateLiveData<String> courseId = new StateLiveData<>();
   public StateLiveData<CourseModel> courseModelInputState;
-
-  private Bitmap qrCodeBitmap;
+  //private Bitmap qrCodeBitmap;
 
   /** Initialize the ViewModel. */
   public void init() {
@@ -60,7 +59,7 @@ public class CourseDescriptionViewModel extends ViewModel {
     this.courseId.postUpdate(null);
     this.courseDescriptionRepository.unregisterFromCourse(courseKey);
   }
-
+/*
   public void setQrCodeBitmap(Bitmap qrCodeBitmap) {
     this.qrCodeBitmap = qrCodeBitmap;
   }
@@ -68,4 +67,5 @@ public class CourseDescriptionViewModel extends ViewModel {
   public Bitmap getQrCodeBitmap() {
     return this.qrCodeBitmap;
   }
+ */
 }

@@ -277,7 +277,7 @@
 
         <Button
             android:id="@+id/qrCodeButton"
-            android:onClick="@{(view) -> QrCodeCreator.generateQrCode(view, vm.courseModel.data.codeMapping, vm, context)}"
+            android:onClick="@{(view) -> QrCodeCreator.generateQrCode(view, vm.courseModel.data.codeMapping, vm)}"
             android:text="qrCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
