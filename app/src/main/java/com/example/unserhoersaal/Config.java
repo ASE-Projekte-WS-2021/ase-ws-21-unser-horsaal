@@ -201,6 +201,11 @@ public class Config {
   public static final String HISTORY_NO_MEETING_ID = "meeting id is null.";
   public static final String HISTORY_LISTENER_FAILURE = "Course History Listener Failure";
   public static final String MEETING_NO_MEETING_MODEL = "meetingObj is null.";
+  public static final String CREATE_COURSE_NO_COURSE_ID = "courseid is null.";
+  public static final String CREATE_COURSE_CREATION_FAILED = "Kurs konnte nicht erstellt werden: ";
+  public static final String CREAT_COURSE_ADDING_USER_FAILED = "User konnte dem Kurs nicht hinzugefügt werden: ";
+  public static final String CREAT_COURSE_MAPPING_FAILED = "Das Mapping konnte nicht erstellt werden: ";
+
 
 
   /** ViewModels */
@@ -217,6 +222,14 @@ public class Config {
   public static final String MEETING_NO_THREAD_MODEL = "threadModel is null.";
   public static final String MEETING_NO_TEXT = "text is null.";
   public static final String MEETING_WRONG_TEXT_PATTERN = "text wrong pattern.";
+  public static final String CREATE_COURSE_NO_COURES_MODEL = "courseModel is null.";
+  public static final String CREATE_COURSE_NO_TITLE = "title is null.";
+  public static final String CREATE_COURSE_WRONG_TITLE_PATTERN = "title has wrong pattern.";
+  public static final String CREATE_COURSE_NO_DESCRIPTION = "description is null.";
+  public static final String CREATE_COURSE_WRONG_DESCRIPTION_PATTERN = "description has wrong pattern.";
+  public static final String CREATE_COURSE_NO_INSTITUTION = "institution is null.";
+  public static final String CREATE_COURSE_WRONG_INSTITUTION_PATTERN = "institution has wrong pattern.";
+
 
 
   /**=======================.

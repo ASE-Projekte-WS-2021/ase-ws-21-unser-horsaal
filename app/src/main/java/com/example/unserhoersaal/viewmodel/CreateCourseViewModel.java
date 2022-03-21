@@ -16,67 +16,67 @@ public class CreateCourseViewModel extends ViewModel {
   private static final String TAG = "CreateCourseViewModel";
 
   private CreateCourseRepository createCourseRepository;
-  private StateLiveData<CourseModel> courseModel;
+  private StateLiveData<CourseModel> currentCourseRepoState;
   public StateLiveData<CourseModel> courseModelInputState = new StateLiveData<>();
 
   /** Initialization of the CreateCourseViewModel. */
   public void init() {
-    if (this.courseModel != null) {
+    if (this.currentCourseRepoState != null) {
       return;
     }
     this.createCourseRepository = CreateCourseRepository.getInstance();
-    this.courseModel = this.createCourseRepository.getUserCourse();
+    this.currentCourseRepoState = this.createCourseRepository.getCurrentCourseRepoState();
     this.courseModelInputState.postCreate(new CourseModel());
   }
 
-  public StateLiveData<CourseModel> getCourseModel() {
-    return this.courseModel;
+  public StateLiveData<CourseModel> getCurrentCourseRepoState() {
+    return this.currentCourseRepoState;
   }
 
   public void resetCourseModelInput() {
     this.courseModelInputState.postCreate(new CourseModel());
-    this.courseModel.postCreate(null);
+    this.currentCourseRepoState.postCreate(null);
   }
 
   /** Create a new course. */
   public void createCourse() {
-    this.courseModel.postLoading();
+    this.currentCourseRepoState.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
     if (courseModel == null) {
-      Log.e(TAG, "courseModel is null.");
-      this.courseModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
+      Log.e(TAG, Config.CREATE_COURSE_NO_COURES_MODEL);
+      this.currentCourseRepoState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (courseModel.getTitle() == null) {
-      Log.d(TAG, "title is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
+      Log.d(TAG, Config.CREATE_COURSE_NO_TITLE);
+      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
       return;
     } else if (!Validation.stringHasPattern(courseModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
-      Log.d(TAG, "title has wrong pattern.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+      Log.d(TAG, Config.CREATE_COURSE_WRONG_TITLE_PATTERN);
+      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
       return;
     }
     if (courseModel.getDescription() == null) {
-      Log.d(TAG, "description is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
+      Log.d(TAG, Config.CREATE_COURSE_NO_DESCRIPTION);
+      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
       return;
     } else if (!Validation.stringHasPattern(
             courseModel.getDescription(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "description has wrong pattern.");
-      this.courseModel.postError(
+      Log.d(TAG, Config.CREATE_COURSE_WRONG_DESCRIPTION_PATTERN);
+      this.currentCourseRepoState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
       return;
     }
     if (courseModel.getInstitution() == null) {
-      Log.d(TAG, "institution is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
+      Log.d(TAG, Config.CREATE_COURSE_NO_INSTITUTION);
+      this.currentCourseRepoState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
       return;
     } else if (!Validation.stringHasPattern(
             courseModel.getInstitution(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "institution has wrong pattern.");
-      this.courseModel.postError(
+      Log.d(TAG, Config.CREATE_COURSE_WRONG_INSTITUTION_PATTERN);
+      this.currentCourseRepoState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.INSTITUTION);
       return;
     }

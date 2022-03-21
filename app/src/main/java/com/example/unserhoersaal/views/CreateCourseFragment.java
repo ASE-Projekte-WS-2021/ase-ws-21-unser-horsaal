@@ -66,7 +66,7 @@ public class CreateCourseFragment extends Fragment {
     this.createCourseViewModel.init();
     this.courseHistoryViewModel.init();
     this.createCourseViewModel
-            .getCourseModel().observe(getViewLifecycleOwner(), this::courseLiveDataCallback);
+            .getCurrentCourseRepoState().observe(getViewLifecycleOwner(), this::courseLiveDataCallback);
   }
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
@@ -77,27 +77,31 @@ public class CreateCourseFragment extends Fragment {
       this.binding.createCourseFragmentCreateButton.setEnabled(false);
       this.binding.createCourseFragmentCreateButton.setBackgroundColor(Color.GRAY);
     } else if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (courseModelStateData.getErrorTag() == ErrorTag.TITLE) {
-        System.out.println(courseModelStateData.getError().getMessage());
-        this.binding.createCourseFragmentCourseTitleErrorText
-                .setText(courseModelStateData.getError().getMessage());
-        this.binding.createCourseFragmentCourseTitleErrorText.setVisibility(View.VISIBLE);
-      } else if (courseModelStateData.getErrorTag() == ErrorTag.DESCRIPTION) {
-        this.binding.createCourseFragmentCourseDescriptionErrorText
-                .setText(courseModelStateData.getError().getMessage());
-        this.binding.createCourseFragmentCourseDescriptionErrorText.setVisibility(View.VISIBLE);
-      } else if (courseModelStateData.getErrorTag() == ErrorTag.INSTITUTION) {
-        this.binding.createCourseFragmentCourseInstitutionErrorText
-                .setText(courseModelStateData.getError().getMessage());
-        this.binding.createCourseFragmentCourseInstitutionErrorText.setVisibility(View.VISIBLE);
-      } else {
-        this.binding.createCourseFragmentCourseGeneralErrorText
-                .setText(courseModelStateData.getError().getMessage());
-        this.binding.createCourseFragmentCourseGeneralErrorText.setVisibility(View.VISIBLE);
-      }
+      this.handleError(courseModelStateData);
     }
     if (courseModelStateData.getData() != null) {
       courseCreated(courseModelStateData.getData());
+    }
+  }
+
+  private void handleError(StateData<CourseModel> courseModelStateData) {
+    if (courseModelStateData.getErrorTag() == ErrorTag.TITLE) {
+      System.out.println(courseModelStateData.getError().getMessage());
+      this.binding.createCourseFragmentCourseTitleErrorText
+              .setText(courseModelStateData.getError().getMessage());
+      this.binding.createCourseFragmentCourseTitleErrorText.setVisibility(View.VISIBLE);
+    } else if (courseModelStateData.getErrorTag() == ErrorTag.DESCRIPTION) {
+      this.binding.createCourseFragmentCourseDescriptionErrorText
+              .setText(courseModelStateData.getError().getMessage());
+      this.binding.createCourseFragmentCourseDescriptionErrorText.setVisibility(View.VISIBLE);
+    } else if (courseModelStateData.getErrorTag() == ErrorTag.INSTITUTION) {
+      this.binding.createCourseFragmentCourseInstitutionErrorText
+              .setText(courseModelStateData.getError().getMessage());
+      this.binding.createCourseFragmentCourseInstitutionErrorText.setVisibility(View.VISIBLE);
+    } else {
+      this.binding.createCourseFragmentCourseGeneralErrorText
+              .setText(courseModelStateData.getError().getMessage());
+      this.binding.createCourseFragmentCourseGeneralErrorText.setVisibility(View.VISIBLE);
     }
   }
 
