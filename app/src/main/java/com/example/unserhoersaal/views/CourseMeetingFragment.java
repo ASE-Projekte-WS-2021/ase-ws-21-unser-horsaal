@@ -120,9 +120,10 @@ public class CourseMeetingFragment extends Fragment {
     this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
 
     this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
-      this.courseMeetingViewModel.sortThreadsByLikes(messageList);
+      //this.courseMeetingViewModel.sortThreadsByLikes(messageList);
+      this.courseMeetingViewModel.sortThreads(messageList.getData(), "likes");
       threadAdapter.notifyDataSetChanged();
-      if (messageList.size() == 0) {
+      if (messageList.getData().size() == 0) {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
       } else {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.GONE);
@@ -181,24 +182,24 @@ public class CourseMeetingFragment extends Fragment {
     }
   }
 
-  private void toggleChips(SortEnum sortEnum) {
-    if (sortEnum != SortEnum.NEWEST) {
+  private void toggleChips(StateData<SortEnum> sortEnum) {
+    if (sortEnum.getData() != SortEnum.NEWEST) {
       this.binding.courseMeetingChipNewest.setChecked(Boolean.FALSE);
       this.binding.courseMeetingChipNewestActivated.setVisibility(View.GONE);
     }
-    if (sortEnum != SortEnum.MOST_LIKES) {
+    if (sortEnum.getData() != SortEnum.MOST_LIKES) {
       this.binding.courseMeetingChipMostLiked.setChecked(Boolean.FALSE);
       this.binding.courseMeetingChipMostLikedActivated.setVisibility(View.GONE);
     }
-    if (sortEnum != SortEnum.MOST_COMMENTED) {
+    if (sortEnum.getData() != SortEnum.MOST_COMMENTED) {
       this.binding.courseMeetingChipMostCommented.setChecked(Boolean.FALSE);
       this.binding.courseMeetingChipMostCommentedActivated.setVisibility(View.GONE);
     }
-    if (sortEnum != SortEnum.PAGE_COUNT_UP) {
+    if (sortEnum.getData() != SortEnum.PAGE_COUNT_UP) {
       this.binding.courseMeetingChipPageCountUp.setChecked(Boolean.FALSE);
       this.binding.courseMeetingChipPageCountUpActivated.setVisibility(View.GONE);
     }
-    if (sortEnum != SortEnum.PAGE_COUNT_DOWN) {
+    if (sortEnum.getData() != SortEnum.PAGE_COUNT_DOWN) {
       this.binding.courseMeetingChipPageCountDown.setChecked(Boolean.FALSE);
       this.binding.courseMeetingChipPageCountDownActivated.setVisibility(View.GONE);
     }
