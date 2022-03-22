@@ -38,6 +38,7 @@ public class FilterSortUtil {
   public static void filter(Chip view, Chip chipActivated, CourseMeetingViewModel vm, FilterEnum filterEnum) {
     if (view.isChecked()) {
       chipActivated.setVisibility(View.VISIBLE);
+      vm.setFilterEnum(filterEnum);
       //TODO set filter with vm and filterEnum
     } else {
       removeFilter(view, chipActivated, vm, filterEnum);

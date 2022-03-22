@@ -7,6 +7,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 
 
+import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
@@ -35,6 +36,7 @@ public class CourseMeetingViewModel extends ViewModel {
 
   //private MutableLiveData<SortEnum> sortEnum = new MutableLiveData<>();
   private StateLiveData<SortEnum> sortEnum = new StateLiveData<>();
+  private StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -85,15 +87,26 @@ public class CourseMeetingViewModel extends ViewModel {
 
   public StateLiveData<MeetingsModel> getMeeting() { return this.meeting;}
 
-  public StateLiveData<SortEnum> getSortEnum() {
-    return this.sortEnum;
-  }
-
   public void setSortEnum(SortEnum sortEnum) {
     //this.sortEnum.postValue(sortEnum);
     this.sortEnum.postCreate(sortEnum);
     //this.sortEnum.postUpdate(sortEnum);
     Log.d(TAG, "setSortEnum: " + sortEnum);
+  }
+
+  public void setFilterEnum(FilterEnum filterEnum) {
+    //this.sortEnum.postValue(sortEnum);
+    this.filterEnum.postCreate(filterEnum);
+    //this.sortEnum.postUpdate(sortEnum);
+    Log.d(TAG, "setFilterEnum: " + filterEnum);
+  }
+
+  public StateLiveData<SortEnum> getSortEnum() {
+    return this.sortEnum;
+  }
+
+  public StateLiveData<FilterEnum> getFilterEnum() {
+    return this.filterEnum;
   }
 
   public StateLiveData<ThreadModel> getThreadModel() {
