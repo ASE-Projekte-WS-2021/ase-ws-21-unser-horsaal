@@ -76,6 +76,7 @@ public class ProfileFragment extends Fragment {
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.profileViewModel);
+    this.binding.setSelectPhotoLifeCycleObs(this.selectPhotoLifeCycleObs);
   }
 
   private void initToolbar() {
