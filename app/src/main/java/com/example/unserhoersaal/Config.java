@@ -92,6 +92,7 @@ public class Config {
   public static final String CHILD_LIKE_USER = "likeUser";
   public static final String CHILD_DISPLAY_NAME = "displayName";
   public static final String CHILD_INSTITUTION = "institution";
+  public static final String CHILD_PHOTO_URL = "photoUrl";
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
   public static final String CHILD_MEMBER_COUNT = "memberCount";
 
@@ -161,6 +162,8 @@ public class Config {
           "Die Institution konnte nicht geändert werden!";
   public static final String AUTH_EDIT_INSTITUTION_CHANGE_SUCCESS =
           "Die Institution wurde erfolgreich geändert!";
+  public static final String AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED =
+          "Das Profilbild konnte nicht geändert werden!";
   public static final String AUTH_VERIFICATION_EMAIL_SENT =
           "Verifizierungsemail versandt";
   public static final String AUTH_VERIFICATION_EMAIL_NOT_SENT =

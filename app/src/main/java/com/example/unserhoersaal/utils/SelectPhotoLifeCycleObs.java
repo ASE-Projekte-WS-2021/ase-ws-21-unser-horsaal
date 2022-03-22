@@ -29,7 +29,7 @@ public class SelectPhotoLifeCycleObs implements DefaultLifecycleObserver {
             new ActivityResultCallback<Uri>() {
               @Override
               public void onActivityResult(Uri uri) {
-                //profileViewModel.loadImageUp
+                profileViewModel.uploadImageToFireStore(uri);
               }
             });
   }

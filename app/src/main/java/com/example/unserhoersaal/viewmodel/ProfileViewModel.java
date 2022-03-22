@@ -2,6 +2,7 @@ package com.example.unserhoersaal.viewmodel;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -15,6 +16,8 @@ import com.example.unserhoersaal.repository.ProfileRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 /** Class Description. */
 public class ProfileViewModel extends ViewModel {
@@ -163,32 +166,8 @@ public class ProfileViewModel extends ViewModel {
   }
 
   /** JavaDoc for this method. */
-  /*public void changeProfilePhoto() {
-    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
-    if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
-      return;
-    }
-
-    String profilePhoto = userModel.getPhotoUrl();
-
-    if (Validation.emptyString(profilePhoto)) {
-      Log.d(TAG, "profilePhoto is null.");
-      this.profileChanged.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
-      return;
-    }
-
-    this.userInputState.postCreate(new UserModel());
-    this.profileRepository.changeProfilePhoto(profilePhoto);
+  public void uploadImageToFireStore(Uri uri) {
+    this.profileRepository.uploadImageToFirebase(uri);
   }
-
-  public void selectProfilePhoto() {
-
-  }
-
-  public void createResultLauncher(LifecycleOwner context) {
-    Activity activity = (Activity) context;
-
-  } */
 
 }
