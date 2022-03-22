@@ -33,7 +33,8 @@ public class CourseMeetingViewModel extends ViewModel {
   private StateLiveData<ThreadModel> threadModelMutableLiveData;
   public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
 
-  private MutableLiveData<SortEnum> sortEnum = new MutableLiveData<>();
+  //private MutableLiveData<SortEnum> sortEnum = new MutableLiveData<>();
+  private StateLiveData<SortEnum> sortEnum = new StateLiveData<>();
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -82,18 +83,17 @@ public class CourseMeetingViewModel extends ViewModel {
   }
 
 
-  public StateLiveData<MeetingsModel> getMeeting() {
+  public StateLiveData<MeetingsModel> getMeeting() { return this.meeting;}
 
-  public LiveData<SortEnum> getSortEnum() {
+  public StateLiveData<SortEnum> getSortEnum() {
     return this.sortEnum;
   }
 
   public void setSortEnum(SortEnum sortEnum) {
-    this.sortEnum.postValue(sortEnum);
-  }
-
-  public LiveData<MeetingsModel> getMeeting() {
-    return this.meeting;
+    //this.sortEnum.postValue(sortEnum);
+    this.sortEnum.postCreate(sortEnum);
+    //this.sortEnum.postUpdate(sortEnum);
+    Log.d(TAG, "setSortEnum: " + sortEnum);
   }
 
   public StateLiveData<ThreadModel> getThreadModel() {
