@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.utils;
 
+import com.example.unserhoersaal.enums.FilterEnum;
+import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.enums.TagEnum;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
@@ -31,22 +33,22 @@ public class ArrayListUtil {
   }
 
   /** Sorting options for ThreadModel lists. */
-  public void sortThreadList(List<ThreadModel> threadsModelList, String sortingOption) {
+  public void sortThreadList(List<ThreadModel> threadsModelList, SortEnum sortingOption) {
 
     switch (sortingOption) {
-      case "newest":
+      case NEWEST:
         sortThreadListByEventTimeDesc(threadsModelList);
         break;
-      case "likes":
+      case MOST_LIKES:
         sortThreadListByLikesDesc(threadsModelList);
         break;
-      case "answers":
+      case MOST_COMMENTED:
         sortThreadListByAnswersDesc(threadsModelList);
         break;
-      case "page number asc":
+      case PAGE_COUNT_UP:
         sortThreadListByPageNumber(threadsModelList, "ascending");
         break;
-      case "page number desc":
+      case PAGE_COUNT_DOWN:
         sortThreadListByPageNumber(threadsModelList, "descending");
         break;
     }
@@ -54,38 +56,38 @@ public class ArrayListUtil {
 
   /** Filter options for ThreadModel lists. */
   public void filterThreadList(List<ThreadModel> threadsModelList,
-                               List<ThreadModel> fullThreadsList, String filterOption,
+                               List<ThreadModel> fullThreadsList, FilterEnum filterOption,
                                MeetingsModel currentMeeting, String userId) {
 
     switch (filterOption) {
-      case "answered":
+      case SOLVED:
         filterThreadListByAnswerStatus(threadsModelList, true);
         break;
-      case "not answered":
+      case UNSOLVED:
         filterThreadListByAnswerStatus(threadsModelList, false);
         break;
-      case "course provider":
+      case CREATOR:
         filterThreadListByCourseProvider(threadsModelList, currentMeeting);
         break;
-      case "own":
+      case OWN:
         filterThreadListByOwnThreads(threadsModelList, userId);
         break;
-      case "tag subject matter":
+      case SUBJECT_MATTER:
         filterThreadListByTag(threadsModelList, TagEnum.SUBJECT_MATTER);
         break;
-      case "tag organisation":
+      case ORGANISATION:
         filterThreadListByTag(threadsModelList, TagEnum.ORGANISATION);
         break;
-      case "tag error":
+      case MISTAKE:
         filterThreadListByTag(threadsModelList, TagEnum.MISTAKE);
         break;
-      case "tag examination":
+      case EXAMINATION:
         filterThreadListByTag(threadsModelList, TagEnum.EXAMINATION);
         break;
-      case "tag other":
+      case OTHER:
         filterThreadListByTag(threadsModelList, TagEnum.OTHER);
         break;
-      case "reset":
+      case NONE:
         resetThreadList(threadsModelList, fullThreadsList);
         break;
     }

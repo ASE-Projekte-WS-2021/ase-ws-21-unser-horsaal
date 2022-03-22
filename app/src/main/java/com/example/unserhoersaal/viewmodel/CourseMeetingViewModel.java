@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
-
-
 import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.model.MeetingsModel;
@@ -16,9 +14,7 @@ import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 
-import java.nio.charset.MalformedInputException;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
 /** ViewModel for the CourseMeetingFragment. */
@@ -33,8 +29,6 @@ public class CourseMeetingViewModel extends ViewModel {
   private StateLiveData<List<ThreadModel>> threads;
   private StateLiveData<ThreadModel> threadModelMutableLiveData;
   public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
-
-  //private MutableLiveData<SortEnum> sortEnum = new MutableLiveData<>();
   private StateLiveData<SortEnum> sortEnum = new StateLiveData<>();
   private StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
 
@@ -54,51 +48,44 @@ public class CourseMeetingViewModel extends ViewModel {
       this.threads = this.courseMeetingRepository.getThreads();
     }
     this.threadModelInputState.postCreate(new ThreadModel());
+
+    this.sortEnum.postCreate(SortEnum.NEWEST);
+    this.filterEnum.postCreate(FilterEnum.NONE);
   }
 
   public StateLiveData<List<ThreadModel>> getThreads() {
     return this.threads;
   }
 
-  /** sort the threads list.
-   *  First parameter is the treads list to sort.
-   *  The second parameter is a sort option (String).
-   *  Sort options: "newest", "likes", "answers", "page number asc" (ascending) and
-   *  "page number desc" (descending)
-   */
-  public void sortThreads(List<ThreadModel> threadsModelList, String sortOption) {
-    this.arrayListUtil.sortThreadList(threadsModelList, sortOption);
+  /** sort the threads list. */
+  public void sortThreads(List<ThreadModel> threadsModelList) {
+    this.arrayListUtil.sortThreadList(threadsModelList, this.sortEnum.getValue().getData());
   }
 
-  /** filter the threads list.
-   *  First parameter is the treads list to filter.
-   *  The second parameter is a filter option (String).
-   *  filter options: "answered", "not answered", "course provider", "own", "tag subject matter",
-   *  "tag organisation", "tag error", "tag examination", "tag other" and "reset" (show all)
-   */
-  public void filterThreads(List<ThreadModel> threadsModelList, String filterOption) {
+  /** filter the threads list. */
+  public void filterThreads(List<ThreadModel> threadsModelList) {
     MeetingsModel actualMeeting = Validation.checkStateLiveData(this.meeting, TAG);
-    List<ThreadModel> fullThreadsModelList = Validation.checkStateLiveData(this.threads, TAG);
+    //List<ThreadModel> fullThreadsModelList = Validation.checkStateLiveData(this.threads, TAG);
+    List<ThreadModel> fullThreadsModelList = new ArrayList<>(this.courseMeetingRepository
+            .getThreadModelList());
+    //fullThreadsModelList.addAll(this.courseMeetingRepository.getThreadModelList());
     String userId = courseMeetingRepository.getUserId();
-    this.arrayListUtil.filterThreadList(threadsModelList, fullThreadsModelList, filterOption,
-            actualMeeting, userId);
+    this.arrayListUtil.filterThreadList(threadsModelList, fullThreadsModelList,
+            this.filterEnum.getValue().getData(), actualMeeting, userId);
   }
 
+  public List<ThreadModel> getFullList() {
+    return this.courseMeetingRepository.getThreadModelList();
+  }
 
   public StateLiveData<MeetingsModel> getMeeting() { return this.meeting;}
 
   public void setSortEnum(SortEnum sortEnum) {
-    //this.sortEnum.postValue(sortEnum);
-    this.sortEnum.postCreate(sortEnum);
-    //this.sortEnum.postUpdate(sortEnum);
-    Log.d(TAG, "setSortEnum: " + sortEnum);
+    this.sortEnum.postUpdate(sortEnum);
   }
 
   public void setFilterEnum(FilterEnum filterEnum) {
-    //this.sortEnum.postValue(sortEnum);
-    this.filterEnum.postCreate(filterEnum);
-    //this.sortEnum.postUpdate(sortEnum);
-    Log.d(TAG, "setFilterEnum: " + filterEnum);
+    this.filterEnum.postUpdate(filterEnum);
   }
 
   public StateLiveData<SortEnum> getSortEnum() {

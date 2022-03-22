@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.enums;
 
 public enum FilterEnum {
+  NONE,
   SOLVED,
   UNSOLVED,
   OWN,

@@ -2,6 +2,7 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseMeetingBinding;
 
+import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.model.ThreadModel;
 
 import com.example.unserhoersaal.enums.SortEnum;
@@ -88,7 +90,8 @@ public class CourseMeetingFragment extends Fragment {
   private void meetingsLiveStateCallback(StateData<List<ThreadModel>> listStateData) {
     this.resetBindings();
     //sort threads by newest
-    this.courseMeetingViewModel.sortThreads(listStateData.getData(), "newest");
+    //this.courseMeetingViewModel.sortThreads(listStateData.getData());
+    //this.courseMeetingViewModel.filterThreads(listStateData.getData());
     this.threadAdapter.notifyDataSetChanged();
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
@@ -114,14 +117,17 @@ public class CourseMeetingFragment extends Fragment {
       this.binding.courseMeetingFragmentFab.setVisibility(View.VISIBLE);
       this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
     }
+    this.courseMeetingViewModel.getSortEnum().observe(getViewLifecycleOwner(), this::sortThreads);
+    //this.courseMeetingViewModel.getFilterEnum().observe(getViewLifecycleOwner(),
+    // this::filterThreads);
   }
 
   private void resetBindings() {
     this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
 
     this.courseMeetingViewModel.getThreads().observe(getViewLifecycleOwner(), messageList -> {
-      //this.courseMeetingViewModel.sortThreadsByLikes(messageList);
-      this.courseMeetingViewModel.sortThreads(messageList.getData(), "likes");
+      this.courseMeetingViewModel.sortThreads(messageList.getData());
+      //this.courseMeetingViewModel.filterThreads(messageList.getData());
       threadAdapter.notifyDataSetChanged();
       if (messageList.getData().size() == 0) {
         this.binding.coursesMeetingFragmentTitleTextView.setVisibility(View.VISIBLE);
@@ -131,7 +137,6 @@ public class CourseMeetingFragment extends Fragment {
     });
     //TODO better way than observing
     this.courseMeetingViewModel.getSortEnum().observe(getViewLifecycleOwner(), this::toggleChips);
-
   }
 
   private void connectAdapter() {
@@ -203,5 +208,15 @@ public class CourseMeetingFragment extends Fragment {
       this.binding.courseMeetingChipPageCountDown.setChecked(Boolean.FALSE);
       this.binding.courseMeetingChipPageCountDownActivated.setVisibility(View.GONE);
     }
+  }
+
+  private void sortThreads(StateData<SortEnum> sortEnum) {
+    this.courseMeetingViewModel.getThreads().postUpdate(this.courseMeetingViewModel.getThreads()
+            .getValue().getData());
+  }
+
+  //Todo: in Arbeit
+  private void filterThreads(StateData<FilterEnum> filterEnum) {
+    this.courseMeetingViewModel.getThreads().postUpdate(this.courseMeetingViewModel.getFullList());
   }
 }
