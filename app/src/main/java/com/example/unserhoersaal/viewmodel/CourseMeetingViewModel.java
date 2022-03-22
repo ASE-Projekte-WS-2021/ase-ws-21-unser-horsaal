@@ -2,8 +2,12 @@ package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
 import androidx.lifecycle.ViewModel;
+
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
+
+
+import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CourseMeetingRepository;
@@ -11,6 +15,9 @@ import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 
+import java.nio.charset.MalformedInputException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /** ViewModel for the CourseMeetingFragment. */
@@ -25,6 +32,8 @@ public class CourseMeetingViewModel extends ViewModel {
   private StateLiveData<List<ThreadModel>> threads;
   private StateLiveData<ThreadModel> threadModelMutableLiveData;
   public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
+
+  private MutableLiveData<SortEnum> sortEnum = new MutableLiveData<>();
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -72,7 +81,18 @@ public class CourseMeetingViewModel extends ViewModel {
             actualMeeting, userId);
   }
 
+
   public StateLiveData<MeetingsModel> getMeeting() {
+
+  public LiveData<SortEnum> getSortEnum() {
+    return this.sortEnum;
+  }
+
+  public void setSortEnum(SortEnum sortEnum) {
+    this.sortEnum.postValue(sortEnum);
+  }
+
+  public LiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }
 

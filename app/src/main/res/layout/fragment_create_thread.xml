@@ -87,38 +87,63 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagSubjectMatter"
+                        android:checkable="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_subject"
+
                         android:onClick="@{() -> TagUtil.setTag(chipTagSubjectMatter, vm.threadModelInputState.data)}"/>
+
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInput, TagEnum.SUBJECT_MATTER)}"/>
+
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagMistake"
+                        android:checkable="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_mistake"
+
                         android:onClick="@{() -> TagUtil.setTag(chipTagMistake, vm.threadModelInputState.data)}"/>
+
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInput, TagEnum.MISTAKE)}"/>
+
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagExamination"
+                        android:checkable="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_exam"
+
                         android:onClick="@{() -> TagUtil.setTag(chipTagExamination, vm.threadModelInputState.data)}"/>
+
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInput, TagEnum.EXAMINATION)}"/>
+
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagOrganisation"
+                        android:checkable="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_organizational"
+
                         android:onClick="@{() -> TagUtil.setTag(chipTagOrganisation, vm.threadModelInputState.data)}"/>
+
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInput, TagEnum.ORGANISATION)}"/>
+
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagOther"
+                        android:checkable="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_other"
+
                         android:onClick="@{() -> TagUtil.setTag(chipTagOther, vm.threadModelInputState.data)}"/>
+
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInput, TagEnum.OTHER)}"/>
+
 
                 </com.google.android.material.chip.ChipGroup>
 
