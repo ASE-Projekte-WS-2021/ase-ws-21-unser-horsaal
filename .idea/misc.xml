@@ -28,6 +28,7 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/rounded_bottom_corners.xml" value="0.235" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/rounded_bottom_ripple.xml" value="0.235" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/rounded_corners.xml" value="0.165" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/rounded_corners_orange.xml" value="0.235" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/rounded_corners_ripple.xml" value="0.235" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/rounded_top_corners.xml" value="0.235" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/rounded_top_ripple.xml" value="0.235" />
@@ -57,7 +58,7 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile.xml" value="0.20606884057971014" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile_institution.xml" value="0.13903985507246377" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile_name.xml" value="0.13903985507246377" />
-        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile_password.xml" value="0.13903985507246377" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile_password.xml" value="0.2" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_course.xml" value="0.2" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_course_detail.xml" value="0.264" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_enter_or_create_course.xml" value="0.13405797101449277" />

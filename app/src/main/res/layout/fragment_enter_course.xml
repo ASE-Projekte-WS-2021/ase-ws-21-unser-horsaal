@@ -88,7 +88,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:hint="@string/enter_course_fragment_edit_text">
+                    android:hint="@string/enter_course_fragment_edit_text"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/enterCourseFragmentCourseNumberEditText"
@@ -96,7 +97,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@drawable/rounded_corners"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

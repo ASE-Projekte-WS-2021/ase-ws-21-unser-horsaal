@@ -39,26 +39,33 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/app_transparent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="64dp"/>
+
                 <TextView
                     android:id="@+id/loginFragmentTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/login_fragment_title_string"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textColor="@color/black"
-                    android:textSize="44sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginFragmentUserEmailTextField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="72dp"
+                    android:layout_marginTop="32dp"
                     android:hint="@string/login_fragment_user_email_hint"
                     android:layout_gravity="center"
-                    app:boxStrokeColor="@color/app_blue">
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentUserEmailEditText"
@@ -66,14 +73,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white" />
+                        android:background="@drawable/rounded_corners" />
 
                     <TextView
                         android:text="@{vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_EMPTY ? Config.EMAIL_EMPTY : Config.EMAIL_PATTERN_WRONG}"
                         android:visibility="@{vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_EMPTY || vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,7 +92,8 @@
                     android:layout_marginTop="32dp"
                     android:hint="@string/login_fragment_password_hint"
                     app:endIconMode="password_toggle"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentPasswordEditText"
@@ -93,28 +102,29 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@drawable/rounded_corners"/>
 
                     <TextView
                         android:text="@{vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.PASSWORD_PATTERN_WRONG}"
                         android:visibility="@{vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_EMPTY || vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginFragmentLoginButton"
                     android:onClick="@{() -> vm.login()}"
-                    android:backgroundTint="@color/call_to_action_orange"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/login_fragment_login_button_string"
                     android:layout_gravity="center"
                     app:icon="@drawable/ic_baseline_login_24"
-                    app:iconGravity="textStart" />
+                    app:iconGravity="textStart"
+                    style="@style/wideOrangeButton"/>
 
                 <TextView
                     android:text="@string/login_fragment_login_failure"

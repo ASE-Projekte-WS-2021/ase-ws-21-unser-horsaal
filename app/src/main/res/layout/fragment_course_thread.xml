@@ -261,14 +261,15 @@
                 app:hintEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/currentCourseFragmentSendQuestionButton"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/inputField">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/currentCourseFragmentQuestionEditText"
                     android:text="@={vm.dataBindingMessageInput.text}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_top_corners"
+                    android:background="@drawable/rounded_corners"
                     android:hint="@string/current_course_edit_text_hint"
                     android:maxLength="500"/>
 

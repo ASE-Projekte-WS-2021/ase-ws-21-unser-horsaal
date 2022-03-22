@@ -39,10 +39,10 @@
             android:layout_height="wrap_content"
             android:hint="@string/edit_profile_fragment_institution"
             android:layout_margin="8dp"
-            app:boxStrokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentToolbar">
+            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentToolbar"
+            style="@style/inputField">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editProfileInstitutionFragmentEditText"
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:background="@color/white"
+                android:background="@drawable/rounded_corners"
                 android:maxLength="75"/>
 
         </com.google.android.material.textfield.TextInputLayout>

@@ -45,10 +45,10 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_noCourseFoundFragment_to_enterCourseFragment)}"
                 android:text="@string/no_course_found_fragment_button_back"
-                android:textColor="@color/white"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                app:backgroundTint="@color/red" />
+                app:backgroundTint="@color/red"
+                style="@style/wideOrangeButton"/>
 
         </LinearLayout>
 
