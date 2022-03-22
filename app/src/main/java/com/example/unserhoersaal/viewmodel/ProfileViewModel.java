@@ -1,6 +1,10 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
+
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -157,5 +161,34 @@ public class ProfileViewModel extends ViewModel {
     this.passwordInputState.postCreate(new PasswordModel());
     this.profileRepository.changePassword(oldPassword, newPassword);
   }
+
+  /** JavaDoc for this method. */
+  /*public void changeProfilePhoto() {
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    if (userModel == null) {
+      Log.e(TAG, "userModel is null.");
+      return;
+    }
+
+    String profilePhoto = userModel.getPhotoUrl();
+
+    if (Validation.emptyString(profilePhoto)) {
+      Log.d(TAG, "profilePhoto is null.");
+      this.profileChanged.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
+      return;
+    }
+
+    this.userInputState.postCreate(new UserModel());
+    this.profileRepository.changeProfilePhoto(profilePhoto);
+  }
+
+  public void selectProfilePhoto() {
+
+  }
+
+  public void createResultLauncher(LifecycleOwner context) {
+    Activity activity = (Activity) context;
+
+  } */
 
 }

@@ -60,4 +60,5 @@ dependencies {
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.github.yesidlazaro:GmailBackground:1.2.0'
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.4.1"
 }

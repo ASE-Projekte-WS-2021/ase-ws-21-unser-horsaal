@@ -1,9 +1,13 @@
 package com.example.unserhoersaal.views;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -13,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentProfileBinding;
+import com.example.unserhoersaal.utils.SelectPhotoLifeCycleObs;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
 /** Profile page. */
@@ -23,7 +28,7 @@ public class ProfileFragment extends Fragment {
   private ProfileViewModel profileViewModel;
   private NavController navController;
   private FragmentProfileBinding binding;
-
+  private SelectPhotoLifeCycleObs selectPhotoLifeCycleObs;
   public ProfileFragment() {
     // Required empty public constructor
   }
@@ -38,6 +43,7 @@ public class ProfileFragment extends Fragment {
                            Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_profile, container, false);
+
     return this.binding.getRoot();
   }
 
@@ -48,8 +54,10 @@ public class ProfileFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
+    this.initLifeCycleObs();
     this.connectBinding();
     this.initToolbar();
+
   }
 
   private void initViewModel() {
@@ -82,6 +90,11 @@ public class ProfileFragment extends Fragment {
       }
       return false;
     });
+  }
+
+  private void initLifeCycleObs() {
+    selectPhotoLifeCycleObs = new SelectPhotoLifeCycleObs(requireActivity().getActivityResultRegistry(), profileViewModel);
+    getLifecycle().addObserver(selectPhotoLifeCycleObs);
   }
 
 }
