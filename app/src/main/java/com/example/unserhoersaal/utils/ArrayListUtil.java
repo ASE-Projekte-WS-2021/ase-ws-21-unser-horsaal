@@ -155,6 +155,9 @@ public class ArrayListUtil {
     threadsModelList.sort(new Comparator<ThreadModel>() {
       @Override
       public int compare(ThreadModel threadModel, ThreadModel t1) {
+        if (threadModel.getPageNumber() == null || t1.getPageNumber() == null) {
+          return 0;
+        }
         if (order.equals("ascending")) {
           return Integer.parseInt(threadModel.getPageNumber()) -
                   Integer.parseInt(t1.getPageNumber());
