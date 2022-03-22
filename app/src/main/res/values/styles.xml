@@ -35,7 +35,7 @@
     </style>
     
     <style name="coursesTabItem" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/call_to_action_orange</item>
         <item name="tabIndicatorHeight">4dp</item>
         <item name="android:textSize">20sp</item>
         <item name="tabTextColor">@color/white</item>

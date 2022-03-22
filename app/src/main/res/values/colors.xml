@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#2BC6FF</color>
     <color name="grey">#FFCFCFCF</color>
-    <color name="app_background">#F4F9FF</color>
+    <color name="app_background">#f0f2f5</color>
     <color name="app_blue">#0288D1</color>
     <color name="app_darker_blue">#005B9F</color>
     <color name="call_to_action_orange">#FFC107</color>

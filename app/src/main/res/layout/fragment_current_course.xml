@@ -216,7 +216,7 @@
             android:id="@+id/currentCourseFragmentQuestionEditField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corners"
+            android:background="@drawable/rounded_top_corners"
             android:backgroundTint="@color/white"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
@@ -230,7 +230,7 @@
                 android:id="@+id/currentCourseFragmentQuestionEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners"
+                android:background="@drawable/rounded_top_corners"
                 android:hint="@string/current_course_edit_text_hint"
                 />
 

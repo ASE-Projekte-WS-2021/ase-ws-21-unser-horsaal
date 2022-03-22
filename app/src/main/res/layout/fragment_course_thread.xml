@@ -268,7 +268,7 @@
                     android:text="@={vm.dataBindingMessageInput.text}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
+                    android:background="@drawable/rounded_top_corners"
                     android:hint="@string/current_course_edit_text_hint"
                     android:maxLength="500"/>
 
