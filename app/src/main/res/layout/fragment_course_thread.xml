@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:fillViewport="true"
-                app:layout_constraintBottom_toTopOf="@+id/currentCourseFragmentQuestionEditField"
+                app:layout_constraintBottom_toTopOf="@+id/courseThreadFragmentSendMessageContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentSubtitle">
@@ -250,48 +250,60 @@
 
             </ScrollView>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/currentCourseFragmentQuestionEditField"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/courseThreadFragmentSendMessageContainer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="8dp"
-                app:hintEnabled="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/currentCourseFragmentSendQuestionButton"
+                android:padding="8dp"
+                android:background="@color/app_background"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/inputField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/currentCourseFragmentQuestionEditText"
-                    android:text="@={vm.dataBindingMessageInput.text}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
-                    android:hint="@string/current_course_edit_text_hint"
-                    android:maxLength="500"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/currentCourseFragmentSendQuestionButton"
-                android:onClick="@{(view) -> vm.sendMessage()}"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/call_to_action_orange"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:cornerRadius="30dp"
-                android:insetBottom="0dp"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:insetTop="0dp"
-                app:icon="@drawable/ic_baseline_send_24" />
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/currentCourseFragmentQuestionEditField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/currentCourseFragmentSendQuestionButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    style="@style/inputField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/currentCourseFragmentQuestionEditText"
+                        android:text="@={vm.dataBindingMessageInput.text}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners"
+                        android:hint="@string/current_course_edit_text_hint"
+                        android:maxLength="500"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/currentCourseFragmentSendQuestionButton"
+                    android:onClick="@{(view) -> vm.sendMessage()}"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/call_to_action_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:cornerRadius="30dp"
+                    android:insetBottom="0dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:insetTop="0dp"
+                    app:icon="@drawable/ic_baseline_send_24" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
