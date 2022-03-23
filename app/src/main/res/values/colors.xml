@@ -9,8 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#2BC6FF</color>
     <color name="grey">#FFCFCFCF</color>
-    <color name="app_background">#E2E2E2</color>
-    <color name="app_blue">#1E98D7</color>
+    <color name="app_background">#f0f2f5</color>
+    <color name="app_blue">#0288D1</color>
+    <color name="app_darker_blue">#005B9F</color>
+    <color name="call_to_action_orange">#FFC107</color>
+    <color name="call_to_action_darker_orange">#C79100</color>
+    <color name="text_darker_blue">#114B5F</color>
     <color name="light_green">#00FF09</color>
     <color name="green">#008805</color>
     <color name="orange">#FFBA00</color>

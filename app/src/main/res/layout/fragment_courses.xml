@@ -40,7 +40,7 @@
             android:id="@+id/coursesFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
             android:id="@+id/coursesFragmentTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             style="@style/coursesTabItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,86 +77,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/coursesFragmentTabLayout"/>
 
-
-
-        <LinearLayout
-            android:id="@+id/coursesFragmentCreateCourseFabLayout"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/coursesFragmentFabCreateCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_baseline_post_add_24"
+            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_coursesFragment_to_createCourseInformationFragment)}"
+            android:text="@string/kurs_erstellen"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/coursesFragmentFabEnterCourse"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:translationY="-140dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/kurs_erstellen"
-                android:layout_gravity="center"
-                android:layout_marginEnd="8dp"
-                android:padding="8dp"
-                android:elevation="4dp"
-                android:textColor="@color/app_blue"
-                android:background="@color/white"/>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/coursesFragmentFabCreateCourse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_create_24"
-                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_coursesFragment_to_createCourseFragment)}"
-                android:text="@string/kurs_erstellen"
-                app:tint="@color/white"
-                style="@style/fabStyle" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/coursesFragmentEnterCourseFabLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:translationY="-70dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/kurs_beitreten"
-                android:layout_gravity="center"
-                android:layout_marginEnd="8dp"
-                android:elevation="4dp"
-                android:padding="8dp"
-                android:background="@color/white"
-                android:textColor="@color/app_blue"/>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/coursesFragmentFabEnterCourse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_login_24"
-                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_coursesFragment_to_enterCourseFragment)}"
-                android:text="@string/kurs_beitreten"
-                app:tint="@color/white"
-                style="@style/fabStyle" />
-
-        </LinearLayout>
+            style="@style/fabStyle" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/coursesFragmentFab"
+            android:id="@+id/coursesFragmentFabEnterCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:src="@drawable/ic_baseline_add_24"
-            android:onClick="@{() -> VisibilityAdapter.toggleFloatingButtons(coursesFragmentEnterCourseFabLayout, coursesFragmentCreateCourseFabLayout)}"
+            android:src="@drawable/ic_baseline_manage_search_24"
+            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_coursesFragment_to_enterCourseFragment)}"
+            android:text="@string/kurs_beitreten"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
             app:tint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

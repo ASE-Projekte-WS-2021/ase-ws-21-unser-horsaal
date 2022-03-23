@@ -126,13 +126,5 @@ public class CoursesFragment extends Fragment {
                     navController.navigate(R.id.action_coursesFragment_to_profileFragment));
   }
 
-  //For closing the Floating Action Buttons when returning to
-  //this Fragment and the Buttons were not closed before.
-  @Override
-  public void onResume() {
-    super.onResume();
-    this.binding.coursesFragmentEnterCourseFabLayout.setVisibility(View.GONE);
-    this.binding.coursesFragmentCreateCourseFabLayout.setVisibility(View.GONE);
-  }
 }
 
