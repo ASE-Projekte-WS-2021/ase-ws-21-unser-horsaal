@@ -51,7 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="64dp"
-                    android:hint="@string/registration_fragment_user_name">
+                    android:hint="@string/registration_fragment_user_name"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentUserNameEditText"
@@ -59,7 +60,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_corners"
                         android:maxLength="15"/>
 
                     <TextView
@@ -67,7 +68,8 @@
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,7 +79,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="32dp"
-                    android:hint="@string/registration_fragment_user_email_hint">
+                    android:hint="@string/registration_fragment_user_email_hint"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentUserEmailEditText"
@@ -85,14 +88,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@drawable/rounded_corners"/>
 
                     <TextView
                         android:id="@+id/registrationFragmentUserEmailErrorText"
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,7 +107,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="32dp"
                     android:hint="@string/registration_fragment_password_hint"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/registrationFragmentPasswordEditText"
@@ -113,14 +118,15 @@
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@drawable/rounded_corners"/>
 
                     <TextView
                         android:id="@+id/registrationFragmentPasswordErrorText"
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,7 +159,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        style="@style/wideOrangeButton"/>
 
                     <ProgressBar
                         android:id="@+id/registrationFragmentProgressSpinner"
@@ -194,7 +201,7 @@
                         android:layout_marginBottom="16dp"
                         android:text="@string/registration_fragment_login_string"
                         android:layout_marginStart="16dp"
-                        android:textColor="@color/app_blue"
+                        android:textColor="@color/call_to_action_darker_orange"
                         android:textStyle="bold" />
 
                 </LinearLayout>

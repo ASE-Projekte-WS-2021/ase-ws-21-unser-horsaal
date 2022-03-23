@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".views.CreateCourseInformationFragment"
+        android:background="@color/app_background">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/createCourseInformationFragmentToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_course_string"
+                style="@style/toolbarTitleStyle"/>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <TextView
+            android:id="@+id/createCourseInformationFragmentInformation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/create_course_fragment_information_string"
+            android:layout_marginTop="64dp"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="@id/createCourseInformationFragmentImage"
+            app:layout_constraintEnd_toEndOf="@id/createCourseInformationFragmentImage"
+            app:layout_constraintTop_toBottomOf="@id/createCourseInformationFragmentToolbar"/>
+
+        <ImageView
+            android:id="@+id/createCourseInformationFragmentImage"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/create_course_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/createCourseInformationFragmentInformation"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/createCourseInformationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_course_information_button_string"
+            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_createCourseInformationFragment_to_createCourseFragment)}"
+            app:backgroundTint="@color/call_to_action_orange"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/createCourseInformationFragmentImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

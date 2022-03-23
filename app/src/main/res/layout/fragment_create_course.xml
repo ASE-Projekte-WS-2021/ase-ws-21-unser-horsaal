@@ -19,7 +19,7 @@
             android:id="@+id/createCourseToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/createCourseToolbar">
@@ -72,18 +72,15 @@
                 android:layout_margin="32dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="260dp"
-                    android:layout_height="173dp"
-                    android:src="@drawable/create_course_image"
-                    android:layout_gravity="center"/>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/createCourseFragmentCourseTitleInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_title_hint">
+                    android:hint="@string/create_course_fragment_title_hint"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseTitleEditText"
@@ -91,7 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_corners"
                         android:maxLength="100"/>
 
                     <TextView
@@ -108,7 +105,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_course_description">
+                    android:hint="@string/create_course_fragment_course_description"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseDescriptionEditText"
@@ -117,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
                         android:singleLine="false"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_corners"
                         android:maxLength="500"/>
 
                     <TextView
@@ -134,7 +132,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_course_institution">
+                    android:hint="@string/create_course_fragment_course_institution"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseInstitutionEditText"
@@ -143,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
                         android:singleLine="true"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_corners"
                         android:maxLength="75"/>
 
                     <TextView

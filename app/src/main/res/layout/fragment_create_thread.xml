@@ -26,7 +26,7 @@
             android:id="@+id/createThreadFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -56,14 +56,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    app:hintEnabled="false">
+                    app:hintEnabled="false"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createThreadFragmentEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="false"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_corners"
                         android:maxLength="500"
                         android:hint="Nachricht eingeben"
                         android:text="@={vm.threadModelInputState.data.text}"/>
@@ -172,14 +173,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:hintEnabled="false"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createThreadFragmentHashtagEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_corners"
                         android:maxLength="500"
                         android:hint="#..."
                         android:text="@={vm.threadModelInputState.data.hashtag}"/>
@@ -225,14 +227,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:hintEnabled="false"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createThreadFragmentPageNumberEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_corners"
                         android:maxLength="500"
                         android:hint="Seitenzahl"
                         android:inputType="numberSigned"
@@ -246,7 +249,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@string/create_thread_fragment_button_send" />
+                    android:text="@string/create_thread_fragment_button_send"
+                    app:backgroundTint="@color/call_to_action_orange"
+                    style="@style/wideOrangeButton"/>
 
 
             </LinearLayout>

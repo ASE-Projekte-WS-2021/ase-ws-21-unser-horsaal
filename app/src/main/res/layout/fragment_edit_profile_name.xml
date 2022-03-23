@@ -20,7 +20,7 @@
             android:id="@+id/editProfileNameFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,10 +39,10 @@
             android:layout_height="wrap_content"
             android:hint="@string/edit_profile_name_hint"
             android:layout_margin="8dp"
-            app:boxStrokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentToolbar">
+            app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentToolbar"
+            style="@style/inputField">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editProfileNameFragmentEditText"
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:background="@color/white"
+                android:background="@drawable/rounded_corners"
                 android:maxLength="15"/>
 
             <TextView
