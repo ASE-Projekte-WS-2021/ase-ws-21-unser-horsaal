@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.databinding.AnswerItemBinding;
+import com.example.unserhoersaal.databinding.AnswerCardBinding;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.List;
@@ -27,9 +27,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    AnswerItemBinding binding = DataBindingUtil
+    AnswerCardBinding binding = DataBindingUtil
             .inflate(LayoutInflater.from(viewGroup.getContext()),
-                    R.layout.answer_item,
+                    R.layout.answer_card,
                     viewGroup,
                     false);
     return new ViewHolder(binding);
@@ -49,10 +49,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
   /** Viewholder. */
   public class ViewHolder extends RecyclerView.ViewHolder {
 
-    private final AnswerItemBinding binding;
+    private final AnswerCardBinding binding;
 
     /** Constructor. */
-    public ViewHolder(AnswerItemBinding binding) {
+    public ViewHolder(AnswerCardBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }
