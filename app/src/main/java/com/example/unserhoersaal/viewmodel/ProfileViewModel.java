@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.net.Uri;
 import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
@@ -156,6 +157,11 @@ public class ProfileViewModel extends ViewModel {
 
     this.passwordInputState.postCreate(new PasswordModel());
     this.profileRepository.changePassword(oldPassword, newPassword);
+  }
+
+  /** JavaDoc for this method. */
+  public void uploadImageToFireStore(Uri uri) {
+    this.profileRepository.uploadImageToFirebase(uri);
   }
 
 }
