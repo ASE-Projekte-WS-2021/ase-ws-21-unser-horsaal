@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentProfileBinding;
+import com.example.unserhoersaal.utils.SelectPhotoLifeCycleObs;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
 /** Profile page. */
@@ -23,7 +24,7 @@ public class ProfileFragment extends Fragment {
   private ProfileViewModel profileViewModel;
   private NavController navController;
   private FragmentProfileBinding binding;
-
+  private SelectPhotoLifeCycleObs selectPhotoLifeCycleObs;
   public ProfileFragment() {
     // Required empty public constructor
   }
@@ -38,6 +39,7 @@ public class ProfileFragment extends Fragment {
                            Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_profile, container, false);
+
     return this.binding.getRoot();
   }
 
@@ -48,18 +50,19 @@ public class ProfileFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
+    this.initLifeCycleObs();
     this.connectBinding();
     this.initToolbar();
+
   }
 
   private void initViewModel() {
     this.profileViewModel
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
-    this.profileViewModel.loadProfile();
     this.profileViewModel
             .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser == null) {
+              if (firebaseUser.getData() == null) {
                 navController.navigate(R.id.action_profileFragment_to_loginFragment);
               }
             });
@@ -68,6 +71,7 @@ public class ProfileFragment extends Fragment {
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.profileViewModel);
+    this.binding.setSelectPhotoLifeCycleObs(this.selectPhotoLifeCycleObs);
   }
 
   private void initToolbar() {
@@ -82,6 +86,12 @@ public class ProfileFragment extends Fragment {
       }
       return false;
     });
+  }
+
+  private void initLifeCycleObs() {
+    selectPhotoLifeCycleObs = new SelectPhotoLifeCycleObs(
+            requireActivity().getActivityResultRegistry(), getContext(), profileViewModel);
+    getLifecycle().addObserver(selectPhotoLifeCycleObs);
   }
 
 }

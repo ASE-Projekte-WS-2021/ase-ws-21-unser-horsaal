@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.example.unserhoersaal.model.CourseModel"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{(view) -> NavUtil.navigateToCourse(view, model)}"
+        android:layout_margin="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/courseItemCardImage"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_baseline_account_circle_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                setImage="@{model.photoUrl}"
+                />
+
+            <TextView
+                android:id="@+id/courseItemCardTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@+id/courseItemCardImage"
+                app:layout_constraintTop_toTopOf="@id/courseItemCardImage"
+                tools:text="@{model.title}"/>
+
+            <TextView
+                android:id="@+id/courseItemCardCreator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/courseItemCardTitle"
+                app:layout_constraintTop_toBottomOf="@+id/courseItemCardTitle"
+                tools:text="@{model.creatorName}"/>
+
+            <TextView
+                android:id="@+id/courseItemCardInstitution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/courseItemCardTitle"
+                app:layout_constraintTop_toBottomOf="@+id/courseItemCardCreator"
+                tools:text="@{model.institution}"/>
+
+            <ImageView
+                android:id="@+id/courseItemCardMeetingsImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_assignment_24"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/courseItemCardImage"
+                app:layout_constraintTop_toBottomOf="@+id/courseItemCardInstitution"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/courseItemCardNumberMeetings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/courseItemCardTitle"
+                app:layout_constraintTop_toTopOf="@id/courseItemCardMeetingsImage"
+                app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsImage"
+                app:layout_constraintEnd_toStartOf="@id/courseItemCardMeetingsTextView"
+                tools:text="@{Integer.toString(model.meetingsCount)}"/>
+
+            <TextView
+                android:id="@+id/courseItemCardMeetingsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meetings"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@+id/courseItemCardNumberMeetings"
+                app:layout_constraintTop_toTopOf="@id/courseItemCardNumberMeetings" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/courseItemCardParticipantsImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_people_24"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsImage"
+                app:layout_constraintEnd_toStartOf="@id/courseItemCardNumberParticipants" />
+
+            <TextView
+                android:id="@+id/courseItemCardNumberParticipants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@id/courseItemCardParticipantsTextView"
+                app:layout_constraintBottom_toBottomOf="@id/courseItemCardMeetingsTextView"
+                tools:text="@{Integer.toString(model.memberCount)}"/>
+
+            <TextView
+                android:id="@+id/courseItemCardParticipantsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Teilnehmer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/courseItemCardNumberParticipants" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseMeetingBinding;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 
 /**Create Course Meeting.*/
@@ -56,13 +60,34 @@ public class CreateCourseMeetingFragment extends Fragment {
             .get(CourseHistoryViewModel.class);
     this.courseHistoryViewModel.init();
     this.courseHistoryViewModel.getMeetingsModel()
-            .observe(getViewLifecycleOwner(), meetingsModel -> {
-              if (meetingsModel != null) {
-                KeyboardUtil.hideKeyboard(getActivity());
-                this.navController.navigate(
-                        R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
-              }
-            });
+            .observe(getViewLifecycleOwner(), this::meetingModelLiveDataCallback);
+  }
+
+  private void meetingModelLiveDataCallback(StateData<MeetingsModel> meetingsModelStateData) {
+    this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
+
+    if (meetingsModelStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.createCourseMeetingFragmentButton.setEnabled(false);
+      this.binding.createCourseMeetingFragmentButton.setBackgroundColor(Color.GRAY);
+    } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      if (meetingsModelStateData.getErrorTag() == ErrorTag.TITLE) {
+        this.binding.createCourseMeetingFragmentTitleErrorText
+                .setText(meetingsModelStateData.getError().getMessage());
+        this.binding.createCourseMeetingFragmentTitleErrorText.setVisibility(View.VISIBLE);
+      }
+    } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
+      this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.createCourseMeetingFragmentTitleErrorText.setVisibility(View.GONE);
+    this.binding.createCourseMeetingFragmentGeneralErrorText.setVisibility(View.GONE);
+    this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.createCourseMeetingFragmentButton.setEnabled(true);
+    this.binding.createCourseMeetingFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

@@ -1,12 +1,14 @@
 package com.example.unserhoersaal.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.util.Log;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.enums.EmailVerificationEnum;
-import com.example.unserhoersaal.enums.LogRegErrorMessEnum;
+import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -18,18 +20,9 @@ public class RegistrationViewModel extends ViewModel {
   private static final String TAG = "LoginRegisterViewModel";
 
   private AuthAppRepository authAppRepository;
-  private MutableLiveData<FirebaseUser> userLiveData;
-
-  public MutableLiveData<LogRegErrorMessEnum> errorMessageRegUserName;
-  public MutableLiveData<LogRegErrorMessEnum> errorMessageRegEmail;
-  public MutableLiveData<LogRegErrorMessEnum> errorMessageRegPassword;
-  public MutableLiveData<LogRegErrorMessEnum> errorMessageRegProcess;
-  public MutableLiveData<EmailVerificationEnum> verificationStatus;
-  //public MutableLiveData<Boolean> emailVerificationRequest;
-
-  public MutableLiveData<UserModel> dataBindingUserInput;
-  public MutableLiveData<String> dataBindingPasswordInput;
-
+  private StateLiveData<FirebaseUser> userLiveData;
+  public StateLiveData<UserModel> userInputState;
+  public StateLiveData<PasswordModel> passwordInputState;
 
   /**
    * Initialize the LoginRegisterViewModel.
@@ -39,107 +32,91 @@ public class RegistrationViewModel extends ViewModel {
       return;
     }
     this.authAppRepository = AuthAppRepository.getInstance();
-    this.userLiveData = this.authAppRepository.getUserLiveData();
-    this.errorMessageRegUserName = new MutableLiveData<>();
-    this.errorMessageRegEmail = new MutableLiveData<>();
-    this.errorMessageRegPassword = new MutableLiveData<>();
-    this.errorMessageRegProcess = new MutableLiveData<>();
-    this.verificationStatus = new MutableLiveData<>();
-    //this.emailVerificationRequest = new MutableLiveData<>();
-    this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageRegProcess.setValue(LogRegErrorMessEnum.NONE);
-    //this.emailVerificationRequest.setValue(false);
-    this.verificationStatus.setValue(EmailVerificationEnum.NONE);
+    this.userLiveData = this.authAppRepository.getUserStateLiveData();
 
-    this.dataBindingUserInput = new MutableLiveData<>();
-    this.dataBindingPasswordInput = new MutableLiveData<>();
-    this.resetDatabindingData();
-
+    this.userInputState = new StateLiveData<>();
+    this.passwordInputState = new StateLiveData<>();
+    this.setDefaultInputState();
   }
 
   /** Give back all user data. */
-  public LiveData<FirebaseUser> getUserLiveData() {
-    //remove user data from mutablelivedata after successful firebase interaction
-    //TODO: is this best practice?
-    this.resetDatabindingData();
+  public StateLiveData<FirebaseUser> getUserStateLiveData() {
+    this.setDefaultInputState();
 
     return this.userLiveData;
   }
 
-
-  public void resetDatabindingData() {
-    this.dataBindingUserInput.setValue(new UserModel());
-    this.dataBindingPasswordInput.setValue("");
+  /** Returns UserInput to the Fragment to observe DataStatus changes. */
+  public StateLiveData<UserModel> getUserInputState() {
+    return this.userInputState;
   }
 
-  /** JavaDoc for this method. */
-  public void resetErrorMessageLiveData() {
-    this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.NONE);
-    this.errorMessageRegProcess.setValue(LogRegErrorMessEnum.NONE);
+  /** Returns PasswordInput to the Fragment to observe DataStatus changes. */
+  public StateLiveData<PasswordModel> getPasswordInputState() {
+    return this.passwordInputState;
   }
 
-  /* registration process
-   *
-   * check username, email and password input
-   * show error message if a input is empty or the pattern is wrong
-   * if not -> register new user -> if registration fails-> show error message
-   *
-   */
+  public void setDefaultInputState() {
+    this.userInputState.postCreate(new UserModel());
+    this.passwordInputState.postCreate(new PasswordModel());
+  }
 
   /** JavaDoc for this method. */
   public void register() {
-    if (this.dataBindingPasswordInput.getValue() == null) {
+    this.userLiveData.postLoading();
+
+    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
+    PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
+    if (userModel == null || passwordModel == null) {
+      Log.e(TAG, "userModel or passwordModel is null.");
+      this.userLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
+
     /* User input*/
-    String userName = this.dataBindingUserInput.getValue().getDisplayName();
-    String email = this.dataBindingUserInput.getValue().getEmail();
-    String password = this.dataBindingPasswordInput.getValue();
+    String userName = userModel.getDisplayName();
+    String email = userModel.getEmail();
+    String password = passwordModel.getCurrentPassword();
+
     /* Check if username input is empty or has wrong pattern.*/
-    if (Validation.emptyUserName(userName)) {
-      this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.USERNAME_EMPTY);
-    } else if (!Validation.userNameHasPattern(userName)) {
-      this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.USERNAME_WRONG_PATTERN);
-    } else {
-      this.errorMessageRegUserName.setValue(LogRegErrorMessEnum.NONE);
+    if (Validation.emptyString(userName)) {
+      Log.d(TAG, "userName is null.");
+      this.userLiveData.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
+      return;
+    } else if (!Validation.stringHasPattern(userName, Config.REGEX_PATTERN_USERNAME)) {
+      Log.d(TAG, "userName has wrong pattern.");
+      this.userLiveData.postError(
+              new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
+      return;
     }
     /* Check if email input is empty or has wrong pattern.*/
-    if (Validation.emptyEmail(email)) {
-      this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.EMAIL_EMPTY);
+    if (Validation.emptyString(email)) {
+      Log.d(TAG, "email has is null.");
+      this.userLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      return;
     } else if (!Validation.emailHasPattern(email)) {
-      this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.EMAIL_WRONG_PATTERN);
-    } else {
-      this.errorMessageRegEmail.setValue(LogRegErrorMessEnum.NONE);
+      Log.d(TAG, "email has wrong pattern.");
+      this.userLiveData.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_REGISTRATION), ErrorTag.EMAIL);
+      return;
     }
     /* Check if password input is empty or has wrong pattern.*/
-    if (Validation.emptyPassword(password)) {
-      this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.PASSWORD_EMPTY);
-    } else if (!Validation.passwordHasPattern(password)) {
-      this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.PASSWORD_WRONG_PATTERN);
-    } else {
-      this.errorMessageRegPassword.setValue(LogRegErrorMessEnum.NONE);
+    if (Validation.emptyString(password)) {
+      Log.d(TAG, "password has is null.");
+      this.userLiveData.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return;
+    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
+      Log.d(TAG, "password has wrong pattern.");
+      this.userLiveData.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return;
     }
-    /* Register new user or throw error message if it fails.*/
-    if (!Validation.emptyUserName(userName) && Validation.userNameHasPattern(userName)
-            && !Validation.emptyEmail(email) && Validation.emailHasPattern(email)
-            && !Validation.emptyPassword(password) && Validation.passwordHasPattern(password)) {
-      this.authAppRepository.register(userName, email, password, errorMessageRegProcess,
-              verificationStatus);
-    }
-  }
 
-  /** Set email verification status on completed.*/
-  public void setVerificationStatusOnNull() {
-    verificationStatus.setValue(EmailVerificationEnum.NONE);
-  }
-
-  /** Resend email verification email.*/
-  public void resendEmailVerification() {
-    authAppRepository.resendEmailVerification();
+    this.userInputState.postCreate(new UserModel());
+    //do not listen for this status because we would get two spinner loops
+    this.passwordInputState.postCreate(new PasswordModel());
+    this.authAppRepository.register(userName, email, password);
   }
 
 }

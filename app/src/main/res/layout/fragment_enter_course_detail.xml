@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             tools:context=".views.EnterCourseDetailFragment">
 
             <LinearLayout
@@ -46,7 +46,7 @@
                     android:id="@+id/enterCourseDetailFragmentCourseTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.course.title}"
+                    android:text="@{vm.course.data.title}"
                     android:layout_marginTop="16dp"
                     style="@style/toolbarSubtitleStyle" />
 
@@ -54,7 +54,7 @@
                     android:id="@+id/enterCourseDetailFragmentCourseCreator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.course.creatorName}"
+                    android:text="@{vm.course.data.creatorName}"
                     android:layout_marginTop="8dp"
                     style="@style/toolbarSubtitleStyle" />
 
@@ -62,7 +62,7 @@
                     android:id="@+id/enterCourseDetailFragmentCourseInstitution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.course.institution}"
+                    android:text="@{vm.course.data.institution}"
                     android:layout_marginTop="8dp"
                     style="@style/toolbarSubtitleStyle" />
 
@@ -74,7 +74,7 @@
                     android:text="@string/enter_course_fragment_enter_button_string"
                     android:layout_marginTop="32dp"
                     android:layout_gravity="center"
-                    android:textColor="@color/white"
+                    style="@style/wideOrangeButton"
                     android:backgroundTint="@color/green" />
 
                 <com.google.android.material.button.MaterialButton
@@ -87,7 +87,7 @@
                     android:backgroundTint="@color/red"
                     android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_enterCourseDetailFragment_to_enterCourseFragment)}"
                     android:text="@string/enter_course_detail_fragment_quit_button"
-                    android:textColor="@color/white" />
+                    style="@style/wideOrangeButton" />
 
             </LinearLayout>
 

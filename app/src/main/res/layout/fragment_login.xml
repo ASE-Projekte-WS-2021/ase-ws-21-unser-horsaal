@@ -7,16 +7,9 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.LoginViewModel"/>
-
-        <import
-            type="com.example.unserhoersaal.enums.LogRegErrorMessEnum" />
-
-        <import
-            type="com.example.unserhoersaal.Config" />
-
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
-
         <import type="android.view.View"/>
     </data>
 
@@ -39,41 +32,49 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/app_transparent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="64dp"/>
+
                 <TextView
                     android:id="@+id/loginFragmentTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/login_fragment_title_string"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textColor="@color/black"
-                    android:textSize="44sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginFragmentUserEmailTextField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="72dp"
+                    android:layout_marginTop="32dp"
                     android:hint="@string/login_fragment_user_email_hint"
                     android:layout_gravity="center"
-                    app:boxStrokeColor="@color/app_blue">
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentUserEmailEditText"
-                        android:text="@={vm.dataBindingUserInput.email}"
+                        android:text="@={vm.userInputState.data.email}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@color/white" />
+                        android:background="@drawable/rounded_corners" />
 
                     <TextView
-                        android:text="@{vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_EMPTY ? Config.EMAIL_EMPTY : Config.EMAIL_PATTERN_WRONG}"
-                        android:visibility="@{vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_EMPTY || vm.errorMessageLogEmail == LogRegErrorMessEnum.EMAIL_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:id="@+id/loginFragmentUserEmailErrorText"
+                        android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,48 +85,78 @@
                     android:layout_marginTop="32dp"
                     android:hint="@string/login_fragment_password_hint"
                     app:endIconMode="password_toggle"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentPasswordEditText"
-                        android:text="@={vm.dataBindingPasswordInput}"
+                        android:text="@={vm.passwordInputState.data.currentPassword}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        android:background="@color/white"/>
+                        android:background="@drawable/rounded_corners"/>
 
                     <TextView
-                        android:text="@{vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_EMPTY ? Config.PASSWORD_EMPTY : Config.PASSWORD_PATTERN_WRONG}"
-                        android:visibility="@{vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_EMPTY || vm.errorMessageLogPassword == LogRegErrorMessEnum.PASSWORD_WRONG_PATTERN ? View.VISIBLE : View.GONE}"
+                        android:id="@+id/loginFragmentPasswordErrorText"
+                        android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/loginFragmentLoginButton"
-                    android:onClick="@{() -> vm.login()}"
-                    android:background="@drawable/app_background"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:text="@string/login_fragment_login_button_string"
-                    android:layout_gravity="center"
-                    app:backgroundTint="@null"
-                    app:icon="@drawable/ic_baseline_login_24"
-                    app:iconGravity="textStart" />
-
                 <TextView
-                    android:text="@string/login_fragment_login_failure"
-                    android:visibility="@{vm.errorMessageLogProcess == LogRegErrorMessEnum.WRONG_LOGIN_INPUT ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/loginFragmentGeneralErrorMessage"
+                    android:visibility="gone"
                     android:textColor="@color/red"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="center"/>
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/loginFragmentButtonWrapper"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/loginFragmentLoginButton"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> vm.login()}"
+                        android:background="@drawable/app_background"
+                        android:layout_marginTop="32dp"
+                        android:text="@string/login_fragment_login_button_string"
+                        app:backgroundTint="@null"
+                        app:icon="@drawable/ic_baseline_login_24"
+                        app:iconGravity="textStart"
+                        android:layout_gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        style="@style/wideOrangeButton"/>
+
+                    <ProgressBar
+                        android:id="@+id/loginFragmentProgressSpinner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/white"
+                        android:indeterminateTintMode="src_in"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/loginFragmentLoginButton"
+                        app:layout_constraintEnd_toEndOf="@+id/loginFragmentLoginButton"
+                        app:layout_constraintHorizontal_bias="0.975"
+                        app:layout_constraintStart_toStartOf="@+id/loginFragmentLoginButton"
+                        app:layout_constraintTop_toTopOf="@+id/loginFragmentLoginButton" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/loginFragmentForgotPasswortTextView"
@@ -134,7 +165,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:text="@string/login_fragment_forgot_password"
-                    android:textColor="@color/app_blue"
+                    android:textColor="@color/call_to_action_darker_orange"
                     android:textStyle="bold"
                     android:layout_gravity="center" />
 
@@ -158,7 +189,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/login_fragment_registration_string"
-                        android:textColor="@color/app_blue"
+                        android:textColor="@color/call_to_action_darker_orange"
                         android:textStyle="bold"
                         android:layout_marginStart="32dp" />
 

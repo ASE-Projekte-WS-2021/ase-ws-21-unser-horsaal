@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -17,9 +18,12 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.adapter.ViewPagerAdapter;
 import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
+import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import java.util.List;
 
 /** Courses. */
 public class CoursesFragment extends Fragment {
@@ -71,16 +75,40 @@ public class CoursesFragment extends Fragment {
     this.initToolbar();
   }
 
-  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
     this.coursesViewModel.init();
+
+    /*this.coursesViewModel.getUserCourses()
+            .observe(getViewLifecycleOwner(), this::coursesLiveDataCallback);*/
+  }
+
+  /*@SuppressLint("NotifyDataSetChanged")
+  private void coursesLiveDataCallback(StateData<List<CourseModel>> listStateData) {
+    this.resetBindings();
+    this.coursesAdapter.notifyDataSetChanged();
+
+    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.coursesFragmentProgressSpinner.setVisibility(View.VISIBLE);
+    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    if (listStateData.getData().size() == 0) {
+      this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
+    } else {
+      this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
+    }
+  }*/
+
+  private void resetBindings() {
+    this.binding.coursesFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectAdapter() {
     this.coursesAdapter = new CoursesAdapter(
-            this.coursesViewModel.getUserCourses().getValue());
+            this.coursesViewModel.getUserCourses().getValue().getData());
   }
 
   private void connectBinding() {
@@ -98,13 +126,5 @@ public class CoursesFragment extends Fragment {
                     navController.navigate(R.id.action_coursesFragment_to_profileFragment));
   }
 
-  //For closing the Floating Action Buttons when returning to
-  //this Fragment and the Buttons were not closed before.
-  @Override
-  public void onResume() {
-    super.onResume();
-    this.binding.coursesFragmentEnterCourseFabLayout.setVisibility(View.GONE);
-    this.binding.coursesFragmentCreateCourseFabLayout.setVisibility(View.GONE);
-  }
 }
 

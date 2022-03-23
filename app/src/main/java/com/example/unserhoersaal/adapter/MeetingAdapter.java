@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.databinding.MeetingCardBinding;
 import com.example.unserhoersaal.databinding.SimpleCourseMeetingBinding;
 import com.example.unserhoersaal.model.MeetingsModel;
 import java.util.List;
@@ -24,9 +25,9 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-    SimpleCourseMeetingBinding binding = DataBindingUtil
+    MeetingCardBinding binding = DataBindingUtil
             .inflate(LayoutInflater.from(viewGroup.getContext()),
-                    R.layout.simple_course_meeting,
+                    R.layout.meeting_card,
                     viewGroup,
                     false);
     return new ViewHolder(binding);
@@ -45,10 +46,10 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
 
   /** ViewHolder for a meeting item. */
   public class ViewHolder extends RecyclerView.ViewHolder {
-    private final SimpleCourseMeetingBinding binding;
+    private final MeetingCardBinding binding;
 
     /** Constructor. */
-    public ViewHolder(SimpleCourseMeetingBinding binding) {
+    public ViewHolder(MeetingCardBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }

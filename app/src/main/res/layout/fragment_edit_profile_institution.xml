@@ -20,7 +20,7 @@
             android:id="@+id/editProfileInstitutionFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_background"
+            android:background="@color/app_blue"
             app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,21 +39,53 @@
             android:layout_height="wrap_content"
             android:hint="@string/edit_profile_fragment_institution"
             android:layout_margin="8dp"
-            app:boxStrokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentToolbar">
+            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentToolbar"
+            style="@style/inputField">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editProfileInstitutionFragmentEditText"
-                android:text="@={vm.dataBindingProfileInput.institution}"
+                android:text="@={vm.userInputState.data.institution}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:background="@color/white"
+                android:background="@drawable/rounded_corners"
                 android:maxLength="75"/>
 
+            <TextView
+                android:id="@+id/editProfileInstitutionFragmentInstitutionErrorText"
+                android:visibility="gone"
+                android:textColor="@color/red"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/editProfileInstitutionFragmentGeneralErrorText"
+            android:visibility="gone"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentTextField"/>
+
+        <ProgressBar
+            android:id="@+id/loginFragmentProgressSpinner"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentTextField"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editProfileInstitutionFragmentSaveFab"

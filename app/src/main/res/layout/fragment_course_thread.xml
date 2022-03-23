@@ -7,11 +7,16 @@
             name="vm"
             type="com.example.unserhoersaal.viewmodel.CurrentCourseViewModel" />
         <variable
+            name="model"
+            type="com.example.unserhoersaal.model.ThreadModel" />
+        <variable
             name="adapter"
             type="com.example.unserhoersaal.adapter.ChatAdapter" />
         <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.TagEnum"/>
     </data>
 
     <LinearLayout
@@ -29,7 +34,7 @@
                 android:id="@+id/currentCourseFragmentToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/app_background"
+                android:background="@color/app_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -38,7 +43,7 @@
                     android:id="@+id/currentCourseFragmentTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/course_thread_fragment_title"
+                    android:text="@{vm.meeting.data.title}"
                     style="@style/toolbarTitleStyle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -51,13 +56,12 @@
                 style="@style/toolbarSubtitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{vm.thread.title}"
-                android:background="@drawable/app_background"
+                android:text="@{vm.thread.data.title}"
+                android:background="@color/app_blue"
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar" />
-
 
             <LinearLayout
                 android:id="@+id/currentCourseFragmentLinearLayoutEnterNumber"
@@ -90,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:fillViewport="true"
-                app:layout_constraintBottom_toTopOf="@+id/currentCourseFragmentQuestionEditField"
+                app:layout_constraintBottom_toTopOf="@+id/courseThreadFragmentSendMessageContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentSubtitle">
@@ -101,113 +105,216 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/currentCourseFragmentQuestionContainer"
+
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
                         android:layout_margin="16dp"
-                        android:padding="8dp">
+                        android:minHeight="100dp"
+                        app:cardCornerRadius="8dp"
+                        setBorder="@{vm.thread.data.answered}">
 
-                        <ImageView
-                            android:id="@+id/currentCourseFragmentItemUserImage"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:maxWidth="50dp"
-                            android:maxHeight="50dp"
-                            setImage="@{vm.thread.photoUrl}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/currentCourseFragmentAuthor" />
-
-                        <TextView
-                            android:id="@+id/currentCourseFragmentAuthor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:text="@{vm.thread.creatorName}"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/currentCourseFragmentItemUserImage"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/currentCourseFragmentTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{Format.getFormatedDateTime(currentCourseFragmentTime, vm.thread.creationTime)}"
-                            android:layout_marginTop="16dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/currentCourseFragmentAnswerText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.thread.text}"
-                            android:layout_marginTop="8dp"
-                            app:layout_constraintStart_toStartOf="@+id/currentCourseFragmentAuthor"
-                            app:layout_constraintTop_toBottomOf="@+id/currentCourseFragmentAuthor"
-                            app:layout_constraintEnd_toEndOf="@+id/currentCourseFragmentTime" />
-
-                        <View
-                            android:id="@+id/currentCourseFragmentHorizontalLine"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="16dp"
-                            android:background="@color/grey"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentAnswerText" />
+                            android:layout_height="match_parent"
+                            android:padding="8dp"
+                            android:minHeight="100dp">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentHorizontalLine">
-
-                            <ImageView
-                                android:id="@+id/currentCourseFragmentLikeIcon"
-                                android:onClick="@{(view) -> vm.likeThread(vm.thread)}"
-                                setLikeStatus="@{vm.thread.likeStatus}"
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/courseThreadMessageVoteContainer"
                                 android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent">
+
+                                <ImageView
+                                    android:id="@+id/courseThreadMessageUpvote"
+                                    android:onClick="@{(view) -> vm.likeThread(vm.thread.data)}"
+                                    setLikeStatus="@{vm.thread.data.likeStatus}"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginTop="8dp"
+                                    android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toTopOf="@id/courseThreadMessageLikes"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/courseThreadMessageLikes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{Integer.toString(vm.thread.data.likes)}"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/courseThreadMessageDownvote"
+                                    android:onClick="@{(view) -> vm.dislikeThread(vm.thread.data)}"
+                                    setDisLikeStatus="@{vm.thread.data.likeStatus}"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/courseThreadMessageLikes" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <LinearLayout
+                                android:id="@+id/courseThreadMessageTagContainer"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:clickable="true"
-                                android:src="@drawable/ic_baseline_thumb_up_24" />
+                                android:orientation="horizontal"
+                                android:layout_marginEnd="8dp"
+                                android:visibility="@{vm.thread.data.tags == null ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
+                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageHashtagOne">
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/courseThreadMessageSubjectMatter"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/course_meeting_fragment_chip_subject"
+                                    android:visibility="@{vm.thread.data.tags.contains(TagEnum.SUBJECT_MATTER) ? View.VISIBLE : View.GONE}"
+                                    app:chipBackgroundColor="@color/orange"
+                                    style="@style/threadChipStyle" />
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/courseThreadMessageMistake"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/course_meeting_fragment_chip_mistake"
+                                    android:visibility="@{vm.thread.data.tags.contains(TagEnum.MISTAKE) ? View.VISIBLE : View.GONE}"
+                                    app:chipBackgroundColor="@color/red"
+                                    style="@style/threadChipStyle"/>
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/courseThreadMessageExamination"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/course_meeting_fragment_chip_exam"
+                                    android:visibility="@{vm.thread.data.tags.contains(TagEnum.EXAMINATION) ? View.VISIBLE : View.GONE}"
+                                    app:chipBackgroundColor="@color/green"
+                                    style="@style/threadChipStyle"/>
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/courseThreadMessageOrganisation"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/course_meeting_fragment_chip_organizational"
+                                    android:visibility="@{vm.thread.data.tags.contains(TagEnum.ORGANISATION) ? View.VISIBLE : View.GONE}"
+                                    app:chipBackgroundColor="@color/blue"
+                                    style="@style/threadChipStyle"/>
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/courseThreadMessageOther"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/course_meeting_fragment_chip_other"
+                                    android:visibility="@{vm.thread.data.tags.contains(TagEnum.OTHER) ? View.VISIBLE : View.GONE}"
+                                    app:chipBackgroundColor="@color/black"
+                                    style="@style/threadChipStyle"/>
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/courseThreadMessagePageTag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{vm.thread.data.pageNumber}"
+                                    android:visibility="@{vm.thread.data.pageNumber == null ? View.GONE : View.VISIBLE}"
+                                    app:chipBackgroundColor="@color/orange_darker"
+                                    app:chipIcon="@drawable/ic_baseline_insert_drive_file_24"
+                                    style="@style/threadChipStyle" />
+
+                                <!--
+                                <TextView
+                                    android:id="@+id/courseThreadMessageHashtagTwo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="#hashtag1"/>
+                                -->
+                            </LinearLayout>
 
                             <TextView
-                                android:id="@+id/currentCourseFragmentDislikeCount"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/courseThreadMessageHashtagOne"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:text="@{Integer.toString(vm.thread.likes)}" />
+                                android:text="@{vm.thread.data.hashtag}"
+                                android:layout_marginEnd="8dp"
+                                android:textSize="12sp"
+                                android:layout_marginTop="8dp"
+                                android:visibility="@{vm.thread.data.hashtag == null ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintTop_toBottomOf="@id/courseThreadMessageTagContainer"
+                                app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageText"/>
 
-                            <ImageView
-                                android:id="@+id/currentCourseFragmentDislikeIcon"
-                                android:onClick="@{(view) -> vm.dislikeThread(vm.thread)}"
-                                setDisLikeStatus="@{vm.thread.likeStatus}"
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/courseThreadMessageText"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:clickable="true"
-                                android:src="@drawable/ic_baseline_thumb_down_24" />
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="16dp"
+                                android:textColor="@color/black"
+                                android:text="@{vm.thread.data.text}"
+                                app:layout_constraintTop_toBottomOf="@id/courseThreadMessageHashtagOne"
+                                app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageThreadInfoContainer"
+                                />
 
-                        </LinearLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/courseThreadMessageThreadInfoContainer"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/courseThreadMessageText">
 
-                        <ImageView
-                            android:id="@+id/currentCourseFragmentSolvedIcon"
-                            setColor="@{vm.thread.answered}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_baseline_check_24"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                                <ImageView
+                                    android:id="@+id/courseThreadMessageAuthorImage"
+                                    setImage="@{vm.thread.data.photoUrl}"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"/>
 
+                                <TextView
+                                    android:id="@+id/courseThreadMessageAuthor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/app_blue"
+                                    android:text="@{vm.thread.data.creatorName}"
+                                    app:layout_constraintStart_toEndOf="@id/courseThreadMessageAuthorImage"
+                                    app:layout_constraintTop_toTopOf="@id/courseThreadMessageAuthorImage"
+                                    app:layout_constraintBottom_toBottomOf="@id/courseThreadMessageAuthorImage"
+                                     />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                <TextView
+                                    android:id="@+id/courseThreadMessageTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{Format.getFormatedDateTime(courseThreadMessageTime, vm.thread.data.creationTime)}"
+                                    android:textSize="12sp"
+                                    android:layout_marginStart="8dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@id/courseThreadMessageAuthor" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                     <TextView
                         android:id="@+id/currentCourseFragmentAnswersTextView"
@@ -243,53 +350,69 @@
                             android:adapter="@{adapter}"
                             android:nestedScrollingEnabled="false"
                             app:initLayoutManager="@{R.id.chatRecyclerView}"
-                            tools:listitem="@layout/answer_item" />
+                            tools:listitem="@layout/answer_card" />
                     </RelativeLayout>
 
                 </LinearLayout>
 
             </ScrollView>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/currentCourseFragmentQuestionEditField"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/courseThreadFragmentSendMessageContainer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="8dp"
-                app:hintEnabled="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/currentCourseFragmentSendQuestionButton"
-                app:layout_constraintStart_toStartOf="parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/currentCourseFragmentQuestionEditText"
-                    android:text="@={vm.dataBindingMessageInput.text}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
-                    android:hint="@string/current_course_edit_text_hint"
-                    android:maxLength="500"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/currentCourseFragmentSendQuestionButton"
-                android:onClick="@{(view) -> vm.sendMessage()}"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:padding="8dp"
+                android:background="@color/app_background"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:cornerRadius="30dp"
-                android:insetBottom="0dp"
-                android:insetLeft="0dp"
-                android:insetRight="0dp"
-                android:insetTop="0dp"
-                app:icon="@drawable/ic_baseline_send_24" />
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/currentCourseFragmentQuestionEditField"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/currentCourseFragmentSendQuestionButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    style="@style/inputField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/currentCourseFragmentQuestionEditText"
+                        android:text="@={vm.messageModelInputState.data.text}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners"
+                        android:hint="@string/current_course_edit_text_hint"
+                        android:maxLength="500"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/currentCourseFragmentSendQuestionButton"
+                    android:onClick="@{(view) -> vm.sendMessage()}"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/call_to_action_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:cornerRadius="30dp"
+                    android:insetBottom="0dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:insetTop="0dp"
+                    app:icon="@drawable/ic_baseline_send_24" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

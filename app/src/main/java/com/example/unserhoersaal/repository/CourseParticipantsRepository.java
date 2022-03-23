@@ -1,9 +1,12 @@
 package com.example.unserhoersaal.repository;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
@@ -20,14 +23,17 @@ public class CourseParticipantsRepository {
   private static final String TAG = "CourseParticipantsRepo";
 
   private static CourseParticipantsRepository instance;
-
-  private MutableLiveData<String> courseId = new MutableLiveData<>();
-  private MutableLiveData<List<UserModel>> users = new MutableLiveData<>();
+  private DatabaseReference databaseReference;
+  private StateLiveData<String> courseId = new StateLiveData<>();
+  private StateLiveData<List<UserModel>> users = new StateLiveData<>();
 
   private ValueEventListener listener;
 
+  /** JavaDoc. */
   public CourseParticipantsRepository() {
-    initListener();
+    this.initListener();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    this.users.postCreate(new ArrayList<>());
   }
 
   /** Returns the instance of this singleton class. */
@@ -38,27 +44,33 @@ public class CourseParticipantsRepository {
     return instance;
   }
 
-  public MutableLiveData<String> getCourseId() {
+  public StateLiveData<String> getCourseId() {
     return this.courseId;
   }
 
-  public MutableLiveData<List<UserModel>> getUsers() {
+  public StateLiveData<List<UserModel>> getUsers() {
     return this.users;
   }
 
   /** TODO. */
   public void setCourseId(String courseId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     if (this.courseId.getValue() != null) {
-      reference.child(Config.CHILD_COURSES_USER).child(courseId).removeEventListener(this.listener);
+      this.databaseReference
+              .child(Config.CHILD_COURSES_USER)
+              .child(courseId)
+              .removeEventListener(this.listener);
     }
-    reference.child(Config.CHILD_COURSES_USER).child(courseId).addValueEventListener(this.listener);
-    this.courseId.postValue(courseId);
+
+    this.databaseReference
+            .child(Config.CHILD_COURSES_USER)
+            .child(courseId)
+            .addValueEventListener(this.listener);
+
+    this.courseId.postCreate(courseId);
   }
 
   private Task<DataSnapshot> getUserTask(String uid) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    return reference.child(Config.CHILD_USER).child(uid).get();
+    return this.databaseReference.child(Config.CHILD_USER).child(uid).get();
   }
 
   /** TODO. */
@@ -74,17 +86,24 @@ public class CourseParticipantsRepository {
         Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
           for (Task<DataSnapshot> task : taskList) {
             UserModel model = task.getResult().getValue(UserModel.class);
+
+            if (model == null) {
+              Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
+              users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
+              return;
+            }
             model.setKey(task.getResult().getKey());
             userList.add(model);
           }
-          users.postValue(userList);
+          users.postUpdate(userList);
         });
 
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-
+        Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
+        users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
       }
     };
   }

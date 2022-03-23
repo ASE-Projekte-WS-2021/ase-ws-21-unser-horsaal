@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -16,8 +17,9 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseThreadBinding;
 import com.example.unserhoersaal.model.MessageModel;
-import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import java.util.List;
 
 /**Course Thread.*/
 public class CourseThreadFragment extends Fragment {
@@ -63,17 +65,29 @@ public class CourseThreadFragment extends Fragment {
             .get(CurrentCourseViewModel.class);
     this.currentCourseViewModel.init();
     this.currentCourseViewModel.getMessages()
-            .observe(getViewLifecycleOwner(), messageModels -> {
-              KeyboardUtil.hideKeyboard(getActivity());
-              this.currentCourseViewModel.sortAnswersByLikes(messageModels);
-              chatAdapter.notifyDataSetChanged();
-              this.currentCourseViewModel.dataBindingMessageInput.setValue(new MessageModel());
-            });
+            .observe(getViewLifecycleOwner(), this::messageLiveDataCallback);
+  }
+
+  @SuppressLint("NotifyDataSetChanged")
+  private void messageLiveDataCallback(StateData<List<MessageModel>> listStateData) {
+    //sort answers by likes
+    this.currentCourseViewModel.sortAnswersByLikes(listStateData.getData());
+    this.chatAdapter.notifyDataSetChanged();
+
+    if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    if (listStateData.getData().size() == 0) {
+      this.binding.currentCourseFragmentNoAnswersTextView.setVisibility(View.VISIBLE);
+    } else {
+      this.binding.currentCourseFragmentNoAnswersTextView.setVisibility(View.GONE);
+    }
   }
 
   private void connectAdapter() {
     this.chatAdapter =
-            new ChatAdapter(this.currentCourseViewModel.getMessages().getValue(),
+            new ChatAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
                     this.currentCourseViewModel);
   }
 

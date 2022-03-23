@@ -68,7 +68,8 @@ public class CourseParticipantsFragment extends Fragment {
 
   private void connectAdapter() {
     this.participantAdapter =
-            new ParticipantAdapter(this.courseParticipantsViewModel.getUserList().getValue());
+            new ParticipantAdapter(
+                    this.courseParticipantsViewModel.getUserList().getValue().getData());
   }
 
   private void connectBinding() {

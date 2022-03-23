@@ -1,10 +1,16 @@
 package com.example.unserhoersaal.repository;
 
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 /** Repository for the ProfileViewModel. */
 public class ProfileRepository {
@@ -22,17 +31,22 @@ public class ProfileRepository {
   private static final String TAG = "ProfileRepo";
 
   private static ProfileRepository instance;
-  private UserModel userModel;
-  private MutableLiveData<UserModel> user = new MutableLiveData<>();
-  private MutableLiveData<Boolean> profileChanged = new MutableLiveData<>();
+  private DatabaseReference databaseReference;
+  private FirebaseAuth firebaseAuth;
+  private StorageReference storageReference;
+  private StateLiveData<UserModel> user = new StateLiveData<>();
+  private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
 
+  /** TODO. */
   public ProfileRepository() {
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    this.storageReference = FirebaseStorage.getInstance().getReference();
     this.loadUser();
+    this.profileChanged.postCreate(Boolean.FALSE);
   }
 
-  /**
-   * Generate an instance of the class.
-   */
+  /** Generate an instance of the class. */
   public static ProfileRepository getInstance() {
     if (instance == null) {
       instance = new ProfileRepository();
@@ -40,83 +54,214 @@ public class ProfileRepository {
     return instance;
   }
 
-  public MutableLiveData<UserModel> getUser() {
+  public StateLiveData<UserModel> getUser() {
     return this.user;
   }
 
-  public MutableLiveData<Boolean> getProfileChanged() {
+  public StateLiveData<Boolean> getProfileChanged() {
     return this.profileChanged;
   }
 
-  /**
-   * Loads an user from the database.
-   */
+  /** Loads an user from the database. */
   public void loadUser() {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    String id = auth.getCurrentUser().getUid();
+    this.user.postLoading();
 
-    Query query = reference.child(Config.CHILD_USER).child(id);
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+      return;
+    }
+
+    String id = this.firebaseAuth.getCurrentUser().getUid();
+
+    Query query = this.databaseReference.child(Config.CHILD_USER).child(id);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        if (snapshot.exists()) {
-          userModel = snapshot.getValue(UserModel.class);
-          userModel.setKey(snapshot.getKey());
-          user.postValue(userModel);
+        UserModel userModel = snapshot.getValue(UserModel.class);
+
+        if (userModel == null) {
+          Log.e(TAG, "user model null");
+          user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+          return;
         }
+        userModel.setKey(snapshot.getKey());
+        user.postUpdate(userModel);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.d(TAG, "onCancelled: " + error.getMessage());
+        user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
       }
     });
   }
 
   /** TODO. */
   public void changeDisplayName(String displayName) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    reference.child(Config.CHILD_USER)
+    this.profileChanged.postLoading();
+
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    String uid = this.firebaseAuth.getUid();
+
+    if (uid == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    this.databaseReference
+            .child(Config.CHILD_USER)
             .child(uid)
             .child(Config.CHILD_DISPLAY_NAME)
             .setValue(displayName)
-            .addOnSuccessListener(unused -> profileChanged.postValue(Boolean.TRUE));
+            .addOnSuccessListener(unused -> {
+              profileChanged.postUpdate(Boolean.TRUE);
+              profileChanged.postCreate(Boolean.FALSE);
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, e.getMessage());
+              profileChanged.postError(
+                      new Error(Config.AUTH_EDIT_USERNAME_CHANGE_FAILED), ErrorTag.REPO);
+            });
   }
 
   /** TODO. */
   public void changeInstitution(String institution) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    reference.child(Config.CHILD_USER)
+    this.profileChanged.postLoading();
+
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    String uid = this.firebaseAuth.getUid();
+
+    if (uid == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    this.databaseReference.child(Config.CHILD_USER)
             .child(uid)
             .child(Config.CHILD_INSTITUTION)
             .setValue(institution)
-            .addOnSuccessListener(unused -> profileChanged.postValue(Boolean.TRUE));
+            .addOnSuccessListener(unused -> {
+              profileChanged.postUpdate(Boolean.TRUE);
+              profileChanged.postCreate(Boolean.FALSE);
+            })
+            .addOnFailureListener(e ->
+                    profileChanged.postError(
+                            new Error(Config.AUTH_EDIT_INSTITUTION_CHANGE_FAILED), ErrorTag.REPO));
   }
 
   /** TODO. */
   public void changePassword(String oldPassword, String newPassword) {
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String email = user.getEmail();
+    this.profileChanged.postLoading();
+
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    String email = this.firebaseAuth.getCurrentUser().getEmail();
+
+    if (email == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
     AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
 
-    user.reauthenticate(credential).addOnCompleteListener(task -> {
-      if (task.isSuccessful()) {
-        user.updatePassword(newPassword).addOnCompleteListener(task1 -> {
-          if (task1.isSuccessful()) {
-            profileChanged.postValue(Boolean.TRUE);
-          } else {
-            //todo password reset failed
-            Log.d(TAG, "onComplete: " + "reset failed");
-          }
-        });
-      } else {
-        //todo old password wrong
-        Log.d(TAG, "onComplete: " + "old password wrong");
-      }
-    });
+    this.firebaseAuth
+            .getCurrentUser()
+            .reauthenticate(credential)
+            .addOnCompleteListener(task -> {
+              if (task.isSuccessful()) {
+                this.firebaseAuth
+                        .getCurrentUser()
+                        .updatePassword(newPassword)
+                        .addOnCompleteListener(task1 -> {
+                          if (task1.isSuccessful()) {
+                            profileChanged.postUpdate(Boolean.TRUE);
+                            profileChanged.postCreate(Boolean.FALSE);
+                          } else {
+                            Log.e(TAG, "onComplete: " + "reset failed");
+                            profileChanged.postError(
+                                    new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED),
+                                    ErrorTag.REPO);
+                          }
+                        });
+              } else {
+                Log.e(TAG, "onComplete: " + "old password wrong");
+                profileChanged.postError(
+                        new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
+              }
+            });
+  }
+
+  public void uploadImageToFirebase(Uri uri) {
+    this.profileChanged.postLoading();
+
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+
+    String uid = this.firebaseAuth.getUid();
+
+    if (uid == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.profileChanged.postError(
+              new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO);
+      return;
+    }
+    StorageReference userPhotoRef = storageReference.child("users/" + uid + "/profile.jpg");
+
+    userPhotoRef.putFile(uri).addOnSuccessListener(unused -> {
+      userPhotoRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+        String downloadUriString = downloadUri.toString();
+        changePhotoUrl(downloadUriString, uid);
+      }).addOnFailureListener( e -> {
+        Log.e(TAG, e.getMessage());
+        profileChanged.postError(
+                new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO);
+      });
+    }).addOnFailureListener(e -> {
+              Log.e(TAG, e.getMessage());
+              profileChanged.postError(
+                      new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO);
+            });
+  }
+
+  public void changePhotoUrl(String uri, String uid) {
+    this.databaseReference.child(Config.CHILD_USER)
+            .child(uid)
+            .child(Config.CHILD_PHOTO_URL)
+            .setValue(uri).addOnSuccessListener(unused -> {
+      profileChanged.postUpdate(Boolean.TRUE);
+      profileChanged.postCreate(Boolean.FALSE);
+    }).addOnFailureListener(e ->
+                    profileChanged.postError(
+                            new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO));
+
   }
 
 }

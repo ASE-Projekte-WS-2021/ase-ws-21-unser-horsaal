@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,10 +17,12 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
-import com.example.unserhoersaal.enums.EmailVerificationEnum;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.utils.DeepLinkMode;
-import com.example.unserhoersaal.utils.DialogBuilder;
+import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Initiates the UI of the registration area, the registration function
@@ -68,39 +69,60 @@ public class RegistrationFragment extends Fragment {
     this.registrationViewModel = new ViewModelProvider(requireActivity())
             .get(RegistrationViewModel.class);
     this.registrationViewModel.init();
-
-    //Todo: automatic redirect to the course page after verification.
     this.registrationViewModel
-            .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              //TODO @michi add verification check
-              //if (firebaseUser != null && firebaseUser.isEmailVerified()) {
-              if (firebaseUser != null
-                      && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
-                navController.navigate(R.id.action_registrationFragment_to_enterCourseFragment);
-              }
-              /*if (firebaseUser != null) {
-                navController.navigate(R.id.action_registrationFragment_to_coursesFragment);
-              }*/
-            });
-     
-
-    /* Open email-verify-dialog (with resend option) after registration input.*/
-    this.registrationViewModel
-            .verificationStatus.observe(getViewLifecycleOwner(), status -> {
-              if (status == EmailVerificationEnum.SEND_EMAIL_VERIFICATION) {
-                DialogBuilder dialog = new DialogBuilder();
-                AlertDialog.Builder verificationDialog =
-                        dialog.verifyEmailDialogRegistration(getView(), registrationViewModel);
-                /* If user don`t want to resend verification email switch to the login screen.*/
-                verificationDialog.setNegativeButton(Config.DIALOG_CANCEL_BUTTON,
-                        (dialogInterface, i) -> {
-                          registrationViewModel.setVerificationStatusOnNull();
-                          navController.navigate(R.id.action_registrationFragment_to_loginFragment);
-                        });
-                verificationDialog.show();
-              }
-            });
+            .getUserStateLiveData().observe(getViewLifecycleOwner(), this::userLiveStateCallback);
   }
+
+  private void userLiveStateCallback(StateData<FirebaseUser> firebaseUserStateData) {
+    this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
+
+    if (firebaseUserStateData == null) { //-> move to other method
+      Log.e(TAG, "FirebaseUserStateData is null");
+      this.binding.registrationFragmentGeneralErrorText.setText(Config.UNSPECIFIC_ERROR);
+      this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
+      return;
+    }
+
+    if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE
+            && firebaseUserStateData.getData() != null) {
+      navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.registrationFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.registrationFragmentButton.setEnabled(false);
+      this.binding.registrationFragmentButton.setBackgroundColor(Color.GRAY);
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+      if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
+        this.binding.registrationFragmentUserEmailErrorText
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.registrationFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
+      } else if (firebaseUserStateData.getErrorTag() == ErrorTag.USERNAME) {
+        this.binding.registrationFragmentUserErrorText
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.registrationFragmentUserErrorText.setVisibility(View.VISIBLE);
+      } else if (firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
+        this.binding.registrationFragmentPasswordErrorText
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.registrationFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+      } else {
+        this.binding.registrationFragmentGeneralErrorText
+                .setText(firebaseUserStateData.getError().getMessage());
+        this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
+      }
+    }
+
+  }
+
+  private void resetBindings() {
+    this.binding.registrationFragmentGeneralErrorText.setVisibility(View.GONE);
+    this.binding.registrationFragmentUserEmailErrorText.setVisibility(View.GONE);
+    this.binding.registrationFragmentUserErrorText.setVisibility(View.GONE);
+    this.binding.registrationFragmentPasswordErrorText.setVisibility(View.GONE);
+    this.binding.registrationFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.registrationFragmentButton.setEnabled(true);
+    this.binding.registrationFragmentButton.setTextAppearance(R.style.wideBlueButton);
+  }
+
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -108,15 +130,8 @@ public class RegistrationFragment extends Fragment {
   }
 
   @Override
-  public void onPause() {
-    super.onPause();
-    this.registrationViewModel.resetErrorMessageLiveData();
-    this.registrationViewModel.resetDatabindingData();
-  }
-
-  @Override
   public void onResume() {
     super.onResume();
-    Log.d(TAG, "onResume: ");
+    this.resetBindings();
   }
 }
