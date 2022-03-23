@@ -1,7 +1,5 @@
 package com.example.unserhoersaal;
 
-import android.os.ParcelUuid;
-
 import java.text.SimpleDateFormat;
 
 /** Config Class. */
@@ -92,6 +90,7 @@ public class Config {
   public static final String CHILD_LIKE_USER = "likeUser";
   public static final String CHILD_DISPLAY_NAME = "displayName";
   public static final String CHILD_INSTITUTION = "institution";
+  public static final String CHILD_PHOTO_URL = "photoUrl";
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
   public static final String CHILD_MEMBER_COUNT = "memberCount";
 
@@ -161,6 +160,8 @@ public class Config {
           "Die Institution konnte nicht geändert werden!";
   public static final String AUTH_EDIT_INSTITUTION_CHANGE_SUCCESS =
           "Die Institution wurde erfolgreich geändert!";
+  public static final String AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED =
+          "Das Profilbild konnte nicht geändert werden!";
   public static final String AUTH_VERIFICATION_EMAIL_SENT =
           "Verifizierungsemail versandt";
   public static final String AUTH_VERIFICATION_EMAIL_NOT_SENT =
@@ -194,6 +195,7 @@ public class Config {
   public static final String THREADS_FAILED_TO_LOAD = "Threads konnten nicht geladen werden!";
   public static final String MEETINGS_FAILED_TO_LOAD = "Meeting konnten nicht geladen werden!";
   public static final String MESSAGES_FAILED_TO_LOAD = "Nachrichten konnten nicht geladen werden!";
+  public static final String NO_PICUTRE_SELECTED = "Es wurde kein Bild selektiert!";
 
   /**=======================.
    *  Avatar Placeholder Ids
