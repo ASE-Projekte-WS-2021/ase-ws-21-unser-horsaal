@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.LikeStatus;
+import com.google.android.material.card.MaterialCardView;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -65,6 +67,17 @@ public class Format {
       view.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
     } else {
       view.clearColorFilter();
+    }
+  }
+
+  /** sets border for thread card and colours it green when thread is solved. */
+  @BindingAdapter("setBorder")
+  public static void setBorder(MaterialCardView view, boolean answered) {
+    if (answered) {
+      view.setStrokeWidth(Config.CARD_STROKE_WIDTH);
+      view.setStrokeColor(Color.GREEN);
+    } else {
+      view.setStrokeWidth(Config.NO_STROKE);
     }
   }
 

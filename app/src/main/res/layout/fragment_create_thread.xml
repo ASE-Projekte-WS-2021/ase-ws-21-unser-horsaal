@@ -77,7 +77,8 @@
                     android:text="@string/create_thread_fragment_tag_textview"
                     android:layout_margin="16dp"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/app_blue"/>
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/createThreadFragmentChipGroup"
@@ -91,8 +92,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_subject"
-                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.SUBJECT_MATTER)}"/>
-
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.SUBJECT_MATTER)}"
+                        app:chipBackgroundColor="@color/orange"
+                        style="@style/createThreadChipStyle"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagMistake"
@@ -100,8 +102,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_mistake"
-                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.MISTAKE)}"/>
-
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.MISTAKE)}"
+                        app:chipBackgroundColor="@color/red"
+                        style="@style/createThreadChipStyle"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagExamination"
@@ -109,8 +112,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_exam"
-                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.EXAMINATION)}"/>
-
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.EXAMINATION)}"
+                        app:chipBackgroundColor="@color/green"
+                        style="@style/createThreadChipStyle"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagOrganisation"
@@ -118,8 +122,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_organizational"
-                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.ORGANISATION)}"/>
-
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.ORGANISATION)}"
+                        app:chipBackgroundColor="@color/blue"
+                        style="@style/createThreadChipStyle"/>
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTagOther"
@@ -127,8 +132,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_other"
-                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.OTHER)}"/>
-
+                        android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.OTHER)}"
+                        app:chipBackgroundColor="@color/black"
+                        style="@style/createThreadChipStyle"/>
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -147,6 +153,8 @@
                         android:text="@string/create_thread_fragment_hashtag_text"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:textColor="@color/app_blue"
+                        android:layout_marginEnd="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/createThreadFragmentHashtagArrow"/>
@@ -156,6 +164,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                        app:tint="@color/app_blue"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -197,6 +206,8 @@
                         android:text="@string/create_thread_fragment_pagenumber_text"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:textColor="@color/app_blue"
+                        android:layout_marginEnd="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/createThreadFragmentPageNumberArrow"/>
@@ -206,6 +217,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                        app:tint="@color/app_blue"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>

@@ -198,8 +198,8 @@ public class Config {
   /**=======================.
    *  Avatar Placeholder Ids
    * ======================= */
-  public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24;
-  public static final int ERROR_PROFILE_AVATAR = R.drawable.ic_baseline_account_circle_24;
+  public static final int PLACEHOLDER_AVATAR = R.drawable.ic_baseline_account_circle_24_black;
+  public static final int ERROR_PROFILE_AVATAR = R.drawable.ic_baseline_account_circle_24_black;
 
   /**=======================.
    *  CodeMapping
@@ -235,4 +235,10 @@ public class Config {
   public static final String TYPE_IMAGE = "image/*";
   public static final String GALLERY_INTENT_TITLE = "Betrachte generierten Qr-Code";
   public static final String PNG_FILE_ENDING = ".png";
+
+  /**=======================.
+   *  Thread-Card
+   * ======================= */
+  public static final int CARD_STROKE_WIDTH = 2;
+  public static final int NO_STROKE = 0;
 }

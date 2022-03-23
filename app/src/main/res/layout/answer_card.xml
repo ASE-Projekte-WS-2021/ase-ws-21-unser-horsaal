@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="model"
+            type="com.example.unserhoersaal.model.MessageModel" />
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.CurrentCourseViewModel" />
+        <import type="com.example.unserhoersaal.utils.ImageAdapter"/>
+        <import type="com.example.unserhoersaal.utils.Format"/>
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:minHeight="100dp"
+        app:cardCornerRadius="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:minHeight="100dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/answerCardVoteContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/answerCardUpvote"
+                    android:onClick="@{(view) -> vm.like(model)}"
+                    setLikeStatus="@{model.likeStatus}"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/answerCardLikes"
+                    />
+
+                <TextView
+                    android:id="@+id/answerCardLikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{Integer.toString(model.likes)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ImageView
+                    android:id="@+id/answerCardDownvote"
+                    android:onClick="@{(view) -> vm.dislike(model)}"
+                    setDisLikeStatus="@{model.likeStatus}"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/answerCardLikes" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/answerCardText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black"
+                android:text="@{model.text}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/answerCardVoteContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/answerCardAnswerInfoContainer"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/answerCardAnswerInfoContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/answerCardVoteContainer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/answerCardText">
+
+                <ImageView
+                    android:id="@+id/answerCardAuthorImage"
+                    setImage="@{model.photoUrl}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/answerCardAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:textColor="@color/app_blue"
+                    android:text="@{model.creatorName}"
+                    app:layout_goneMarginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@id/answerCardAuthorImage"
+                    app:layout_constraintTop_toTopOf="@id/answerCardAuthorImage"
+                    app:layout_constraintBottom_toBottomOf="@id/answerCardAuthorImage"
+                    />
+
+                <ImageView
+                    android:id="@+id/answerCardSolvedIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_check_24"
+                    android:onClick="@{(view) -> vm.solved(model.key)}"
+                    setColor="@{model.topAnswer}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/answerCardAuthorImage"
+                    app:layout_constraintTop_toTopOf="@id/answerCardAuthorImage"/>
+
+                <TextView
+                    android:id="@+id/answerCardTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{Format.getFormatedDateTime(answerCardTime, model.creationTime)}"
+                    android:textSize="12sp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/answerCardAuthor" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
