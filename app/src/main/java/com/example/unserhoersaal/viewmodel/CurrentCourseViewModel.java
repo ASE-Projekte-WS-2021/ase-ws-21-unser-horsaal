@@ -9,8 +9,7 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
-import java.util.Collections;
-import java.util.Comparator;
+import com.example.unserhoersaal.utils.ArrayListUtil;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.List;
@@ -25,6 +24,7 @@ public class CurrentCourseViewModel extends ViewModel {
   private StateLiveData<String> threadId = new StateLiveData<>();
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<ThreadModel> thread = new StateLiveData<>();
+  private ArrayListUtil arrayListUtil = new ArrayListUtil();
   public StateLiveData<String> userId;
   public StateLiveData<MessageModel> messageModelInputState = new StateLiveData<>();
 
@@ -55,12 +55,7 @@ public class CurrentCourseViewModel extends ViewModel {
 
   /** Sort the messages list by likes. */
   public void sortAnswersByLikes(List<MessageModel> messageModelList) {
-    Collections.sort(messageModelList, new Comparator<MessageModel>() {
-      @Override
-      public int compare(MessageModel messageModel, MessageModel t1) {
-        return t1.getLikes() - messageModel.getLikes();
-      }
-    });
+    this.arrayListUtil.sortAnswersByLikes(messageModelList);
   }
 
   public StateLiveData<String> getThreadId() {

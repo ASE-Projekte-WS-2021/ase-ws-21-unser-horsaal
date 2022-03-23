@@ -17,7 +17,6 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.MeetingAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseHistoryBinding;
 import com.example.unserhoersaal.model.MeetingsModel;
-import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
@@ -78,8 +77,6 @@ public class CourseHistoryFragment extends Fragment {
 
     this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
             this::meetingsLiveDataCallback);
-    this.courseHistoryViewModel.getMeetingsModel()
-            .observe(getViewLifecycleOwner(), this::meetingModelInputStateCallback);
   }
 
   @SuppressLint("NotifyDataSetChanged")
@@ -88,6 +85,8 @@ public class CourseHistoryFragment extends Fragment {
       return;
     }
     this.resetBindings();
+    //sort meeting by oldest
+    this.courseHistoryViewModel.sortMeetings(listStateData.getData(), "oldest");
     this.meetingAdapter.notifyDataSetChanged();
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
@@ -103,16 +102,9 @@ public class CourseHistoryFragment extends Fragment {
     }
   }
 
-  private void meetingModelInputStateCallback(StateData<MeetingsModel> meetingsModelStateData) {
-    if (meetingsModelStateData != null) {
-      KeyboardUtil.hideKeyboard(getActivity());
-    }
-  }
-
   private void resetBindings() {
     this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.GONE);
   }
-
 
   private void connectAdapter() {
     this.meetingAdapter =
