@@ -275,6 +275,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <Button
+            android:id="@+id/editProfileButton"
+            android:text="Profil bearbeiten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/courseDescriptionFragmentShareCourseFab" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/courseDescriptionFragmentShareCourseFab"
             android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.data.codeMapping)}"
