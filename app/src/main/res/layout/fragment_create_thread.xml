@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.unserhoersaal.viewmodel.CourseMeetingViewModel" />
+            type="com.example.unserhoersaal.viewmodel.QuestionsViewModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>

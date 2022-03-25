@@ -94,14 +94,29 @@ public class Config {
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
   public static final String CHILD_MEMBER_COUNT = "memberCount";
 
-  /** Tabview. */
+  /**=======================.
+   * Tabviews
+   * ======================= */
+  //Courses Tabview
   public static final int TAB_TODAY = 0;
   public static final String TAB_TODAY_NAME = "Heute";
   public static final int TAB_ALL = 1;
   public static final String TAB_ALL_NAME = "Alle";
   public static final int TAB_OWNED = 2;
   public static final String TAB_OWNED_NAME = "Erstellt";
-  public static final int NUMBER_OF_TABS = 3;
+  public static final int COURSES_NUMBER_OF_TABS = 3;
+
+  //Meetings Tabview
+  public static final int TAB_LIVE_CHAT = 0;
+  public static final String TAB_LIVE_CHAT_NAME = "Live-Chat";
+  public static final int TAB_VOTING = 1;
+  public static final String TAB_VOTING_NAME = "Abstimmungen";
+  public static final int TAB_QUESTIONS = 2;
+  public static final String TAB_QUESTIONS_NAME = "Fragen";
+  public static final int MMEETINGS_NUMBER_OF_TABS = 3;
+
+
+
 
   /**=======================.
    * Internal Error Messages
