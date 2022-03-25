@@ -83,10 +83,16 @@ public class CreateCourseViewModel extends ViewModel {
       return;
     }
 
-    courseModel.setCodeMapping(this.getCodeMapping());
+    if (isEditing) {
+      this.createCourseRepository.editCourse(courseModel);
 
-    this.courseModelInputState.postCreate(new CourseModel());
-    this.createCourseRepository.createNewCourse(courseModel);
+    }else {
+      courseModel.setCodeMapping(this.getCodeMapping());
+
+      this.courseModelInputState.postCreate(new CourseModel());
+      this.createCourseRepository.createNewCourse(courseModel);
+    }
+    isEditing = false;
   }
 
   //https://www.codegrepper.com/code-examples/java/how+to+generate+random+letters+in+java

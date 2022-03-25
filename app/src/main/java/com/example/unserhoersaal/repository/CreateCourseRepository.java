@@ -8,6 +8,7 @@ import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 
 /**Class creates a course and saves it in Firebase.**/
@@ -69,6 +70,58 @@ public class CreateCourseRepository {
               courseModelMutableLiveData.postError(
                       new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
             });
+  }
+
+  /**Method edits an course.**/
+  public void editCourse(CourseModel courseModel) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courseModelMutableLiveData.postError(
+              new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    String courseId = courseModel.getKey();
+
+    if (courseId == null) {
+      Log.e(TAG, "courseid is null");
+      this.courseModelMutableLiveData.postError(
+              new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    DatabaseReference courseDbRef = this.databaseReference.child(Config.CHILD_COURSES).child(courseId);
+
+
+    courseDbRef.child("description").setValue(courseModel.getDescription())
+            .addOnSuccessListener(unused -> {
+              courseModel.setKey(courseId);
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
+              courseModelMutableLiveData.postError(
+                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+            });
+
+    courseDbRef.child("institution").setValue(courseModel.getInstitution())
+            .addOnSuccessListener(unused -> {
+              courseModel.setKey(courseId);
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
+              courseModelMutableLiveData.postError(
+                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+            });
+    courseDbRef.child("title").setValue(courseModel.getInstitution())
+            .addOnSuccessListener(unused -> {
+              courseModel.setKey(courseId);
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
+              courseModelMutableLiveData.postError(
+                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+            });
+
   }
 
   private void addUserToCourse(CourseModel course, String user) {
