@@ -138,4 +138,21 @@ public class NavUtil {
     dialog.show();
   }
 
+  /** Navigates to CourseHistory. */
+  @BindingAdapter("navigateToCourse")
+  public static void navigateToCourseEdit(View view, CourseModel model) {
+    if (model == null) {
+      return;
+    }
+    CourseHistoryViewModel courseHistoryViewModel =
+            new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+                    .get(CourseHistoryViewModel.class);
+    courseHistoryViewModel.init();
+    Log.d("test", model.getKey());
+    courseHistoryViewModel.setCourse(model);
+
+    NavController navController = Navigation.findNavController(view);
+    navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
+  }
+
 }
