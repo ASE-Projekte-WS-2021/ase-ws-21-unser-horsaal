@@ -45,7 +45,7 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/imageView"
+                            android:id="@+id/liveChatFragmentInfoImage"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:src="@drawable/live_chat_image"
