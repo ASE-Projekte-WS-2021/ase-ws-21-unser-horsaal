@@ -189,7 +189,7 @@
     <string name="create_course_information_button_string">Zur Erstellung</string>
     <string name="edit_course_string">Kurs bearbeiten</string>
     <string name="edit_course_information_string">Hast du einen Fehler beim erstellen deines Kurses gemacht? Kein Problem! Bearbeite hier deine Einträge und behebe die Fehler.</string>
-
+    <string name="edit_course_button">Kurs bearbeiten</string>
 
 
 </resources>

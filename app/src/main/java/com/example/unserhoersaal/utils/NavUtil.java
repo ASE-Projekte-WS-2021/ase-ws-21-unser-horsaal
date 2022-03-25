@@ -17,6 +17,7 @@ import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
+import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
@@ -138,21 +139,22 @@ public class NavUtil {
     dialog.show();
   }
 
-  /** Navigates to CourseHistory. */
-  @BindingAdapter("navigateToCourse")
+
+  @BindingAdapter("navigateToCourseEdit")
   public static void navigateToCourseEdit(View view, CourseModel model) {
     if (model == null) {
       return;
     }
-    CourseHistoryViewModel courseHistoryViewModel =
+    CreateCourseViewModel createCourseViewModel =
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
-                    .get(CourseHistoryViewModel.class);
-    courseHistoryViewModel.init();
+                    .get(CreateCourseViewModel.class);
+    createCourseViewModel.init();
     Log.d("test", model.getKey());
-    courseHistoryViewModel.setCourse(model);
+    createCourseViewModel.setCourseToEdit(model);
+    createCourseViewModel.setIsEditing(true);
 
     NavController navController = Navigation.findNavController(view);
-    navController.navigate(R.id.action_coursesFragment_to_courseHistoryFragment);
+    navController.navigate(R.id.action_courseDescriptionFragment_to_editCoursesFragment);
   }
 
 }

@@ -1,7 +1,5 @@
 package com.example.unserhoersaal.views;
 
-package com.example.unserhoersaal.views;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;

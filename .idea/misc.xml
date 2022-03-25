@@ -8,17 +8,19 @@
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/answer_card.xml" value="0.22" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/answer_item.xml" value="0.18" />
-        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/course_item_card.xml" value="0.22" />
-        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description.xml" value="0.1211943793911007" />
-        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description_detail.xml" value="0.1" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/course_item_card.xml" value="0.5" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description.xml" value="0.3081761006289308" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description_detail.xml" value="0.2" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_history.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_meeting.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_participants.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_thread.xml" value="0.2884473877851361" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_courses.xml" value="0.21" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course.xml" value="0.25" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course_information.xml" value="0.25" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.1" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_current_course.xml" value="0.14" />
+        <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_course.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile_institution.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile_name.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/LocalAdmin/AndroidStudioProjects/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_edit_profile_password.xml" value="0.20416666666666666" />

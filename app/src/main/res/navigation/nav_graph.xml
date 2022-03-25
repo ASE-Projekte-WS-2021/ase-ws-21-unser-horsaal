@@ -248,6 +248,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_courseDescriptionFragment_to_editCoursesFragment"
+            app:destination="@id/editCoursesFragment" />
     </fragment>
     <fragment
         android:id="@+id/courseParticipantsFragment"
@@ -468,4 +471,8 @@
             app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/editCoursesFragment"
+        android:name="com.example.unserhoersaal.views.EditCoursesFragment"
+        android:label="EditCoursesFragment" />
 </navigation>

@@ -18,7 +18,8 @@ public class CreateCourseViewModel extends ViewModel {
   private CreateCourseRepository createCourseRepository;
   private StateLiveData<CourseModel> courseModel;
   public StateLiveData<CourseModel> courseModelInputState = new StateLiveData<>();
-  private StateLiveData<CourseModel> courseToEdit = new StateLiveData<>();
+  private CourseModel courseToEdit;
+  private boolean isEditing = false;
 
   /** Initialization of the CreateCourseViewModel. */
   public void init() {
@@ -99,11 +100,17 @@ public class CreateCourseViewModel extends ViewModel {
     return sb.toString();
   }
 
-  public StateLiveData<CourseModel> getCourseToEdit() {
+  public CourseModel getCourseToEdit() {
     return courseToEdit;
   }
 
-  public void setCourseToEdit() {}
+  public void setCourseToEdit(CourseModel courseToEdit) {
+    this.courseToEdit = courseToEdit;
+  }
+
+  public void setIsEditing(Boolean isEditing) {
+    this.isEditing = isEditing;
+  }
 
 
 }
