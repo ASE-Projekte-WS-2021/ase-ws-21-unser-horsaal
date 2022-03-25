@@ -86,12 +86,15 @@ public class CourseMeetingFragment extends Fragment {
             this::threadLiveStateCallback);
     this.courseMeetingViewModel.getSortEnum().observe(getViewLifecycleOwner(),
             this::sortEnumCallback);
+    this.courseMeetingViewModel.getFilterEnum().observe(getViewLifecycleOwner(),
+            this::filterEnumCallback);
   }
 
   @SuppressLint("NotifyDataSetChanged")
   private void meetingsLiveStateCallback(StateData<List<ThreadModel>> listStateData) {
     this.resetBindings();
     this.courseMeetingViewModel.sortThreads(listStateData.getData());
+    this.courseMeetingViewModel.filterThreads(listStateData.getData());
     this.threadAdapter.notifyDataSetChanged();
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
@@ -189,7 +192,7 @@ public class CourseMeetingFragment extends Fragment {
   }
 
   //Todo: in Arbeit
-  private void filterThreads(StateData<FilterEnum> filterEnum) {
+  private void filterEnumCallback(StateData<FilterEnum> filterEnum) {
     this.courseMeetingViewModel.getThreads().postUpdate(this.courseMeetingViewModel.getFullList());
   }
 

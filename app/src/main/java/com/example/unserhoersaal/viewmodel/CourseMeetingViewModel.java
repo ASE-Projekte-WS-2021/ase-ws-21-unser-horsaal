@@ -82,7 +82,6 @@ public class CourseMeetingViewModel extends ViewModel {
     //List<ThreadModel> fullThreadsModelList = Validation.checkStateLiveData(this.threads, TAG);
     List<ThreadModel> fullThreadsModelList = new ArrayList<>(this.courseMeetingRepository
             .getThreadModelList());
-    //fullThreadsModelList.addAll(this.courseMeetingRepository.getThreadModelList());
     String userId = firebaseUser.getUid();
     this.arrayListUtil.filterThreadList(threadsModelList, fullThreadsModelList,
             filterEnum, actualMeeting, userId);
