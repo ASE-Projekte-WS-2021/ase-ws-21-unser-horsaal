@@ -183,10 +183,13 @@
     <string name="back_to_login">Zurück zum Login</string>
     <string name="verification_mail">Verifikationsemail</string>
     <string name="auto_login_after_verification">Nach der Verifizierung werden Sie automatisch eingeloggt.</string>
+
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
+
     <string name="startzeit">Startzeit</string>
     <string name="endzeit">Endzeit</string>
     <string name="create_course_information_button_string">Zur Erstellung</string>
+    <string name="live_chat_info">Hier kannst du dich live während der Vorlesung austauschen</string>
 
 
 </resources>
