@@ -27,6 +27,7 @@ public class CourseMeetingViewModel extends ViewModel {
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<List<ThreadModel>> threads;
   private StateLiveData<ThreadModel> threadModelMutableLiveData;
+  private StateLiveData<List<ThreadModel>> outFilteredThreads = new StateLiveData<>();
   public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
   private final StateLiveData<SortEnum> sortEnum = new StateLiveData<>();
   private final StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
@@ -50,7 +51,7 @@ public class CourseMeetingViewModel extends ViewModel {
     this.threadModelInputState.postCreate(new ThreadModel());
 
     this.sortEnum.postCreate(SortEnum.NEWEST);
-    this.filterEnum.postCreate(FilterEnum.NONE);
+    //this.filterEnum.postCreate(FilterEnum.NONE);
     this.arrayListUtil = new ArrayListUtil();
   }
 
@@ -67,7 +68,7 @@ public class CourseMeetingViewModel extends ViewModel {
     this.arrayListUtil.sortThreadList(threadsModelList, sortEnum);
   }
 
-  /** filter the threads list. */
+  /** filter threads list. */
   public void filterThreads(List<ThreadModel> threadsModelList) {
     FilterEnum filterEnum = Validation.checkStateLiveData(this.filterEnum, TAG);
     if (filterEnum == null) {
@@ -79,16 +80,9 @@ public class CourseMeetingViewModel extends ViewModel {
       return;
     }
     MeetingsModel actualMeeting = Validation.checkStateLiveData(this.meeting, TAG);
-    //List<ThreadModel> fullThreadsModelList = Validation.checkStateLiveData(this.threads, TAG);
-    List<ThreadModel> fullThreadsModelList = new ArrayList<>(this.courseMeetingRepository
-            .getThreadModelList());
     String userId = firebaseUser.getUid();
-    this.arrayListUtil.filterThreadList(threadsModelList, fullThreadsModelList,
+    this.arrayListUtil.filterThreadList(threadsModelList, outFilteredThreads,
             filterEnum, actualMeeting, userId);
-  }
-
-  public List<ThreadModel> getFullList() {
-    return this.courseMeetingRepository.getThreadModelList();
   }
 
   public StateLiveData<MeetingsModel> getMeeting() { return this.meeting;}

@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.utils;
 
+import android.util.Log;
+
 import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.enums.TagEnum;
@@ -54,39 +56,40 @@ public class ArrayListUtil {
 
   /** Filter options for ThreadModel lists. */
   public void filterThreadList(List<ThreadModel> threadsModelList,
-                               List<ThreadModel> fullThreadsList, FilterEnum filterOption,
-                               MeetingsModel currentMeeting, String userId) {
+                               StateLiveData<List<ThreadModel>> outFilteredThreads,
+                               FilterEnum filterOption, MeetingsModel currentMeeting,
+                               String userId) {
 
     switch (filterOption) {
       case SOLVED:
-        filterThreadListByAnswerStatus(threadsModelList, true);
+        filterThreadListByAnswerStatus(threadsModelList, true, outFilteredThreads);
         break;
       case UNSOLVED:
-        filterThreadListByAnswerStatus(threadsModelList, false);
+        filterThreadListByAnswerStatus(threadsModelList, false, outFilteredThreads);
         break;
       case CREATOR:
-        filterThreadListByCourseProvider(threadsModelList, currentMeeting);
+        filterThreadListByCourseProvider(threadsModelList, currentMeeting, outFilteredThreads);
         break;
       case OWN:
-        filterThreadListByOwnThreads(threadsModelList, userId);
+        filterThreadListByOwnThreads(threadsModelList, userId, outFilteredThreads);
         break;
       case SUBJECT_MATTER:
-        filterThreadListByTag(threadsModelList, TagEnum.SUBJECT_MATTER);
+        filterThreadListByTag(threadsModelList, TagEnum.SUBJECT_MATTER,  outFilteredThreads);
         break;
       case ORGANISATION:
-        filterThreadListByTag(threadsModelList, TagEnum.ORGANISATION);
+        filterThreadListByTag(threadsModelList, TagEnum.ORGANISATION, outFilteredThreads);
         break;
       case MISTAKE:
-        filterThreadListByTag(threadsModelList, TagEnum.MISTAKE);
+        filterThreadListByTag(threadsModelList, TagEnum.MISTAKE, outFilteredThreads);
         break;
       case EXAMINATION:
-        filterThreadListByTag(threadsModelList, TagEnum.EXAMINATION);
+        filterThreadListByTag(threadsModelList, TagEnum.EXAMINATION, outFilteredThreads);
         break;
       case OTHER:
-        filterThreadListByTag(threadsModelList, TagEnum.OTHER);
+        filterThreadListByTag(threadsModelList, TagEnum.OTHER, outFilteredThreads);
         break;
       case NONE:
-        resetThreadList(threadsModelList, fullThreadsList);
+        resetThreadList(threadsModelList, outFilteredThreads);
         break;
     }
   }
@@ -169,62 +172,95 @@ public class ArrayListUtil {
 
   /** Filter threads by answered status. */
   private void filterThreadListByAnswerStatus(List<ThreadModel> threadsModelList,
-                                              Boolean answered) {
+                                              Boolean answered,
+                                              StateLiveData<List<ThreadModel>> outFilteredThreads) {
+    if (outFilteredThreads.getValue() != null) {
+      threadsModelList.addAll(outFilteredThreads.getValue().getData());
+    }
     List<ThreadModel> filteredList = new ArrayList<>();
+    List<ThreadModel> outFilteredList = new ArrayList<>();
       for (int i = 0; i < threadsModelList.size(); i++) {
         if (threadsModelList.get(i).getAnswered() == answered) {
           filteredList.add(threadsModelList.get(i));
+        } else {
+          outFilteredList.add(threadsModelList.get(i));
         }
       }
     threadsModelList.clear();
     threadsModelList.addAll(filteredList);
+    outFilteredThreads.postUpdate(outFilteredList);
   }
 
   /** Filter threads and just show threads created by the course provider. */
   private void filterThreadListByCourseProvider(List<ThreadModel> threadsModelList,
-                                                MeetingsModel currentMeeting) {
+                                                MeetingsModel currentMeeting,
+                                                StateLiveData<List<ThreadModel>> outFilteredThreads)
+  {
+    if (outFilteredThreads.getValue() != null) {
+      threadsModelList.addAll(outFilteredThreads.getValue().getData());
+    }
     List<ThreadModel> filteredList = new ArrayList<>();
+    List<ThreadModel> outFilteredList = new ArrayList<>();
     for (int i = 0; i < threadsModelList.size(); i++) {
       if (threadsModelList.get(i).getCreatorId().equals(currentMeeting.getCreatorId())) {
         filteredList.add(threadsModelList.get(i));
+      } else {
+        outFilteredList.add(threadsModelList.get(i));
       }
     }
     threadsModelList.clear();
     threadsModelList.addAll(filteredList);
+    outFilteredThreads.postUpdate(outFilteredList);
   }
 
   /** Filter threads and just show threads created by the current user. */
   private void filterThreadListByOwnThreads(List<ThreadModel> threadsModelList,
-                                            String userId) {
+                                            String userId,
+                                            StateLiveData<List<ThreadModel>> outFilteredThreads) {
+    if (outFilteredThreads.getValue() != null) {
+      threadsModelList.addAll(outFilteredThreads.getValue().getData());
+    }
     List<ThreadModel> filteredList = new ArrayList<>();
+    List<ThreadModel> outFilteredList = new ArrayList<>();
     for (int i = 0; i < threadsModelList.size(); i++) {
       if (threadsModelList.get(i).getCreatorId().equals(userId)) {
         filteredList.add(threadsModelList.get(i));
+      } else {
+        outFilteredList.add(threadsModelList.get(i));
       }
     }
     threadsModelList.clear();
     threadsModelList.addAll(filteredList);
+    outFilteredThreads.postUpdate(outFilteredList);
   }
 
   /** Filter threads by tag. */
-  private void filterThreadListByTag(List<ThreadModel> threadsModelList, TagEnum tagEnum) {
+  private void filterThreadListByTag(List<ThreadModel> threadsModelList, TagEnum tagEnum,
+                                     StateLiveData<List<ThreadModel>> outFilteredThreads) {
+    if (outFilteredThreads.getValue() != null) {
+      threadsModelList.addAll(outFilteredThreads.getValue().getData());
+    }
     List<ThreadModel> filteredList = new ArrayList<>();
+    List<ThreadModel> outFilteredList = new ArrayList<>();
     for (int i = 0; i < threadsModelList.size(); i++) {
       List<TagEnum> usedTags = new ArrayList<>(threadsModelList.get(i).getTags());
-      for (int j = 0; j < usedTags.size(); j++) {
-        if (usedTags.get(j) == tagEnum) {
-          filteredList.add(threadsModelList.get(i));
-        }
+      if (usedTags.contains(tagEnum)) {
+        filteredList.add(threadsModelList.get(i));
+      } else {
+        outFilteredList.add(threadsModelList.get(i));
       }
       }
     threadsModelList.clear();
     threadsModelList.addAll(filteredList);
+    outFilteredThreads.postUpdate(outFilteredList);
     }
 
   /** Reset filter/show all threads */
   private void resetThreadList(List<ThreadModel> threadModelList,
-                               List<ThreadModel> fullThreadModelList) {
-    threadModelList.clear();
-    threadModelList.addAll(fullThreadModelList);
+                               StateLiveData<List<ThreadModel>> outFilteredThreads) {
+    if (outFilteredThreads.getValue() != null) {
+      threadModelList.addAll(outFilteredThreads.getValue().getData());
+    }
+    outFilteredThreads.postUpdate(new ArrayList<>());
   }
 }

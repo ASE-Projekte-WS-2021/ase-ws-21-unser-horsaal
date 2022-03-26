@@ -17,9 +17,7 @@ public class FilterSortUtil {
                           SortEnum sortEnum) {
     if (view.isChecked()) {
       chipActivated.setVisibility(View.VISIBLE);
-      //TODO better way than observing
       vm.setSortEnum(sortEnum);
-      //TODO set sort with vm and sortEnum
     } else {
       removeSort(view, chipActivated, vm, sortEnum);
     }
@@ -40,7 +38,6 @@ public class FilterSortUtil {
     if (view.isChecked()) {
       chipActivated.setVisibility(View.VISIBLE);
       vm.setFilterEnum(filterEnum);
-      //TODO set filter with vm and filterEnum
     } else {
       removeFilter(view, chipActivated, vm, filterEnum);
     }
@@ -51,7 +48,6 @@ public class FilterSortUtil {
                                   FilterEnum filterEnum) {
     view.setChecked(Boolean.FALSE);
     chipActivated.setVisibility(View.GONE);
-    //TODO remove filter with vm and filterEnum
     vm.setFilterEnum(FilterEnum.NONE);
   }
 

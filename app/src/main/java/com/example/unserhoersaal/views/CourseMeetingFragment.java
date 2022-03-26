@@ -93,8 +93,8 @@ public class CourseMeetingFragment extends Fragment {
   @SuppressLint("NotifyDataSetChanged")
   private void meetingsLiveStateCallback(StateData<List<ThreadModel>> listStateData) {
     this.resetBindings();
-    this.courseMeetingViewModel.sortThreads(listStateData.getData());
     this.courseMeetingViewModel.filterThreads(listStateData.getData());
+    this.courseMeetingViewModel.sortThreads(listStateData.getData());
     this.threadAdapter.notifyDataSetChanged();
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
@@ -149,6 +149,49 @@ public class CourseMeetingFragment extends Fragment {
             .getValue().getData());
   }
 
+  private void filterEnumCallback(StateData<FilterEnum> filterEnum) {
+    if (filterEnum.getData() != FilterEnum.SOLVED) {
+      this.binding.courseMeetingChipAnswered.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipAnsweredActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.UNSOLVED) {
+      this.binding.courseMeetingChipUnanswered.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipUnansweredActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.OWN) {
+      this.binding.courseMeetingChipOwn.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipOwnActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.CREATOR) {
+      this.binding.courseMeetingChipCreator.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipCreatorActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.SUBJECT_MATTER) {
+      this.binding.courseMeetingChipSubjectMatter.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipSubjectMatterActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.ORGANISATION) {
+      this.binding.courseMeetingChipOrganisation.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipOrganisationActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.MISTAKE) {
+      this.binding.courseMeetingChipMistake.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipMistakeActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.EXAMINATION) {
+      this.binding.courseMeetingChipExamination.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipExaminationActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.OTHER) {
+      this.binding.courseMeetingChipOther.setChecked(Boolean.FALSE);
+      this.binding.courseMeetingChipOtherActivated.setVisibility(View.GONE);
+    }
+
+    //TODO: is there a better solution to trigger the callback funtion for threads?
+    this.courseMeetingViewModel.getThreads().postUpdate(this.courseMeetingViewModel
+            .getThreads().getValue().getData());
+  }
+
   private void resetBindings() {
     this.binding.courseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
   }
@@ -191,15 +234,11 @@ public class CourseMeetingFragment extends Fragment {
     }
   }
 
-  //Todo: in Arbeit
-  private void filterEnumCallback(StateData<FilterEnum> filterEnum) {
-    this.courseMeetingViewModel.getThreads().postUpdate(this.courseMeetingViewModel.getFullList());
-  }
-
   @Override
   public void onResume() {
     super.onResume();
     this.courseMeetingViewModel.resetThreadModelInput();
+    this.courseMeetingViewModel.setFilterEnum(FilterEnum.NONE);
   }
 
 }
