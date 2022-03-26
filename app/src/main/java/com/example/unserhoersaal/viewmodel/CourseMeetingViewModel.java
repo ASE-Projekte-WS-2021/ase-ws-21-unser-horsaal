@@ -51,7 +51,6 @@ public class CourseMeetingViewModel extends ViewModel {
     this.threadModelInputState.postCreate(new ThreadModel());
 
     this.sortEnum.postCreate(SortEnum.NEWEST);
-    //this.filterEnum.postCreate(FilterEnum.NONE);
     this.arrayListUtil = new ArrayListUtil();
   }
 
