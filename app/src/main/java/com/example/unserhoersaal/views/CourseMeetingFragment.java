@@ -239,6 +239,7 @@ public class CourseMeetingFragment extends Fragment {
     super.onResume();
     this.courseMeetingViewModel.resetThreadModelInput();
     this.courseMeetingViewModel.setFilterEnum(FilterEnum.NONE);
+    this.courseMeetingViewModel.setSortEnum(SortEnum.NEWEST);
   }
 
 }
