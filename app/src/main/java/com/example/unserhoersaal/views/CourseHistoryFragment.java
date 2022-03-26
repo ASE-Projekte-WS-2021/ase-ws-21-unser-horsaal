@@ -85,7 +85,7 @@ public class CourseHistoryFragment extends Fragment {
       return;
     }
     this.resetBindings();
-    //sort meeting by oldest
+    //sort meeting by newest
     this.courseHistoryViewModel.sortMeetings(listStateData.getData(), "oldest");
     this.meetingAdapter.notifyDataSetChanged();
 
