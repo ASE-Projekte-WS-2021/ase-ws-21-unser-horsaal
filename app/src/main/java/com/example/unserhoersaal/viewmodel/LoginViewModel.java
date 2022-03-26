@@ -79,8 +79,8 @@ public class LoginViewModel extends ViewModel {
       return;
     }
 
-    String email = userModel.getEmail();
-    String password = passwordModel.getCurrentPassword();
+    String email = userModel.getEmail().trim();
+    String password = passwordModel.getCurrentPassword().trim();
 
     if (Validation.emptyString(email)) {
       Log.d(TAG, "email is null.");
