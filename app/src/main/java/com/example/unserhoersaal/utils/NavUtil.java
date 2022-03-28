@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.utils;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
@@ -16,7 +15,6 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
-import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 

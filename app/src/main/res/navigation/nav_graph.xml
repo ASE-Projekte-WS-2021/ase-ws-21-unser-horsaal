@@ -439,6 +439,9 @@
             app:destination="@id/courseMeetingFragment"
             app:popUpTo="@id/courseMeetingFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_createThreadFragment_to_courseThreadFragment"
+            app:destination="@id/courseThreadFragment" />
     </fragment>
     <fragment
         android:id="@+id/verificationFragment"

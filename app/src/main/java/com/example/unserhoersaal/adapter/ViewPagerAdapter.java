@@ -33,13 +33,14 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         break;
       default:
         fragment = new CoursesObjectFragment();
+        break;
     }
     return fragment;
   }
 
   @Override
   public int getItemCount() {
-    return Config.NUMBER_OF_TABS;
+    return Config.COURSES_NUMBER_OF_TABS;
   }
 }
 
