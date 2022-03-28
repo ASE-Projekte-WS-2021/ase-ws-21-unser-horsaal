@@ -471,4 +471,9 @@
             app:popUpTo="@id/coursesFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/createPollFragment"
+        android:name="com.example.unserhoersaal.views.CreatePollFragment"
+        android:label="CreatePollFragment"
+        tools:layout="@layout/fragment_create_poll"/>
 </navigation>
