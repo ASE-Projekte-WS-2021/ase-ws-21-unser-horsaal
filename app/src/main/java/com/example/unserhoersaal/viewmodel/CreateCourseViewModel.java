@@ -89,7 +89,6 @@ public class CreateCourseViewModel extends ViewModel {
       this.courseModelInputState.postCreate(new CourseModel());
       this.createCourseRepository.createNewCourse(courseModel);
     }
-    isEditing = false;
   }
 
   //https://www.codegrepper.com/code-examples/java/how+to+generate+random+letters+in+java
@@ -107,12 +106,14 @@ public class CreateCourseViewModel extends ViewModel {
     this.isEditing = isEditing;
   }
 
+  public Boolean getIsEditing() { return isEditing; }
+
   public StateLiveData<CourseModel> getCourseModel() {
     return this.courseModel;
   }
 
   public void setCourseModelInputState(StateLiveData<CourseModel> courseModelInputState) {
-    this.courseModel = courseModelInputState;
+    this.courseModelInputState = courseModelInputState;
   }
 
   public StateLiveData<CourseModel> getCourseModelInputState() {

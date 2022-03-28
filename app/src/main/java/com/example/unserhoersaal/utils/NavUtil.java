@@ -150,11 +150,13 @@ public class NavUtil {
                     .get(CreateCourseViewModel.class);
     createCourseViewModel.init();
     Log.d("test", model.getKey());
-    createCourseViewModel.setCourseToEdit(model);
+    StateLiveData<CourseModel> courseModelStateLiveData = new StateLiveData<>();
+    courseModelStateLiveData.postCreate(model);
+    createCourseViewModel.setCourseModelInputState(courseModelStateLiveData);
     createCourseViewModel.setIsEditing(true);
 
     NavController navController = Navigation.findNavController(view);
-    navController.navigate(R.id.action_courseDescriptionFragment_to_editCoursesFragment);
+    navController.navigate(R.id.action_courseDescriptionFragment_to_createCourseFragment);
   }
 
 }
