@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.views.LiveChatFragment;
+import com.example.unserhoersaal.views.PollFragment;
 import com.example.unserhoersaal.views.QuestionsFragment;
-import com.example.unserhoersaal.views.VotingFragment;
 
 /** This class is the adapter for the TabView of the MeetingsFragment. */
 public class MeetingsViewPagerAdapter extends FragmentStateAdapter {
@@ -25,8 +25,8 @@ public class MeetingsViewPagerAdapter extends FragmentStateAdapter {
       case Config.TAB_LIVE_CHAT:
         fragment = new LiveChatFragment();
         break;
-      case Config.TAB_VOTING:
-        fragment = new VotingFragment();
+      case Config.TAB_POLL:
+        fragment = new PollFragment();
         break;
       case Config.TAB_QUESTIONS:
         fragment = new QuestionsFragment();

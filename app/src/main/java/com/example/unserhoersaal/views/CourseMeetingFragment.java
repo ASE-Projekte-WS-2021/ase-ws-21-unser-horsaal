@@ -18,8 +18,8 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
+import com.example.unserhoersaal.viewmodel.PollViewModel;
 import com.example.unserhoersaal.viewmodel.QuestionsViewModel;
-import com.example.unserhoersaal.viewmodel.VotingViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -33,7 +33,7 @@ public class CourseMeetingFragment extends Fragment {
   private FragmentCourseMeetingBinding binding;
   private CourseMeetingViewModel courseMeetingViewModel;
   private QuestionsViewModel questionsViewModel;
-  private VotingViewModel votingViewModel;
+  private PollViewModel pollViewModel;
   private LiveChatViewModel liveChatViewModel;
   private NavController navController;
 
@@ -73,13 +73,13 @@ public class CourseMeetingFragment extends Fragment {
             .get(CourseMeetingViewModel.class);
     this.questionsViewModel = new ViewModelProvider(requireActivity())
             .get(QuestionsViewModel.class);
-    this.votingViewModel = new ViewModelProvider(requireActivity())
-            .get(VotingViewModel.class);
+    this.pollViewModel = new ViewModelProvider(requireActivity())
+            .get(PollViewModel.class);
     this.liveChatViewModel = new ViewModelProvider(requireActivity())
             .get(LiveChatViewModel.class);
     this.courseMeetingViewModel.init();
     this.questionsViewModel.init();
-    this.votingViewModel.init();
+    this.pollViewModel.init();
     this.liveChatViewModel.init();
     this.courseMeetingViewModel.getMeeting().observe(getViewLifecycleOwner(),
             this::setMeetingForTabs);
@@ -87,7 +87,7 @@ public class CourseMeetingFragment extends Fragment {
 
   private void setMeetingForTabs(StateData<MeetingsModel> meetingStateData) {
     this.questionsViewModel.setMeeting(meetingStateData.getData());
-    this.votingViewModel.setMeeting(meetingStateData.getData());
+    this.pollViewModel.setMeeting(meetingStateData.getData());
     this.liveChatViewModel.setMeeting(meetingStateData.getData());
   }
 

@@ -31,8 +31,8 @@ public class CourseMeetingViewModel extends ViewModel {
     switch (position) {
       case Config.TAB_LIVE_CHAT:
         return Config.TAB_LIVE_CHAT_NAME;
-      case Config.TAB_VOTING:
-        return Config.TAB_VOTING_NAME;
+      case Config.TAB_POLL:
+        return Config.TAB_POLL_NAME;
       case Config.TAB_QUESTIONS:
         return Config.TAB_QUESTIONS_NAME;
       default:

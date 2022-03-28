@@ -5,10 +5,10 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.VotingRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
 
-/** ViewModel for the VotingFragment. */
-public class VotingViewModel extends ViewModel {
+/** ViewModel for the PollFragment. */
+public class PollViewModel extends ViewModel {
 
-  private static final String TAG = "VotingViewModel";
+  private static final String TAG = "PollViewModel";
 
   private VotingRepository votingRepository;
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();

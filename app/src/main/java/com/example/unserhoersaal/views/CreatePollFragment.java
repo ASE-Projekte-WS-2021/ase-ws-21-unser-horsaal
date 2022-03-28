@@ -56,7 +56,9 @@ public class CreatePollFragment extends Fragment {
 
   private void initToolbar() {
     this.binding.createPollFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    //Add Navigation
+    this.binding.createPollFragmentToolbar.setNavigationOnClickListener( v ->
+      this.navController.navigate(R.id.action_createPollFragment_to_courseMeetingFragment)
+    );
   }
 
   private void initSwitch() {

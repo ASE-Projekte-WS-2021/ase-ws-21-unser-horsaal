@@ -109,8 +109,8 @@ public class Config {
   //Meetings Tabview
   public static final int TAB_LIVE_CHAT = 0;
   public static final String TAB_LIVE_CHAT_NAME = "Live-Chat";
-  public static final int TAB_VOTING = 1;
-  public static final String TAB_VOTING_NAME = "Abstimmungen";
+  public static final int TAB_POLL = 1;
+  public static final String TAB_POLL_NAME = "Abstimmungen";
   public static final int TAB_QUESTIONS = 2;
   public static final String TAB_QUESTIONS_NAME = "Fragen";
   public static final int MMEETINGS_NUMBER_OF_TABS = 3;
