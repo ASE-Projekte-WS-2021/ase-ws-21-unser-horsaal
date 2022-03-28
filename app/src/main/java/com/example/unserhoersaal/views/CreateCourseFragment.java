@@ -96,7 +96,7 @@ public class CreateCourseFragment extends Fragment {
         this.binding.createCourseFragmentCourseGeneralErrorText.setVisibility(View.VISIBLE);
       }
     }
-    if (courseModelStateData.getData() != null) {
+    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       courseCreated(courseModelStateData.getData());
     }
   }

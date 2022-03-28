@@ -82,6 +82,8 @@ public class CreateCourseRepository {
     }
 
     String courseId = courseModel.getKey();
+    Log.d("Hier", courseId);
+
 
     if (courseId == null) {
       Log.e(TAG, "courseid is null");
@@ -96,9 +98,10 @@ public class CreateCourseRepository {
     courseDbRef.child("description").setValue(courseModel.getDescription())
             .addOnSuccessListener(unused -> {
               courseModel.setKey(courseId);
+              courseModelMutableLiveData.postUpdate(courseModel);
             })
             .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
+              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
               courseModelMutableLiveData.postError(
                       new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
             });
@@ -106,21 +109,26 @@ public class CreateCourseRepository {
     courseDbRef.child("institution").setValue(courseModel.getInstitution())
             .addOnSuccessListener(unused -> {
               courseModel.setKey(courseId);
+              courseModelMutableLiveData.postUpdate(courseModel);
+
             })
             .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
+              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
               courseModelMutableLiveData.postError(
                       new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
             });
-    courseDbRef.child("title").setValue(courseModel.getInstitution())
+    courseDbRef.child("title").setValue(courseModel.getTitle())
             .addOnSuccessListener(unused -> {
               courseModel.setKey(courseId);
+              courseModelMutableLiveData.postUpdate(courseModel);
+
             })
             .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
+              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
               courseModelMutableLiveData.postError(
                       new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
             });
+
 
   }
 

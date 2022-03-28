@@ -18,7 +18,6 @@ public class CreateCourseViewModel extends ViewModel {
   private CreateCourseRepository createCourseRepository;
   private StateLiveData<CourseModel> courseModel;
   public StateLiveData<CourseModel> courseModelInputState = new StateLiveData<>();
-  private CourseModel courseToEdit;
   private boolean isEditing = false;
 
   /** Initialization of the CreateCourseViewModel. */
@@ -31,10 +30,6 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModelInputState.postCreate(new CourseModel());
   }
 
-  public StateLiveData<CourseModel> getCourseModel() {
-    return this.courseModel;
-  }
-
   public void resetCourseModelInput() {
     this.courseModelInputState.postCreate(new CourseModel());
     this.courseModel.postCreate(null);
@@ -45,6 +40,7 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModel.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
+
     if (courseModel == null) {
       Log.e(TAG, "courseModel is null.");
       this.courseModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
@@ -85,6 +81,7 @@ public class CreateCourseViewModel extends ViewModel {
 
     if (isEditing) {
       this.createCourseRepository.editCourse(courseModel);
+      Log.d("Hier", "in isEdit drin");
 
     }else {
       courseModel.setCodeMapping(this.getCodeMapping());
@@ -106,17 +103,19 @@ public class CreateCourseViewModel extends ViewModel {
     return sb.toString();
   }
 
-  public CourseModel getCourseToEdit() {
-    return courseToEdit;
-  }
-
-  public void setCourseToEdit(CourseModel courseToEdit) {
-    this.courseToEdit = courseToEdit;
-  }
-
   public void setIsEditing(Boolean isEditing) {
     this.isEditing = isEditing;
   }
 
+  public StateLiveData<CourseModel> getCourseModel() {
+    return this.courseModel;
+  }
 
+  public void setCourseModelInputState(StateLiveData<CourseModel> courseModelInputState) {
+    this.courseModel = courseModelInputState;
+  }
+
+  public StateLiveData<CourseModel> getCourseModelInputState() {
+    return courseModelInputState;
+  }
 }

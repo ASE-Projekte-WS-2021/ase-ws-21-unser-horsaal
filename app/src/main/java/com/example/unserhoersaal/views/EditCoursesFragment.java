@@ -96,7 +96,7 @@ public class EditCoursesFragment extends Fragment {
         this.binding.editCourseFragmentCourseGeneralErrorText.setVisibility(View.VISIBLE);
       }
     }
-    if (courseModelStateData.getData() != null) {
+    if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       courseCreated(courseModelStateData.getData());
     }
   }
@@ -125,9 +125,9 @@ public class EditCoursesFragment extends Fragment {
 
   /** Signs the creator in the course. */
   public void courseCreated(CourseModel course) {
-    this.courseHistoryViewModel.setCourse(course);
+    //this.courseHistoryViewModel.setCourse(course);
     this.createCourseViewModel.resetCourseModelInput();
-    this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
+    //this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
   }
 
   @Override
