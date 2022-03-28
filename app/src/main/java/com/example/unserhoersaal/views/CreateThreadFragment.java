@@ -81,8 +81,6 @@ public class CreateThreadFragment extends Fragment {
     this.binding.createThreadFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createThreadFragmentToolbar
-            .setNavigationOnClickListener(v ->
-                    navController
-                            .navigate(R.id.action_createThreadFragment_to_courseMeetingFragment));
+            .setNavigationOnClickListener(v -> navController.navigateUp());
   }
 }

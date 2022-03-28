@@ -115,10 +115,7 @@ public class CourseMeetingFragment extends Fragment {
     this.binding.courseMeetingFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseMeetingFragmentToolbar
-            .setNavigationOnClickListener(v ->
-                    this.navController.navigate(
-                            R.id.action_courseMeetingFragment_to_courseHistoryFragment)
-    );
+            .setNavigationOnClickListener(v -> this.navController.navigateUp());
   }
 
 

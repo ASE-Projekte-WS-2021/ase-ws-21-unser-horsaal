@@ -107,7 +107,7 @@ public class CourseDescriptionFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseDescriptionFragmentToolbar
             .setNavigationOnClickListener(v ->
-            navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment));
+            navController.navigateUp());
   }
 
 

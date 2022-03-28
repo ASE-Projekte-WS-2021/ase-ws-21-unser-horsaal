@@ -94,9 +94,8 @@ public class EditProfileInstitutionFragment extends Fragment {
   private void initToolbar() {
     this.binding.editProfileInstitutionFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    this.binding.editProfileInstitutionFragmentToolbar.setNavigationOnClickListener(v -> {
-      navController.navigate(R.id.action_editProfileInstitutionFragment_to_profileFragment);
-    });
+    this.binding.editProfileInstitutionFragmentToolbar.setNavigationOnClickListener(v ->
+            navController.navigateUp());
   }
 
   @Override
