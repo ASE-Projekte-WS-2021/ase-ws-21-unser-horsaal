@@ -111,7 +111,6 @@ public class CourseMeetingFragment extends Fragment {
   }
 
   private void initToolbar() {
-    this.binding.courseMeetingFragmentToolbar.inflateMenu(R.menu.course_meeting_menu);
     this.binding.courseMeetingFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseMeetingFragmentToolbar

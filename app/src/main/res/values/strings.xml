@@ -172,6 +172,7 @@
     <string name="course_meeting_fragment_chip_course_creator">Kursersteller</string>
     <string name="course_meeting_fragment_chip_exam">Prüfung</string>
     <string name="course_meeting_fragment_filter">Filter</string>
+    <string name="course_meeting_fragment_sort">Sortierung</string>
     <string name="course_meeting_fragment_tags">Tags</string>
     <string name="create_thread_fragment_title">Nachricht erstellen</string>
     <string name="create_thread_fragment_tag_textview">Welcher tag beschreibt den Inhalt deiner Nachricht am besten?</string>
@@ -189,7 +190,9 @@
     <string name="startzeit">Startzeit</string>
     <string name="endzeit">Endzeit</string>
     <string name="create_course_information_button_string">Zur Erstellung</string>
-    <string name="live_chat_info">Hier kannst du dich live während der Vorlesung austauschen</string>
+    <string name="live_chat_info">Hier kannst du dich live während der Vorlesung austauschen!</string>
+    <string name="questions_info">Du hast eine Frage oder Antwort? Hier bist du richtig!</string>
+    <string name="poll_info">Stimme hier ab und trage zum Meinungsbild bei!</string>
     <string name="create_poll_toolbar_title">Abstimmung erstellen</string>
     <string name="create_poll_info_string">Erstelle eine Abstimmung um das Meinungsbild der Teilnehmer:innen zu erhalten</string>
     <string name="create_poll_yes_no">Ja-Nein Frage</string>
