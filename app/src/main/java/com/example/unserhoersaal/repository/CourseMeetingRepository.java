@@ -59,10 +59,6 @@ public class CourseMeetingRepository {
     return this.threads;
   }
 
-  public ArrayList<ThreadModel> getThreadModelList() {
-    return this.threadModelList;
-  }
-
   public StateLiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }

@@ -79,7 +79,7 @@ public class LoginViewModel extends ViewModel {
       return;
     }
 
-    String email = userModel.getEmail();
+    String email = userModel.getEmail().trim();
     String password = passwordModel.getCurrentPassword();
 
     if (Validation.emptyString(email)) {
@@ -137,38 +137,13 @@ public class LoginViewModel extends ViewModel {
 
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
-  public void resendVerificationEmail() {
+  public void sendVerificationEmail() {
     this.userLiveData.postLoading();
-    this.authAppRepository.resendVerificationEmail();
+    this.authAppRepository.sendVerificationEmail();
   }
 
-  /** Changes the password of the user. */
-  public void resetPassword() {
-    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
-    if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
-      this.userInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
-      return;
-    }
-
-    String email = userModel.getEmail();
-
-    if (Validation.emptyString(email)) {
-      Log.d(TAG, "email is null.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-    } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
-    } else {
-
-      this.setDefaultInputState();
-      this.authAppRepository.resetPassword(email);
-    }
-  }
-
-  public void reloadFirebaseUser() {
-    this.authAppRepository.reloadFirebaseUser();
+  public void isUserEmailVerified() {
+    this.authAppRepository.isUserEmailVerified();
   }
 
   public void logout() {

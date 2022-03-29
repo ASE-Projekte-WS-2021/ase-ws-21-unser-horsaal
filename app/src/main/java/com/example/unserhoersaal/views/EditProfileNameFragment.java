@@ -95,9 +95,7 @@ public class EditProfileNameFragment extends Fragment {
     this.binding.editProfileNameFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.editProfileNameFragmentToolbar
-            .setNavigationOnClickListener(v ->
-                    navController.navigate(
-                            R.id.action_editProfileNameFragment_to_profileFragment));
+            .setNavigationOnClickListener(v -> navController.navigateUp());
   }
 
   @Override

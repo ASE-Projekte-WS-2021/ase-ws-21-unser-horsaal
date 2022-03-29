@@ -44,7 +44,7 @@ public class CoursesObjectFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
-    this.initSearchView();
+    //this.initSearchView();
   }
 
   @SuppressLint("NotifyDataSetChanged")
@@ -74,12 +74,13 @@ public class CoursesObjectFragment extends Fragment {
     this.binding.setVm(this.coursesViewModel);
     this.binding.setAdapter(this.coursesAdapter);
   }
-
+/*
+  //have floating action button
   private void initSearchView() {
     SearchView searchView = (SearchView) this.binding
-            .coursesFragmentToolbar
+            .courseMeetingFragmentToolbar
             .getMenu()
-            .findItem(R.id.coursesToolbarSearch)
+            .findItem(R.id.courseMeetingToolbarSearch)
             .getActionView();
     searchView.setQueryHint(Config.SEARCH_VIEW_HINT);
     searchView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -91,9 +92,10 @@ public class CoursesObjectFragment extends Fragment {
 
       @Override
       public boolean onQueryTextChange(String newText) {
-        coursesAdapter.getFilter().filter(newText);
+        threadAdapter.getFilter().filter(newText);
         return false;
       }
     });
   }
+ */
 }

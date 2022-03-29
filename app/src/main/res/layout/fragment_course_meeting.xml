@@ -7,9 +7,6 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.CourseMeetingViewModel" />
-        <variable
-            name="adapter"
-            type="com.example.unserhoersaal.adapter.ThreadAdapter" />
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
@@ -25,34 +22,6 @@
         android:background="@color/app_background"
         tools:context=".views.CourseMeetingFragment">
 
-        <TextView
-            android:id="@+id/coursesMeetingFragmentTitleTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/keine_threads_verf_gbar"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"/>
-
-        <ProgressBar
-            android:id="@+id/courseMeetingFragmentProgressSpinner"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.044"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.95" />
-
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/courseMeetingFragmentToolbar"
             android:layout_width="match_parent"
@@ -65,366 +34,31 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_meeting_subtitle"
+                android:text="@={vm.meeting.data.title}"
                 style="@style/toolbarTitleStyle"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/courseMeetingFragmentSubtitleContainer"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/courseMeetingFragmentTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:background="@color/app_blue"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/coursesTabItem"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentToolbar">
 
-            <TextView
-                android:id="@+id/courseMeetingFragmentToolbarTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@={vm.meeting.data.title}"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                style="@style/toolbarSubtitleStyle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+        </com.google.android.material.tabs.TabLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:id="@+id/courseMeetingFragmentAvailableChipsContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:visibility="gone"
-            android:background="@color/app_blue"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentSubtitleContainer">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_meeting_fragment_filter"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipNewest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_new"
-                    android:onClick="@{() -> FilterSortUtil.sort(courseMeetingChipNewest, courseMeetingChipNewestActivated, vm, SortEnum.NEWEST)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipMostLiked"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_most_likes"
-                    android:onClick="@{() -> FilterSortUtil.sort(courseMeetingChipMostLiked, courseMeetingChipMostLikedActivated, vm, SortEnum.MOST_LIKES)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipMostCommented"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_most_comments"
-                    android:onClick="@{() -> FilterSortUtil.sort(courseMeetingChipMostCommented, courseMeetingChipMostCommentedActivated, vm, SortEnum.MOST_COMMENTED)}"/>
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipAnswered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_solved"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipAnswered, courseMeetingChipAnsweredActivated, vm, FilterEnum.SOLVED)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipUnanswered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_unsolved"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipUnanswered, courseMeetingChipUnansweredActivated, vm, FilterEnum.UNSOLVED)}"/>
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipPageCountUp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_page_number"
-                    app:chipIcon="@drawable/ic_baseline_arrow_drop_up_24"
-                    android:onClick="@{() -> FilterSortUtil.sort(courseMeetingChipPageCountUp, courseMeetingChipPageCountUpActivated, vm, SortEnum.PAGE_COUNT_UP)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipPageCountDown"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_page_number"
-                    app:chipIcon="@drawable/ic_baseline_arrow_drop_down_24"
-                    android:onClick="@{() -> FilterSortUtil.sort(courseMeetingChipPageCountDown, courseMeetingChipPageCountDownActivated, vm, SortEnum.PAGE_COUNT_DOWN)}"/>
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipOwn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_own"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipOwn, courseMeetingChipOwnActivated, vm, FilterEnum.OWN)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipCreator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_course_creator"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipCreator, courseMeetingChipCreatorActivated, vm, FilterEnum.CREATOR)}"/>
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_meeting_fragment_tags"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipSubjectMatter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_subject"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipSubjectMatter, courseMeetingChipSubjectMatterActivated, vm, FilterEnum.SUBJECT_MATTER)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipOrganisation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_organizational"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipOrganisation, courseMeetingChipOrganisationActivated, vm, FilterEnum.ORGANISATION)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipMistake"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_mistake"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipMistake, courseMeetingChipMistakeActivated, vm, FilterEnum.MISTAKE)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipExamination"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_exam"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipExamination, courseMeetingChipExaminationActivated, vm, FilterEnum.EXAMINATION)}"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/courseMeetingChipOther"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/course_meeting_fragment_chip_other"
-                    android:onClick="@{() -> FilterSortUtil.filter(courseMeetingChipOther, courseMeetingChipOtherActivated, vm, FilterEnum.OTHER)}"/>
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white"
-                android:layout_marginTop="8dp"/>
-
-        </LinearLayout>
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/courseMeetingFragmentActivatedChipsContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentAvailableChipsContainer">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipNewestActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_new"
-                android:onClick="@{() -> FilterSortUtil.removeSort(courseMeetingChipNewest, courseMeetingChipNewestActivated, vm, SortEnum.NEWEST)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipMostLikedActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_most_likes"
-                android:onClick="@{() -> FilterSortUtil.removeSort(courseMeetingChipMostLiked, courseMeetingChipMostLikedActivated, vm, SortEnum.MOST_LIKES)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipMostCommentedActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_most_comments"
-                android:onClick="@{() -> FilterSortUtil.removeSort(courseMeetingChipMostCommented, courseMeetingChipMostCommentedActivated, vm, SortEnum.MOST_COMMENTED)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipAnsweredActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_solved"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipAnswered, courseMeetingChipAnsweredActivated, vm, FilterEnum.SOLVED)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipUnansweredActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_unsolved"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipUnanswered, courseMeetingChipUnansweredActivated, vm, FilterEnum.UNSOLVED)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipPageCountUpActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_page_number"
-                app:chipIcon="@drawable/ic_baseline_arrow_drop_up_24"
-                android:onClick="@{() -> FilterSortUtil.removeSort(courseMeetingChipPageCountUp, courseMeetingChipPageCountUpActivated, vm, SortEnum.PAGE_COUNT_UP)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipPageCountDownActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_page_number"
-                app:chipIcon="@drawable/ic_baseline_arrow_drop_down_24"
-                android:onClick="@{() -> FilterSortUtil.removeSort(courseMeetingChipPageCountDown, courseMeetingChipPageCountDownActivated, vm, SortEnum.PAGE_COUNT_DOWN)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipOwnActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_own"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipOwn, courseMeetingChipOwnActivated, vm, FilterEnum.OWN)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipCreatorActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_course_creator"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipCreator, courseMeetingChipCreatorActivated, vm, FilterEnum.CREATOR)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipSubjectMatterActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_subject"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipSubjectMatter, courseMeetingChipSubjectMatterActivated, vm, FilterEnum.SUBJECT_MATTER)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipOrganisationActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_organizational"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipOrganisation, courseMeetingChipOrganisationActivated, vm, FilterEnum.ORGANISATION)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipMistakeActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_mistake"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipMistake, courseMeetingChipMistakeActivated, vm, FilterEnum.MISTAKE)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipExaminationActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_exam"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipExamination, courseMeetingChipExaminationActivated, vm, FilterEnum.EXAMINATION)}"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/courseMeetingChipOtherActivated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/course_meeting_fragment_chip_other"
-                android:onClick="@{() -> FilterSortUtil.removeFilter(courseMeetingChipOther, courseMeetingChipOtherActivated, vm, FilterEnum.OTHER)}"/>
-
-        </com.google.android.material.chip.ChipGroup>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/courseMeetingFragmentThreadRecycler"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/courseMeetingFragmentViewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:adapter="@{adapter}"
-            app:initLayoutManager="@{R.id.courseMeetingFragmentThreadRecycler}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseMeetingFragmentActivatedChipsContainer"
-            tools:listitem="@layout/thread_card" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/courseMeetingFragmentFab"
-            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseMeetingFragment_to_createThreadFragment)}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/call_to_action_orange"
-            android:src="@drawable/ic_baseline_add_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/white" />
+            app:layout_constraintTop_toBottomOf="@+id/courseMeetingFragmentTabLayout"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

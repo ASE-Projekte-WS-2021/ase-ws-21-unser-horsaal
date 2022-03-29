@@ -94,14 +94,29 @@ public class Config {
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
   public static final String CHILD_MEMBER_COUNT = "memberCount";
 
-  /** Tabview. */
+  /**=======================.
+   * Tabviews
+   * ======================= */
+  //Courses Tabview
   public static final int TAB_TODAY = 0;
   public static final String TAB_TODAY_NAME = "Heute";
   public static final int TAB_ALL = 1;
   public static final String TAB_ALL_NAME = "Alle";
   public static final int TAB_OWNED = 2;
   public static final String TAB_OWNED_NAME = "Erstellt";
-  public static final int NUMBER_OF_TABS = 3;
+  public static final int COURSES_NUMBER_OF_TABS = 3;
+
+  //Meetings Tabview
+  public static final int TAB_LIVE_CHAT = 0;
+  public static final String TAB_LIVE_CHAT_NAME = "Live-Chat";
+  public static final int TAB_POLL = 1;
+  public static final String TAB_POLL_NAME = "Abstimmungen";
+  public static final int TAB_QUESTIONS = 2;
+  public static final String TAB_QUESTIONS_NAME = "Fragen";
+  public static final int MMEETINGS_NUMBER_OF_TABS = 3;
+
+
+
 
   /**=======================.
    * Search Hint
@@ -174,6 +189,8 @@ public class Config {
           "Verifizierungsemail versandt";
   public static final String AUTH_VERIFICATION_EMAIL_NOT_SENT =
           "Die Verfizierungsemail konnte nicht versandt werden!";
+  public static final String AUTH_VERIFICATION_TOO_MANY_REQUESTS =
+          "Von deinem Gerät wurde zu viele Anfragen registriert. Versuch es später erneut!";
   public static final String AUTH_PASSWORD_RESET_MAIL_SENT =
           "Email zur Passwortzurücksetzung versandt.";
   public static final String AUTH_PASSWORD_RESET_MAIL_NOT_SENT =
