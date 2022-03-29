@@ -12,71 +12,10 @@ public class CourseMeetingViewModel extends ViewModel {
 
 
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
-/*filter
-  private StateLiveData<List<ThreadModel>> threads;
-  private StateLiveData<ThreadModel> threadModelMutableLiveData;
-  private StateLiveData<List<ThreadModel>> outFilteredThreads = new StateLiveData<>();
-  public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
-  private final StateLiveData<SortEnum> sortEnum = new StateLiveData<>();
-  private final StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
-  private ArrayListUtil arrayListUtil;
-
-  /** Initialise the ViewModel. */
-  /*public void init() {
-    if (this.threads != null) {
-      return;
-    }
-
-    this.courseMeetingRepository = CourseMeetingRepository.getInstance();
-    this.authAppRepository = AuthAppRepository.getInstance();
-    this.meeting = this.courseMeetingRepository.getMeeting();
-    this.threadModelMutableLiveData =
-            this.courseMeetingRepository.getThreadModelMutableLiveData();
-
-    if (this.meeting.getValue() != null) {
-      this.threads = this.courseMeetingRepository.getThreads();
-    }
-    this.threadModelInputState.postCreate(new ThreadModel());
-
-    this.sortEnum.postCreate(SortEnum.NEWEST);
-    this.arrayListUtil = new ArrayListUtil();
-  }
-
-  public StateLiveData<List<ThreadModel>> getThreads() {
-    return this.threads;
-  }
-
-  /** sort the threads list. */
-  /*public void sortThreads(List<ThreadModel> threadsModelList) {
-    SortEnum sortEnum = Validation.checkStateLiveData(this.sortEnum, TAG);
-    if (sortEnum == null) {
-      return;
-    }
-    this.arrayListUtil.sortThreadList(threadsModelList, sortEnum);
-  }
-
-  /** filter threads list. */
-  /*public void filterThreads(List<ThreadModel> threadsModelList) {
-    FilterEnum filterEnum = Validation.checkStateLiveData(this.filterEnum, TAG);
-    if (filterEnum == null) {
-      return;
-    }
-    FirebaseUser firebaseUser = Validation.checkStateLiveData(
-            this.authAppRepository.getUserStateLiveData(), TAG);
-    if (firebaseUser == null) {
-      return;
-    }
-    MeetingsModel actualMeeting = Validation.checkStateLiveData(this.meeting, TAG);
-    String userId = firebaseUser.getUid();
-    this.arrayListUtil.filterThreadList(threadsModelList, outFilteredThreads,
-            filterEnum, actualMeeting, userId);
-  }
-
-  public StateLiveData<MeetingsModel> getMeeting() { return this.meeting;}
 
   /** Initialise the ViewModel. */
   public void init() {
-
+    //TODO if ... != null
   }
 
   public StateLiveData<MeetingsModel> getMeeting() {
