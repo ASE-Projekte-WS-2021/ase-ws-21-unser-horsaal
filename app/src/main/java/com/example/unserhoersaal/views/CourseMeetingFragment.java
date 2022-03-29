@@ -2,29 +2,27 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseMeetingBinding;
-
 import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.model.ThreadModel;
-
 import com.example.unserhoersaal.enums.SortEnum;
-
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
@@ -69,6 +67,7 @@ public class CourseMeetingFragment extends Fragment {
     this.connectAdapter();
     this.connectBinding();
     this.initToolbar();
+    this.initSearchView();
   }
 
   /** Initialise all ViewModels for the Fragment. */
@@ -173,9 +172,32 @@ public class CourseMeetingFragment extends Fragment {
     );
     this.binding.courseMeetingFragmentToolbar.setOnMenuItemClickListener(item -> {
       if (item.getItemId() == R.id.courseMeetingToolbarFilter){
+        Log.d(TAG, "there");
         toggleFilterContainer();
       }
       return true;
+    });
+  }
+
+  private void initSearchView() {
+    SearchView searchView = (SearchView) this.binding
+            .courseMeetingFragmentToolbar
+            .getMenu()
+            .findItem(R.id.courseMeetingToolbarSearch)
+            .getActionView();
+    searchView.setQueryHint(Config.SEARCH_VIEW_HINT);
+    searchView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        return false;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        threadAdapter.getFilter().filter(newText);
+        return false;
+      }
     });
   }
 

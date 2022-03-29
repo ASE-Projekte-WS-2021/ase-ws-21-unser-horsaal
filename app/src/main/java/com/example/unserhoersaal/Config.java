@@ -104,9 +104,18 @@ public class Config {
   public static final int NUMBER_OF_TABS = 3;
 
   /**=======================.
+   * Search Hint
+   * ======================= */
+  public static final String SEARCH_VIEW_HINT = "Deine Suche ...";
+  public static final String TAG_SUBJECT_MATTER = "lehrstoff";
+  public static final String TAG_EXAMINATION = "prüfung";
+  public static final String TAG_MISTAKE = "fehler";
+  public static final String TAG_ORGANISATION = "organisatorisch";
+  public static final String TAG_OTHER = "sonstiges";
+
+  /**=======================.
    * Internal Error Messages
    * ======================= */
-
   public static final String FIREBASE_USER_NULL = "Firebase User is null";
   public static final String STATE_LIVE_DATA_NULL = "Databinding Error";
   public static final String AUTH_LOGOUT_SUCCESS = "";
@@ -119,7 +128,6 @@ public class Config {
    * ======================= */
   public static final String UNSPECIFIC_ERROR =
           "Ein Fehler ist aufgetreten!"; //hide too specific error from user
-
 
   public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
   public static final String DATABINDING_TITLE_WRONG_PATTERN =

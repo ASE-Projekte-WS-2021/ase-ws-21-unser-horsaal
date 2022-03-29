@@ -148,6 +148,7 @@
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_course_meeting.xml" value="0.17654508611955422" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/simple_question_item.xml" value="0.17654508611955422" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/thread_item.xml" value="0.17654508611955422" />
+        <entry key="app/src/main/res/drawable/custom_ripple_blue.xml" value="0.216" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/answer_item.xml" value="0.31068840579710144" />
         <entry key="app/src/main/res/layout/enter_course_detail_screen.xml" value="0.35260416666666666" />
@@ -157,7 +158,7 @@
         <entry key="app/src/main/res/layout/fragment_course_meeting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_course_participants.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_course_thread.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/fragment_courses.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_courses.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_create_course.xml" value="0.21829710144927536" />
         <entry key="app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.2341485507246377" />
         <entry key="app/src/main/res/layout/fragment_current_course.xml" value="0.254981884057971" />
@@ -176,6 +177,9 @@
         <entry key="app/src/main/res/layout/thread_item.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.22395833333333334" />
         <entry key="app/src/main/res/menu/course_history_fragment_toolbar.xml" value="0.22395833333333334" />
+        <entry key="app/src/main/res/menu/course_meeting_menu.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/menu/course_menu.xml" value="0.2015625" />
+        <entry key="app/src/main/res/menu/courses_fragment_toolbar.xml" value="0.2015625" />
         <entry key="app/src/main/res/menu/edit_profile_fragment_toolbar.xml" value="0.22395833333333334" />
         <entry key="app/src/main/res/menu/profile_fragment_toolbar.xml" value="0.22395833333333334" />
         <entry key="app/src/main/res/xml/shortcurts.xml" value="0.35260416666666666" />

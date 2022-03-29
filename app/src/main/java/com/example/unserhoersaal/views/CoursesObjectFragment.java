@@ -1,14 +1,20 @@
 package com.example.unserhoersaal.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.databinding.FragmentCoursesObjectBinding;
@@ -38,8 +44,10 @@ public class CoursesObjectFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
+    this.initSearchView();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.coursesViewModel = new ViewModelProvider(getActivity())
             .get(CoursesViewModel.class);
@@ -65,5 +73,27 @@ public class CoursesObjectFragment extends Fragment {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.coursesViewModel);
     this.binding.setAdapter(this.coursesAdapter);
+  }
+
+  private void initSearchView() {
+    SearchView searchView = (SearchView) this.binding
+            .coursesFragmentToolbar
+            .getMenu()
+            .findItem(R.id.coursesToolbarSearch)
+            .getActionView();
+    searchView.setQueryHint(Config.SEARCH_VIEW_HINT);
+    searchView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        return false;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        coursesAdapter.getFilter().filter(newText);
+        return false;
+      }
+    });
   }
 }
