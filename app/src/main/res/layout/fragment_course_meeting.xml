@@ -34,35 +34,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_meeting_subtitle"
+                android:text="@={vm.meeting.data.title}"
                 style="@style/toolbarTitleStyle"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/courseMeetingFragmentSubtitleContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:background="@color/app_blue"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentToolbar">
-
-            <TextView
-                android:id="@+id/courseMeetingFragmentToolbarTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@={vm.meeting.data.title}"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                style="@style/toolbarSubtitleStyle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/courseMeetingFragmentTabLayout"
@@ -72,7 +47,7 @@
             style="@style/coursesTabItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentSubtitleContainer">
+            app:layout_constraintTop_toBottomOf="@id/courseMeetingFragmentToolbar">
 
         </com.google.android.material.tabs.TabLayout>
 

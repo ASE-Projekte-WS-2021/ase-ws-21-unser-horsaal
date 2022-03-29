@@ -206,6 +206,7 @@
     <string name="create_poll_option_4_hint">Hier Option 4 eingeben…</string>
     <string name="create_poll_question">Frage</string>
     <string name="create_poll_create_button">Erstelle deine Abstimmung</string>
+    <string name="no_polls_available">Aktuell keine Abstimmungen verfügbar!</string>
 
 
 </resources>
