@@ -113,17 +113,25 @@ public class CreateCourseMeetingFragment extends Fragment {
   private void changeTextToEdit() {
     binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
     binding.createCourseMeetingSubtitle.setText(R.string.edit_course_meeting_subtitle);
+    binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
+
     binding.createCourseMeetingDatePicker.setText(courseHistoryViewModel.meetingModelInputState
             .getValue().getData().getMeetingDate());
-    binding.createCourseMeetingTimePicker.setText();
+    binding.createCourseMeetingTimePicker.setText(courseHistoryViewModel.getTimeInputForDisplay());
+    binding.createCourseMeetingEndTimePicker.setText(courseHistoryViewModel.getEndTimeInputForDisplay());
+
+
 
   }
 
   private void changeTextToCreate() {
-    binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_subtitle);
-    binding.createCourseMeetingSubtitle.setText(R.string.create_course_meeting_toolbar_title);
-    createCourseMeetingDatePicker
-            createCourseMeetingTimePicker createCourseMeetingEndTimePicker createCourseMeetingFragmentButton
+    binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_toolbar_title);
+    binding.createCourseMeetingSubtitle.setText(R.string.create_course_meeting_subtitle);
+    binding.createCourseMeetingFragmentButton.setText(R.string.create_course_meeting_meeting_button);
+
+    binding.createCourseMeetingDatePicker.setText(R.string.current_date_placeholder);
+    binding.createCourseMeetingTimePicker.setText(R.string.startzeit);
+    binding.createCourseMeetingEndTimePicker.setText(R.string.endzeit);
   }
 
   @Override

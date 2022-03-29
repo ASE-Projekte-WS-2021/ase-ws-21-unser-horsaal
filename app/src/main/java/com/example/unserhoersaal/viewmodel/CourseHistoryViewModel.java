@@ -8,6 +8,8 @@ import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
+import com.example.unserhoersaal.utils.DateTimePicker;
+import com.example.unserhoersaal.utils.NavUtil;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.Calendar;
@@ -27,6 +29,8 @@ public class CourseHistoryViewModel extends ViewModel {
   public StateLiveData<String> userId;
   private ArrayListUtil arrayListUtil;
   private Boolean isEditing = false;
+  private String timeInputForDisplay;
+  private String endTimeInputForDisplay;
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -145,6 +149,24 @@ public class CourseHistoryViewModel extends ViewModel {
     calendar.set(Calendar.MINUTE, meetingsModel.getMinuteEndInput());
 
     return calendar.getTimeInMillis();
+  }
+
+  public void setTimeInputForDisplay(int hour, int minute) {
+    String timeInputForDisplay = DateTimePicker.formatTime(hour, minute);
+    this.timeInputForDisplay = timeInputForDisplay;
+  }
+
+  public void setEndTimeInputForDisplay(int hour, int minute) {
+    String endTimeInputForDisplay = DateTimePicker.formatTime(hour, minute);
+    this.endTimeInputForDisplay = endTimeInputForDisplay;
+  }
+
+  public String getTimeInputForDisplay() {
+    return timeInputForDisplay;
+  }
+
+  public String getEndTimeInputForDisplay() {
+    return endTimeInputForDisplay;
   }
 
   public String getUid() {

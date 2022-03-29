@@ -192,6 +192,8 @@
     <string name="edit_course_button">Kurs bearbeiten</string>
     <string name="edit_course_meeting_toolbar_title">Meeting bearbeiten</string>
     <string name="edit_course_meeting_subtitle">Bearbeite hier deine Meetings.</string>
+    <string name="edit_course_meeting_button">Bearbeiten</string>
+
 
 
 

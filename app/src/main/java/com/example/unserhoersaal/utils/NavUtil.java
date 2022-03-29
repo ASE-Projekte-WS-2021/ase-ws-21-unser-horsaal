@@ -174,6 +174,10 @@ public class NavUtil {
     courseHistoryViewModel.setMeetingModelInputState(meetingsModelStateLiveData);
     courseHistoryViewModel.setIsEditing(true);
 
+    MeetingsModel meetingsModel = meetingsModelStateLiveData.getValue().getData();
+
+
+
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_createCourseMeetingFragment);
   }
