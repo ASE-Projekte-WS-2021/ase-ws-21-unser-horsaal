@@ -74,9 +74,9 @@ public class RegistrationViewModel extends ViewModel {
     }
 
     /* User input*/
-    String userName = userModel.getDisplayName().trim();
+    String userName = userModel.getDisplayName();
     String email = userModel.getEmail().trim();
-    String password = passwordModel.getCurrentPassword().trim();
+    String password = passwordModel.getCurrentPassword();
 
     /* Check if username input is empty or has wrong pattern.*/
     if (Validation.emptyString(userName)) {
