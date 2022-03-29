@@ -113,17 +113,24 @@ public class CreateCourseMeetingFragment extends Fragment {
   private void changeTextToEdit() {
     binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
     binding.createCourseMeetingSubtitle.setText(R.string.edit_course_meeting_subtitle);
+    binding.createCourseMeetingDatePicker.setText(courseHistoryViewModel.meetingModelInputState
+            .getValue().getData().getMeetingDate());
+    binding.createCourseMeetingTimePicker.setText();
+
   }
 
   private void changeTextToCreate() {
     binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_subtitle);
     binding.createCourseMeetingSubtitle.setText(R.string.create_course_meeting_toolbar_title);
+    createCourseMeetingDatePicker
+            createCourseMeetingTimePicker createCourseMeetingEndTimePicker createCourseMeetingFragmentButton
   }
 
   @Override
   public void onDestroy() {
     super.onDestroy();
     this.courseHistoryViewModel.resetMeetingData();
+    this.courseHistoryViewModel.setIsEditing(false);
   }
 
 }

@@ -26,7 +26,7 @@ public class CourseHistoryViewModel extends ViewModel {
   public StateLiveData<MeetingsModel> meetingModelInputState = new StateLiveData<>();
   public StateLiveData<String> userId;
   private ArrayListUtil arrayListUtil;
-  private Boolean isEditing;
+  private Boolean isEditing = false;
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -39,7 +39,7 @@ public class CourseHistoryViewModel extends ViewModel {
     this.course = this.courseHistoryRepository.getCourse();
     this.meetingsModelMutableLiveData
             = this.courseHistoryRepository.getMeetingsModelMutableLiveData();
-    this.courseHistoryRepository.getUserId();
+    this.courseHistoryRepository.setUserId();
     this.userId = this.courseHistoryRepository.getUserId();
 
     if (this.course.getValue() != null) {
