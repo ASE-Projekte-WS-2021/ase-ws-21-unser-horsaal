@@ -166,6 +166,8 @@ public class Config {
           "Verifizierungsemail versandt";
   public static final String AUTH_VERIFICATION_EMAIL_NOT_SENT =
           "Die Verfizierungsemail konnte nicht versandt werden!";
+  public static final String AUTH_VERIFICATION_TOO_MANY_REQUESTS =
+          "Von deinem Gerät wurde zu viele Anfragen registriert. Versuch es später erneut!";
   public static final String AUTH_PASSWORD_RESET_MAIL_SENT =
           "Email zur Passwortzurücksetzung versandt.";
   public static final String AUTH_PASSWORD_RESET_MAIL_NOT_SENT =

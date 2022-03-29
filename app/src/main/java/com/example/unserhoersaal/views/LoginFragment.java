@@ -113,8 +113,11 @@ public class LoginFragment extends Fragment {
               && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
         navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
       } else if (firebaseUser.isEmailVerified()) {
+        Log.d(TAG, "LF: redirecting to course fragment");
         navController.navigate(R.id.action_loginFragment_to_coursesFragment);
       } else if (!firebaseUser.isEmailVerified()) {
+        Log.d(TAG, "LF: redirecting to verificication fragment");
+        loginViewModel.sendVerificationEmail();
         navController.navigate(R.id.action_loginFragment_to_verificationFragment);
       }
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
