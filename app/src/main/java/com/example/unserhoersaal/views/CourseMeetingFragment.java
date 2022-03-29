@@ -89,6 +89,7 @@ public class CourseMeetingFragment extends Fragment {
     this.questionsViewModel.setMeeting(meetingStateData.getData());
     this.pollViewModel.setMeeting(meetingStateData.getData());
     this.liveChatViewModel.setMeeting(meetingStateData.getData());
+
   }
 
   private void connectAdapter() {
@@ -116,6 +117,5 @@ public class CourseMeetingFragment extends Fragment {
     this.binding.courseMeetingFragmentToolbar
             .setNavigationOnClickListener(v -> this.navController.navigateUp());
   }
-
 
 }

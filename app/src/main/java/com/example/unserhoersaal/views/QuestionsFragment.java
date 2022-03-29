@@ -74,11 +74,14 @@ public class QuestionsFragment extends Fragment {
             this::threadLiveStateCallback);*/
     this.questionsViewModel.getSortEnum().observe(getViewLifecycleOwner(),
             this::sortEnumCallback);
+    this.questionsViewModel.getFilterEnum().observe(getViewLifecycleOwner(),
+            this::filterEnumCallback);
   }
 
   @SuppressLint("NotifyDataSetChanged")
   private void meetingsLiveStateCallback(StateData<List<ThreadModel>> listStateData) {
     this.resetBindings();
+    this.questionsViewModel.filterThreads(listStateData.getData());
     this.questionsViewModel.sortThreads(listStateData.getData());
     this.threadAdapter.notifyDataSetChanged();
 
@@ -135,6 +138,49 @@ public class QuestionsFragment extends Fragment {
             .getValue().getData());
   }
 
+  private void filterEnumCallback(StateData<FilterEnum> filterEnum) {
+    if (filterEnum.getData() != FilterEnum.SOLVED) {
+      this.binding.questionChipAnswered.setChecked(Boolean.FALSE);
+      this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.UNSOLVED) {
+      this.binding.questionChipUnanswered.setChecked(Boolean.FALSE);
+      this.binding.questionChipUnansweredActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.OWN) {
+      this.binding.questionChipOwn.setChecked(Boolean.FALSE);
+      this.binding.questionChipOwnActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.CREATOR) {
+      this.binding.questionChipCreator.setChecked(Boolean.FALSE);
+      this.binding.questionChipCreatorActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.SUBJECT_MATTER) {
+      this.binding.questionChipSubjectMatter.setChecked(Boolean.FALSE);
+      this.binding.questionChipSubjectMatterActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.ORGANISATION) {
+      this.binding.questionChipOrganisation.setChecked(Boolean.FALSE);
+      this.binding.questionChipOrganisationActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.MISTAKE) {
+      this.binding.questionChipMistake.setChecked(Boolean.FALSE);
+      this.binding.questionChipMistakeActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.EXAMINATION) {
+      this.binding.questionChipExamination.setChecked(Boolean.FALSE);
+      this.binding.questionChipExaminationActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() != FilterEnum.OTHER) {
+      this.binding.questionChipOther.setChecked(Boolean.FALSE);
+      this.binding.questionChipOtherActivated.setVisibility(View.GONE);
+    }
+
+    //TODO: is there a better solution to trigger the callback funtion for threads?
+    this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel
+            .getThreads().getValue().getData());
+  }
+
   private void resetBindings() {
     this.binding.questionFragmentProgressSpinner.setVisibility(View.GONE);
   }
@@ -151,14 +197,11 @@ public class QuestionsFragment extends Fragment {
     this.binding.setAdapter(this.threadAdapter);
   }
 
-  //Todo: in Arbeit
-  private void filterThreads(StateData<FilterEnum> filterEnum) {
-    this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel.getFullList());
-  }
-
   @Override
   public void onResume() {
     super.onResume();
     this.questionsViewModel.resetThreadModelInput();
+    this.questionsViewModel.setFilterEnum(FilterEnum.NONE);
+    this.questionsViewModel.setSortEnum(SortEnum.NEWEST);
   }
 }

@@ -15,7 +15,7 @@ public class CourseMeetingViewModel extends ViewModel {
 
   /** Initialise the ViewModel. */
   public void init() {
-
+    //TODO if ... != null
   }
 
   public StateLiveData<MeetingsModel> getMeeting() {
