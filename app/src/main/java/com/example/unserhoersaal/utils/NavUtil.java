@@ -159,4 +159,23 @@ public class NavUtil {
     navController.navigate(R.id.action_courseDescriptionFragment_to_createCourseFragment);
   }
 
+  @BindingAdapter("navigateToMeetingEdit")
+  public static void navigateToMeetingEdit(View view, MeetingsModel model) {
+    if (model == null) {
+      return;
+    }
+    CourseHistoryViewModel courseHistoryViewModel =
+            new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+                    .get(CourseHistoryViewModel.class);
+    courseHistoryViewModel.init();
+    Log.d("test", model.getKey());
+    StateLiveData<MeetingsModel> meetingsModelStateLiveData = new StateLiveData<>();
+    meetingsModelStateLiveData.postCreate(model);
+    courseHistoryViewModel.setMeetingModelInputState(meetingsModelStateLiveData);
+    courseHistoryViewModel.setIsEditing(true);
+
+    NavController navController = Navigation.findNavController(view);
+    navController.navigate(R.id.action_courseHistoryFragment_to_createCourseMeetingFragment);
+  }
+
 }

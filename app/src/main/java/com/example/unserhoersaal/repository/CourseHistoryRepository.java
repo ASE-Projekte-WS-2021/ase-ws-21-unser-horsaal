@@ -206,4 +206,7 @@ public class CourseHistoryRepository {
     };
   }
 
+  public String getUid() {
+    return firebaseAuth.getCurrentUser().getUid();
+  }
 }

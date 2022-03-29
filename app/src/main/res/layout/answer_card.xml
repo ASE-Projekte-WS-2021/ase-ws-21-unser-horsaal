@@ -118,15 +118,15 @@
 
                 <ImageView
                     android:id="@+id/answerCardSolvedIcon"
+                    setColor="@{model.topAnswer}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_check_24"
                     android:onClick="@{(view) -> vm.solved(model.key)}"
-                    setColor="@{model.topAnswer}"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/answerCardAuthorImage"
-                    app:layout_constraintTop_toTopOf="@id/answerCardAuthorImage"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/answerCardAuthorImage" />
 
                 <TextView
                     android:id="@+id/answerCardTime"

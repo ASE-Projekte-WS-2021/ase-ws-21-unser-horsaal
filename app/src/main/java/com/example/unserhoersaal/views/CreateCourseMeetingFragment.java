@@ -51,6 +51,12 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
+
+    if (courseHistoryViewModel.getIsEditing()) {
+      changeTextToEdit();
+    } else {
+      changeTextToCreate();
+    }
     this.connectBinding();
     this.initToolbar();
   }
@@ -102,6 +108,22 @@ public class CreateCourseMeetingFragment extends Fragment {
             this.navController.navigate(
                     R.id.action_createCourseMeetingFragment_to_courseHistoryFragment)
     );
+  }
+
+  private void changeTextToEdit() {
+    binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
+    binding.createCourseMeetingSubtitle.setText(R.string.edit_course_meeting_subtitle);
+  }
+
+  private void changeTextToCreate() {
+    binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_subtitle);
+    binding.createCourseMeetingSubtitle.setText(R.string.create_course_meeting_toolbar_title);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    this.courseHistoryViewModel.resetMeetingData();
   }
 
 }

@@ -18,8 +18,11 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
 
   private List<MeetingsModel> localDataSet;
 
-  public MeetingAdapter(List<MeetingsModel> dataSet) {
+  private String uid;
+
+  public MeetingAdapter(List<MeetingsModel> dataSet, String uid) {
     this.localDataSet = dataSet;
+    this.uid = uid;
   }
 
   @NonNull
