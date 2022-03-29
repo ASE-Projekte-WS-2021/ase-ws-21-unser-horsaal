@@ -171,6 +171,7 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_owned_courses.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_questions.xml" value="0.21458333333333332" />
         <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.2128623188405797" />
         <entry key="app/src/main/res/layout/fragment_todays_courses.xml" value="0.1" />
         <entry key="app/src/main/res/layout/participant_list_item.xml" value="0.35260416666666666" />

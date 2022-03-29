@@ -73,6 +73,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                     .addPageNumber(threadModel.getPageNumber())
                     .addHashTag(threadModel.getHashtag())
                     .addTags(threadModel.getTags())
+                    .addCreatorName(threadModel.getCreatorName())
                     .matchUserQuery(query);
 
             if (queryResult) {
