@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -62,13 +64,12 @@ public class VerificationFragment extends Fragment {
    * into the application. */
   private void emailVerifiedChecker() {
     this.handler = new Handler();
-    this.handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
     this.runnable = () -> {
       Log.d(TAG, "checking for authstatechange");
-      loginViewModel.reloadFirebaseUser();
+      loginViewModel.isUserEmailVerified();
       handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
     };
-    this.handler.post(this.runnable);
+    this.handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
   }
 
   private void initViewModel() {
@@ -96,14 +97,17 @@ public class VerificationFragment extends Fragment {
       this.binding.verificationFragmentErrorText
               .setText(firebaseUserStateData.getError().getMessage());
       this.binding.verificationFragmentErrorText.setVisibility(View.VISIBLE);
-    } else {
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE) {
       FirebaseUser firebaseUser = firebaseUserStateData.getData();
 
       if (firebaseUser == null) {
-        Log.d(TAG, "firebase user is null");
+        Log.d(TAG, "VF: firebase user is null -> login");
         navController.navigate(R.id.action_verificationFragment_to_loginFragment);
       } else if (firebaseUser.isEmailVerified()) {
+        Log.d(TAG, "VF: redirecting to course fragment");
         navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
+      } else {
+        Toast.makeText(getContext(), Config.AUTH_VERIFICATION_EMAIL_SENT, Toast.LENGTH_SHORT).show();
       }
     }
   }

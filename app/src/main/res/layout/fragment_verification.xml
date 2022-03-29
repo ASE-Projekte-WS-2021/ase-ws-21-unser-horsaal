@@ -48,10 +48,12 @@
 
         <TextView
             android:id="@+id/verificationFragmentErrorText"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginEnd="54dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/red"
-            android:textAlignment="center"
             android:visibility="gone"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,10 +66,9 @@
                     android:id="@+id/verificationFragmentResendEmailButton"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> vm.resendVerificationEmail()}"
+                    android:onClick="@{() -> vm.sendVerificationEmail()}"
                     android:text="@string/send_again"
                     android:layout_gravity="center"
-                    android:layout_marginTop="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

@@ -123,7 +123,7 @@ public class CourseHistoryFragment extends Fragment {
     this.binding.courseHistoryFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseHistoryFragmentToolbar.setNavigationOnClickListener(v ->
-            navController.navigate(R.id.action_courseHistoryFragment_to_coursesFragment));
+            navController.navigateUp());
   }
 
   @Override

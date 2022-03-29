@@ -126,8 +126,7 @@ public class EnterCourseFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.enterCourseFragmentToolbar
             .setNavigationOnClickListener(v ->
-                    this.navController.navigate(
-                            R.id.action_enterCourseFragment_to_coursesFragment));
+                    this.navController.navigateUp());
   }
 
   @Override
