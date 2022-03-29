@@ -51,7 +51,6 @@ public class CreateCourseInformationFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createCourseInformationFragmentToolbar
             .setNavigationOnClickListener(v ->
-                    navController.navigate(R.id
-                            .action_createCourseInformationFragment_to_coursesFragment));
+                    navController.navigateUp());
   }
 }

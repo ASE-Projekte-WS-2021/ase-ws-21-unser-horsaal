@@ -83,7 +83,7 @@ public class CourseParticipantsFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseParticipantsFragmentToolbar
             .setNavigationOnClickListener(v -> navController
-            .navigate(R.id.action_courseParticipantsFragment_to_courseDescriptionFragment));
+            .navigateUp());
   }
 
 }

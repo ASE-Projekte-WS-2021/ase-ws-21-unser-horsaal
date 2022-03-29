@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.installSplashScreen(this);
+    //SplashScreen.installSplashScreen(this);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     if (getSupportActionBar() != null) {

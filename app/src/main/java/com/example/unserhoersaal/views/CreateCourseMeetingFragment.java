@@ -99,9 +99,7 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.binding.createCourseMeetingFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createCourseMeetingFragmentToolbar.setNavigationOnClickListener(v ->
-            this.navController.navigate(
-                    R.id.action_createCourseMeetingFragment_to_courseHistoryFragment)
-    );
+            this.navController.navigateUp());
   }
 
 }
