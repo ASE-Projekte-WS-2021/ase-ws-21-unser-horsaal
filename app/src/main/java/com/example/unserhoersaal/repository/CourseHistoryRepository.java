@@ -140,7 +140,6 @@ public class CourseHistoryRepository {
     meetingsModel.setCreationTime(System.currentTimeMillis());
 
     String meetingId = this.databaseReference.getRoot().push().getKey();
-    meetingsModel.setKey(meetingId);
 
     if (meetingId == null) {
       Log.e(TAG, "meeting id is null");
@@ -207,18 +206,7 @@ public class CourseHistoryRepository {
             .child(meetingId)
             .setValue(meetingsModel)
             .addOnSuccessListener(unused -> {
-              this.databaseReference.child(Config.CHILD_COURSES)
-                      .child(courseObj.getKey())
-                      .child(Config.CHILD_MEETINGS_COUNT)
-                      .setValue(ServerValue.increment(1))
-                      .addOnSuccessListener(unused1 -> {
-                        meetingsModel.setKey(meetingId);
-                        meetingsModelMutableLiveData.postUpdate(meetingsModel);
-                      }).addOnFailureListener(e -> {
-                Log.e(TAG, e.getMessage());
-                meetingsModelMutableLiveData.postError(
-                        new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
-              });
+              meetingsModelMutableLiveData.postUpdate(meetingsModel);
             }).addOnFailureListener(e -> {
       Log.e(TAG, e.getMessage());
       meetingsModelMutableLiveData.postError(

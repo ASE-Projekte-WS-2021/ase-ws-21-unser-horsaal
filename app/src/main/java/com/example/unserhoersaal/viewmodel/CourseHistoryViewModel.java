@@ -119,7 +119,13 @@ public class CourseHistoryViewModel extends ViewModel {
     meetingsModel.setCreationTime(new Date().getTime());
 
     this.meetingModelInputState.postCreate(new MeetingsModel());
-    this.courseHistoryRepository.createMeeting(meetingsModel);
+
+    if (isEditing) {
+      this.courseHistoryRepository.editMeeting(meetingsModel);
+    } else {
+      this.courseHistoryRepository.createMeeting(meetingsModel);
+
+    }
   }
 
   private String parseMeetingDate(MeetingsModel meetingsModel) {
