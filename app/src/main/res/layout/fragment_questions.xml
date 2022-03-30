@@ -21,6 +21,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +33,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:elevation="2dp"
                     android:backgroundTint="@color/transparent"
                     app:cardCornerRadius="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +60,7 @@
                             android:textSize="16sp"
                             android:textAlignment="center"
                             android:textColor="@color/white"
+                            android:layout_margin="16dp"
                             app:layout_constraintStart_toEndOf="@+id/questionsFragmentInfoImage"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -220,6 +221,7 @@
             android:padding="8dp"
             android:visibility="gone"
             android:background="@color/app_blue"
+            android:translationZ="90dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
