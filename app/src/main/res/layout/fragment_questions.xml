@@ -27,17 +27,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".views.QuestionsFragment">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/questionsFragmentInfoContainer"
                     android:layout_width="match_parent"
@@ -207,26 +196,21 @@
 
                 </com.google.android.material.chip.ChipGroup>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/questionFragmentActivatedChipsContainer">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/questionFragmentThreadRecycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:adapter="@{adapter}"
-                        app:initLayoutManager="@{R.id.questionFragmentThreadRecycler}"
-                        tools:listitem="@layout/thread_card" />
-
-                </RelativeLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        <com.l4digital.fastscroll.FastScrollRecyclerView
+            android:id="@+id/questionFragmentThreadRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adapter="@{adapter}"
+            app:initLayoutManager="@{R.id.questionFragmentThreadRecycler}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/questionFragmentActivatedChipsContainer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:bubbleColor="@color/app_blue"
+            app:bubbleSize="small"
+            app:bubbleTextSize="16sp"
+            tools:listitem="@layout/thread_card" />
 
         <LinearLayout
             android:id="@+id/questionFragmentAvailableChipsContainer"
