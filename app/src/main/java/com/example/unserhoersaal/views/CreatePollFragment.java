@@ -10,10 +10,16 @@ import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreatePollBinding;
+import com.example.unserhoersaal.model.PollModel;
+import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.viewmodel.PollViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -22,6 +28,7 @@ public class CreatePollFragment extends Fragment {
 
   private FragmentCreatePollBinding binding;
   private NavController navController;
+  private PollViewModel pollViewModel;
 
   public CreatePollFragment() {
     // Required empty public constructor
@@ -44,14 +51,39 @@ public class CreatePollFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     this.navController = Navigation.findNavController(view);
+    this.initViewModel();
     this.connectBinding();
     this.initToolbar();
     this.initSwitch();
     this.initAddRemoveOption();
   }
 
+  private void initViewModel() {
+    this.pollViewModel = new ViewModelProvider(requireActivity()).get(PollViewModel.class);
+    this.pollViewModel.init();
+    this.pollViewModel.getPollModel().observe(getViewLifecycleOwner(), this::pollLiveDataCallback);
+  }
+
+  private void pollLiveDataCallback(StateData<PollModel> pollModelStateData) {
+    this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
+
+    if (pollModelStateData.getStatus() == StateData.DataStatus.LOADING) {
+      //TODO
+    } else if (pollModelStateData.getStatus() == StateData.DataStatus.ERROR) {
+      //TODO
+    } else if (pollModelStateData.getStatus() == StateData.DataStatus.UPDATE){
+      this.navController.navigateUp();
+    }
+  }
+
+  private void resetBindings() {
+    //TODO
+  }
+
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.pollViewModel);
   }
 
   private void initToolbar() {

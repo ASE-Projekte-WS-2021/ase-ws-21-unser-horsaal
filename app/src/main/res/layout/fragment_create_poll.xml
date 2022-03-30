@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.PollViewModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
@@ -103,6 +106,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createPollFragmentQuestionEditText"
+                        android:text="@={vm.pollModelInputState.data.text}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
@@ -282,6 +286,7 @@
                     style="@style/wideOrangeButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:onClick="@{(view) -> vm.createPoll()}"
                     android:text="@string/create_poll_create_button"
                     android:layout_margin="16dp"
                     app:layout_constraintEnd_toEndOf="parent"

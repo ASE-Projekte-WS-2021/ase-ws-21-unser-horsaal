@@ -93,6 +93,7 @@ public class Config {
   public static final String CHILD_PHOTO_URL = "photoUrl";
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
   public static final String CHILD_MEMBER_COUNT = "memberCount";
+  public static final String CHILD_POLL = "poll";
 
   /**=======================.
    * Tabviews
@@ -221,6 +222,8 @@ public class Config {
   public static final String MEETINGS_FAILED_TO_LOAD = "Meeting konnten nicht geladen werden!";
   public static final String MESSAGES_FAILED_TO_LOAD = "Nachrichten konnten nicht geladen werden!";
   public static final String NO_PICUTRE_SELECTED = "Es wurde kein Bild selektiert!";
+
+  public static final String POLL_CREATION_FAILURE = "Die Umfrage konnte nicht erstellt werden!";
 
   /**=======================.
    *  Avatar Placeholder Ids
