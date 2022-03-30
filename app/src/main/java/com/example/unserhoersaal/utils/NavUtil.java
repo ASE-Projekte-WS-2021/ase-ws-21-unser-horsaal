@@ -139,7 +139,7 @@ public class NavUtil {
     dialog.show();
   }
 
-
+  /** Navigates to CourseEdit. */
   @BindingAdapter("navigateToCourseEdit")
   public static void navigateToCourseEdit(View view, CourseModel model) {
     if (model == null) {
@@ -159,6 +159,7 @@ public class NavUtil {
     navController.navigate(R.id.action_courseDescriptionFragment_to_createCourseFragment);
   }
 
+  /** Navigates to MeetingEdit. */
   @BindingAdapter("navigateToMeetingEdit")
   public static void navigateToMeetingEdit(View view, MeetingsModel model) {
     if (model == null) {
@@ -175,7 +176,10 @@ public class NavUtil {
     courseHistoryViewModel.setIsEditing(true);
 
     MeetingsModel meetingsModel = meetingsModelStateLiveData.getValue().getData();
-
+    courseHistoryViewModel.setTimeInputForDisplay(meetingsModel
+            .getHourInput(), meetingsModel.getMinuteInput());
+    courseHistoryViewModel.setEndTimeInputForDisplay(meetingsModel
+            .getHourEndInput(), meetingsModel.getMinuteEndInput());
 
 
     NavController navController = Navigation.findNavController(view);

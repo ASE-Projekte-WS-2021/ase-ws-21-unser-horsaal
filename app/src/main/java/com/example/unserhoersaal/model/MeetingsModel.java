@@ -20,6 +20,7 @@ public class MeetingsModel {
   private String title;
   private String key;
   private String meetingDate;
+  private String meetingKey;
 
   public MeetingsModel() {
     //needed for Firebase
@@ -144,6 +145,10 @@ public class MeetingsModel {
   public void setMeetingDate(String meetingDate) {
     this.meetingDate = meetingDate;
   }
+
+  public void setMeetingKey(String meetingKey) { this.meetingKey = meetingKey; }
+
+  public String getMeetingKey() { return meetingKey; }
 
 }
 
