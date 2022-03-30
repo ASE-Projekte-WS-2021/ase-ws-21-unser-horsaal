@@ -79,7 +79,7 @@ public class LoginViewModel extends ViewModel {
       return;
     }
 
-    String email = userModel.getEmail().trim();
+    String email = userModel.getEmail();
     String password = passwordModel.getCurrentPassword();
 
     if (Validation.emptyString(email)) {
