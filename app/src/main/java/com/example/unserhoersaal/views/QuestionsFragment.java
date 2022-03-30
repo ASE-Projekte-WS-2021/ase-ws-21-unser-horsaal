@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,6 +59,7 @@ public class QuestionsFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
+    this.initSearchView();
   }
 
   private void initViewModel() {
@@ -195,6 +197,23 @@ public class QuestionsFragment extends Fragment {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.questionsViewModel);
     this.binding.setAdapter(this.threadAdapter);
+  }
+
+  private void initSearchView() {
+    this.binding
+            .questionsFragmentSearchView
+            .setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+              @Override
+              public boolean onQueryTextSubmit(String query) {
+                return false;
+              }
+
+              @Override
+              public boolean onQueryTextChange(String newText) {
+                threadAdapter.getFilter().filter(newText);
+                return false;
+              }
+            });
   }
 
   @Override

@@ -52,6 +52,8 @@
     <string name="courses_fragment_all_tab_string">Alle</string>
     <string name="courses_fragment_created_tab_string">Erstellt</string>
     <string name="toolbar_search_string">Suchen</string>
+    <string name="courses_search_string">Suche hier nach Kursen ...</string>
+    <string name="threads_search_string">Fragen durchsuchen ...</string>
     <string name="toolbar_filter_string">Filter</string>
     <string name="toolbar_profile_string">Profil</string>
     <string name="toolbar_logout_string">Logout</string>
