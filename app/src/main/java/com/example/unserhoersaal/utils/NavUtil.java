@@ -120,7 +120,7 @@ public class NavUtil {
     dialog.show();
   }
 
-  /** Navigates to CourseHistory. */
+  /** Shows Confirmation Dialog when User clicks on unregister from course. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter("unregisterFromCourse")
   public static void unregisterFromCourse(View view, CourseDescriptionViewModel viewModel) {
