@@ -127,6 +127,16 @@ public class Config {
   public static final int ONBOARDING_ACCOUNT_FRAGMENT_POSITION = 3;
 
   /**=======================.
+   * Search Hint
+   * ======================= */
+  public static final String SEARCH_VIEW_HINT = "Deine Suche ...";
+  public static final String TAG_SUBJECT_MATTER = "lehrstoff";
+  public static final String TAG_EXAMINATION = "prüfung";
+  public static final String TAG_MISTAKE = "fehler";
+  public static final String TAG_ORGANISATION = "organisatorisch";
+  public static final String TAG_OTHER = "sonstiges";
+
+  /**=======================.
    * Internal Error Messages
    * ======================= */
   public static final String FIREBASE_USER_NULL = "Firebase User is null";

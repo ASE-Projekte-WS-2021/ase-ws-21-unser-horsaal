@@ -108,6 +108,7 @@ public class AuthAppRepository {
             .addOnSuccessListener(unused -> {
               Log.d(TAG, "A new user was created in the database");
               this.sendVerificationEmail();
+              this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, "Could not create a new user!");
@@ -120,23 +121,24 @@ public class AuthAppRepository {
   public void sendVerificationEmail() {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.userLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      this.emailSentLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
     } else {
       this.firebaseAuth.getCurrentUser()
               .sendEmailVerification()
               .addOnSuccessListener(unused -> {
                 Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
+                this.emailSentLiveData.postUpdate(Boolean.TRUE);
+                this.emailSentLiveData.postCreate(Boolean.FALSE);
               })
               .addOnFailureListener(e -> {
                 if (e instanceof FirebaseTooManyRequestsException) {
                   Log.d(TAG, "too many requests");
-                  this.userLiveData.postError(
+                  this.emailSentLiveData.postError(
                           new Error(Config.AUTH_VERIFICATION_TOO_MANY_REQUESTS), ErrorTag.REPO);
                 } else {
                   Log.e(TAG, Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
                   Log.e(TAG, e.getMessage());
-                  this.userLiveData.postError(
+                  this.emailSentLiveData.postError(
                           new Error(Config.AUTH_VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
                 }
               });

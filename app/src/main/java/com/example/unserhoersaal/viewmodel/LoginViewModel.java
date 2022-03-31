@@ -114,7 +114,7 @@ public class LoginViewModel extends ViewModel {
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.e(TAG, "LoginViewModel>sendPasswordResetMail userModel is null.");
+      Log.e(TAG, "userModel is null.");
       this.emailSentLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -138,7 +138,7 @@ public class LoginViewModel extends ViewModel {
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
   public void sendVerificationEmail() {
-    this.userLiveData.postLoading();
+    this.emailSentLiveData.postLoading();
     this.authAppRepository.sendVerificationEmail();
   }
 
