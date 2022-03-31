@@ -186,4 +186,8 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository.solved(messageId);
   }
 
+  public void deleteThreadText(ThreadModel threadModel) {
+    currentCourseRepository.deleteThreadText(threadModel);
+  }
+
 }

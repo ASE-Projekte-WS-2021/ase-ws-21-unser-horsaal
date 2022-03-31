@@ -17,6 +17,7 @@ public class MessageModel {
   private LikeStatus likeStatus;
   private String photoUrl;
 
+
   /**Default class constructor.**/
   public MessageModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
@@ -93,4 +94,5 @@ public class MessageModel {
   public void setLikeStatus(LikeStatus likeStatus) {
     this.likeStatus = likeStatus;
   }
+
 }

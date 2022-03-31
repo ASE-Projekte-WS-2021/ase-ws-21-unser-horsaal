@@ -472,4 +472,25 @@ public class CurrentCourseRepository {
     }
   }
 
+  public void deleteThreadText(ThreadModel threadModel) {
+
+    Log.d()
+    DatabaseReference databaseRefDelThread =
+            this.databaseReference.child(Config.CHILD_THREADS)
+            .child(meeting.getValue().getData().getKey())
+            .child(threadId.getValue().getData());
+
+    char[] deletedMessageChars =
+            "Nachricht gelöscht".toCharArray();
+    String deletedMessageString = new String(deletedMessageChars);
+    databaseRefDelThread
+            .child("isTextDeleted")
+            .setValue(true);
+
+    databaseRefDelThread
+            .child("text")
+            .setValue(deletedMessageString);
+
+  }
+
 }
