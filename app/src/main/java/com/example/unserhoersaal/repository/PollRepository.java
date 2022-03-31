@@ -116,8 +116,10 @@ public class PollRepository {
   }
 
   public void loadPolls() {
+    this.pollList.clear();
     this.polls.postLoading();
 
+    //TODO better!!!
     if (this.meeting.getValue() == null) return;
     if (this.meeting.getValue().getData() == null) return;
     if (this.meeting.getValue().getData().getKey() == null) return;

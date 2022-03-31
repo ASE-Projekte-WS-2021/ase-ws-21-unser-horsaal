@@ -74,19 +74,20 @@ public class PollFragment extends Fragment {
     this.pollAdapter.notifyDataSetChanged();
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
-      //TODO
+      this.binding.pollFragmentProgressSpinner.setVisibility(View.VISIBLE);
     } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
-      //TODO
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
     }
     if (listStateData.getData().size() == 0) {
-      //TODO
+      this.binding.pollFragmentNoPollsTextView.setVisibility(View.VISIBLE);
     } else {
-      //TODO
+      this.binding.pollFragmentNoPollsTextView.setVisibility(View.GONE);
     }
   }
 
   private void resetBindings() {
-    //TODO
+    this.binding.pollFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectAdapter() {
