@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.os.Message;
 import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
@@ -195,6 +196,10 @@ public class CurrentCourseViewModel extends ViewModel {
 
   public void deleteThreadText(ThreadModel threadModel) {
     currentCourseRepository.deleteThreadText(threadModel);
+  }
+
+  public void deleteAnswerText(MessageModel messageModel) {
+    currentCourseRepository.deleteAnswerText(messageModel);
   }
 
 

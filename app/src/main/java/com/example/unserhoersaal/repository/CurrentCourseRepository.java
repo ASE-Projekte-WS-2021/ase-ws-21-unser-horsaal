@@ -493,6 +493,24 @@ public class CurrentCourseRepository {
 
   }
 
+  public void deleteAnswerText(MessageModel messageModel) {
+
+    Log.d("Hier", "msg: Key of thread: " + messageModel.getKey());
+    DatabaseReference databaseRefDelThread =
+            this.databaseReference.child(Config.CHILD_MESSAGES)
+                    .child(threadId.getValue().getData())
+                    .child(messageModel.getKey());
+
+    databaseRefDelThread
+            .child("isTextDeleted")
+            .setValue(true);
+
+    databaseRefDelThread
+            .child("text")
+            .setValue("");
+
+  }
+
 
 
 }

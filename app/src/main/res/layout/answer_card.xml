@@ -12,6 +12,7 @@
             type="com.example.unserhoersaal.viewmodel.CurrentCourseViewModel" />
         <import type="com.example.unserhoersaal.utils.ImageAdapter"/>
         <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -19,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:minHeight="100dp"
-        app:cardCornerRadius="8dp">
+        app:cardCornerRadius="8dp"
+        android:onClick="@{(view) -> NavUtil.deleteAnswerText(view, vm, model)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -77,12 +79,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/black"
-                android:text="@{model.text}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/answerCardVoteContainer"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/answerCardAnswerInfoContainer"/>
+                app:layout_constraintBottom_toTopOf="@id/answerCardAnswerInfoContainer"
+                android:text="@{vm.thread.data.isTextDeleted ? @string/deleted_message_text : model.text}"
+                android:textColor="@{ vm.thread.data.isTextDeleted ?  @color/grey : @color/black}"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/answerCardAnswerInfoContainer"

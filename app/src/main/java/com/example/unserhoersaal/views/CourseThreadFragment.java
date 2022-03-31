@@ -95,7 +95,7 @@ public class CourseThreadFragment extends Fragment {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.currentCourseViewModel);
     this.binding.setAdapter(this.chatAdapter);
-    this.binding.setModel(this.currentCourseViewModel.getThread().getValue().getData());
+    //this.binding.setModel(this.currentCourseViewModel.getThread().getValue().getData());
   }
 
   private void initToolbar() {

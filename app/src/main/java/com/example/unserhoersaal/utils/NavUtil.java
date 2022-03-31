@@ -2,6 +2,7 @@ package com.example.unserhoersaal.utils;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
@@ -12,6 +13,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
+import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
@@ -140,7 +142,7 @@ public class NavUtil {
     dialog.show();
   }
 
-  /** Shows Confirmation Dialog when User clicks on delete Account in Profile. */
+  /** Shows Confirmation Dialog when User deletes a Thread Message. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter({"viewmodel", "model"})
   public static void deleteMessageText(View view,
@@ -157,6 +159,34 @@ public class NavUtil {
               .setPositiveButton(R.string.dialog_delete_account_true,
                       (dialog, which) -> {
                         vm.deleteThreadText(model);
+                        dialog.dismiss();
+                      })
+              .setNegativeButton(R.string.dialog_delete_account_false,
+                      (dialog, which) -> dialog.dismiss());
+
+      AlertDialog dialog = builder.create();
+      dialog.show();
+
+    }
+  }
+
+  /** Shows Confirmation Dialog when User deletes a Thread Message. */
+  //reference: https://developer.android.com/guide/topics/ui/dialogs
+  @BindingAdapter({"viewmodel", "model"})
+  public static void deleteAnswerText(View view,
+                                       CurrentCourseViewModel vm,
+                                       MessageModel model) {
+
+    String creatorId = model.getCreatorId();
+    String uid = vm.getUserId().getValue().getData();
+
+    if (creatorId.equals(uid)) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+      builder.setMessage(R.string.dialog_delete_message_text)
+              .setTitle(R.string.dialog_delete_message_title)
+              .setPositiveButton(R.string.dialog_delete_account_true,
+                      (dialog, which) -> {
+                        vm.deleteAnswerText(model);
                         dialog.dismiss();
                       })
               .setNegativeButton(R.string.dialog_delete_account_false,
