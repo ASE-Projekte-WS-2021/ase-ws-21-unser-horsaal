@@ -70,6 +70,8 @@ public class CurrentCourseViewModel extends ViewModel {
     return  this.thread;
   }
 
+  public StateLiveData<String> getUserId() { return this.userId; }
+
   /** Send a new message in a thread. */
   public void sendMessage() {
     //TODO: removed loading because there is no place for it
@@ -194,5 +196,7 @@ public class CurrentCourseViewModel extends ViewModel {
   public void deleteThreadText(ThreadModel threadModel) {
     currentCourseRepository.deleteThreadText(threadModel);
   }
+
+
 
 }

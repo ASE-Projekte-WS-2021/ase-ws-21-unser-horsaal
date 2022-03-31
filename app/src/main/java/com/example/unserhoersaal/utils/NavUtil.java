@@ -146,19 +146,26 @@ public class NavUtil {
   public static void deleteMessageText(View view,
                                        CurrentCourseViewModel vm,
                                        ThreadModel model) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-    builder.setMessage(R.string.dialog_delete_message_text)
-            .setTitle(R.string.dialog_delete_message_title)
-            .setPositiveButton(R.string.dialog_delete_account_true,
-                    (dialog, which) -> {
-                      vm.deleteThreadText(model);
-                      dialog.dismiss();
-                    })
-            .setNegativeButton(R.string.dialog_delete_account_false,
-                    (dialog, which) -> dialog.dismiss());
 
-    AlertDialog dialog = builder.create();
-    dialog.show();
+    String creatorId = vm.getThread().getValue().getData().getCreatorId();
+    String uid = vm.getUserId().getValue().getData();
+
+    if (creatorId.equals(uid)) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+      builder.setMessage(R.string.dialog_delete_message_text)
+              .setTitle(R.string.dialog_delete_message_title)
+              .setPositiveButton(R.string.dialog_delete_account_true,
+                      (dialog, which) -> {
+                        vm.deleteThreadText(model);
+                        dialog.dismiss();
+                      })
+              .setNegativeButton(R.string.dialog_delete_account_false,
+                      (dialog, which) -> dialog.dismiss());
+
+      AlertDialog dialog = builder.create();
+      dialog.show();
+
+    }
   }
 
   /** Navigates to CourseEdit. */
