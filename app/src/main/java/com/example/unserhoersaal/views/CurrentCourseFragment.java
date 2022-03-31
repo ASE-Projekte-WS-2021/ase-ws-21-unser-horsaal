@@ -74,6 +74,7 @@ public class CurrentCourseFragment extends Fragment {
     this.currentCourseViewModel.getMessages()
             .observe(getViewLifecycleOwner(),
                     list -> chatAdapter.notifyDataSetChanged());
+
   }
 
   private void initUi(View view) {

@@ -3,6 +3,7 @@ package com.example.unserhoersaal.repository;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
@@ -160,6 +161,8 @@ public class CurrentCourseRepository {
             .child(Config.CHILD_ANSWER_COUNT)
             .setValue(ServerValue.increment(1));
   }
+
+  public void setThread(ThreadModel threadModel) { this.thread.postCreate(threadModel); }
 
   /** TODO. */
   public void setUserId() {
@@ -474,22 +477,19 @@ public class CurrentCourseRepository {
 
   public void deleteThreadText(ThreadModel threadModel) {
 
-    Log.d()
+    Log.d("Hier", "msg: Key of thread: " + threadModel.key);
     DatabaseReference databaseRefDelThread =
             this.databaseReference.child(Config.CHILD_THREADS)
             .child(meeting.getValue().getData().getKey())
             .child(threadId.getValue().getData());
 
-    char[] deletedMessageChars =
-            "Nachricht gelöscht".toCharArray();
-    String deletedMessageString = new String(deletedMessageChars);
     databaseRefDelThread
             .child("isTextDeleted")
             .setValue(true);
 
     databaseRefDelThread
             .child("text")
-            .setValue(deletedMessageString);
+            .setValue("");
 
   }
 

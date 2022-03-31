@@ -263,12 +263,12 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="8dp"
                                 android:layout_marginBottom="16dp"
-                                android:text="@{vm.thread.data.text}"
+                                android:text="@{vm.thread.data.isTextDeleted ? @string/deleted_message_text : vm.thread.data.text}"
                                 app:layout_constraintBottom_toTopOf="@id/courseThreadMessageThreadInfoContainer"
                                 app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/courseThreadMessageHashtagOne"
-                                android:textColor="@{ model.isTextDeleted ?  @color/green : @color/green}"/>
+                                android:textColor="@{ vm.thread.data.isTextDeleted ?  @color/grey : @color/black}"/>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/courseThreadMessageThreadInfoContainer"

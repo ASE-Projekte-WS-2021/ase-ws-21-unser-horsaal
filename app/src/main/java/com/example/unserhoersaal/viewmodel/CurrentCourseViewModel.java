@@ -101,6 +101,11 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository.setThreadId(threadId);
   }
 
+  public void setThread(ThreadModel threadModel) {
+    this.thread.postCreate(threadModel);
+    this.currentCourseRepository.setThread(threadModel);
+  }
+
   public void setMeeting(MeetingsModel meeting) {
     this.currentCourseRepository.setMeetingId(meeting);
   }

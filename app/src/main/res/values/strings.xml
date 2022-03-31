@@ -195,6 +195,7 @@
     <string name="edit_course_meeting_button">Bearbeiten</string>
     <string name="dialog_delete_message_text">Möchtest du den Text deiner Nachricht wirklich löschen?</string>
     <string name="dialog_delete_message_title">Text löschen</string>
+    <string name="deleted_message_text"><i>Nachricht gelöscht</i></string>
 
 
 

@@ -79,6 +79,7 @@ public class NavUtil {
             .get(CurrentCourseViewModel.class);
     currentCourseViewModel.init();
     currentCourseViewModel.setThreadId(model.getKey());
+    currentCourseViewModel.setThread(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
