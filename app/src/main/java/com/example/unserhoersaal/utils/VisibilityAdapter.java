@@ -44,4 +44,13 @@ public class VisibilityAdapter {
     }
   }
 
+  @BindingAdapter("pollOptionVisibility")
+  public static void pollOptionVisibility(View view, String option) {
+    if (option == null) {
+      view.setVisibility(View.GONE);
+    } else {
+      view.setVisibility(View.VISIBLE);
+    }
+  }
+
 }

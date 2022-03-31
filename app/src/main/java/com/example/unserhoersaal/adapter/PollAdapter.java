@@ -12,6 +12,7 @@ import com.example.unserhoersaal.databinding.MeetingCardBinding;
 import com.example.unserhoersaal.databinding.PollItemBinding;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.PollModel;
+import com.example.unserhoersaal.utils.PollUtil;
 import com.example.unserhoersaal.viewmodel.PollViewModel;
 
 import java.util.List;
@@ -21,9 +22,11 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
   private static final String TAG = "PollAdapter";
 
   private final List<PollModel> localDataSet;
+  private final PollViewModel pollViewModel;
 
-  public PollAdapter(List<PollModel> localDataSet) {
+  public PollAdapter(List<PollModel> localDataSet, PollViewModel pollViewModel) {
     this.localDataSet = localDataSet;
+    this.pollViewModel = pollViewModel;
   }
 
   @NonNull
@@ -40,7 +43,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
   @Override
   public void onBindViewHolder(ViewHolder viewHolder, int position) {
     PollModel pollModel = localDataSet.get(position);
-    viewHolder.connect(pollModel);
+    viewHolder.connect(pollModel, pollViewModel);
   }
 
   @Override
@@ -56,8 +59,9 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
       this.binding = binding;
     }
 
-    public void connect(PollModel model) {
+    public void connect(PollModel model, PollViewModel pollViewModel) {
       this.binding.setModel(model);
+      this.binding.setVm(pollViewModel);
       this.binding.executePendingBindings();
     }
   }

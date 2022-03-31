@@ -6,7 +6,13 @@
         <variable
             name="model"
             type="com.example.unserhoersaal.model.PollModel" />
-
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.PollViewModel" />
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="com.example.unserhoersaal.utils.PollUtil"/>
+        <import type="com.example.unserhoersaal.enums.CheckedOptionEnum"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,17 +24,33 @@
             android:id="@+id/pollItemAuthorImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_baseline_account_circle_24_black"
+            setImage="@{model.photoUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/pollItemAuthorAndDate"
+            android:id="@+id/pollItemAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Author - 15:21"
+            android:text="@{model.creatorName}"
             app:layout_constraintStart_toEndOf="@id/pollItemAuthorImage"
             app:layout_constraintBottom_toBottomOf="@id/pollItemAuthorImage" />
+
+        <TextView
+            android:id="@+id/pollItemAnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - "
+            app:layout_constraintStart_toEndOf="@id/pollItemAuthor"
+            app:layout_constraintBottom_toBottomOf="@id/pollItemAuthor" />
+
+        <TextView
+            android:id="@+id/pollItemDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Format.getFormatedDateTime(pollItemDate, model.creationTime)}"
+            app:layout_constraintStart_toEndOf="@id/pollItemAnd"
+            app:layout_constraintBottom_toBottomOf="@id/pollItemAnd" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -59,18 +81,21 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/pollItemOption1RadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="@{model.checkedOption == CheckedOptionEnum.OPTION1}"
+                    android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION1, model)}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/pollItemQuestion" />
+                    app:layout_constraintTop_toBottomOf="@id/pollItemQuestion"
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
 
                 <TextView
                     android:id="@+id/pollItemOption1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Option 1"
+                    android:text="@{model.optionsText1}"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption1RadioButton"
                     app:layout_constraintTop_toTopOf="@id/pollItemOption1RadioButton"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption1RadioButton" />
@@ -87,25 +112,28 @@
                     android:id="@+id/pollItemOption1Percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10%"
+                    android:text="@{PollUtil.calculatePercentage(pollItemOption1ProgressBar, model.optionsCount1, model.votesCount)}"
                     android:layout_marginStart="8dp"
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption1ProgressBar"
                     app:layout_constraintTop_toTopOf="@id/pollItemOption1ProgressBar"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption1ProgressBar" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/pollItemOption2RadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="@{model.checkedOption == CheckedOptionEnum.OPTION2}"
+                    android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION2, model)}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/pollItemOption1RadioButton" />
+                    app:layout_constraintTop_toBottomOf="@id/pollItemOption1RadioButton"
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
 
                 <TextView
                     android:id="@+id/pollItemOption2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Option 2"
+                    android:text="@{model.optionsText2}"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption2RadioButton"
                     app:layout_constraintTop_toTopOf="@id/pollItemOption2RadioButton"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption2RadioButton" />
@@ -122,25 +150,30 @@
                     android:id="@+id/pollItemOption2Percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10%"
+                    android:text="@{PollUtil.calculatePercentage(pollItemOption2ProgressBar, model.optionsCount2, model.votesCount)}"
                     android:layout_marginStart="8dp"
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption2ProgressBar"
                     app:layout_constraintTop_toTopOf="@id/pollItemOption2ProgressBar"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption2ProgressBar" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/pollItemOption3RadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="@{model.optionsText3 == null ? View.GONE : View.VISIBLE}"
+                    android:checked="@{model.checkedOption == CheckedOptionEnum.OPTION3}"
+                    android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION3, model)}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/pollItemOption2RadioButton" />
+                    app:layout_constraintTop_toBottomOf="@id/pollItemOption2RadioButton"
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
 
                 <TextView
                     android:id="@+id/pollItemOption3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Option 3"
+                    android:text="@{model.optionsText3}"
+                    android:visibility="@{model.optionsText3 == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption3RadioButton"
                     app:layout_constraintTop_toTopOf="@id/pollItemOption3RadioButton"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption3RadioButton" />
@@ -150,6 +183,7 @@
                     android:layout_width="50dp"
                     android:layout_height="4dp"
                     android:background="@color/black"
+                    android:visibility="@{model.optionsText3 == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption3RadioButton"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption3RadioButton" />
 
@@ -157,25 +191,31 @@
                     android:id="@+id/pollItemOption3Percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10%"
+                    android:text="@{PollUtil.calculatePercentage(pollItemOption3ProgressBar, model.optionsCount3, model.votesCount)}"
                     android:layout_marginStart="8dp"
                     android:textSize="12sp"
+                    android:visibility="@{model.optionsText3 == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption3ProgressBar"
                     app:layout_constraintTop_toTopOf="@id/pollItemOption3ProgressBar"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption3ProgressBar" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/pollItemOption4RadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="@{model.optionsText4 == null ? View.GONE : View.VISIBLE}"
+                    android:checked="@{model.checkedOption == CheckedOptionEnum.OPTION4}"
+                    android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION4, model)}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/pollItemOption3RadioButton" />
+                    app:layout_constraintTop_toBottomOf="@id/pollItemOption3RadioButton"
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
 
                 <TextView
                     android:id="@+id/pollItemOption4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Option 4"
+                    android:text="@{model.optionsText4}"
+                    android:visibility="@{model.optionsText4 == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption4RadioButton"
                     app:layout_constraintTop_toTopOf="@id/pollItemOption4RadioButton"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption4RadioButton" />
@@ -185,6 +225,7 @@
                     android:layout_width="50dp"
                     android:layout_height="4dp"
                     android:background="@color/black"
+                    android:visibility="@{model.optionsText4 == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption4RadioButton"
                     app:layout_constraintBottom_toBottomOf="@id/pollItemOption4RadioButton" />
 
@@ -192,12 +233,13 @@
                     android:id="@+id/pollItemOption4Percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10%"
+                    android:text="@{PollUtil.calculatePercentage(pollItemOption4ProgressBar, model.optionsCount4, model.votesCount)}"
                     android:layout_marginStart="8dp"
                     android:textSize="12sp"
+                    android:visibility="@{model.optionsText4 == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toEndOf="@id/pollItemOption4ProgressBar"
                     app:layout_constraintTop_toTopOf="@id/pollItemOption4ProgressBar"
-                    app:layout_constraintBottom_toBottomOf="@id/pollItemOption4ProgressBar" />
+                    app:layout_constraintBottom_toBottomOf="@id/pollItemOption4ProgressBar"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/pollItemVoteButton"
@@ -212,7 +254,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20 Teilnehmer"
+                    android:text="@{Integer.toString(model.votesCount)}"
                     android:layout_margin="8dp"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"

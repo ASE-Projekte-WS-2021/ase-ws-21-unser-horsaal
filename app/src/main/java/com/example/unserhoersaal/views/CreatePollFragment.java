@@ -122,6 +122,8 @@ public class CreatePollFragment extends Fragment {
     this.binding.createPollFragmentOption2InputField.setEnabled(false);
     this.binding.createPollFragmentOption1EditText.setText(null);
     this.binding.createPollFragmentOption2EditText.setText(null);
+    this.binding.createPollFragmentOption3EditText.setText(null);
+    this.binding.createPollFragmentOption4EditText.setText(null);
   }
 
   private void uncheckSwitch() {
@@ -156,8 +158,10 @@ public class CreatePollFragment extends Fragment {
 
   private void removePollOption() {
     if (this.binding.createPollFragmentOption4InputField.getVisibility() == View.VISIBLE) {
+      this.binding.createPollFragmentOption4EditText.setText(null);
       this.binding.createPollFragmentOption4InputField.setVisibility(View.GONE);
     } else if (this.binding.createPollFragmentOption3InputField.getVisibility() == View.VISIBLE) {
+      this.binding.createPollFragmentOption3EditText.setText(null);
       this.binding.createPollFragmentOption3InputField.setVisibility(View.GONE);
       this.binding.createPollFragmentRemoveOptionButton.setVisibility(View.GONE);
     }

@@ -224,6 +224,7 @@ public class Config {
   public static final String NO_PICUTRE_SELECTED = "Es wurde kein Bild selektiert!";
 
   public static final String POLL_CREATION_FAILURE = "Die Umfrage konnte nicht erstellt werden!";
+  public static final String POLLS_FAILED_TO_LOAD = "Polls konnten nicht geladen werden!";
 
   /**=======================.
    *  Avatar Placeholder Ids

@@ -2,6 +2,7 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public class PollFragment extends Fragment {
     }
     this.resetBindings();
     this.pollAdapter.notifyDataSetChanged();
+    Log.d(TAG, "pollsLiveDataCallback: ");
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.pollFragmentProgressSpinner.setVisibility(View.VISIBLE);
@@ -91,7 +93,7 @@ public class PollFragment extends Fragment {
   }
 
   private void connectAdapter() {
-    this.pollAdapter = new PollAdapter(this.pollViewModel.getPolls().getValue().getData());
+    this.pollAdapter = new PollAdapter(this.pollViewModel.getPolls().getValue().getData(), this.pollViewModel);
   }
 
   private void connectBinding() {

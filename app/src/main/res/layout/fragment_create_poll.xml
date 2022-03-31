@@ -151,7 +151,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
-                        android:background="@drawable/rounded_corners" />
+                        android:background="@drawable/rounded_corners"
+                        android:text="@={vm.pollModelInputState.data.optionsText1}"/>
 
                     <TextView
                         android:id="@+id/createPollFragmentOption1ErrorText"
@@ -181,6 +182,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
+                        android:text="@={vm.pollModelInputState.data.optionsText2}"
                         android:background="@drawable/rounded_corners" />
 
                     <TextView
@@ -211,6 +213,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
+                        android:text="@={vm.pollModelInputState.data.optionsText3}"
                         android:background="@drawable/rounded_corners" />
 
                     <TextView
@@ -241,6 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
+                        android:text="@={vm.pollModelInputState.data.optionsText4}"
                         android:background="@drawable/rounded_corners" />
 
                     <TextView
@@ -286,7 +290,7 @@
                     style="@style/wideOrangeButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:onClick="@{(view) -> vm.createPoll()}"
+                    android:onClick="@{(view) -> vm.createPoll(createPollFragmentSwitch.isChecked())}"
                     android:text="@string/create_poll_create_button"
                     android:layout_margin="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
