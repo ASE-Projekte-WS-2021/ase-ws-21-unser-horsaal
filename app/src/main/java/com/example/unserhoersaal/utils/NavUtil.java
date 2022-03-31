@@ -1,6 +1,8 @@
 package com.example.unserhoersaal.utils;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
@@ -8,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
@@ -134,6 +138,15 @@ public class NavUtil {
 
     AlertDialog dialog = builder.create();
     dialog.show();
+  }
+
+  @BindingAdapter("skipOnboarding")
+  public static void skipOnboarding(View view, int navAction) {
+    SharedPreferences sharedPreferences = view.getContext()
+            .getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
+    sharedPreferences.edit().putBoolean(Config.SHARED_PREF_ONBOARDING_KEY, true).apply();
+    NavController navController = Navigation.findNavController(view);
+    navController.navigate(navAction);
   }
 
 }

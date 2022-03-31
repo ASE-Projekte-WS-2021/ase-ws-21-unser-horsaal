@@ -95,6 +95,12 @@ public class Config {
   public static final String CHILD_MEMBER_COUNT = "memberCount";
 
   /**=======================.
+   * Shared Preferences Keys
+   * ======================= */
+  public static final String SHARED_PREF_KEY = "settings";
+  public static final String SHARED_PREF_ONBOARDING_KEY = "onboard_complete";
+
+  /**=======================.
    * Tabviews
    * ======================= */
   //Courses Tabview
@@ -115,13 +121,14 @@ public class Config {
   public static final String TAB_QUESTIONS_NAME = "Fragen";
   public static final int MMEETINGS_NUMBER_OF_TABS = 3;
 
-
-
+  //Onboarding TabView
+  public static final int ONBOARDING_FRAGMENT_TAB_LENGTH = 6;
+  public static final int ONBOARDING_USERNAME_FRAGMENT_POSITION = 1;
+  public static final int ONBOARDING_ACCOUNT_FRAGMENT_POSITION = 3;
 
   /**=======================.
    * Internal Error Messages
    * ======================= */
-
   public static final String FIREBASE_USER_NULL = "Firebase User is null";
   public static final String STATE_LIVE_DATA_NULL = "Databinding Error";
   public static final String AUTH_LOGOUT_SUCCESS = "";
@@ -134,7 +141,6 @@ public class Config {
    * ======================= */
   public static final String UNSPECIFIC_ERROR =
           "Ein Fehler ist aufgetreten!"; //hide too specific error from user
-
 
   public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
   public static final String DATABINDING_TITLE_WRONG_PATTERN =
