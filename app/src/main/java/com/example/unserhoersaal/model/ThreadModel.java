@@ -2,7 +2,6 @@ package com.example.unserhoersaal.model;
 
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.enums.TagEnum;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,7 +140,11 @@ public class ThreadModel {
     this.tags = tags;
   }
 
-  public void setIsTextDeleted(Boolean isTextDeleted) { this.isTextDeleted = isTextDeleted; }
+  public void setIsTextDeleted(Boolean isTextDeleted) {
+    this.isTextDeleted = isTextDeleted;
+  }
 
-  public Boolean getIsTextDeleted() { return this.isTextDeleted; }
+  public Boolean getIsTextDeleted() {
+    return this.isTextDeleted;
+  }
 }

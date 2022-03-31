@@ -162,7 +162,9 @@ public class CurrentCourseRepository {
             .setValue(ServerValue.increment(1));
   }
 
-  public void setThread(ThreadModel threadModel) { this.thread.postCreate(threadModel); }
+  public void setThread(ThreadModel threadModel) {
+    this.thread.postCreate(threadModel);
+  }
 
   /** TODO. */
   public void setUserId() {
@@ -475,6 +477,7 @@ public class CurrentCourseRepository {
     }
   }
 
+  /** TODO. */
   public void deleteThreadText(ThreadModel threadModel) {
 
     Log.d("Hier", "msg: Key of thread: " + threadModel.key);
@@ -493,6 +496,7 @@ public class CurrentCourseRepository {
 
   }
 
+  /** TODO. */
   public void deleteAnswerText(MessageModel messageModel) {
 
     Log.d("Hier", "msg: Key of thread: " + messageModel.getKey());

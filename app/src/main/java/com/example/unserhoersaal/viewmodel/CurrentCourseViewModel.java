@@ -71,7 +71,9 @@ public class CurrentCourseViewModel extends ViewModel {
     return  this.thread;
   }
 
-  public StateLiveData<String> getUserId() { return this.userId; }
+  public StateLiveData<String> getUserId() {
+    return this.userId;
+  }
 
   /** Send a new message in a thread. */
   public void sendMessage() {
