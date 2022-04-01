@@ -65,7 +65,15 @@ public class PollViewModel extends ViewModel {
       return;
     }
     this.pollModel.postLoading();
-
+    if (pollModel.getText() == null) {
+      Log.e(TAG, Config.DATABINDING_TEXT_NULL);
+      this.pollModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
+      return;
+    } else if (!Validation.stringHasPattern(pollModel.getText(), Config.REGEX_PATTERN_TEXT)) {
+      Log.e(TAG, Config.DATABINDING_TEXT_WRONG_PATTERN);
+      this.pollModel.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
+      return;
+    }
 
     if (yesNoPoll) {
       pollModel.setOptionsText1(Config.OPTION_YES);
@@ -73,20 +81,25 @@ public class PollViewModel extends ViewModel {
       pollModel.setOptionsText3(null);
       pollModel.setOptionsText4(null);
     } else {
-      //TODO validate 1,2 everything
-      if (pollModel.getText() == null) {
-        Log.e(TAG, Config.DATABINDING_TEXT_NULL);
-        this.pollModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-        return;
-      } else if (!Validation.stringHasPattern(pollModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-        Log.e(TAG, Config.DATABINDING_TEXT_WRONG_PATTERN);
-        this.pollModel.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
-        return;
+
+      if (pollModel.getOptionsText1() == null || pollModel.getOptionsText2() == null) {
+        Log.e(TAG, Config.DATABINDING_OPTION_NULL);
+        this.pollModel.postError(new Error(Config.DATABINDING_OPTION_NULL), ErrorTag.OPTION);
+        //TODO PATTERN FOR OPTION NEEDED?
+      } else if (!Validation.stringHasPattern(pollModel.getOptionsText1(),
+              Config.REGEX_PATTERN_TEXT)
+              || !Validation.stringHasPattern(pollModel.getOptionsText2(),
+              Config.REGEX_PATTERN_TEXT)) {
+        Log.e(TAG, Config.DATABINDING_OPTION_WRONG_PATTERN);
+        this.pollModel
+                .postError(new Error(Config.DATABINDING_OPTION_WRONG_PATTERN), ErrorTag.OPTION);
       }
-      if (pollModel.getOptionsText3() != null && pollModel.getOptionsText3().equals("")) {
+      if (pollModel.getOptionsText3()
+              != null && pollModel.getOptionsText3().equals(Config.OPTION_EMPTY)) {
         pollModel.setOptionsText3(null);
       }
-      if (pollModel.getOptionsText4() != null && pollModel.getOptionsText4().equals("")) {
+      if (pollModel.getOptionsText4()
+              != null && pollModel.getOptionsText4().equals(Config.OPTION_EMPTY)) {
         pollModel.setOptionsText4(null);
       }
     }
@@ -106,22 +119,24 @@ public class PollViewModel extends ViewModel {
       this.pollRepository.removeVote(getOptionPath(checkedOption), pollId);
     } else {
       if (oldOption != null && oldOption != CheckedOptionEnum.NONE) {
-        this.pollRepository.removeVote(getOptionPath(oldOption), pollId);
+        this.pollRepository.changeVote(checkedOption, getOptionPath(checkedOption),
+                getOptionPath(oldOption), pollId);
+      } else {
+        this.pollRepository.vote(checkedOption, getOptionPath(checkedOption), pollId);
       }
-      this.pollRepository.vote(checkedOption, getOptionPath(checkedOption), pollId);
     }
   }
 
   private String getOptionPath(CheckedOptionEnum checkedOption) {
     switch (checkedOption) {
       case OPTION1:
-        return "optionsCount1";
+        return Config.CHILD_OPTION_COUNT_1;
       case OPTION2:
-        return "optionsCount2";
+        return Config.CHILD_OPTION_COUNT_2;
       case OPTION3:
-        return "optionsCount3";
+        return Config.CHILD_OPTION_COUNT_3;
       case OPTION4:
-        return "optionsCount4";
+        return Config.CHILD_OPTION_COUNT_4;
       default:
         return null;
     }

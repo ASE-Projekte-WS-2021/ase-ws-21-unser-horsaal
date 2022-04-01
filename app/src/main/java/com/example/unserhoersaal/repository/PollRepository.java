@@ -76,6 +76,7 @@ public class PollRepository {
 
   /** Save the data for a new poll in the database. */
   public void createNewPoll(PollModel pollModel) {
+    this.pollModelStateLiveData.postLoading();
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
       Log.e(TAG, Config.MEETING_OBJECT_NULL);
@@ -206,7 +207,7 @@ public class PollRepository {
   }
 
   //TODO ifs
-  //TODO pipeline
+  //TODO pipeline?
   /** Save a vote of the user in the database. */
   public void vote(CheckedOptionEnum checkedOptionEnum, String optionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
@@ -234,7 +235,36 @@ public class PollRepository {
   }
 
   //TODO ifs
-  //TODO pipeline
+  //TODO pipeline?
+  /** Change a user vote from one option to another. */
+  public void changeVote(CheckedOptionEnum checkedOption, String checkedOptionPath,
+                         String oldOptionPath, String pollId) {
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
+    //set userPoll
+    this.databaseReference.child(Config.CHILD_USER_POLL)
+            .child(uid)
+            .child(pollId)
+            .setValue(checkedOption);
+    this.databaseReference.child(Config.CHILD_POLL_USER)
+            .child(pollId)
+            .child(uid)
+            .setValue(checkedOption);
+    //increase OptionCount
+    this.databaseReference.child(Config.CHILD_POLL)
+            .child(meeting.getValue().getData().getKey())
+            .child(pollId)
+            .child(checkedOptionPath)
+            .setValue(ServerValue.increment(1));
+    //decrease OptionCount
+    this.databaseReference.child(Config.CHILD_POLL)
+            .child(meeting.getValue().getData().getKey())
+            .child(pollId)
+            .child(oldOptionPath)
+            .setValue(ServerValue.increment(-1));
+  }
+
+  //TODO ifs
+  //TODO pipeline?
   /** Remove a vote from the user in the database. */
   public void removeVote(String optionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();

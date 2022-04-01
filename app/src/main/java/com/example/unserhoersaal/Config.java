@@ -97,6 +97,10 @@ public class Config {
   public static final String CHILD_USER_POLL = "userPoll";
   public static final String CHILD_POLL_USER = "pollUser";
   public static final String CHILD_VOTES_COUNT = "votesCount";
+  public static final String CHILD_OPTION_COUNT_1 = "optionsCount1";
+  public static final String CHILD_OPTION_COUNT_2 = "optionsCount2";
+  public static final String CHILD_OPTION_COUNT_3 = "optionsCount3";
+  public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
 
   /**=======================.
    * Tabviews
@@ -131,6 +135,7 @@ public class Config {
   //PollViewModel
   public static final String OPTION_YES = "Ja";
   public static final String OPTION_NO = "Nein";
+  public static final String OPTION_EMPTY = "";
 
 
   /**=======================.
@@ -169,6 +174,9 @@ public class Config {
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
           "Der Beitrittscode enthält ungültige Charaktere.";
+  public static final String DATABINDING_OPTION_NULL = "Option 1 und 2 dürfen nicht leer sein";
+  public static final String DATABINDING_OPTION_WRONG_PATTERN =
+          "Option 1 und/oder 2 enthalten ungültige Charaktere.";
 
   public static final String AUTH_EMAIL_EMPTY = "Bitte gib eine Email-Adresse ein!";
   public static final String AUTH_EMAIL_WRONG_PATTERN_REGISTRATION =

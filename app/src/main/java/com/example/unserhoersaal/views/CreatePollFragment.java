@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,10 +18,7 @@ import com.example.unserhoersaal.databinding.FragmentCreatePollBinding;
 import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
-import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.viewmodel.PollViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 
 /**Create poll.*/
 public class CreatePollFragment extends Fragment {
@@ -69,16 +66,19 @@ public class CreatePollFragment extends Fragment {
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (pollModelStateData.getStatus() == StateData.DataStatus.LOADING) {
-      //TODO
+      this.binding.createPollFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.createPollFragmentCreateButton.setEnabled(Boolean.FALSE);
     } else if (pollModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      //TODO
+      Toast.makeText(getContext(), pollModelStateData.getError().getMessage(), Toast.LENGTH_SHORT)
+              .show();
     } else if (pollModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       this.navController.navigateUp();
     }
   }
 
   private void resetBindings() {
-    //TODO
+    this.binding.createPollFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.createPollFragmentCreateButton.setEnabled(Boolean.TRUE);
   }
 
   private void connectBinding() {
