@@ -10,9 +10,11 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.repository.PollRepository;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 
+import java.util.Comparator;
 import java.util.List;
 
 /** ViewModel for the PollFragment. */
@@ -128,4 +130,15 @@ public class PollViewModel extends ViewModel {
     }
   }
 
+  public void sortNewestFirst(List<PollModel> pollModelList) {
+    pollModelList.sort(new Comparator<PollModel>() {
+      @Override
+      public int compare(PollModel pollModel, PollModel t1) {
+        if (pollModel.getCreationTime() == null || t1.getCreationTime() == null) {
+          return 0;
+        }
+        return t1.getCreationTime().compareTo(pollModel.getCreationTime());
+      }
+    });
+  }
 }

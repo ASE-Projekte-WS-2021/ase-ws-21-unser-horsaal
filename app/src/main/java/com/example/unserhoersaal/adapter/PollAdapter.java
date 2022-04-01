@@ -15,6 +15,7 @@ import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.utils.PollUtil;
 import com.example.unserhoersaal.viewmodel.PollViewModel;
 
+import java.nio.file.attribute.FileTime;
 import java.util.List;
 
 public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {

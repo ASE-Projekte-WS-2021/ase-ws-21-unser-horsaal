@@ -72,6 +72,7 @@ public class PollFragment extends Fragment {
       return;
     }
     this.resetBindings();
+    this.pollViewModel.sortNewestFirst(listStateData.getData());
     this.pollAdapter.notifyDataSetChanged();
     Log.d(TAG, "pollsLiveDataCallback: ");
 
