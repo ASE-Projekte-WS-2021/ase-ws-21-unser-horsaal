@@ -181,11 +181,11 @@
     <string name="create_thread_fragment_hashtag_text">Gibt es einen Hashtag, der deine Nachricht besonders gut beschreibt? (optional)</string>
     <string name="create_thread_fragment_pagenumber_text">Bezieht sich deine Nachricht auf eine Seite im Skript? (optional)</string>
     <string name="create_thread_fragment_button_send">Nachricht senden</string>
-    <string name="email_was_sent">Eine Email wurde an Ihre angegebene Emailadresse versendet.</string>
+    <string name="email_was_sent">Wir haben dir noch eine Email geschickt, um dich zu verifizieren.</string>
     <string name="send_again">Erneut Senden</string>
     <string name="back_to_login">Zurück zum Login</string>
-    <string name="verification_mail">Verifikationsemail</string>
-    <string name="auto_login_after_verification">Nach der Verifizierung werden Sie automatisch eingeloggt.</string>
+    <string name="registration_successful">Registrierung erfolgreich!</string>
+    <string name="auto_login_after_verification">Wir leiten dich automatisch weiter, sobald du verifiziert wurdest!</string>
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
     <string name="startzeit">Startzeit</string>
     <string name="endzeit">Endzeit</string>

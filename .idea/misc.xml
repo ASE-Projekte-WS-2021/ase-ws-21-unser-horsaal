@@ -188,14 +188,20 @@
         <entry key="app/src/main/res/layout/fragment_courses.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_courses_object.xml" value="0.23596014492753623" />
         <entry key="app/src/main/res/layout/fragment_create_course.xml" value="0.21829710144927536" />
+        <entry key="app/src/main/res/layout/fragment_create_course_information.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.2341485507246377" />
+        <entry key="app/src/main/res/layout/fragment_create_poll.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/fragment_create_thread.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_current_course.xml" value="0.254981884057971" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_institution.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_name.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_password.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_enter_course.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_enter_course_detail.xml" value="0.26222826086956524" />
+        <entry key="app/src/main/res/layout/fragment_live_chat.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_no_course_found.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_onboarding_account.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_onboarding_course_overview.xml" value="0.25" />
@@ -204,8 +210,14 @@
         <entry key="app/src/main/res/layout/fragment_onboarding_username.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_onboarding_welcome.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_onboarding_wrapper.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_owned_courses.xml" value="0.26222826086956524" />
+        <entry key="app/src/main/res/layout/fragment_poll.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_questions.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.2128623188405797" />
+        <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.26222826086956524" />
+        <entry key="app/src/main/res/layout/fragment_todays_courses.xml" value="0.26222826086956524" />
+        <entry key="app/src/main/res/layout/fragment_verification.xml" value="0.25" />
         <entry key="app/src/main/res/layout/onboarding_1.xml" value="0.25" />
         <entry key="app/src/main/res/layout/onboarding_2.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/onboarding_3.xml" value="0.35260416666666666" />
