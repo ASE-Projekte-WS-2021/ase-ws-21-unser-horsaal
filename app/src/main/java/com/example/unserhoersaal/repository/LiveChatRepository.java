@@ -151,7 +151,8 @@ public class LiveChatRepository {
         }
       }
       Log.d("Hier", "In Autor" + mesList.get(0).getCreatorName());
-      sldLiveChatMessages.postUpdate(mesList);
+      liveChatMessages.addAll(mesList);
+      sldLiveChatMessages.postUpdate(liveChatMessages);
     });
   }
 
