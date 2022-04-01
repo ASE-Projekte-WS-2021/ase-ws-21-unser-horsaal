@@ -22,6 +22,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".views.TodaysCoursesFragment">
 
+        <SearchView
+            android:id="@+id/todaysCoursesFragmentSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_blue"
+            android:iconifiedByDefault="false"
+            android:queryHint="@string/courses_search_string"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
             android:id="@+id/todaysCoursesFragmentTitleTextView"
             android:layout_width="match_parent"
@@ -40,13 +51,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/todaysCoursesFragmentRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:adapter="@{adapter}"
             app:initLayoutManager="@{R.id.todaysCoursesFragmentRecyclerView}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/todaysCoursesFragmentSearchView"
             tools:listitem="@layout/course_item_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

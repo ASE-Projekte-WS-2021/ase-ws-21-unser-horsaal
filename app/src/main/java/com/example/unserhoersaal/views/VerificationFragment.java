@@ -65,7 +65,6 @@ public class VerificationFragment extends Fragment {
   private void emailVerifiedChecker() {
     this.handler = new Handler();
     this.runnable = () -> {
-      Log.d(TAG, "checking for authstatechange");
       loginViewModel.isUserEmailVerified();
       handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
     };
@@ -75,8 +74,33 @@ public class VerificationFragment extends Fragment {
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     this.loginViewModel.init();
+    this.loginViewModel.getEmailSentLiveData().observe(getViewLifecycleOwner(),
+            this::emailSentCallback);
     this.loginViewModel.getUserLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveStateCallback);
+  }
+
+  private void emailSentCallback(StateData<Boolean> booleanStateData) {
+    this.resetBindings();
+
+    if (booleanStateData == null) {
+      Log.e(TAG, "FirebaseUser object is null");
+      this.binding.verificationFragmentErrorText.setText(Config.UNSPECIFIC_ERROR);
+      this.binding.verificationFragmentErrorText.setVisibility(View.VISIBLE);
+      return;
+    }
+
+    if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.verificationFragmentSpinner.setVisibility(View.VISIBLE);
+      this.binding.verificationFragmentResendEmailButton.setEnabled(false);
+      this.binding.verificationFragmentResendEmailButton.setBackgroundColor(Color.GRAY);
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
+      this.binding.verificationFragmentErrorText
+              .setText(booleanStateData.getError().getMessage());
+      this.binding.verificationFragmentErrorText.setVisibility(View.VISIBLE);
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
+      Toast.makeText(getContext(), Config.AUTH_VERIFICATION_EMAIL_SENT, Toast.LENGTH_SHORT).show();
+    }
   }
 
   private void userLiveStateCallback(StateData<FirebaseUser> firebaseUserStateData) {
@@ -101,13 +125,9 @@ public class VerificationFragment extends Fragment {
       FirebaseUser firebaseUser = firebaseUserStateData.getData();
 
       if (firebaseUser == null) {
-        Log.d(TAG, "VF: firebase user is null -> login");
         navController.navigate(R.id.action_verificationFragment_to_loginFragment);
       } else if (firebaseUser.isEmailVerified()) {
-        Log.d(TAG, "VF: redirecting to course fragment");
         navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
-      } else {
-        Toast.makeText(getContext(), Config.AUTH_VERIFICATION_EMAIL_SENT, Toast.LENGTH_SHORT).show();
       }
     }
   }
