@@ -22,19 +22,6 @@ public class ArrayListUtil {
    * Used to sort and filter meetings, threads and answers by various parameters.
    */
 
-  /** Sorting options for MeetingsModel lists. */
-  public void sortMeetingList(List<MeetingsModel> meetingsModelList, String sortingOption) {
-
-    switch (sortingOption) {
-      case "newest":
-        sortMeetingListByEventTime(meetingsModelList, "descending");
-        break;
-      case "oldest":
-        sortMeetingListByEventTime(meetingsModelList, "ascending");
-        break;
-    }
-  }
-
   /** Sorting options for ThreadModel lists. */
   public void sortThreadList(List<ThreadModel> threadsModelList, SortEnum sortingOption) {
 
@@ -117,13 +104,10 @@ public class ArrayListUtil {
 
 
   /** Sort meetings by event time. */
-  private void sortMeetingListByEventTime(List<MeetingsModel> meetingsModelList, String order) {
+  public void sortMeetingListByEventTime(List<MeetingsModel> meetingsModelList) {
     meetingsModelList.sort(new Comparator<MeetingsModel>() {
       @Override
       public int compare(MeetingsModel meetingsModel, MeetingsModel t1) {
-        if (order.equals("ascending")) {
-          return meetingsModel.getEventTime().compareTo(t1.getEventTime());
-        }
         return t1.getEventTime().compareTo(meetingsModel.getEventTime());
       }
     });
