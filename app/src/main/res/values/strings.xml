@@ -230,4 +230,5 @@
     <string name="onboarding_finish_text_2">Viel Spaß wünscht dir dein Team von <b>Unser Hörsaal</b></string>
     <string name="onboarding_finish_text_3">Swipe rechts, wenn du mit der Nutzung unserer App einverstanden bist.</string>
     <string name="onboarding_finish_text_4">Impressum | Terms of Use</string>
+    <string name="registration_impressum">Impressum</string>
 </resources>

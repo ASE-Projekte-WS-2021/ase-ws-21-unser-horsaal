@@ -266,4 +266,9 @@ public class Config {
    * ======================= */
   public static final int CARD_STROKE_WIDTH = 2;
   public static final int NO_STROKE = 0;
+
+  /**=======================.
+   *  Impressum
+   * ======================= */
+  public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
 }

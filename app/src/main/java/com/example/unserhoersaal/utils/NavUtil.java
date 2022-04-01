@@ -2,7 +2,9 @@ package com.example.unserhoersaal.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
@@ -147,6 +149,12 @@ public class NavUtil {
     sharedPreferences.edit().putBoolean(Config.SHARED_PREF_ONBOARDING_KEY, true).apply();
     NavController navController = Navigation.findNavController(view);
     navController.navigate(navAction);
+  }
+
+  @BindingAdapter("openBrowser")
+  public static void openBrowser(View view, String destination) {
+    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
+    view.getContext().startActivity(i);
   }
 
 }
