@@ -431,6 +431,9 @@
         <action
             android:id="@+id/action_verificationFragment_to_coursesFragment"
             app:destination="@id/coursesFragment" />
+        <action
+            android:id="@+id/action_verificationFragment_to_enterCourseFragment"
+            app:destination="@id/enterCourseFragment"/>
     </fragment>
     <fragment
         android:id="@+id/createCourseInformationFragment"
