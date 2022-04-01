@@ -170,6 +170,7 @@
     <string name="course_meeting_fragment_chip_page_number">Seitenzahl</string>
     <string name="course_meeting_fragment_chip_own">eigene</string>
     <string name="course_meeting_fragment_chip_course_creator">Kursersteller</string>
+    <string name="course_meeting_fragment_chip_lecture_period">Vorlesungszeitraum</string>
     <string name="course_meeting_fragment_chip_exam">Prüfung</string>
     <string name="course_meeting_fragment_filter">Filter</string>
     <string name="course_meeting_fragment_sort">Sortierung</string>

@@ -7,6 +7,7 @@ public enum FilterEnum {
   UNSOLVED,
   OWN,
   CREATOR,
+  LECTURE_PERIOD,
   SUBJECT_MATTER,
   ORGANISATION,
   MISTAKE,
