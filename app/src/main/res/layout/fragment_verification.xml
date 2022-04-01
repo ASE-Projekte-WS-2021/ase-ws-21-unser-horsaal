@@ -69,6 +69,7 @@
                     android:onClick="@{() -> vm.sendVerificationEmail()}"
                     android:text="@string/send_again"
                     android:layout_gravity="center"
+                    style="@style/wideBlueButton"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -97,7 +98,8 @@
             android:onClick="@{(view) -> vm.logout()}"
             android:layout_width="300dp"
             android:layout_gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            style="@style/wideOrangeButton">
 
         </com.google.android.material.button.MaterialButton>
 

@@ -84,7 +84,6 @@ public class ResetPasswordFragment extends Fragment {
     } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.resetPasswordFragmentSpinner.setVisibility(View.VISIBLE);
       this.binding.resetPasswordFragmentButton.setEnabled(false);
-      this.binding.resetPasswordFragmentButton.setBackgroundColor(Color.GRAY);
     } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
       this.binding.resetPasswordErrorText
               .setText(booleanStateData.getError().getMessage());
@@ -96,7 +95,6 @@ public class ResetPasswordFragment extends Fragment {
     this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
     this.binding.resetPasswordErrorText.setVisibility(View.GONE);
     this.binding.resetPasswordFragmentButton.setEnabled(true);
-    this.binding.resetPasswordFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

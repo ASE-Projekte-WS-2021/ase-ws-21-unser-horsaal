@@ -116,7 +116,6 @@ public class VerificationFragment extends Fragment {
     if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.verificationFragmentSpinner.setVisibility(View.VISIBLE);
       this.binding.verificationFragmentResendEmailButton.setEnabled(false);
-      this.binding.verificationFragmentResendEmailButton.setBackgroundColor(Color.GRAY);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
       this.binding.verificationFragmentErrorText
               .setText(firebaseUserStateData.getError().getMessage());
@@ -136,7 +135,6 @@ public class VerificationFragment extends Fragment {
     this.binding.verificationFragmentErrorText.setVisibility(View.GONE);
     this.binding.verificationFragmentSpinner.setVisibility(View.GONE);
     this.binding.verificationFragmentResendEmailButton.setEnabled(true);
-    this.binding.verificationFragmentResendEmailButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

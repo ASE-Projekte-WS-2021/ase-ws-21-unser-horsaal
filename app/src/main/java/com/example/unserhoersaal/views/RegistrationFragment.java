@@ -90,7 +90,6 @@ public class RegistrationFragment extends Fragment {
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.registrationFragmentProgressSpinner.setVisibility(View.VISIBLE);
       this.binding.registrationFragmentButton.setEnabled(false);
-      this.binding.registrationFragmentButton.setBackgroundColor(Color.GRAY);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
         this.binding.registrationFragmentUserEmailErrorText
@@ -120,7 +119,6 @@ public class RegistrationFragment extends Fragment {
     this.binding.registrationFragmentPasswordErrorText.setVisibility(View.GONE);
     this.binding.registrationFragmentProgressSpinner.setVisibility(View.GONE);
     this.binding.registrationFragmentButton.setEnabled(true);
-    this.binding.registrationFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
 

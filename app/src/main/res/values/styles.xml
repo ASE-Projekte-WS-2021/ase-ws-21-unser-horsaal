@@ -2,7 +2,7 @@
 <resources>
     <style name="wideBlueButton" parent="TextAppearance.MaterialComponents.Button">
         <item name="cornerRadius">4dp</item>
-        <item name="backgroundTint">@color/app_blue</item>
+        <item name="backgroundTint">@color/button_blue_state</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>

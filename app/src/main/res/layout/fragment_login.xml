@@ -128,10 +128,8 @@
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:onClick="@{() -> vm.login()}"
-                        android:background="@drawable/app_background"
                         android:layout_marginTop="32dp"
                         android:text="@string/login_fragment_login_button_string"
-                        app:backgroundTint="@null"
                         app:icon="@drawable/ic_baseline_login_24"
                         app:iconGravity="textStart"
                         android:layout_gravity="center"
@@ -139,7 +137,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        style="@style/wideOrangeButton"/>
+                        style="@style/wideBlueButton"/>
 
                     <ProgressBar
                         android:id="@+id/loginFragmentProgressSpinner"
