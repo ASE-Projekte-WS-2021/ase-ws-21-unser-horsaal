@@ -142,6 +142,15 @@ public class QuestionsFragment extends Fragment {
   }
 
   private void filterEnumCallback(StateData<FilterEnum> filterEnum) {
+    if (filterEnum.getData() == FilterEnum.SOLVED) {
+      this.binding.questionChipUnanswered.setChecked(Boolean.FALSE);
+      this.binding.questionChipUnansweredActivated.setVisibility(View.GONE);
+    }
+    if (filterEnum.getData() == FilterEnum.UNSOLVED) {
+      this.binding.questionChipAnswered.setChecked(Boolean.FALSE);
+      this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
+    }
+
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel
             .getThreads().getValue().getData());
   }
