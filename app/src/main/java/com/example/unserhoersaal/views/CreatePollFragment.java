@@ -72,7 +72,7 @@ public class CreatePollFragment extends Fragment {
       //TODO
     } else if (pollModelStateData.getStatus() == StateData.DataStatus.ERROR) {
       //TODO
-    } else if (pollModelStateData.getStatus() == StateData.DataStatus.UPDATE){
+    } else if (pollModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       this.navController.navigateUp();
     }
   }
@@ -88,8 +88,8 @@ public class CreatePollFragment extends Fragment {
 
   private void initToolbar() {
     this.binding.createPollFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    this.binding.createPollFragmentToolbar.setNavigationOnClickListener( v ->
-      this.navController.navigateUp()
+    this.binding.createPollFragmentToolbar.setNavigationOnClickListener(v ->
+            this.navController.navigateUp()
     );
   }
 

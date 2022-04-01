@@ -94,6 +94,9 @@ public class Config {
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
   public static final String CHILD_MEMBER_COUNT = "memberCount";
   public static final String CHILD_POLL = "poll";
+  public static final String CHILD_USER_POLL = "userPoll";
+  public static final String CHILD_POLL_USER = "pollUser";
+  public static final String CHILD_VOTES_COUNT = "votesCount";
 
   /**=======================.
    * Tabviews
@@ -114,9 +117,20 @@ public class Config {
   public static final String TAB_POLL_NAME = "Abstimmungen";
   public static final int TAB_QUESTIONS = 2;
   public static final String TAB_QUESTIONS_NAME = "Fragen";
-  public static final int MMEETINGS_NUMBER_OF_TABS = 3;
+  public static final int MEETINGS_NUMBER_OF_TABS = 3;
 
+  /**=======================.
+   * Poll
+   * ======================= */
+  //PollUtil
+  public static final String PERCENTAGE_SING = "%";
+  public static final int POLL_BAR_MIN_LENGTH = 1;
+  public static final int POLL_BAR_LENGTH_FACTOR = 5;
+  public static final int FACTOR_PROPORTION_TO_PERCENTAGE = 100;
 
+  //PollViewModel
+  public static final String OPTION_YES = "Ja";
+  public static final String OPTION_NO = "Nein";
 
 
   /**=======================.
@@ -225,6 +239,10 @@ public class Config {
 
   public static final String POLL_CREATION_FAILURE = "Die Umfrage konnte nicht erstellt werden!";
   public static final String POLLS_FAILED_TO_LOAD = "Polls konnten nicht geladen werden!";
+  public static final String POLL_ID_NULL = "PollId is null.";
+  public static final String POLL_MODEL_NULL = "pollModel is null.";
+
+  public static final String MEETING_OBJECT_NULL = "meetingObj is null.";
 
   /**=======================.
    *  Avatar Placeholder Ids

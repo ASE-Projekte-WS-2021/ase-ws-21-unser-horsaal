@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -19,7 +18,6 @@ import com.example.unserhoersaal.databinding.FragmentPollBinding;
 import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.PollViewModel;
-
 import java.util.List;
 
 /** View, which displays the voting during a meeting. */
@@ -62,7 +60,6 @@ public class PollFragment extends Fragment {
     this.pollViewModel = new ViewModelProvider(requireActivity())
             .get(PollViewModel.class);
     this.pollViewModel.init();
-    this.pollViewModel.loadPolls();
     this.pollViewModel.getPolls().observe(getViewLifecycleOwner(), this:: pollsLiveDataCallback);
   }
 
@@ -74,7 +71,6 @@ public class PollFragment extends Fragment {
     this.resetBindings();
     this.pollViewModel.sortNewestFirst(listStateData.getData());
     this.pollAdapter.notifyDataSetChanged();
-    Log.d(TAG, "pollsLiveDataCallback: ");
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.pollFragmentProgressSpinner.setVisibility(View.VISIBLE);
@@ -94,7 +90,8 @@ public class PollFragment extends Fragment {
   }
 
   private void connectAdapter() {
-    this.pollAdapter = new PollAdapter(this.pollViewModel.getPolls().getValue().getData(), this.pollViewModel);
+    this.pollAdapter = new PollAdapter(this.pollViewModel.getPolls().getValue().getData(),
+            this.pollViewModel);
   }
 
   private void connectBinding() {

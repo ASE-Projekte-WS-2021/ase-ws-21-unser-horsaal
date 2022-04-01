@@ -1,19 +1,15 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.CheckedOptionEnum;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.repository.PollRepository;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
-
 import java.util.Comparator;
 import java.util.List;
 
@@ -30,7 +26,6 @@ public class PollViewModel extends ViewModel {
 
   /** Initialize the ViewModel. */
   public void init() {
-    //TODO really needed?
     if (this.polls != null) {
       return;
     }
@@ -65,7 +60,7 @@ public class PollViewModel extends ViewModel {
   public void createPoll(boolean yesNoPoll) {
     PollModel pollModel = Validation.checkStateLiveData(this.pollModelInputState, TAG);
     if (pollModel == null) {
-      Log.e(TAG, "pollModel is null.");
+      Log.e(TAG, Config.POLL_MODEL_NULL);
       this.pollModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -73,42 +68,44 @@ public class PollViewModel extends ViewModel {
 
 
     if (yesNoPoll) {
-      pollModel.setOptionsText1("Ja");
-      pollModel.setOptionsText2("Nein");
+      pollModel.setOptionsText1(Config.OPTION_YES);
+      pollModel.setOptionsText2(Config.OPTION_NO);
       pollModel.setOptionsText3(null);
       pollModel.setOptionsText4(null);
     } else {
-      //TODO reset 3 and 4 if empty validate everything
+      //TODO validate 1,2 everything
       if (pollModel.getText() == null) {
-        Log.e(TAG, "text is null.");
+        Log.e(TAG, Config.DATABINDING_TEXT_NULL);
         this.pollModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
         return;
       } else if (!Validation.stringHasPattern(pollModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-        Log.e(TAG, "text has wrong pattern.");
+        Log.e(TAG, Config.DATABINDING_TEXT_WRONG_PATTERN);
         this.pollModel.postError(new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
         return;
+      }
+      if (pollModel.getOptionsText3() != null && pollModel.getOptionsText3().equals("")) {
+        pollModel.setOptionsText3(null);
+      }
+      if (pollModel.getOptionsText4() != null && pollModel.getOptionsText4().equals("")) {
+        pollModel.setOptionsText4(null);
       }
     }
     this.pollModelInputState.postCreate(new PollModel());
     this.pollRepository.createNewPoll(pollModel);
   }
 
-  public void loadPolls() {
-    this.polls.postLoading();
-    this.pollRepository.loadPolls();
-  }
-
   public StateLiveData<List<PollModel>> getPolls() {
     return this.polls;
   }
 
+  /** Handle the selection of an option from an user.*/
   public void vote(CheckedOptionEnum checkedOption, PollModel pollModel) {
     String pollId = pollModel.getKey();
     CheckedOptionEnum oldOption = pollModel.getCheckedOption();
     if (oldOption == checkedOption) {
       this.pollRepository.removeVote(getOptionPath(checkedOption), pollId);
     } else {
-      if (oldOption != null && oldOption != CheckedOptionEnum.NONE){
+      if (oldOption != null && oldOption != CheckedOptionEnum.NONE) {
         this.pollRepository.removeVote(getOptionPath(oldOption), pollId);
       }
       this.pollRepository.vote(checkedOption, getOptionPath(checkedOption), pollId);
@@ -130,7 +127,11 @@ public class PollViewModel extends ViewModel {
     }
   }
 
+  /** Sort the polls so that the newest is first. */
   public void sortNewestFirst(List<PollModel> pollModelList) {
+    if (pollModelList == null) {
+      return;
+    }
     pollModelList.sort(new Comparator<PollModel>() {
       @Override
       public int compare(PollModel pollModel, PollModel t1) {

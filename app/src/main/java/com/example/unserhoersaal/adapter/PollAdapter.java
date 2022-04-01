@@ -2,22 +2,16 @@ package com.example.unserhoersaal.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.databinding.MeetingCardBinding;
 import com.example.unserhoersaal.databinding.PollItemBinding;
-import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.PollModel;
-import com.example.unserhoersaal.utils.PollUtil;
 import com.example.unserhoersaal.viewmodel.PollViewModel;
-
-import java.nio.file.attribute.FileTime;
 import java.util.List;
 
+/** Adapter for pollItems. */
 public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
 
   private static final String TAG = "PollAdapter";
@@ -52,6 +46,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
     return this.localDataSet.size();
   }
 
+  /** ViewHolder for pollItmes. */
   public class ViewHolder extends RecyclerView.ViewHolder {
     private final PollItemBinding binding;
 
@@ -60,6 +55,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
       this.binding = binding;
     }
 
+    /** Connect the dataBinding attributes. */
     public void connect(PollModel model, PollViewModel pollViewModel) {
       this.binding.setModel(model);
       this.binding.setVm(pollViewModel);

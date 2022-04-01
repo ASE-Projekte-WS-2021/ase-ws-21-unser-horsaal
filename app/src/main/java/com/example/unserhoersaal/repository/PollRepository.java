@@ -1,11 +1,7 @@
 package com.example.unserhoersaal.repository;
 
-import android.provider.ContactsContract;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.CheckedOptionEnum;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -24,11 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/** Repo for the voting. */
+/** Repo for the polls. */
 public class PollRepository {
 
   private static final String TAG = "PollRepository";
@@ -42,6 +37,7 @@ public class PollRepository {
   private ArrayList<PollModel> pollList = new ArrayList<>();
   private StateLiveData<List<PollModel>> polls = new StateLiveData<>();
 
+  /** Constructor. */
   public PollRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -60,18 +56,29 @@ public class PollRepository {
     return this.meeting;
   }
 
+  /** Set the new meeting and load the polls. */
   public void setMeeting(MeetingsModel meeting) {
-    this.meeting.postUpdate(meeting);
+    if (meeting == null || meeting.getKey() == null) {
+      return;
+    }
+    if (this.meeting.getValue() == null
+            || this.meeting.getValue().getData() == null
+            || this.meeting.getValue().getData().getKey() == null
+            || !this.meeting.getValue().getData().getKey().equals(meeting.getKey())) {
+      this.meeting.postUpdate(meeting);
+      this.loadPolls();
+    }
   }
 
   public StateLiveData<PollModel> getPollModelStateLiveData() {
     return this.pollModelStateLiveData;
   }
 
+  /** Save the data for a new poll in the database. */
   public void createNewPoll(PollModel pollModel) {
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
+      Log.e(TAG, Config.MEETING_OBJECT_NULL);
       this.pollModelStateLiveData.postError(
               new Error(Config.POLL_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -91,7 +98,7 @@ public class PollRepository {
     String pollId = this.databaseReference.getRoot().push().getKey();
 
     if (pollId == null) {
-      Log.e(TAG, "pollid is null");
+      Log.e(TAG, Config.POLL_ID_NULL);
       this.pollModelStateLiveData.postError(
               new Error(Config.POLL_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -112,22 +119,15 @@ public class PollRepository {
             });
   }
 
+  /** Give back a list of polls for the current meeting. */
   public StateLiveData<List<PollModel>> getPolls() {
-    if (this.pollList.size() == 0) {
-      this.loadPolls();
-    }
-
     this.polls.postUpdate(pollList);
     return this.polls;
   }
 
-  public void loadPolls() {
+  /** Load all polls for the current meeting. */
+  private void loadPolls() {
     this.polls.postLoading();
-
-    //TODO better!!!
-    if (this.meeting.getValue() == null) return;
-    if (this.meeting.getValue().getData() == null) return;
-    if (this.meeting.getValue().getData().getKey() == null) return;
 
     Query query = databaseReference
             .child(Config.CHILD_POLL)
@@ -152,7 +152,7 @@ public class PollRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-
+        Log.e(TAG, "onCancelled: " + error.getMessage());
       }
     });
   }
@@ -190,7 +190,8 @@ public class PollRepository {
         if (!taskList.get(i).getResult().exists()) {
           pollModelList.get(i).setCheckedOption(CheckedOptionEnum.NONE);
         } else {
-          pollModelList.get(i).setCheckedOption(taskList.get(i).getResult().getValue(CheckedOptionEnum.class));
+          pollModelList.get(i)
+                  .setCheckedOption(taskList.get(i).getResult().getValue(CheckedOptionEnum.class));
         }
       }
       pollList.clear();
@@ -206,11 +207,18 @@ public class PollRepository {
 
   //TODO ifs
   //TODO pipeline
+  /** Save a vote of the user in the database. */
   public void vote(CheckedOptionEnum checkedOptionEnum, String optionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
     //set userPoll
-    this.databaseReference.child("userPoll").child(uid).child(pollId).setValue(checkedOptionEnum);
-    this.databaseReference.child("pollUser").child(pollId).child(uid).setValue(checkedOptionEnum);
+    this.databaseReference.child(Config.CHILD_USER_POLL)
+            .child(uid)
+            .child(pollId)
+            .setValue(checkedOptionEnum);
+    this.databaseReference.child(Config.CHILD_POLL_USER)
+            .child(pollId)
+            .child(uid)
+            .setValue(checkedOptionEnum);
     //increase OptionCount
     this.databaseReference.child(Config.CHILD_POLL)
             .child(meeting.getValue().getData().getKey())
@@ -221,17 +229,18 @@ public class PollRepository {
     this.databaseReference.child(Config.CHILD_POLL)
             .child(meeting.getValue().getData().getKey())
             .child(pollId)
-            .child("votesCount")
+            .child(Config.CHILD_VOTES_COUNT)
             .setValue(ServerValue.increment(1));
   }
 
   //TODO ifs
   //TODO pipeline
+  /** Remove a vote from the user in the database. */
   public void removeVote(String optionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
     //remove userPoll
-    this.databaseReference.child("userPoll").child(uid).child(pollId).removeValue();
-    this.databaseReference.child("pollUser").child(pollId).child(uid).removeValue();
+    this.databaseReference.child(Config.CHILD_USER_POLL).child(uid).child(pollId).removeValue();
+    this.databaseReference.child(Config.CHILD_POLL_USER).child(pollId).child(uid).removeValue();
     //decreaseOptionCount
     this.databaseReference.child(Config.CHILD_POLL)
             .child(meeting.getValue().getData().getKey())
@@ -242,7 +251,7 @@ public class PollRepository {
     this.databaseReference.child(Config.CHILD_POLL)
             .child(meeting.getValue().getData().getKey())
             .child(pollId)
-            .child("votesCount")
+            .child(Config.CHILD_VOTES_COUNT)
             .setValue(ServerValue.increment(-1));
   }
 }
