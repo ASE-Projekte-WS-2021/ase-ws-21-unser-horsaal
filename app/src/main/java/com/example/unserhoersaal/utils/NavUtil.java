@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.adapter.LiveChatAdapter;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
@@ -16,6 +17,7 @@ import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
 /** Class for Navigation. */
@@ -60,6 +62,10 @@ public class NavUtil {
             view.getContext()).get(CurrentCourseViewModel.class);
     currentCourseViewModel.init();
     currentCourseViewModel.setMeeting(model);
+    LiveChatViewModel liveChatViewModel =
+            new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+                    .get(LiveChatViewModel.class);
+    liveChatViewModel.setMeeting(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_courseMeetingFragment);

@@ -1,17 +1,30 @@
 package com.example.unserhoersaal.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.adapter.ChatAdapter;
+import com.example.unserhoersaal.adapter.LiveChatAdapter;
 import com.example.unserhoersaal.databinding.FragmentLiveChatBinding;
+import com.example.unserhoersaal.model.LiveChatMessageModel;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
+
+import java.util.List;
 
 /** Displays the chat during a meeting. */
 public class LiveChatFragment extends Fragment {
@@ -20,6 +33,10 @@ public class LiveChatFragment extends Fragment {
 
   private FragmentLiveChatBinding binding;
   private LiveChatViewModel liveChatViewModel;
+  private NavController navController;
+  private LiveChatAdapter liveChatAdapter;
+
+
 
   public LiveChatFragment() {
     //Required empty public constructor
@@ -42,17 +59,55 @@ public class LiveChatFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    initViewModel();
+
+    this.initViewModel();
+    this.connectAdapter();
     this.connectBinding();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
     this.liveChatViewModel = new ViewModelProvider(requireActivity())
             .get(LiveChatViewModel.class);
     this.liveChatViewModel.init();
+    this.liveChatViewModel.getSldLiveChatMessages()
+            .observe(getViewLifecycleOwner(), this::messageLiveDataCallback);
+  }
+
+  @SuppressLint("NotifyDataSetChanged")
+  private void messageLiveDataCallback(StateData<List<LiveChatMessageModel>> listStateData) {
+    String text = "";
+    String text2 = "";
+    if (listStateData != null) {
+      if (listStateData.getData() != null ) {
+        text = "" + listStateData.getData().size();
+        if (listStateData.getData().size() >= 7) {
+          text2 = listStateData.getData().get(3).getText();
+        }
+      }
+    }
+    Log.d("Hier", "In observer" + text + text2);
+
+    this.liveChatAdapter.notifyDataSetChanged();
+
+    if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(),
+              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  private void connectAdapter() {
+    this.liveChatAdapter =
+            new LiveChatAdapter(this.liveChatViewModel.getSldLiveChatMessages().getValue().getData(),
+                    this.liveChatViewModel);
   }
 
   private void connectBinding() {
+
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
+    this.binding.setVm(this.liveChatViewModel);
+    this.binding.setAdapter(this.liveChatAdapter);
   }
+
+
 }

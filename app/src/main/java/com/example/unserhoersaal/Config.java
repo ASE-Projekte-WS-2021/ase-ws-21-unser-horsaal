@@ -268,4 +268,9 @@ public class Config {
    * ======================= */
   public static final int CARD_STROKE_WIDTH = 2;
   public static final int NO_STROKE = 0;
+
+  /**=======================.
+   *  Live-Chat
+   * ======================= */
+  public static final String LIVE_CHAT_MESSAGES_CHILD = "LiveChatMessages";
 }
