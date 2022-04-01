@@ -38,6 +38,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <SearchView
+                    android:id="@+id/questionsFragmentSearchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/app_blue"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="@string/threads_search_string"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/questionsFragmentInfoContainer"
                     android:layout_width="match_parent"
@@ -48,7 +59,7 @@
                     app:cardCornerRadius="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@+id/questionsFragmentSearchView">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
