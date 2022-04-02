@@ -32,7 +32,7 @@ public class VisibilityAdapter {
     }
   }
 
-  /** Toggles Hashtag/PageNumber Editfield in Create Thread Fragment */
+  /** Toggles Hashtag/PageNumber Editfield in Create Thread Fragment. */
   @BindingAdapter("toggleEditField")
   public static void toggleEditField(View editField, View arrow) {
     if (editField.getVisibility() == View.VISIBLE) {
@@ -43,5 +43,4 @@ public class VisibilityAdapter {
       arrow.animate().rotationBy(90);
     }
   }
-
 }

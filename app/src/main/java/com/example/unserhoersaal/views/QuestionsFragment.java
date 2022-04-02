@@ -139,6 +139,8 @@ public class QuestionsFragment extends Fragment {
       this.binding.questionChipPageCountDownActivated.setVisibility(View.GONE);
     }
 
+    //TODO: is there a better solution to trigger the callback function for threads?
+    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel.getThreads()
             .getValue().getData());
   }
@@ -153,6 +155,9 @@ public class QuestionsFragment extends Fragment {
       this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
     }
 
+
+    //TODO: is there a better solution to trigger the callback funtion for threads?
+    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel
             .getThreads().getValue().getData());
   }
