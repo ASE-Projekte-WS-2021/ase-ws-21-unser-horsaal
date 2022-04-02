@@ -145,7 +145,7 @@
                         android:nestedScrollingEnabled="false"
                         android:adapter="@{adapter}"
                         app:initLayoutManager="@{R.id.liveChatFragmentChatRecycler}"
-                        tools:listitem="@layout/live_chat_item" />
+                        tools:listitem="@layout/live_chat_item"/>
                 </RelativeLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

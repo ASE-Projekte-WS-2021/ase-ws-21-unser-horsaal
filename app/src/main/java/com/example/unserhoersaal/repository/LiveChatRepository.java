@@ -61,6 +61,7 @@ public class LiveChatRepository {
    * Initialise the listener for the database access.
    */
   public void initListener() {
+    Log.d("Hier", "in initlistener");
     this.liveChatMessageListener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -71,7 +72,6 @@ public class LiveChatRepository {
           model.setKey(snapshot.getKey());
           messList.add(model);
         }
-        Log.d("Hier", "in Listener" +  messList.get(0).getText());
         getAuthor(messList);
       }
 
@@ -84,6 +84,9 @@ public class LiveChatRepository {
 
   public void setMeetingAndListener(MeetingsModel meeting) {
     this.meetingsModel = meeting;
+    Log.d("Hier", "in repo setmetali" + meeting.getKey());
+    this.liveChatMessages.clear();
+    this.sldLiveChatMessages.postCreate(liveChatMessages);
     String meetingKey = meeting.getKey();
     if (meetingKey != null) {
       this.databaseReference.child(Config.LIVE_CHAT_MESSAGES_CHILD).child(meetingKey)
@@ -104,8 +107,6 @@ public class LiveChatRepository {
       Log.e(TAG, "threadKey is null.");
       return;
     }
-
-    Log.d("Hier", "in repo" +liveChatMessageModel.getText());
 
     liveChatMessageModel.setCreatorId(this.sldUserId.getValue().getData());
     String messageId = this.databaseReference.getRoot().push().getKey();
@@ -150,7 +151,6 @@ public class LiveChatRepository {
           mesList.get(i).setPhotoUrl(model.getPhotoUrl());
         }
       }
-      Log.d("Hier", "In Autor" + mesList.get(0).getCreatorName());
       liveChatMessages.addAll(mesList);
       sldLiveChatMessages.postUpdate(liveChatMessages);
     });

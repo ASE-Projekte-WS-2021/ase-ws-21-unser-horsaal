@@ -35,7 +35,6 @@ public class LiveChatViewModel extends ViewModel {
     }
     this.liveChatRepository = LiveChatRepository.getInstance();
     this.liveChatRepository.initListener();
-    this.liveChatRepository.setMeetingAndListener(meeting);
     this.meeting = this.liveChatRepository.getMeeting();
     this.sldLiveChatMessages = liveChatRepository.getSldLiveChatMessages();
     this.sldUserId = liveChatRepository.getSldUserId();
@@ -48,7 +47,6 @@ public class LiveChatViewModel extends ViewModel {
   public void sendMessage() {
     sldMessageModelInputState.postLoading();
     LiveChatMessageModel liveChatMessageModel = Validation.checkStateLiveData(this.sldMessageModelInputState, TAG);
-    Log.d("Hier", "" + liveChatMessageModel.getText());
     if (liveChatMessageModel.getText() == null) {
       this.sldMessageModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
       return;
@@ -68,7 +66,9 @@ public class LiveChatViewModel extends ViewModel {
   }
 
   public void setMeeting(MeetingsModel meeting) {
+    Log.d("Hier","in setMeeting vm" +  meeting.getKey());
     this.meeting = meeting;
+    this.liveChatRepository.setMeetingAndListener(meeting);
   }
 
   public StateLiveData<List<LiveChatMessageModel>> getSldLiveChatMessages() { return sldLiveChatMessages; }

@@ -65,6 +65,7 @@ public class NavUtil {
     LiveChatViewModel liveChatViewModel =
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
                     .get(LiveChatViewModel.class);
+    liveChatViewModel.init();
     liveChatViewModel.setMeeting(model);
 
     NavController navController = Navigation.findNavController(view);
