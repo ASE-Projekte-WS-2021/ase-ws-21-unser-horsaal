@@ -93,6 +93,14 @@ public class Config {
   public static final String CHILD_PHOTO_URL = "photoUrl";
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
   public static final String CHILD_MEMBER_COUNT = "memberCount";
+  public static final String CHILD_POLL = "poll";
+  public static final String CHILD_USER_POLL = "userPoll";
+  public static final String CHILD_POLL_USER = "pollUser";
+  public static final String CHILD_VOTES_COUNT = "votesCount";
+  public static final String CHILD_OPTION_COUNT_1 = "optionsCount1";
+  public static final String CHILD_OPTION_COUNT_2 = "optionsCount2";
+  public static final String CHILD_OPTION_COUNT_3 = "optionsCount3";
+  public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
 
   /**=======================.
    * Shared Preferences Keys
@@ -119,12 +127,26 @@ public class Config {
   public static final String TAB_POLL_NAME = "Abstimmungen";
   public static final int TAB_QUESTIONS = 2;
   public static final String TAB_QUESTIONS_NAME = "Fragen";
-  public static final int MMEETINGS_NUMBER_OF_TABS = 3;
+  public static final int MEETINGS_NUMBER_OF_TABS = 3;
 
   //Onboarding TabView
   public static final int ONBOARDING_FRAGMENT_TAB_LENGTH = 6;
   public static final int ONBOARDING_USERNAME_FRAGMENT_POSITION = 1;
   public static final int ONBOARDING_ACCOUNT_FRAGMENT_POSITION = 3;
+
+  /**=======================.
+   * Poll
+   * ======================= */
+  //PollUtil
+  public static final String PERCENTAGE_SING = "%";
+  public static final int POLL_BAR_MIN_LENGTH = 1;
+  public static final int POLL_BAR_LENGTH_FACTOR = 5;
+  public static final int FACTOR_PROPORTION_TO_PERCENTAGE = 100;
+
+  //PollViewModel
+  public static final String OPTION_YES = "Ja";
+  public static final String OPTION_NO = "Nein";
+  public static final String OPTION_EMPTY = "";
 
   /**=======================.
    * Search Hint
@@ -162,6 +184,9 @@ public class Config {
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
           "Der Beitrittscode enthält ungültige Charaktere.";
+  public static final String DATABINDING_OPTION_NULL = "Option 1 und 2 dürfen nicht leer sein";
+  public static final String DATABINDING_OPTION_WRONG_PATTERN =
+          "Option 1 und/oder 2 enthalten ungültige Charaktere.";
 
   public static final String AUTH_EMAIL_EMPTY = "Bitte gib eine Email-Adresse ein!";
   public static final String AUTH_EMAIL_WRONG_PATTERN_REGISTRATION =
@@ -229,6 +254,13 @@ public class Config {
   public static final String MEETINGS_FAILED_TO_LOAD = "Meeting konnten nicht geladen werden!";
   public static final String MESSAGES_FAILED_TO_LOAD = "Nachrichten konnten nicht geladen werden!";
   public static final String NO_PICUTRE_SELECTED = "Es wurde kein Bild selektiert!";
+
+  public static final String POLL_CREATION_FAILURE = "Die Umfrage konnte nicht erstellt werden!";
+  public static final String POLLS_FAILED_TO_LOAD = "Polls konnten nicht geladen werden!";
+  public static final String POLL_ID_NULL = "PollId is null.";
+  public static final String POLL_MODEL_NULL = "pollModel is null.";
+
+  public static final String MEETING_OBJECT_NULL = "meetingObj is null.";
 
   /**=======================.
    *  Avatar Placeholder Ids

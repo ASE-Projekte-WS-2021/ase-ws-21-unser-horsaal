@@ -15,7 +15,9 @@ import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /** ViewModel for the QuestionsFragment. */
 public class QuestionsViewModel extends ViewModel {
@@ -30,7 +32,8 @@ public class QuestionsViewModel extends ViewModel {
   private StateLiveData<List<ThreadModel>> outFilteredThreads = new StateLiveData<>();
   public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
   private final StateLiveData<SortEnum> sortEnum = new StateLiveData<>();
-  private final StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
+  private StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
+  private ArrayList<FilterEnum> enumArray = new ArrayList<>();
   private ArrayListUtil arrayListUtil;
 
   /** Initialise the ViewModel. */
@@ -81,7 +84,7 @@ public class QuestionsViewModel extends ViewModel {
     MeetingsModel actualMeeting = Validation.checkStateLiveData(this.meeting, TAG);
     String userId = firebaseUser.getUid();
     this.arrayListUtil.filterThreadList(threadsModelList, outFilteredThreads,
-            filterEnum, actualMeeting, userId);
+            filterEnum, enumArray, actualMeeting, userId);
   }
 
   public StateLiveData<MeetingsModel> getMeeting() {
@@ -93,7 +96,19 @@ public class QuestionsViewModel extends ViewModel {
   }
 
   public void setFilterEnum(FilterEnum filterEnum) {
-    this.filterEnum.postUpdate(filterEnum);
+    if (!enumArray.contains(filterEnum)) {
+      this.enumArray.add(filterEnum);
+      this.filterEnum.postUpdate(filterEnum);
+    } else {
+      this.enumArray.remove(filterEnum);
+      this.filterEnum.postUpdate(FilterEnum.NONE);
+    }
+  }
+
+  public void resetFilters() {
+    this.enumArray.clear();
+    this.filterEnum.postUpdate(FilterEnum.NONE);
+    this.filterEnum.postUpdate(FilterEnum.RESET);
   }
 
   public StateLiveData<SortEnum> getSortEnum() {
