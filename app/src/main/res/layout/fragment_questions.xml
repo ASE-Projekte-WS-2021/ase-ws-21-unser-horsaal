@@ -177,6 +177,14 @@
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipCreator, questionChipCreatorActivated, vm, FilterEnum.CREATOR)}"/>
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/questionChipLecturePeriodActivated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:text="@string/course_meeting_fragment_chip_lecture_period"
+                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipLecturePeriod, questionChipLecturePeriodActivated, vm, FilterEnum.LECTURE_PERIOD)}"/>
+
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/questionChipSubjectMatterActivated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -350,6 +358,14 @@
                     android:checkable="true"
                     android:text="@string/course_meeting_fragment_chip_course_creator"
                     android:onClick="@{() -> FilterSortUtil.filter(questionChipCreator, questionChipCreatorActivated, vm, FilterEnum.CREATOR)}"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/questionChipLecturePeriod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/course_meeting_fragment_chip_lecture_period"
+                    android:onClick="@{() -> FilterSortUtil.filter(questionChipLecturePeriod, questionChipLecturePeriodActivated, vm, FilterEnum.LECTURE_PERIOD)}"/>
 
             </com.google.android.material.chip.ChipGroup>
 

@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.PollViewModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
@@ -103,6 +106,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createPollFragmentQuestionEditText"
+                        android:text="@={vm.pollModelInputState.data.text}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
@@ -147,7 +151,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
-                        android:background="@drawable/rounded_corners" />
+                        android:background="@drawable/rounded_corners"
+                        android:text="@={vm.pollModelInputState.data.optionsText1}"/>
 
                     <TextView
                         android:id="@+id/createPollFragmentOption1ErrorText"
@@ -177,6 +182,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
+                        android:text="@={vm.pollModelInputState.data.optionsText2}"
                         android:background="@drawable/rounded_corners" />
 
                     <TextView
@@ -207,6 +213,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
+                        android:text="@={vm.pollModelInputState.data.optionsText3}"
                         android:background="@drawable/rounded_corners" />
 
                     <TextView
@@ -237,6 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
+                        android:text="@={vm.pollModelInputState.data.optionsText4}"
                         android:background="@drawable/rounded_corners" />
 
                     <TextView
@@ -277,17 +285,42 @@
                     app:layout_constraintTop_toBottomOf="@id/createPollFragmentRemoveOptionButton"
                      />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/createPollFragmentCreateButton"
-                    style="@style/wideOrangeButton"
-                    android:layout_width="0dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/createPollFragmentCreateButtonWrapper"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="64dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/create_poll_create_button"
-                    android:layout_margin="16dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentAddOptionButton" />
+                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentAddOptionButton" >
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/createPollFragmentCreateButton"
+                        style="@style/wideOrangeButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(view) -> vm.createPoll(createPollFragmentSwitch.isChecked())}"
+                        android:text="@string/create_poll_create_button"
+                        android:layout_margin="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ProgressBar
+                        android:id="@+id/createPollFragmentProgressSpinner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/white"
+                        android:indeterminateTintMode="src_in"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/createPollFragmentCreateButtonWrapper"
+                        app:layout_constraintEnd_toEndOf="@+id/createPollFragmentCreateButtonWrapper"
+                        app:layout_constraintHorizontal_bias="0.975"
+                        app:layout_constraintStart_toStartOf="@+id/createPollFragmentCreateButtonWrapper"
+                        app:layout_constraintTop_toTopOf="@+id/createPollFragmentCreateButtonWrapper" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
