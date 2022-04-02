@@ -13,6 +13,9 @@
         <variable
             name="adapter"
             type="com.example.unserhoersaal.adapter.LiveChatAdapter" />
+        <variable
+            name="fragment"
+            type="com.example.unserhoersaal.views.LiveChatFragment" />
         <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.Format"/>
@@ -29,14 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".views.LiveChatFragment">
-
-        <ScrollView
-            android:id="@+id/fragmentLiveChatScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -143,15 +138,13 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginBottom="8dp"
-                        android:nestedScrollingEnabled="false"
                         android:adapter="@{adapter}"
                         app:initLayoutManager="@{R.id.liveChatFragmentChatRecycler}"
-                        tools:listitem="@layout/live_chat_item"/>
+                        tools:listitem="@layout/live_chat_item" />
                 </RelativeLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </ScrollView>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -205,7 +198,7 @@
                 android:insetRight="0dp"
                 android:insetTop="0dp"
                 app:icon="@drawable/ic_baseline_send_24"
-                android:onClick="@{(view) -> vm.sendMessage()}"
+                android:onClick="@{(view) -> fragment.sendMessage()}"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

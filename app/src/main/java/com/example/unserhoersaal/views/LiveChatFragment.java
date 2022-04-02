@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +41,6 @@ public class LiveChatFragment extends Fragment {
   private LiveChatAdapter liveChatAdapter;
   private int messageSize;
   RecyclerView recyclerView;
-  ScrollView scrollView;
 
 
 
@@ -84,8 +82,6 @@ public class LiveChatFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void messageLiveDataCallback(StateData<List<LiveChatMessageModel>> listStateData) {
-    recyclerView.scrollToPosition(messageSize - 1);
-    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 
     if (listStateData.getData() != null) {
       messageSize = listStateData.getData().size();
@@ -93,7 +89,6 @@ public class LiveChatFragment extends Fragment {
     this.liveChatAdapter.notifyDataSetChanged();
     Log.d("Hier", "in messagelist callback: " + messageSize);
 
-    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
     recyclerView.scrollToPosition(messageSize - 1);
 
     if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
@@ -112,26 +107,28 @@ public class LiveChatFragment extends Fragment {
               public void onChanged() {
                 super.onChanged();
                 Log.d("Hier", "in messagelist callback: " + messageSize);
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                recyclerView.scrollToPosition(messageSize - 1);
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                //recyclerView.scrollToPosition(messageSize - 1);
               }
             }
     );
   }
 
   private void connectBinding() {
-    scrollView = binding.fragmentLiveChatScrollView;
-    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.liveChatViewModel);
     this.binding.setAdapter(this.liveChatAdapter);
-    this.binding.fragmentLiveChatScrollView.fullScroll(ScrollView.FOCUS_DOWN);
     recyclerView = this.binding.liveChatFragmentChatRecycler;
-    recyclerView.scrollToPosition(messageSize - 1);
+    this.binding.setFragment(this);
 
-    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
+
+  }
+
+  public void sendMessage() {
+    liveChatViewModel.sendMessage();
+    binding.liveChatFragmentInputField.getEditText().getText().clear();
+
 
 
   }

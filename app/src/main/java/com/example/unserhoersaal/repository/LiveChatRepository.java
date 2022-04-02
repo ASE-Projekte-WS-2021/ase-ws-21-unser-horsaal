@@ -65,6 +65,7 @@ public class LiveChatRepository {
     this.liveChatMessageListener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        liveChatMessages.clear();
         List<LiveChatMessageModel> messList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           LiveChatMessageModel model = snapshot.getValue(LiveChatMessageModel.class);
@@ -153,6 +154,7 @@ public class LiveChatRepository {
       }
       liveChatMessages.addAll(mesList);
       sldLiveChatMessages.postUpdate(liveChatMessages);
+
     });
   }
 
