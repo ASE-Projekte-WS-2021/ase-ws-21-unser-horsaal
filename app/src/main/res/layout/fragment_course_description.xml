@@ -7,6 +7,9 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel" />
+        <variable
+            name="isCreator"
+            type="Boolean" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
@@ -277,12 +280,13 @@
 
         <Button
             android:id="@+id/editProfileButton"
-            android:text="Profil bearbeiten"
+            android:text="Kurs bearbeiten"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{(view) -> NavUtil.navigateToCourseEdit(view, vm.courseModel.data)}"
+            android:visibility="@{isCreator ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/courseDescriptionFragmentShareCourseFab"
-            android:onClick="@{(view) -> NavUtil.navigateToCourseEdit(view, vm.courseModel.data)}"/>
+            app:layout_constraintEnd_toStartOf="@+id/courseDescriptionFragmentShareCourseFab" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/courseDescriptionFragmentShareCourseFab"

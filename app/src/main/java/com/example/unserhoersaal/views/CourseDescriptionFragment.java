@@ -3,6 +3,7 @@ package com.example.unserhoersaal.views;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,6 @@ public class CourseDescriptionFragment extends Fragment {
   private CourseDescriptionViewModel courseDescriptionViewModel;
   private CourseParticipantsViewModel courseParticipantsViewModel;
   private FragmentCourseDescriptionBinding binding;
-
   public CourseDescriptionFragment() {
     // Required empty public constructor
   }
@@ -108,6 +108,8 @@ public class CourseDescriptionFragment extends Fragment {
     this.binding.courseDescriptionFragmentToolbar
             .setNavigationOnClickListener(v ->
             navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment));
+    this.binding.setIsCreator(courseDescriptionViewModel.isCreator());
+    Log.d("Hier" , "frag: " + courseDescriptionViewModel.isCreator());
   }
 
 

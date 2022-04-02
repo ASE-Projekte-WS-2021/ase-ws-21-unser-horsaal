@@ -7,8 +7,12 @@
         <variable
             name="model"
             type="com.example.unserhoersaal.model.MeetingsModel"/>
+        <variable
+            name="isCreator"
+            type="Boolean"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.utils.Format" />
+        <import type="android.view.View"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -94,11 +98,12 @@
                 android:text="Edit Meeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="136dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="52dp"
+                android:onClick="@{(view) -> NavUtil.navigateToMeetingEdit(view, model)}"
+                android:visibility="@{isCreator ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="@{(view) -> NavUtil.navigateToMeetingEdit(view, model)}"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

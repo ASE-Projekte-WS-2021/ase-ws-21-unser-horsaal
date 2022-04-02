@@ -40,6 +40,10 @@ public class CourseDescriptionViewModel extends ViewModel {
     this.courseDescriptionRepository.setCourseId(courseId);
   }
 
+  public void setCreatorId(String creatorId) {
+    this.courseDescriptionRepository.setCreatorId(creatorId);
+  }
+
   /** JavaDoc. */
   public void unregisterFromCourse() {
     String courseKey = Validation.checkStateLiveData(this.courseId, TAG);
@@ -56,6 +60,21 @@ public class CourseDescriptionViewModel extends ViewModel {
 
     this.courseId.postUpdate(null);
     this.courseDescriptionRepository.unregisterFromCourse(courseKey);
+  }
+
+
+
+  public Boolean isCreator() {
+    Log.d("Hier", "vm uid: " + courseDescriptionRepository.getUid());
+    Log.d("Hier", "vm creatorId: " + courseDescriptionRepository.getCreatorId());
+
+    if (courseDescriptionRepository.getUid().equals(
+            courseDescriptionRepository.getCreatorId()
+    )){
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

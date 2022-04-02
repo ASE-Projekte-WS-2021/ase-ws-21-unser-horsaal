@@ -34,6 +34,7 @@ public class CourseHistoryFragment extends Fragment {
   private CourseDescriptionViewModel courseDescriptionViewModel;
   private NavController navController;
   private MeetingAdapter meetingAdapter;
+  private Boolean isCreator;
 
   public CourseHistoryFragment() {
     // Required empty public constructor
@@ -109,7 +110,7 @@ public class CourseHistoryFragment extends Fragment {
   private void connectAdapter() {
     this.meetingAdapter =
             new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData(),
-                    this.courseHistoryViewModel.getUid());
+                    this.courseHistoryViewModel.getUid(), courseHistoryViewModel.getCreatorId());
   }
 
   private void connectBinding() {

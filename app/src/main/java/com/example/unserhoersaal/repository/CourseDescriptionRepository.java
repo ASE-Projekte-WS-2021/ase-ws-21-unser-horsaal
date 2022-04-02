@@ -26,6 +26,7 @@ public class CourseDescriptionRepository {
   private StateLiveData<String> courseId = new StateLiveData<>();
   private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
   private ValueEventListener listener;
+  private String creatorId;
 
   /** JavaDoc. */
   public CourseDescriptionRepository() {
@@ -155,4 +156,15 @@ public class CourseDescriptionRepository {
             });
   }
 
+  public String getUid() {
+    return firebaseAuth.getUid();
+  }
+
+  public String getCreatorId() {
+    return creatorId;
+  }
+
+  public void setCreatorId(String creatorId) {
+    this.creatorId = creatorId;
+  }
 }

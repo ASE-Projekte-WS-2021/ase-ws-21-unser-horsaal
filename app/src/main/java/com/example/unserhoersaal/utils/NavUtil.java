@@ -89,7 +89,7 @@ public class NavUtil {
 
   /** Navigates to CourseDescription. */
   @BindingAdapter("navigateToDescription")
-  public static void navigateToDescription(View view, String courseId) {
+  public static void navigateToDescription(View view, String courseId, String creatorId) {
     if (courseId == null) {
       return;
     }
@@ -99,6 +99,7 @@ public class NavUtil {
     courseDescriptionViewModel.init();
     Log.d("NAVUTIL", courseId);
     courseDescriptionViewModel.setCourseId(courseId);
+    courseDescriptionViewModel.setCreatorId(creatorId);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_courseDescriptionFragment);

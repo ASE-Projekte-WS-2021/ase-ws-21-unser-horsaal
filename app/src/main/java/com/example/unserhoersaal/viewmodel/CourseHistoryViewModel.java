@@ -157,6 +157,11 @@ public class CourseHistoryViewModel extends ViewModel {
     return calendar.getTimeInMillis();
   }
 
+  public String  getCreatorId() {
+    return courseHistoryRepository.
+            getCourse().getValue().getData().getCreatorId();
+  }
+
   public void setTimeInputForDisplay(int hour, int minute) {
     String timeInputForDisplay = DateTimePicker.formatTime(hour, minute);
     this.timeInputForDisplay = timeInputForDisplay;
