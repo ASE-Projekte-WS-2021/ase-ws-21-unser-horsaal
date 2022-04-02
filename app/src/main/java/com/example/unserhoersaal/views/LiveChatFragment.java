@@ -76,19 +76,12 @@ public class LiveChatFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void messageLiveDataCallback(StateData<List<LiveChatMessageModel>> listStateData) {
-    String text = "";
-    String text2 = "";
-    if (listStateData != null) {
-      if (listStateData.getData() != null ) {
-        text = "" + listStateData.getData().size();
-        if (listStateData.getData().size() >= 7) {
-          text2 = listStateData.getData().get(3).getText();
-        }
-      }
-    }
-    Log.d("Hier", "In observer" + text + text2);
 
+    if(listStateData.getData() != null){
+      binding.liveChatFragmentChatRecycler.scrollToPosition(listStateData.getData().size() - 1);
+    }
     this.liveChatAdapter.notifyDataSetChanged();
+
 
     if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
@@ -107,6 +100,8 @@ public class LiveChatFragment extends Fragment {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.liveChatViewModel);
     this.binding.setAdapter(this.liveChatAdapter);
+    binding.liveChatFragmentChatRecycler.scrollToPosition(listStateData.getData().size() - 1);
+
   }
 
 
