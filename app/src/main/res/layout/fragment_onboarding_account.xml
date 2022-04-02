@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/app_background">
+
+                <ImageView
+                    android:id="@+id/onboardingAccountFragmentImage"
+                    android:src="@drawable/onboarding_account"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/onboardingAccountFragmentHeadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/onboardingAccountFragmentImage"
+                    android:layout_marginHorizontal="40dp"
+                    android:textSize="30sp"
+                    android:textColor="@color/app_blue"
+                    android:textStyle="bold"
+                    android:text="@string/onboarding_account_text_headline" />
+
+                <TextView
+                    android:id="@+id/onboardingAccountFragmentText1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:textSize="15sp"
+                    android:text="@string/onboarding_account_text_1"
+                    android:layout_below="@+id/onboardingAccountFragmentHeadline"
+                    android:layout_marginTop="20dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/onboardingAccountFragmentEmailEditField"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/onboardingAccountFragmentText1"
+                    android:hint="@string/registration_fragment_user_email_hint"
+                    style="@style/inputField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/onboardingAccountFragmentUserNameEditText"
+                        android:text="@={vm.userInputState.data.email}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:background="@drawable/rounded_corners" />
+
+                    <TextView
+                        android:id="@+id/onboardingAccountFragmentUserErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/onboardingAccountFragmentPasswordEditField"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/onboardingAccountFragmentEmailEditField"
+                    android:hint="@string/registration_fragment_password_hint"
+                    app:endIconMode="password_toggle"
+                    style="@style/inputField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/onboardingAccountFragmentPasswordEditText"
+                        android:text="@={vm.passwordInputState.data.currentPassword}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:background="@drawable/rounded_corners"/>
+
+                    <TextView
+                        android:id="@+id/onboardingAccountFragmentPasswordErrorText"
+                        android:visibility="gone"
+                        android:textColor="@color/red"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/app_background"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</layout>

@@ -182,14 +182,12 @@
     <string name="create_thread_fragment_hashtag_text">Gibt es einen Hashtag, der deine Nachricht besonders gut beschreibt? (optional)</string>
     <string name="create_thread_fragment_pagenumber_text">Bezieht sich deine Nachricht auf eine Seite im Skript? (optional)</string>
     <string name="create_thread_fragment_button_send">Nachricht senden</string>
-    <string name="email_was_sent">Eine Email wurde an Ihre angegebene Emailadresse versendet.</string>
+    <string name="email_was_sent">Wir haben dir noch eine Email geschickt, um dich zu verifizieren.</string>
     <string name="send_again">Erneut Senden</string>
     <string name="back_to_login">Zurück zum Login</string>
-    <string name="verification_mail">Verifikationsemail</string>
-    <string name="auto_login_after_verification">Nach der Verifizierung werden Sie automatisch eingeloggt.</string>
-
+    <string name="registration_successful">Registrierung erfolgreich!</string>
+    <string name="auto_login_after_verification">Wir leiten dich automatisch weiter, sobald du verifiziert wurdest!</string>
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
-
     <string name="startzeit">Startzeit</string>
     <string name="endzeit">Endzeit</string>
     <string name="create_course_information_button_string">Zur Erstellung</string>
@@ -210,6 +208,30 @@
     <string name="create_poll_question">Frage</string>
     <string name="create_poll_create_button">Erstelle deine Abstimmung</string>
     <string name="no_polls_available">Aktuell keine Abstimmungen verfügbar!</string>
-
-
+    <string name="onboarding_skip">Überspringen</string>
+    <string name="onboarding_finish">Los geht\'s!</string>
+    <string name="onboarding_next">weiter</string>
+    <string name="onboarding_welcome_greeting"><u>Willkommen!</u></string>
+    <string name="onboarding_welcome_text_1"><b>Unser Hörsaal</b> ist dein Vorlesungsbegleiter: tausche dich mit Kommilitonen in einem pseudonymen Umfeld aus.</string>
+    <string name="onboarding_welcome_text_2">Bevor es jedoch losgeht, möchten wir dir die wichtigsten Features vorstellen.</string>
+    <string name="onboarding_welcome_text_3">Swipe rechts und es kann losgehen!</string>
+    <string name="onboarding_username_text_headline">1. Username wählen</string>
+    <string name="onboarding_username_text_1">Wir bieten dir eine Umgebung, in der du Fragen stellen, dein Wissen in einer Antwort teilen und an Umfragen teilnehmen kannst.</string>
+    <string name="onboarding_username_text_2">Andere Nutzer sehen dabei nur ein von dir gewähltes Pseudonym.</string>
+    <string name="onboarding_username_text_3">Sag uns hier wie du heißen möchtest!</string>
+    <string name="onboarding_course_overview_text_headline">2. Kursübersicht</string>
+    <string name="onboarding_course_overview_text_1">Begleitend zu Vorlesungsmodulen kannst du in der Kursübersicht Kurse erstellen und Bestehenden beitreten.</string>
+    <string name="onboarding_course_overview_text_2">Du kannst Kursen auch beitreten indem du:</string>
+    <string name="onboarding_course_overview_text_3"><b>></b>  Einladungslinks klickst</string>
+    <string name="onboarding_course_overview_text_4"><b>></b>  QR-Codes scannst</string>
+    <string name="onboarding_account_text_headline">3. Account erstellen</string>
+    <string name="onboarding_account_text_1">Um dich mit deinen Kommilitonen verbinden und deine Kurs laden zu können, benötigen wir noch deine Emailadresse und ein sicheres Passwort.</string>
+    <string name="onboarding_meeting_overview_headline">4. Sitzungen</string>
+    <string name="onboarding_meeting_overview_text_1">Idealerweise wird zu jeder Vorlesung eine Sitzung in Unser Hoersaal erstellt. Hier kannst du:</string>
+    <string name="onboarding_finish_headline">5. Fertig!</string>
+    <string name="onboarding_finish_text_1">Perfekt! Damit kennst du nun die wichtigsten Features!</string>
+    <string name="onboarding_finish_text_2">Viel Spaß wünscht dir dein Team von <b>Unser Hörsaal</b></string>
+    <string name="onboarding_finish_text_3">Swipe rechts, wenn du mit der Nutzung unserer App einverstanden bist.</string>
+    <string name="onboarding_finish_text_4">Impressum | Terms of Use</string>
+    <string name="registration_impressum">Impressum</string>
 </resources>
