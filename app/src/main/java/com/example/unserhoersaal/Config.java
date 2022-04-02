@@ -103,6 +103,12 @@ public class Config {
   public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
 
   /**=======================.
+   * Shared Preferences Keys
+   * ======================= */
+  public static final String SHARED_PREF_KEY = "settings";
+  public static final String SHARED_PREF_ONBOARDING_KEY = "onboard_complete";
+
+  /**=======================.
    * Tabviews
    * ======================= */
   //Courses Tabview
@@ -123,6 +129,11 @@ public class Config {
   public static final String TAB_QUESTIONS_NAME = "Fragen";
   public static final int MEETINGS_NUMBER_OF_TABS = 3;
 
+  //Onboarding TabView
+  public static final int ONBOARDING_FRAGMENT_TAB_LENGTH = 6;
+  public static final int ONBOARDING_USERNAME_FRAGMENT_POSITION = 1;
+  public static final int ONBOARDING_ACCOUNT_FRAGMENT_POSITION = 3;
+
   /**=======================.
    * Poll
    * ======================= */
@@ -136,7 +147,6 @@ public class Config {
   public static final String OPTION_YES = "Ja";
   public static final String OPTION_NO = "Nein";
   public static final String OPTION_EMPTY = "";
-
 
   /**=======================.
    * Search Hint
@@ -298,4 +308,9 @@ public class Config {
    * ======================= */
   public static final int CARD_STROKE_WIDTH = 2;
   public static final int NO_STROKE = 0;
+
+  /**=======================.
+   *  Impressum
+   * ======================= */
+  public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
 }

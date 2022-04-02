@@ -16,9 +16,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
-import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.enums.ErrorTag;
-import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
@@ -35,7 +33,6 @@ public class RegistrationFragment extends Fragment {
   private FragmentRegistrationBinding binding;
   private RegistrationViewModel registrationViewModel;
   private NavController navController;
-  private DeepLinkMode deepLinkMode;
 
   public RegistrationFragment() {
       // Required empty public constructor
@@ -59,7 +56,6 @@ public class RegistrationFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    this.deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();

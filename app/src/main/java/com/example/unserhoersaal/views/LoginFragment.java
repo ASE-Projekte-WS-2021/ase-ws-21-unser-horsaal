@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.views;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,10 +34,9 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class LoginFragment extends Fragment {
 
-  private static final String TAG = "LoginFragment";
+  public static final String TAG = "LoginFragment";
 
   private LoginViewModel loginViewModel;
-  private CoursesViewModel coursesViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -70,9 +71,18 @@ public class LoginFragment extends Fragment {
 
     this.navController = Navigation.findNavController(view);
 
+    this.initOnboarding();
     this.initDeepLinkMode();
     this.initViewModel();
     this.connectBinding();
+  }
+
+  private void initOnboarding() {
+    SharedPreferences sharedPreferences = getActivity()
+            .getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
+    if (!sharedPreferences.getBoolean(Config.SHARED_PREF_ONBOARDING_KEY, false)) {
+      this.navController.navigate(R.id.action_loginFragment_to_onboardingFragment);
+    }
   }
 
   private void initDeepLinkMode() {

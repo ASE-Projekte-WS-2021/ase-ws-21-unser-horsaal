@@ -204,6 +204,17 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/registrationFragmentImpressum"
+                    android:onClick="@{(view) -> NavUtil.openBrowser(view, Config.GITHUB_LINK_LEGAL)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/registration_impressum"
+                    android:textAlignment="center"
+                    android:textColor="@color/call_to_action_darker_orange"
+                    android:textStyle="bold"/>
+
             </LinearLayout>
 
         </ScrollView>
