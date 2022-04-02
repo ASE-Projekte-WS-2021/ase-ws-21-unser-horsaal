@@ -130,7 +130,6 @@ public class LoginFragment extends Fragment {
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
       this.binding.loginFragmentLoginButton.setEnabled(false);
-      this.binding.loginFragmentLoginButton.setBackgroundColor(Color.GRAY);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
         this.binding.loginFragmentUserEmailErrorText
@@ -157,7 +156,6 @@ public class LoginFragment extends Fragment {
     this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.GONE);
     this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
     this.binding.loginFragmentLoginButton.setEnabled(true);
-    this.binding.loginFragmentLoginButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

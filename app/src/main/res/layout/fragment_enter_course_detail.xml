@@ -74,8 +74,7 @@
                     android:text="@string/enter_course_fragment_enter_button_string"
                     android:layout_marginTop="32dp"
                     android:layout_gravity="center"
-                    style="@style/wideOrangeButton"
-                    android:backgroundTint="@color/green" />
+                    style="@style/wideRedButton" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/enterCourseDetailFragmentQuitButton"
@@ -84,7 +83,6 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="64dp"
-                    android:backgroundTint="@color/red"
                     android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_enterCourseDetailFragment_to_enterCourseFragment)}"
                     android:text="@string/enter_course_detail_fragment_quit_button"
                     style="@style/wideOrangeButton" />

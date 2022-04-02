@@ -94,7 +94,6 @@ public class EnterCourseFragment extends Fragment {
     } else if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.VISIBLE);
       this.binding.enterCourseFragmentEnterButton.setEnabled(false);
-      this.binding.enterCourseFragmentEnterButton.setBackgroundColor(Color.GRAY);
     } else {
       if (courseModelStateData.getData() == null) {
         return;
@@ -113,7 +112,6 @@ public class EnterCourseFragment extends Fragment {
     this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.GONE);
     this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.GONE);
     this.binding.enterCourseFragmentEnterButton.setEnabled(true);
-    this.binding.enterCourseFragmentEnterButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

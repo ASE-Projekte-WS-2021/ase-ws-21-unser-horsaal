@@ -70,7 +70,6 @@ public class CreateCourseMeetingFragment extends Fragment {
     if (meetingsModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.VISIBLE);
       this.binding.createCourseMeetingFragmentButton.setEnabled(false);
-      this.binding.createCourseMeetingFragmentButton.setBackgroundColor(Color.GRAY);
     } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (meetingsModelStateData.getErrorTag() == ErrorTag.TITLE) {
         this.binding.createCourseMeetingFragmentTitleErrorText
@@ -87,7 +86,6 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.binding.createCourseMeetingFragmentGeneralErrorText.setVisibility(View.GONE);
     this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
     this.binding.createCourseMeetingFragmentButton.setEnabled(true);
-    this.binding.createCourseMeetingFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {

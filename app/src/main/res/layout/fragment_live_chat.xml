@@ -130,7 +130,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginBottom="8dp"
                         android:nestedScrollingEnabled="false"
-                        tools:listitem="@layout/live_chat_item"/>
+                        tools:listitem="@layout/live_chat_item" />
                 </RelativeLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

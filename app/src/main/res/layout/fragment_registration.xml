@@ -151,16 +151,14 @@
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:onClick="@{() -> vm.register()}"
-                        android:background="@drawable/app_background"
                         android:layout_gravity="center"
                         android:layout_marginTop="32dp"
                         android:text="@string/registration_fragment_registrate_button_string"
-                        app:backgroundTint="@null"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        style="@style/wideOrangeButton"/>
+                        style="@style/wideBlueButton"/>
 
                     <ProgressBar
                         android:id="@+id/registrationFragmentProgressSpinner"
