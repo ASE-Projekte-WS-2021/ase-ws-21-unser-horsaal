@@ -27,11 +27,8 @@ public class CourseParticipantsRepository {
   private StateLiveData<String> courseId = new StateLiveData<>();
   private StateLiveData<List<UserModel>> users = new StateLiveData<>();
 
-  private ValueEventListener listener;
-
   /** JavaDoc. */
   public CourseParticipantsRepository() {
-    this.initListener();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.users.postCreate(new ArrayList<>());
   }
@@ -52,60 +49,60 @@ public class CourseParticipantsRepository {
     return this.users;
   }
 
-  /** TODO. */
-  public void setCourseId(String courseId) {
-    if (this.courseId.getValue() != null) {
-      this.databaseReference
-              .child(Config.CHILD_COURSES_USER)
-              .child(courseId)
-              .removeEventListener(this.listener);
-    }
-
+  private void loadUsers() {
     this.databaseReference
             .child(Config.CHILD_COURSES_USER)
-            .child(courseId)
-            .addValueEventListener(this.listener);
+            .child(this.courseId.getValue().getData())
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Task<DataSnapshot>> taskList = new ArrayList<>();
+                ArrayList<UserModel> userList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                  taskList.add(getUserTask(snapshot.getKey()));
+                }
+                Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
+                  for (Task<DataSnapshot> task : taskList) {
+                    UserModel model = task.getResult().getValue(UserModel.class);
 
-    this.courseId.postCreate(courseId);
+                    if (model == null) {
+                      Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
+                      users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
+                      return;
+                    }
+                    model.setKey(task.getResult().getKey());
+                    userList.add(model);
+                  }
+                  users.postUpdate(userList);
+                });
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
+                users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
+              }
+            });
+  }
+
+  /** TODO. */
+  public void setCourseId(String courseId) {
+    if (courseId == null) {
+      return;
+    }
+    if (this.courseId == null
+            || this.courseId.getValue() == null
+            || this.courseId.getValue().getData() == null
+            || !this.courseId.getValue().getData().equals(courseId))
+    {
+      this.courseId.postUpdate(courseId);
+      this.loadUsers();
+    }
+
   }
 
   private Task<DataSnapshot> getUserTask(String uid) {
     return this.databaseReference.child(Config.CHILD_USER).child(uid).get();
-  }
-
-  /** TODO. */
-  public void initListener() {
-    this.listener = new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        ArrayList<Task<DataSnapshot>> taskList = new ArrayList<>();
-        ArrayList<UserModel> userList = new ArrayList<>();
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          taskList.add(getUserTask(snapshot.getKey()));
-        }
-        Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
-          for (Task<DataSnapshot> task : taskList) {
-            UserModel model = task.getResult().getValue(UserModel.class);
-
-            if (model == null) {
-              Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
-              users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
-              return;
-            }
-            model.setKey(task.getResult().getKey());
-            userList.add(model);
-          }
-          users.postUpdate(userList);
-        });
-
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
-        users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
-      }
-    };
   }
 
 }

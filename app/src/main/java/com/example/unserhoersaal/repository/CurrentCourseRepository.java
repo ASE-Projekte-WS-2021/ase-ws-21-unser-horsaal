@@ -39,12 +39,9 @@ public class CurrentCourseRepository {
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<ThreadModel> thread = new StateLiveData<>();
   private StateLiveData<String> userId = new StateLiveData<>();
-  private ValueEventListener messageListener;
-  private ValueEventListener threadListener;
 
   /** TODO. */
   public CurrentCourseRepository() {
-    this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
@@ -93,9 +90,75 @@ public class CurrentCourseRepository {
       return;
     }
 
-    Query query = this.databaseReference.child(Config.CHILD_THREADS).child(threadKey)
-            .child(Config.CHILD_MESSAGES);
-    query.addValueEventListener(this.messageListener);
+    Query query = this.databaseReference.child(Config.CHILD_MESSAGES).child(threadKey);
+    query.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        List<MessageModel> mesList = new ArrayList<>();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          MessageModel model = snapshot.getValue(MessageModel.class);
+
+          if (model == null) {
+            Log.e(TAG, "model is null");
+            messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+            return;
+          }
+
+          model.setKey(snapshot.getKey());
+          mesList.add(model);
+        }
+        getAuthor(mesList);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.d(TAG, "onCancelled: " + error.getMessage());
+      }
+    });
+  }
+
+  private void loadThread() {
+    String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
+    if (threadKey == null) {
+      Log.e(TAG, "threadKey is null.");
+      return;
+    }
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      Log.e(TAG, "meetingObj is null.");
+      return;
+    }
+    this.databaseReference.child(Config.CHILD_THREADS).child(meetingObj.getKey()).child(threadKey)
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ThreadModel threadModel = snapshot.getValue(ThreadModel.class);
+
+                if (threadModel == null) {
+                  Log.e(TAG, "threadModel is null");
+                  return;
+                }
+
+                threadModel.setKey(snapshot.getKey());
+                Task<DataSnapshot> task = getAuthorModel(threadModel.creatorId);
+                task.addOnSuccessListener(dataSnapshot -> {
+                  UserModel model = task.getResult().getValue(UserModel.class);
+                  if (model == null) {
+                    threadModel.setCreatorName(Config.UNKNOWN_USER);
+                  } else {
+                    threadModel.setCreatorName(model.getDisplayName());
+                    threadModel.setPhotoUrl(model.getPhotoUrl());
+                  }
+                  getLikeStatusThread(threadModel);
+                });
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+              }
+            });
+
   }
 
   /**
@@ -181,25 +244,15 @@ public class CurrentCourseRepository {
    */
   public void setThreadId(String threadId) {
     String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
-    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
-    if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
+    if (threadId == null) {
       return;
     }
-
-    if (threadKey != null) {
-      this.databaseReference.child(Config.CHILD_MESSAGES).child(threadKey)
-              .removeEventListener(this.messageListener);
-
-      this.databaseReference.child(Config.CHILD_THREADS).child(meetingObj.getKey())
-              .child(threadKey).removeEventListener(this.threadListener);
+    if (threadKey == null
+            || !threadKey.equals(threadId)) {
+      this.threadId.postUpdate(threadId);
+      this.loadThread();
+      this.loadMessages();
     }
-
-    this.databaseReference.child(Config.CHILD_MESSAGES).child(threadId)
-            .addValueEventListener(this.messageListener);
-    this.databaseReference.child(Config.CHILD_THREADS).child(meetingObj.getKey()).child(threadId)
-            .addValueEventListener(this.threadListener);
-    this.threadId.postCreate(threadId);
   }
 
   /** TODO. */
@@ -276,65 +329,6 @@ public class CurrentCourseRepository {
   /** TODO. */
   public Task<DataSnapshot> getAuthorModel(String authorId) {
     return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
-  }
-
-  /**
-   * Initialise the listener for the database access.
-   */
-  public void initListener() {
-    this.messageListener = new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        List<MessageModel> mesList = new ArrayList<>();
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          MessageModel model = snapshot.getValue(MessageModel.class);
-
-          if (model == null) {
-            Log.e(TAG, "model is null");
-            messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
-            return;
-          }
-
-          model.setKey(snapshot.getKey());
-          mesList.add(model);
-        }
-        getAuthor(mesList);
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        Log.d(TAG, "onCancelled: " + error.getMessage());
-      }
-    };
-    this.threadListener = new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        ThreadModel threadModel = snapshot.getValue(ThreadModel.class);
-
-        if (threadModel == null) {
-          Log.e(TAG, "threadModel is null");
-          return;
-        }
-
-        threadModel.setKey(snapshot.getKey());
-        Task<DataSnapshot> task = getAuthorModel(threadModel.creatorId);
-        task.addOnSuccessListener(dataSnapshot -> {
-          UserModel model = task.getResult().getValue(UserModel.class);
-          if (model == null) {
-            threadModel.setCreatorName(Config.UNKNOWN_USER);
-          } else {
-            threadModel.setCreatorName(model.getDisplayName());
-            threadModel.setPhotoUrl(model.getPhotoUrl());
-          }
-          getLikeStatusThread(threadModel);
-        });
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, error.getMessage());
-      }
-    };
   }
 
   /** TODO. */
