@@ -8,7 +8,6 @@ import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.model.UserModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
@@ -24,11 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Repository for the CourseMeetingViewModel. */
-public class CourseMeetingRepository {
+public class QuestionRepository {
 
-  private static final String TAG = "CourseMeetingRepository";
+  private static final String TAG = "QuestionRepository";
 
-  private static CourseMeetingRepository instance;
+  private static QuestionRepository instance;
   private FirebaseAuth firebaseAuth;
   private DatabaseReference databaseReference;
   private ArrayList<ThreadModel> threadModelList = new ArrayList<>();
@@ -38,7 +37,7 @@ public class CourseMeetingRepository {
   private ValueEventListener listener;
 
   /** JavaDoc. */
-  public CourseMeetingRepository() {
+  public QuestionRepository() {
     this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -46,9 +45,9 @@ public class CourseMeetingRepository {
   }
 
   /** Generate an instance of the class. */
-  public static CourseMeetingRepository getInstance() {
+  public static QuestionRepository getInstance() {
     if (instance == null) {
-      instance = new CourseMeetingRepository();
+      instance = new QuestionRepository();
     }
     return instance;
   }

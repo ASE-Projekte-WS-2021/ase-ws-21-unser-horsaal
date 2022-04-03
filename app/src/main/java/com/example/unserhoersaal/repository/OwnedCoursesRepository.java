@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.viewmodel.OwnedCoursesViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,9 +25,16 @@ public class OwnedCoursesRepository {
   private static final String TAG = "OwnedCoursesRepo";
 
   private static OwnedCoursesRepository instance;
-
+  private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private ArrayList<CourseModel> ownedCoursesList = new ArrayList<>();
   private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
+  private String userId;
+
+  public OwnedCoursesRepository() {
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
+  }
 
   /** Generate an instance of the repo. */
   public static OwnedCoursesRepository getInstance() {
@@ -36,24 +44,32 @@ public class OwnedCoursesRepository {
     return instance;
   }
 
-  /** Give back the owned courses of the user. */
-  public MutableLiveData<List<CourseModel>> getOwnedCourses() {
-    if (this.ownedCoursesList.size() == 0) {
+  public void setUserId() {
+    String uid;
+    if (this.firebaseAuth.getCurrentUser() == null ) {
+      return;
+    }
+    uid = this.firebaseAuth.getCurrentUser().getUid();
+    if (this.userId == null || !this.userId.equals(uid)) {
+      this.userId = uid;
       this.loadOwnedCourses();
     }
+  }
+
+  /** Give back the owned courses of the user. */
+  public MutableLiveData<List<CourseModel>> getOwnedCourses() {
+
     this.courses.setValue(ownedCoursesList);
     return this.courses;
   }
 
   /** Load all owned courses. */
   public void loadOwnedCourses() {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    String id = auth.getCurrentUser().getUid();
+    String id = this.firebaseAuth.getCurrentUser().getUid();
     this.ownedCoursesList.clear();
     this.courses.postValue(ownedCoursesList);
 
-    Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
+    Query query = this.databaseReference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -26,9 +26,16 @@ public class TodaysCoursesRepository {
   private static final String TAG = "TodaysCoursesRepository";
 
   private static TodaysCoursesRepository instance;
-
+  private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private ArrayList<CourseModel> todaysCoursesList = new ArrayList<>();
   private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
+  private String userId;
+
+  public TodaysCoursesRepository() {
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
+  }
 
   /** Get an instance of the repo. */
   public static TodaysCoursesRepository getInstance() {
@@ -38,12 +45,20 @@ public class TodaysCoursesRepository {
     return instance;
   }
 
-  /** Give back all courses with a meeting today. */
-  public MutableLiveData<List<CourseModel>> getTodaysCourses() {
-    if (this.todaysCoursesList.size() == 0) {
+  public void setUserId() {
+    String uid;
+    if (this.firebaseAuth.getCurrentUser() == null ) {
+      return;
+    }
+    uid = this.firebaseAuth.getCurrentUser().getUid();
+    if (this.userId == null || !this.userId.equals(uid)) {
+      this.userId = uid;
       this.loadTodaysCourses();
     }
+  }
 
+  /** Give back all courses with a meeting today. */
+  public MutableLiveData<List<CourseModel>> getTodaysCourses() {
     this.courses.setValue(todaysCoursesList);
     return this.courses;
   }
@@ -51,13 +66,11 @@ public class TodaysCoursesRepository {
 
   /** Load all courses with a meeting today. */
   public void loadTodaysCourses() {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    String id = auth.getCurrentUser().getUid();
+    String id = this.firebaseAuth.getCurrentUser().getUid();
     this.todaysCoursesList.clear();
     this.courses.postValue(todaysCoursesList);
 
-    Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
+    Query query = this.databaseReference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

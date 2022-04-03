@@ -29,8 +29,8 @@ public class OwnedCoursesViewModel extends ViewModel {
     return this.ownedCourses;
   }
 
-  public void loadOwnedCourses() {
-    this.ownedCoursesRepository.loadOwnedCourses();
+  public void setUserId() {
+    this.ownedCoursesRepository.setUserId();
   }
 
 }

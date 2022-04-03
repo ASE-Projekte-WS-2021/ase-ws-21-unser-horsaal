@@ -28,7 +28,7 @@ public class TodaysCoursesViewModel extends ViewModel {
     return this.todaysCourses;
   }
 
-  public void loadTodaysCourses() {
-    this.todaysCoursesRepository.loadTodaysCourses();
+  public void setUserId() {
+    this.todaysCoursesRepository.setUserId();
   }
 }

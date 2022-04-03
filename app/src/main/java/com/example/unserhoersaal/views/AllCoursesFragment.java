@@ -13,23 +13,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.CoursesAdapter;
-import com.example.unserhoersaal.databinding.FragmentCoursesObjectBinding;
-import com.example.unserhoersaal.viewmodel.CoursesViewModel;
+import com.example.unserhoersaal.databinding.FragmentAllCoursesBinding;
+import com.example.unserhoersaal.viewmodel.AllCoursesViewModel;
 
 /** View for all joined courses. */
-public class CoursesObjectFragment extends Fragment {
+public class AllCoursesFragment extends Fragment {
 
-  private static final String TAG = "CoursesObjectFragment";
+  private static final String TAG = "AllCoursesFragment";
 
-  private CoursesViewModel coursesViewModel;
+  private AllCoursesViewModel allCoursesViewModel;
   private CoursesAdapter coursesAdapter;
-  private FragmentCoursesObjectBinding binding;
+  private FragmentAllCoursesBinding binding;
 
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
-    this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_courses_object, container,
+    this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_courses, container,
             false);
     return this.binding.getRoot();
   }
@@ -45,11 +45,10 @@ public class CoursesObjectFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
-    this.coursesViewModel = new ViewModelProvider(getActivity())
-            .get(CoursesViewModel.class);
-    this.coursesViewModel.init();
-    this.coursesViewModel.loadUserCourses();
-    this.coursesViewModel.getUserCourses()
+    this.allCoursesViewModel = new ViewModelProvider(getActivity())
+            .get(AllCoursesViewModel.class);
+    this.allCoursesViewModel.init();
+    this.allCoursesViewModel.getAllCourses()
             .observe(getViewLifecycleOwner(), userCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
               if (userCourses.getData().size() == 0) {
@@ -62,12 +61,12 @@ public class CoursesObjectFragment extends Fragment {
 
   private void connectAdapter() {
     this.coursesAdapter =
-            new CoursesAdapter(this.coursesViewModel.getUserCourses().getValue().getData());
+            new CoursesAdapter(this.allCoursesViewModel.getAllCourses().getValue().getData());
   }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
-    this.binding.setVm(this.coursesViewModel);
+    this.binding.setVm(this.allCoursesViewModel);
     this.binding.setAdapter(this.coursesAdapter);
   }
 

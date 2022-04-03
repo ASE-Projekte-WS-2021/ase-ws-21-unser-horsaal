@@ -20,41 +20,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** This class manages the database access for the overview of the courses of a user. */
-public class CoursesRepository {
+public class AllCoursesRepository {
 
   private static final String TAG = "CoursesRepo";
 
-  private static CoursesRepository instance;
+  private static AllCoursesRepository instance;
   private FirebaseAuth firebaseAuth;
   private DatabaseReference databaseReference;
-  private ArrayList<CourseModel> userCoursesList = new ArrayList<>();
+  private ArrayList<CourseModel> allCoursesList = new ArrayList<>();
   private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
+  private String userId;
 
-  public CoursesRepository() {
+  public AllCoursesRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
   /** This method generates the Instance of the CourseRepository. */
-  public static CoursesRepository getInstance() {
+  public static AllCoursesRepository getInstance() {
     if (instance == null) {
-      instance = new CoursesRepository();
+      instance = new AllCoursesRepository();
     }
     return instance;
   }
 
-  /** This method provides all courses a user has signed up for. */
-  public StateLiveData<List<CourseModel>> getUserCourses() {
-    if (this.userCoursesList.size() == 0) {
-      this.loadUserCourses();
+  public void setUserId() {
+    String uid;
+    if (this.firebaseAuth.getCurrentUser() == null ) {
+      return;
     }
+    uid = this.firebaseAuth.getCurrentUser().getUid();
+    if (this.userId == null || !this.userId.equals(uid)) {
+      this.userId = uid;
+      this.loadAllCourses();
+    }
+  }
 
-    this.courses.postCreate(this.userCoursesList);
+  /** This method provides all courses a user has signed up for. */
+  public StateLiveData<List<CourseModel>> getAllCourses() {
+    this.courses.postCreate(this.allCoursesList);
     return this.courses;
   }
 
   /** This method loads all courses in which the user is signed in. */
-  public void loadUserCourses() {
+  public void loadAllCourses() {
     this.courses.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
@@ -118,10 +127,10 @@ public class CoursesRepository {
           authorList.get(i).setPhotoUrl(author.getPhotoUrl());
         }
       }
-      userCoursesList.clear();
-      userCoursesList.addAll(authorList);
+      allCoursesList.clear();
+      allCoursesList.addAll(authorList);
 
-      courses.postUpdate(userCoursesList);
+      courses.postUpdate(allCoursesList);
     });
   }
 

@@ -203,7 +203,7 @@ public class PollRepository {
 
   private Task<DataSnapshot> getPollOption(String id) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    return this.databaseReference.child("userPoll").child(uid).child(id).get();
+    return this.databaseReference.child(Config.CHILD_USER_POLL).child(uid).child(id).get();
   }
 
   //TODO ifs
@@ -211,15 +211,6 @@ public class PollRepository {
   /** Save a vote of the user in the database. */
   public void vote(CheckedOptionEnum checkedOptionEnum, String optionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    //set userPoll
-    this.databaseReference.child(Config.CHILD_USER_POLL)
-            .child(uid)
-            .child(pollId)
-            .setValue(checkedOptionEnum);
-    this.databaseReference.child(Config.CHILD_POLL_USER)
-            .child(pollId)
-            .child(uid)
-            .setValue(checkedOptionEnum);
     //increase OptionCount
     this.databaseReference.child(Config.CHILD_POLL)
             .child(meeting.getValue().getData().getKey())
@@ -232,6 +223,15 @@ public class PollRepository {
             .child(pollId)
             .child(Config.CHILD_VOTES_COUNT)
             .setValue(ServerValue.increment(1));
+    //set userPoll
+    this.databaseReference.child(Config.CHILD_USER_POLL)
+            .child(uid)
+            .child(pollId)
+            .setValue(checkedOptionEnum);
+    this.databaseReference.child(Config.CHILD_POLL_USER)
+            .child(pollId)
+            .child(uid)
+            .setValue(checkedOptionEnum);
   }
 
   //TODO ifs
@@ -240,15 +240,7 @@ public class PollRepository {
   public void changeVote(CheckedOptionEnum checkedOption, String checkedOptionPath,
                          String oldOptionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    //set userPoll
-    this.databaseReference.child(Config.CHILD_USER_POLL)
-            .child(uid)
-            .child(pollId)
-            .setValue(checkedOption);
-    this.databaseReference.child(Config.CHILD_POLL_USER)
-            .child(pollId)
-            .child(uid)
-            .setValue(checkedOption);
+
     //increase OptionCount
     this.databaseReference.child(Config.CHILD_POLL)
             .child(meeting.getValue().getData().getKey())
@@ -261,6 +253,15 @@ public class PollRepository {
             .child(pollId)
             .child(oldOptionPath)
             .setValue(ServerValue.increment(-1));
+    //set userPoll
+    this.databaseReference.child(Config.CHILD_USER_POLL)
+            .child(uid)
+            .child(pollId)
+            .setValue(checkedOption);
+    this.databaseReference.child(Config.CHILD_POLL_USER)
+            .child(pollId)
+            .child(uid)
+            .setValue(checkedOption);
   }
 
   //TODO ifs

@@ -21,6 +21,7 @@ import com.example.unserhoersaal.databinding.FragmentVerificationBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,6 +33,7 @@ public class VerificationFragment extends Fragment {
   private FragmentVerificationBinding binding;
   private NavController navController;
   private LoginViewModel loginViewModel;
+  private CoursesViewModel coursesViewModel;
   private Handler handler;
   private Runnable runnable;
   private DeepLinkMode deepLinkMode;
@@ -76,7 +78,9 @@ public class VerificationFragment extends Fragment {
 
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+    this.coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
     this.loginViewModel.init();
+    this.coursesViewModel.init();
     this.loginViewModel.getEmailSentLiveData().observe(getViewLifecycleOwner(),
             this::emailSentCallback);
     this.loginViewModel.getUserLiveData()
@@ -128,9 +132,13 @@ public class VerificationFragment extends Fragment {
 
       if (firebaseUser == null) {
         navController.navigate(R.id.action_verificationFragment_to_loginFragment);
-      } else if (firebaseUser.isEmailVerified() && this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+      } else if (firebaseUser.isEmailVerified()
+              && this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+        this.coursesViewModel.setUserId(firebaseUser.getUid());
         this.navController.navigate(R.id.action_verificationFragment_to_enterCourseFragment);
-      } else if (firebaseUser.isEmailVerified() && this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.DEFAULT) {
+      } else if (firebaseUser.isEmailVerified()
+              && this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.DEFAULT) {
+        this.coursesViewModel.setUserId(firebaseUser.getUid());
         this.navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
       }
     }

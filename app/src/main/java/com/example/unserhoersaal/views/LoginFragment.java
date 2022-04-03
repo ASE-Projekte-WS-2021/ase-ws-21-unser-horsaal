@@ -37,6 +37,7 @@ public class LoginFragment extends Fragment {
   public static final String TAG = "LoginFragment";
 
   private LoginViewModel loginViewModel;
+  private CoursesViewModel coursesViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -99,7 +100,10 @@ public class LoginFragment extends Fragment {
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity())
             .get(LoginViewModel.class);
+    this.coursesViewModel = new  ViewModelProvider(requireActivity())
+            .get(CoursesViewModel.class);
     this.loginViewModel.init();
+    this.coursesViewModel.init();
     this.loginViewModel
             .getUserLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
@@ -121,8 +125,10 @@ public class LoginFragment extends Fragment {
             || firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE)) {
       if (firebaseUser.isEmailVerified()
               && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+        this.coursesViewModel.setUserId(firebaseUser.getUid());
         navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
       } else if (firebaseUser.isEmailVerified()) {
+        this.coursesViewModel.setUserId(firebaseUser.getUid());
         navController.navigate(R.id.action_loginFragment_to_coursesFragment);
       } else if (!firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_loginFragment_to_verificationFragment);
