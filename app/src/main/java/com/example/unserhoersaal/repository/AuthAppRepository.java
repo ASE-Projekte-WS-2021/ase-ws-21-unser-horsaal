@@ -16,27 +16,23 @@ import java.util.List;
 
 // source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/tree/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/model [30.12.2021]
 
-/** This class manages the data base access for the user identification. */
+/**
+ * This class manages the data base access for the user identification.
+ */
 public class AuthAppRepository {
 
   private static final String TAG = "AuthAppRepo";
 
   private static AuthAppRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
   private FirebaseUser firebaseUser = null;
-  private StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
-  private StateLiveData<Boolean> emailSentLiveData = new StateLiveData<>();
+  private final StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
+  private final StateLiveData<Boolean> emailSentLiveData = new StateLiveData<>();
 
-  /** Gives back an Instance of AuthAppRepository. */
-  public static AuthAppRepository getInstance() {
-    if (instance == null) {
-      instance = new AuthAppRepository();
-    }
-    return instance;
-  }
-
-  /** Constructor Description. */
+  /**
+   * Constructor.
+   */
   public AuthAppRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -48,7 +44,18 @@ public class AuthAppRepository {
     this.emailSentLiveData.postCreate(Boolean.FALSE);
   }
 
-  /** Gives back the current UserModel. */
+  /**
+   * Gives back an Instance of AuthAppRepository.
+   *
+   * @return Instance of the AuthAppRepository
+   */
+  public static AuthAppRepository getInstance() {
+    if (instance == null) {
+      instance = new AuthAppRepository();
+    }
+    return instance;
+  }
+
   public StateLiveData<FirebaseUser> getUserStateLiveData() {
     return this.userLiveData;
   }
@@ -57,7 +64,12 @@ public class AuthAppRepository {
     return this.emailSentLiveData;
   }
 
-  /** This method is logging in the user.*/
+  /**
+   * This method is logging in the user.
+   *
+   * @param email Entered email address of the user
+   * @param password Entered password from the user
+   */
   public void login(String email, String password) {
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
@@ -76,7 +88,13 @@ public class AuthAppRepository {
             });
   }
 
-  /** This method registers a new user.*/
+  /**
+   * This method registers a new user.
+   *
+   * @param username chosen username from the user
+   * @param email email address of the user
+   * @param password chosen password from the user
+   */
   public void register(String username, String email, String password) {
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
@@ -95,7 +113,12 @@ public class AuthAppRepository {
             });
   }
 
-  /** Method creates a new user. **/
+  /** Method creates a new user.
+   *
+   * @param username name of the user
+   * @param email email of the user
+   * @param uid UserId in the database
+   */
   private void createNewUser(String username, String email, String uid) {
     UserModel newUser = new UserModel();
     newUser.setDisplayName(username);
@@ -117,7 +140,9 @@ public class AuthAppRepository {
             });
   }
 
-  /** Method to (re)send a email verification.*/
+  /**
+   * Method to (re)send a email verification.
+   */
   public void sendVerificationEmail() {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
@@ -145,7 +170,11 @@ public class AuthAppRepository {
     }
   }
 
-  /** JavaDoc. */
+  /**
+   * Sends a email to the user with a link, which can be used to reset the password.
+   *
+   * @param email The email address to which the reset mail is sent
+   */
   public void sendPasswordResetMail(String email) {
     this.firebaseAuth
             .sendPasswordResetEmail(email)
@@ -163,13 +192,17 @@ public class AuthAppRepository {
             });
   }
 
-  /** Logging out the current user. */
+  /**
+   * Logging out the current user.
+   */
   public void logOut() {
     this.firebaseAuth.signOut();
     this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
   }
 
-  /** Method to delete an user account. */
+  /**
+   * Method to delete an user account.
+   */
   public void deleteAccount() {
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
     this.userLiveData.postLoading();
@@ -181,7 +214,11 @@ public class AuthAppRepository {
     //TODO: maybe remove user data in likes and blocked
   }
 
-  /** Delete all connections between a user and his courses. */
+  /**
+   * Delete all connections between a user and his courses.
+   *
+   * @param uid id of the user, that is removed from the courses
+   */
   private void removeCourses(String uid) {
     List<String> courseIdList = new ArrayList<>();
 
@@ -200,7 +237,12 @@ public class AuthAppRepository {
 
   }
 
-  /** Remove the user from all courses the user is signed in. */
+  /**
+   * Remove the user from all courses the user is signed in.
+   *
+   * @param courseIdList list of courses to leave
+   * @param uid user, which leaves the courses
+   */
   private void removeUserFromCourses(List<String> courseIdList, String uid) {
     for (String courseId : courseIdList) {
       this.databaseReference.child(Config.CHILD_COURSES_USER)
@@ -212,7 +254,9 @@ public class AuthAppRepository {
     deleteUser();
   }
 
-  /** Delete the user data in firebase auth. */
+  /**
+   * Delete the user data in firebase auth.
+   */
   private void deleteUser() {
     FirebaseUser user = this.firebaseAuth.getCurrentUser();
     this.firebaseAuth.signOut();
@@ -223,7 +267,9 @@ public class AuthAppRepository {
     });
   }
 
-  /** Reloads the current FirebaseUser object so that we can see if the email was verified. */
+  /**
+   * Reloads the current FirebaseUser object so that we can see if the email was verified.
+   */
   public void isUserEmailVerified() {
     if (this.firebaseAuth.getCurrentUser() !=  null) {
       this.firebaseAuth.getCurrentUser().reload();

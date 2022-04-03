@@ -6,7 +6,6 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -16,18 +15,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-/** Repository for the CourseDescriptionViewModel. */
+/**
+ *  Repository for the CourseDescriptionViewModel.
+ */
 public class CourseDescriptionRepository {
 
   private static final String TAG = "CourseDescriptionRepository";
 
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
   private static CourseDescriptionRepository instance;
-  private StateLiveData<String> courseId = new StateLiveData<>();
-  private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
+  private final StateLiveData<String> courseId = new StateLiveData<>();
+  private final StateLiveData<CourseModel> courseModel = new StateLiveData<>();
 
-  /** JavaDoc. */
+  /**
+   * Constructor.
+   */
   public CourseDescriptionRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -35,7 +38,11 @@ public class CourseDescriptionRepository {
     this.courseId.postCreate(null);
   }
 
-  /** Generates an instance of CourseDescriptionRepository. */
+  /**
+   * Generates an instance of CourseDescriptionRepository.
+   *
+   * @return Instance of CourseDescriptionRepository
+   */
   public static CourseDescriptionRepository getInstance() {
     if (instance == null) {
       instance = new CourseDescriptionRepository();
@@ -51,8 +58,12 @@ public class CourseDescriptionRepository {
     return this.courseModel;
   }
 
+  /**
+   * Loads the description of a course.
+   */
   public void loadDescription() {
     this.courseModel.postLoading();
+
 
     Query query = this.databaseReference.child(Config.CHILD_COURSES)
             .child(this.courseId.getValue().getData());
@@ -74,16 +85,20 @@ public class CourseDescriptionRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "setcourseid task failed.");
+        Log.e(TAG, "setCourseId task failed.");
         courseModel.postError(
                 new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
     });
   }
 
-  /** Sets the current course. */
+  /**
+   * Sets the id of a new course the user wants to read the description.
+   *
+   * @param newCourseId Id of the course
+   */
   public void setCourseId(String newCourseId) {
-    if(newCourseId == null) {
+    if (newCourseId == null) {
       return;
     }
     if (this.courseId.getValue() == null
@@ -102,7 +117,7 @@ public class CourseDescriptionRepository {
             .get();
 
     task.addOnSuccessListener(dataSnapshot -> {
-      if(dataSnapshot.exists()) {
+      if (dataSnapshot.exists()) {
         course.setCreatorName(dataSnapshot.getValue(String.class));
       } else {
         course.setCreatorName(Config.UNKNOWN_USER);
@@ -115,7 +130,11 @@ public class CourseDescriptionRepository {
     });
   }
 
-  /** unregisters a user from a course in real time database. */
+  /**
+   * Unregisters a user from a course in real time database.
+   *
+   * @param id id of the course
+   */
   public void unregisterFromCourse(String id) {
     this.courseModel.postLoading();
 
