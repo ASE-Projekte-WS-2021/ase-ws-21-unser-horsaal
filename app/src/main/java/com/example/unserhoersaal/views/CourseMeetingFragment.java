@@ -89,12 +89,11 @@ public class CourseMeetingFragment extends Fragment {
     this.questionsViewModel.setMeeting(meetingStateData.getData());
     this.pollViewModel.setMeeting(meetingStateData.getData());
     this.liveChatViewModel.setMeeting(meetingStateData.getData());
-
   }
 
   private void connectAdapter() {
     this.meetingsViewPagerAdapter = new MeetingsViewPagerAdapter(this);
-    this.binding.courseMeetingFragmentViewPager.setAdapter(meetingsViewPagerAdapter);
+    this.binding.courseMeetingFragmentViewPager.setAdapter(this.meetingsViewPagerAdapter);
   }
 
   private void connectBinding() {
