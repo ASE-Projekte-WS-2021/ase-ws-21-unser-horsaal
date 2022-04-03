@@ -18,7 +18,7 @@
     <string name="registration_fragment_checkbox_string">Eingeloggt bleiben</string>
     <string name="registration_fragment_registration_fail_string">Registrierung fehlgeschlagen</string>
     <string name="registration_fragment_registrate_button_string">Account erstellen</string>
-    <string name="enter_course_string">Kurs beitreten</string>
+    <string name="enter_course_string">Kurs suchen</string>
     <string name="enter_course_caption">Bestehendem Kurs beitreten, um Fragen zu stellen, Antworten zu senden, etc.</string>
     <string name="create_course_string">Kurs erstellen</string>
     <string name="create_course_caption">Kurs, dem andere Nutzer über einen generierten Code beitreten können, erstellen</string>
@@ -57,11 +57,11 @@
     <string name="toolbar_filter_string">Filter</string>
     <string name="toolbar_profile_string">Profil</string>
     <string name="toolbar_logout_string">Logout</string>
-    <string name="profile_fragment_institution_string">Institution</string>
+    <string name="profile_fragment_institution_string">Hochschule</string>
     <string name="profile_fragment_name_string">Nutzername</string>
     <string name="profile_fragment_toolbar_logout_string">Ausloggen</string>
     <string name="edit_profile_fragment_user_name">Nutzername</string>
-    <string name="edit_profile_fragment_institution">Institution</string>
+    <string name="edit_profile_fragment_institution">Hochschule</string>
     <string name="edit_profile_fragment_current_password">Aktuelles Passwort</string>
     <string name="edit_profile_fragment_new_password">Neues Passwort</string>
     <string name="edit_profile_toolbar_save">Speichern</string>
@@ -69,11 +69,11 @@
     <string name="enter_course_fragment_enter_via_qr_code">Via Qr-Code beitreten</string>
     <string name="enter_course_fragment_course_titel">Kurstitel</string>
     <string name="enter_course_fragment_course_creator">Kursersteller</string>
-    <string name="enter_course_fragment_course_institution">Institution</string>
+    <string name="enter_course_fragment_course_institution">Hochschule</string>
     <string name="enter_course_fragment_course_description">Dieser Kurs richtet sich an Masterstudierende der Medieninformatik an der Universität Regensburg. Es werden Inhalte aus dem Software-Engineering vermittelt.</string>
     <string name="enter_course_fragment_enter_button_string">Beitreten</string>
     <string name="create_course_fragment_course_description">Kursbeschreibung</string>
-    <string name="create_course_fragment_course_institution">Institution</string>
+    <string name="create_course_fragment_course_institution">Hochschule</string>
     <string name="thread_item_likes_string">Likes</string>
     <string name="thread_item_replies_string">Antworten</string>
     <string name="thread_item_example_question">Dies ist eine beispielhafte Frage</string>
@@ -108,7 +108,7 @@
     <string name="course_history_fragment_create_meeting_date_hint">Datum</string>
     <string name="course_history_create_meeting_create_button">Erstellen</string>
     <string name="course_history_fragment_create_meeting_time_hint">Startzeit</string>
-    <string name="course_description_fragment_institution_textview">Institution</string>
+    <string name="course_description_fragment_institution_textview">Hochschule</string>
     <string name="registration_fragment_user_name">Nutzername</string>
     <string name="dialog_delete_account_title">Account löschen</string>
     <string name="dialog_delete_account_message">Möchtest du deinen Account wirklich löschen?</string>
@@ -128,7 +128,7 @@
     <string name="unregister_from_course_title">Kurs verlassen</string>
     <string name="abbrechen">Abbrechen</string>
     <string name="es_gibt_noch_keine_meetings_in_diesem_kurs">Es gibt noch keine Meetings in diesem Kurs.</string>
-    <string name="enter_course_fragment_information_string">Tritt einem Kurs bei, um dich darin mit anderen Mitgliedern über Inhalte auszutauschen</string>
+    <string name="enter_course_fragment_information_string">Das kannst du in einem Kurs tun:</string>
     <string name="create_course_fragment_information_string">In einem Kurs kannst du einzelne Meetings erstellen, in denen sich Mitglieder austauschen können</string>
     <string name="no_course_found_fragment_text">Leider konnte kein entsprechender Kurs gefunden werden</string>
     <string name="no_course_found_fragment_button_back">Zurück</string>
@@ -147,7 +147,7 @@
     <string name="current_course_fragment_answers_text">Antworten</string>
     <string name="current_course_fragment_no_answers">Für diese Frage gibt es noch keine Antworten</string>
     <string name="edit_profile_name">Nutzername bearbeiten</string>
-    <string name="edit_profile_institution">Institution bearbeiten</string>
+    <string name="edit_profile_institution">Hochschule bearbeiten</string>
     <string name="edit_profile_password">Passwort bearbeiten</string>
     <string name="course_description_fragment_description">Kursbeschreibung</string>
     <string name="course_history_fragment_subtitle">Meetings</string>
@@ -234,4 +234,9 @@
     <string name="onboarding_finish_text_3">Swipe rechts, wenn du mit der Nutzung unserer App einverstanden bist.</string>
     <string name="onboarding_finish_text_4">Impressum | Terms of Use</string>
     <string name="registration_impressum">Impressum</string>
+    <string name="enter_course_live_chat">Live-Chat während Vorlesung</string>
+    <string name="enter_course_poll_information">Wirke an Abstimmungen mit oder erstelle sie</string>
+    <string name="enter_course_question_answer">Fragen stellen, beantworten und bewerten</string>
+    <string name="enter_course_code_header">Beitritts-Code eingeben</string>
+    <string name="enter_course_code_filler">ABCDEFGHI</string>
 </resources>
