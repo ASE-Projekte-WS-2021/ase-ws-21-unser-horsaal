@@ -22,6 +22,7 @@ import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.StateData;
@@ -40,6 +41,7 @@ public class LoginFragment extends Fragment {
   private LoginViewModel loginViewModel;
   private CoursesViewModel coursesViewModel;
   private ProfileViewModel profileViewModel;
+  private CourseHistoryViewModel courseHistoryViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -106,9 +108,12 @@ public class LoginFragment extends Fragment {
             .get(CoursesViewModel.class);
     this.profileViewModel = new ViewModelProvider(requireActivity())
             .get(ProfileViewModel.class);
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
     this.loginViewModel.init();
     this.coursesViewModel.init();
     this.profileViewModel.init();
+    this.courseHistoryViewModel.init();
     this.loginViewModel
             .getUserLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
@@ -132,10 +137,12 @@ public class LoginFragment extends Fragment {
               && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
         this.coursesViewModel.setUserId(firebaseUser.getUid());
         this.profileViewModel.setUserId();
+        this.courseHistoryViewModel.setUserId();
         navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
       } else if (firebaseUser.isEmailVerified()) {
         this.coursesViewModel.setUserId(firebaseUser.getUid());
         this.profileViewModel.setUserId();
+        this.courseHistoryViewModel.setUserId();
         navController.navigate(R.id.action_loginFragment_to_coursesFragment);
       } else if (!firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_loginFragment_to_verificationFragment);

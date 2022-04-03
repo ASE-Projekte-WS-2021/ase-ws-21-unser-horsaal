@@ -77,8 +77,6 @@ public class CourseHistoryRepository {
     if (courseObj == null
             || courseObj.getKey() == null
             || !courseObj.getKey().equals(courseId)) {
-      //todo maybe after login
-      this.setUserId();
       this.course.postUpdate(courseModel);
       this.loadMeetings();
     }
