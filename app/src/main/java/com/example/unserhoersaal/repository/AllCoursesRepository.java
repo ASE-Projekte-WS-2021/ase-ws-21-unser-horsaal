@@ -22,7 +22,7 @@ import java.util.List;
 /** This class manages the database access for the overview of the courses of a user. */
 public class AllCoursesRepository {
 
-  private static final String TAG = "CoursesRepo";
+  private static final String TAG = "AllCoursesRepo";
 
   private static AllCoursesRepository instance;
   private FirebaseAuth firebaseAuth;

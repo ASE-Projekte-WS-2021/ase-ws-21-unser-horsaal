@@ -4,9 +4,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +31,7 @@ public class TodaysCoursesRepository {
   private FirebaseAuth firebaseAuth;
   private DatabaseReference databaseReference;
   private ArrayList<CourseModel> todaysCoursesList = new ArrayList<>();
-  private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
+  private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
   private String userId;
 
   public TodaysCoursesRepository() {
@@ -58,17 +60,23 @@ public class TodaysCoursesRepository {
   }
 
   /** Give back all courses with a meeting today. */
-  public MutableLiveData<List<CourseModel>> getTodaysCourses() {
-    this.courses.setValue(todaysCoursesList);
+  public StateLiveData<List<CourseModel>> getTodaysCourses() {
+    this.courses.postCreate(todaysCoursesList);
     return this.courses;
   }
 
 
   /** Load all courses with a meeting today. */
   public void loadTodaysCourses() {
+    this.courses.postLoading();
+
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
+
     String id = this.firebaseAuth.getCurrentUser().getUid();
-    this.todaysCoursesList.clear();
-    this.courses.postValue(todaysCoursesList);
 
     Query query = this.databaseReference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
@@ -103,6 +111,7 @@ public class TodaysCoursesRepository {
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                       if (date.equals(snapshot1.getValue(MeetingsModel.class).getMeetingDate())) {
                         courseIdList.add(snapshot.getKey());
+                        break;
                       }
                     }
                     findCourses(courseIdList);
@@ -157,7 +166,7 @@ public class TodaysCoursesRepository {
       }
       todaysCoursesList.clear();
       todaysCoursesList.addAll(authorList);
-      courses.postValue(todaysCoursesList);
+      courses.postUpdate(todaysCoursesList);
     });
   }
 

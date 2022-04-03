@@ -42,13 +42,13 @@ public class TodaysCoursesFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
-    this.todaysCoursesViewModel = new ViewModelProvider(getActivity())
+    this.todaysCoursesViewModel = new ViewModelProvider(requireActivity())
             .get(TodaysCoursesViewModel.class);
     this.todaysCoursesViewModel.init();
     this.todaysCoursesViewModel.getTodaysCourses()
             .observe(getViewLifecycleOwner(), todaysCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
-              if (todaysCourses.size() == 0) {
+              if (todaysCourses.getData().size() == 0) {
                 this.binding.todaysCoursesFragmentTitleTextView.setVisibility(View.VISIBLE);
               } else {
                 this.binding.todaysCoursesFragmentTitleTextView.setVisibility(View.GONE);
@@ -58,7 +58,7 @@ public class TodaysCoursesFragment extends Fragment {
 
   private void connectAdapter() {
     this.coursesAdapter = new CoursesAdapter(
-            this.todaysCoursesViewModel.getTodaysCourses().getValue());
+            this.todaysCoursesViewModel.getTodaysCourses().getValue().getData());
   }
 
   private void connectBinding() {

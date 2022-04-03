@@ -4,8 +4,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.viewmodel.OwnedCoursesViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -28,7 +30,7 @@ public class OwnedCoursesRepository {
   private FirebaseAuth firebaseAuth;
   private DatabaseReference databaseReference;
   private ArrayList<CourseModel> ownedCoursesList = new ArrayList<>();
-  private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
+  private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
   private String userId;
 
   public OwnedCoursesRepository() {
@@ -57,17 +59,21 @@ public class OwnedCoursesRepository {
   }
 
   /** Give back the owned courses of the user. */
-  public MutableLiveData<List<CourseModel>> getOwnedCourses() {
-
-    this.courses.setValue(ownedCoursesList);
+  public StateLiveData<List<CourseModel>> getOwnedCourses() {
+    this.courses.postCreate(ownedCoursesList);
     return this.courses;
   }
 
   /** Load all owned courses. */
   public void loadOwnedCourses() {
+    this.courses.postLoading();
+
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+    }
+
     String id = this.firebaseAuth.getCurrentUser().getUid();
-    this.ownedCoursesList.clear();
-    this.courses.postValue(ownedCoursesList);
 
     Query query = this.databaseReference.child(Config.CHILD_USER_COURSES).child(id);
     query.addValueEventListener(new ValueEventListener() {
@@ -122,7 +128,7 @@ public class OwnedCoursesRepository {
       }
       ownedCoursesList.clear();
       ownedCoursesList.addAll(authorList);
-      courses.postValue(ownedCoursesList);
+      courses.postUpdate(ownedCoursesList);
     });
   }
 

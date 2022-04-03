@@ -45,7 +45,7 @@ public class AllCoursesFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
-    this.allCoursesViewModel = new ViewModelProvider(getActivity())
+    this.allCoursesViewModel = new ViewModelProvider(requireActivity())
             .get(AllCoursesViewModel.class);
     this.allCoursesViewModel.init();
     this.allCoursesViewModel.getAllCourses()
