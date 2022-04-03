@@ -23,6 +23,7 @@ import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
+import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
 /** TODO. */
@@ -34,6 +35,7 @@ public class VerificationFragment extends Fragment {
   private NavController navController;
   private LoginViewModel loginViewModel;
   private CoursesViewModel coursesViewModel;
+  private ProfileViewModel profileViewModel;
   private Handler handler;
   private Runnable runnable;
   private DeepLinkMode deepLinkMode;
@@ -79,8 +81,10 @@ public class VerificationFragment extends Fragment {
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
     this.coursesViewModel = new ViewModelProvider(requireActivity()).get(CoursesViewModel.class);
+    this.profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.loginViewModel.init();
     this.coursesViewModel.init();
+    this.profileViewModel.init();
     this.loginViewModel.getEmailSentLiveData().observe(getViewLifecycleOwner(),
             this::emailSentCallback);
     this.loginViewModel.getUserLiveData()
@@ -135,10 +139,12 @@ public class VerificationFragment extends Fragment {
       } else if (firebaseUser.isEmailVerified()
               && this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
         this.coursesViewModel.setUserId(firebaseUser.getUid());
+        this.profileViewModel.setUserId();
         this.navController.navigate(R.id.action_verificationFragment_to_enterCourseFragment);
       } else if (firebaseUser.isEmailVerified()
               && this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.DEFAULT) {
         this.coursesViewModel.setUserId(firebaseUser.getUid());
+        this.profileViewModel.setUserId();
         this.navController.navigate(R.id.action_verificationFragment_to_coursesFragment);
       }
     }

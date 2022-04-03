@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 /** Repository for the CourseDescriptionViewModel. */
@@ -25,11 +26,9 @@ public class CourseDescriptionRepository {
   private static CourseDescriptionRepository instance;
   private StateLiveData<String> courseId = new StateLiveData<>();
   private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
-  private ValueEventListener listener;
 
   /** JavaDoc. */
   public CourseDescriptionRepository() {
-    this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.courseModel.postCreate(new CourseModel());
@@ -52,29 +51,12 @@ public class CourseDescriptionRepository {
     return this.courseModel;
   }
 
-  /** Sets the current course. */
-  public void setCourseId(String newCourseId) {
-    String oldKey = Validation.checkStateLiveData(this.courseId, TAG);
+  public void loadDescription() {
+    this.courseModel.postLoading();
 
-    if (oldKey != null) {
-      this.databaseReference
-              .child(Config.CHILD_COURSES)
-              .child(oldKey)
-              .removeEventListener(this.listener);
-    }
-
-    this.databaseReference
-            .child(Config.CHILD_COURSES)
-            .child(newCourseId)
-            .addValueEventListener(this.listener);
-
-    this.courseModel.postUpdate(new CourseModel());
-    this.courseId.postCreate(newCourseId);
-  }
-
-  /** Initializes the listener for the database access. */
-  public void initListener() {
-    this.listener = new ValueEventListener() {
+    Query query = this.databaseReference.child(Config.CHILD_COURSES)
+            .child(this.courseId.getValue().getData());
+    query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
@@ -96,7 +78,20 @@ public class CourseDescriptionRepository {
         courseModel.postError(
                 new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
-    };
+    });
+  }
+
+  /** Sets the current course. */
+  public void setCourseId(String newCourseId) {
+    if(newCourseId == null) {
+      return;
+    }
+    if (this.courseId.getValue() == null
+            || this.courseId.getValue().getData() == null
+            || !this.courseId.getValue().getData().equals(newCourseId)) {
+      this.courseId.postUpdate(newCourseId);
+      this.loadDescription();
+    }
   }
 
   private void getAuthorName(CourseModel course) {

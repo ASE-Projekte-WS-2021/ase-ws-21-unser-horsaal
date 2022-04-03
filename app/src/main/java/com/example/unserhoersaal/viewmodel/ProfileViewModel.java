@@ -164,4 +164,8 @@ public class ProfileViewModel extends ViewModel {
     this.profileRepository.uploadImageToFirebase(uri);
   }
 
+  public void setUserId() {
+    this.profileRepository.setUserId();
+  }
+
 }

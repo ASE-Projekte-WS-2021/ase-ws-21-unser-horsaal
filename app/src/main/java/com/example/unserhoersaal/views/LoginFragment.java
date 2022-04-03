@@ -26,6 +26,7 @@ import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
+import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -38,6 +39,7 @@ public class LoginFragment extends Fragment {
 
   private LoginViewModel loginViewModel;
   private CoursesViewModel coursesViewModel;
+  private ProfileViewModel profileViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -100,10 +102,13 @@ public class LoginFragment extends Fragment {
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity())
             .get(LoginViewModel.class);
-    this.coursesViewModel = new  ViewModelProvider(requireActivity())
+    this.coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
+    this.profileViewModel = new ViewModelProvider(requireActivity())
+            .get(ProfileViewModel.class);
     this.loginViewModel.init();
     this.coursesViewModel.init();
+    this.profileViewModel.init();
     this.loginViewModel
             .getUserLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
@@ -126,9 +131,11 @@ public class LoginFragment extends Fragment {
       if (firebaseUser.isEmailVerified()
               && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
         this.coursesViewModel.setUserId(firebaseUser.getUid());
+        this.profileViewModel.setUserId();
         navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
       } else if (firebaseUser.isEmailVerified()) {
         this.coursesViewModel.setUserId(firebaseUser.getUid());
+        this.profileViewModel.setUserId();
         navController.navigate(R.id.action_loginFragment_to_coursesFragment);
       } else if (!firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_loginFragment_to_verificationFragment);
