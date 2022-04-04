@@ -239,4 +239,10 @@
     <string name="enter_course_question_answer">Fragen stellen, beantworten und bewerten</string>
     <string name="enter_course_code_header">Beitritts-Code eingeben</string>
     <string name="enter_course_code_filler">ABCDEFGHI</string>
+    <string name="course_found_info">Du bist gerade dabei, folgendem Kurs beizutreten:</string>
+    <string name="enter_course_detail_title_header">Titel</string>
+    <string name="enter_course_detail_institution">Hochschule</string>
+    <string name="enter_course_detail_description">Beschreibung</string>
+    <string name="enter_course_detail_title">Kurs gefunden!</string>
+    <string name="enter_course_qr_text">Via QR-Code beitreten</string>
 </resources>

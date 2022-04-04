@@ -15,7 +15,7 @@
     </style>
 
     <style name="wideRedButton" parent="TextAppearance.MaterialComponents.Button">
-        <item name="cornerRadius">4dp</item>
+        <item name="cornerRadius">8dp</item>
         <item name="backgroundTint">@color/red</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
