@@ -50,6 +50,12 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
+
+    if (courseHistoryViewModel.getIsEditing()) {
+      changeTextToEdit();
+    } else {
+      changeTextToCreate();
+    }
     this.connectBinding();
     this.initToolbar();
   }
@@ -117,6 +123,35 @@ public class CreateCourseMeetingFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createCourseMeetingFragmentToolbar.setNavigationOnClickListener(v ->
             this.navController.navigateUp());
+  }
+
+  private void changeTextToEdit() {
+    binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
+    binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
+
+    binding.createCourseMeetingDatePicker.setText(courseHistoryViewModel.meetingModelInputState
+            .getValue().getData().getMeetingDate());
+    binding.createCourseMeetingTimePicker.setText(courseHistoryViewModel.getTimeInputForDisplay());
+    binding.createCourseMeetingEndTimePicker.setText(courseHistoryViewModel.getEndTimeInputForDisplay());
+
+
+
+  }
+
+  private void changeTextToCreate() {
+    binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_toolbar_title);
+    binding.createCourseMeetingFragmentButton.setText(R.string.create_course_meeting_meeting_button);
+
+    binding.createCourseMeetingDatePicker.setText(R.string.current_date_placeholder);
+    binding.createCourseMeetingTimePicker.setText(R.string.startzeit);
+    binding.createCourseMeetingEndTimePicker.setText(R.string.endzeit);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    this.courseHistoryViewModel.resetMeetingData();
+    this.courseHistoryViewModel.setIsEditing(false);
   }
 
 }

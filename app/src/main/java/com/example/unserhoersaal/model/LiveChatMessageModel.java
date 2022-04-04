@@ -2,33 +2,20 @@ package com.example.unserhoersaal.model;
 
 import com.example.unserhoersaal.enums.LikeStatus;
 
-/**Class represent the message model.**/
-public class MessageModel {
-
+public class LiveChatMessageModel {
   private static final String TAG = "MessageModel";
 
   private Long creationTime;
   private String creatorId;
-  private int likes;
   private String text;
-  private boolean topAnswer;
   private String key;
   private String creatorName;
-  private LikeStatus likeStatus;
   private String photoUrl;
-  private Boolean isTextDeleted = false;
+
 
   /**Default class constructor.**/
-  public MessageModel() {
+  public LiveChatMessageModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
-  }
-
-  public String getPhotoUrl() {
-    return photoUrl;
-  }
-
-  public void setPhotoUrl(String photoUrl) {
-    this.photoUrl = photoUrl;
   }
 
   public Long getCreationTime() {
@@ -47,28 +34,12 @@ public class MessageModel {
     this.creatorId = creatorId;
   }
 
-  public int getLikes() {
-    return this.likes;
-  }
-
-  public void setLikes(int likes) {
-    this.likes = likes;
-  }
-
   public String getText() {
     return this.text;
   }
 
   public void setText(String textMessage) {
     this.text = textMessage;
-  }
-
-  public boolean getTopAnswer() {
-    return this.topAnswer;
-  }
-
-  public void setTopAnswer(boolean topAnswer) {
-    this.topAnswer = topAnswer;
   }
 
   public String getKey() {
@@ -87,16 +58,11 @@ public class MessageModel {
     this.creatorName = creatorName;
   }
 
-  public LikeStatus getLikeStatus() {
-    return this.likeStatus;
+  public String getPhotoUrl() {
+    return photoUrl;
   }
 
-  public void setLikeStatus(LikeStatus likeStatus) {
-    this.likeStatus = likeStatus;
+  public void setPhotoUrl(String photoUrl) {
+    this.photoUrl = photoUrl;
   }
-
-  public void setIsTextDeleted(Boolean isTextDeleted) { this.isTextDeleted = isTextDeleted; }
-
-  public Boolean getIsTextDeleted() { return this.isTextDeleted; }
-
 }

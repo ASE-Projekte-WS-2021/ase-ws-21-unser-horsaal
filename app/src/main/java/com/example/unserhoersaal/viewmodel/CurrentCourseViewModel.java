@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.os.Message;
 import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
@@ -69,6 +70,10 @@ public class CurrentCourseViewModel extends ViewModel {
     return  this.thread;
   }
 
+  public StateLiveData<String> getUserId() {
+    return this.userId;
+  }
+
   /** Send a new message in a thread. */
   public void sendMessage() {
     //TODO: removed loading because there is no place for it
@@ -91,13 +96,19 @@ public class CurrentCourseViewModel extends ViewModel {
     }
 
     messageModel.setCreationTime(System.currentTimeMillis());
-
-    this.messageModelInputState.postCreate(new MessageModel());
-    this.currentCourseRepository.sendMessage(messageModel);
+    if (!messageModel.getText().equals("")) {
+      this.messageModelInputState.postCreate(new MessageModel());
+      this.currentCourseRepository.sendMessage(messageModel);
+    }
   }
 
   public void setThreadId(String threadId) {
     this.currentCourseRepository.setThreadId(threadId);
+  }
+
+  public void setThread(ThreadModel threadModel) {
+    this.thread.postCreate(threadModel);
+    this.currentCourseRepository.setThread(threadModel);
   }
 
   public void setMeeting(MeetingsModel meeting) {
@@ -188,5 +199,15 @@ public class CurrentCourseViewModel extends ViewModel {
   public void solved(String messageId) {
     this.currentCourseRepository.solved(messageId);
   }
+
+  public void deleteThreadText(ThreadModel threadModel) {
+    currentCourseRepository.deleteThreadText(threadModel);
+  }
+
+  public void deleteAnswerText(MessageModel messageModel) {
+    currentCourseRepository.deleteAnswerText(messageModel);
+  }
+
+
 
 }
