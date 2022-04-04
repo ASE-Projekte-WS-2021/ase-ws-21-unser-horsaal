@@ -106,15 +106,10 @@ public class VerificationFragment extends Fragment {
 
     if (booleanStateData == null) {
       Log.e(TAG, "FirebaseUser object is null");
-      this.binding.verificationFragmentErrorText.setText(Config.UNSPECIFIC_ERROR);
-      this.binding.verificationFragmentErrorText.setVisibility(View.VISIBLE);
-      return;
-    }
-
-    if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.navController.navigate(R.id.action_verificationFragment_to_loginFragment);
+    } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.verificationFragmentSpinner.setVisibility(View.VISIBLE);
       this.binding.verificationFragmentResendEmailButton.setEnabled(false);
-      this.binding.verificationFragmentResendEmailButton.setBackgroundColor(Color.GRAY);
     } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
       this.binding.verificationFragmentErrorText
               .setText(booleanStateData.getError().getMessage());
@@ -129,12 +124,8 @@ public class VerificationFragment extends Fragment {
 
     if (firebaseUserStateData == null) {
       Log.e(TAG, "FirebaseUser object is null");
-      this.binding.verificationFragmentErrorText.setText(Config.UNSPECIFIC_ERROR);
-      this.binding.verificationFragmentErrorText.setVisibility(View.VISIBLE);
-      return;
-    }
-
-    if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.navController.navigate(R.id.action_verificationFragment_to_loginFragment);
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.verificationFragmentSpinner.setVisibility(View.VISIBLE);
       this.binding.verificationFragmentResendEmailButton.setEnabled(false);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
