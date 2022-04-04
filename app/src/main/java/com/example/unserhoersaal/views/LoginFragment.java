@@ -191,8 +191,8 @@ public class LoginFragment extends Fragment {
   }
 
   @Override
-  public void onResume() {
-    super.onResume();
+  public void onPause() {
+    super.onPause();
     this.resetBindings();
   }
 }
