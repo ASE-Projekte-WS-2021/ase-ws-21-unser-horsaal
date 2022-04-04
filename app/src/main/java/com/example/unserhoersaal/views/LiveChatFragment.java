@@ -129,7 +129,6 @@ public class LiveChatFragment extends Fragment {
   }
 
   public void sendMessage() {
-    KeyboardUtil.hideKeyboard(getActivity());
     liveChatViewModel.sendMessage();
     binding.liveChatFragmentInputField.getEditText().getText().clear();
   }
