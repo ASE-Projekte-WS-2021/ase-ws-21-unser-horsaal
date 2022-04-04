@@ -83,8 +83,8 @@
                 app:layout_constraintEnd_toStartOf="@id/answerCardVoteContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/answerCardAnswerInfoContainer"
-                android:text="@{vm.thread.data.isTextDeleted ? @string/deleted_message_text : model.text}"
-                android:textColor="@{ vm.thread.data.isTextDeleted ?  @color/grey : @color/black}"/>
+                android:text="@{model.isTextDeleted ? @string/deleted_message_text : model.text}"
+                android:textColor="@{ model.isTextDeleted ?  @color/grey : @color/black}"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/answerCardAnswerInfoContainer"

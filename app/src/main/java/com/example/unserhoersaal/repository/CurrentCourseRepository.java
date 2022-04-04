@@ -506,12 +506,12 @@ public class CurrentCourseRepository {
                     .child(messageModel.getKey());
 
     databaseRefDelThread
-            .child("isTextDeleted")
-            .setValue(true);
-
-    databaseRefDelThread
             .child("text")
             .setValue("");
+
+    databaseRefDelThread
+            .child("isTextDeleted")
+            .setValue(true);
 
   }
 
