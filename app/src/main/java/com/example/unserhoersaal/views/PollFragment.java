@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.PollAdapter;
 import com.example.unserhoersaal.databinding.FragmentPollBinding;
@@ -54,6 +56,7 @@ public class PollFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
+    this.setupScrolling();
   }
 
   private void initViewModel() {
@@ -104,5 +107,23 @@ public class PollFragment extends Fragment {
   public void onResume() {
     super.onResume();
     this.pollViewModel.resetPollData();
+  }
+
+  /**Hides Infocontainer when scrolling down and shows it when scrolling to top.*/
+  private void setupScrolling() {
+    View infocontainer = this.binding.pollFragmentInfoContainer;
+    this.binding.pollFragmentPollRecycler.addOnScrollListener(new RecyclerView
+            .OnScrollListener() {
+
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        if (!recyclerView.canScrollVertically(-1)) {
+          infocontainer.setVisibility(View.VISIBLE);
+        } else {
+          infocontainer.setVisibility(View.GONE);
+        }
+      }
+    });
   }
 }
