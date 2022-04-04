@@ -45,6 +45,7 @@
             app:layout_constraintTop_toBottomOf="@+id/createCourseToolbar">
 
             <TextView
+                android:id="@+id/createCourseFragmentSubTitel"
                 style="@style/toolbarSubtitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

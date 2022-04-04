@@ -191,6 +191,15 @@
     <string name="startzeit">Startzeit</string>
     <string name="endzeit">Endzeit</string>
     <string name="create_course_information_button_string">Zur Erstellung</string>
+    <string name="edit_course_string">Kurs bearbeiten</string>
+    <string name="edit_course_information_string">Hast du einen Fehler beim erstellen deines Kurses gemacht? Kein Problem! Bearbeite hier deine Einträge und behebe die Fehler.</string>
+    <string name="edit_course_button">Kurs bearbeiten</string>
+    <string name="edit_course_meeting_toolbar_title">Meeting bearbeiten</string>
+    <string name="edit_course_meeting_subtitle">Bearbeite hier deine Meetings.</string>
+    <string name="edit_course_meeting_button">Bearbeiten</string>
+    <string name="dialog_delete_message_text">Möchtest du den Text deiner Nachricht wirklich löschen?</string>
+    <string name="dialog_delete_message_title">Text löschen</string>
+    <string name="deleted_message_text"><i>Nachricht gelöscht</i></string>
     <string name="live_chat_info">Hier kannst du dich live während der Vorlesung austauschen!</string>
     <string name="questions_info">Du hast eine Frage oder Antwort? Hier bist du richtig!</string>
     <string name="poll_info">Stimme hier ab und trage zum Meinungsbild bei!</string>
@@ -234,4 +243,5 @@
     <string name="onboarding_finish_text_3">Swipe rechts, wenn du mit der Nutzung unserer App einverstanden bist.</string>
     <string name="onboarding_finish_text_4">Impressum | Terms of Use</string>
     <string name="registration_impressum">Impressum</string>
+
 </resources>

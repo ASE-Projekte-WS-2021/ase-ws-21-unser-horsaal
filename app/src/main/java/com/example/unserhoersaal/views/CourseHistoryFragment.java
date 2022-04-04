@@ -118,7 +118,8 @@ public class CourseHistoryFragment extends Fragment {
 
   private void connectAdapter() {
     this.meetingAdapter =
-            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData());
+            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData(),
+                    this.courseHistoryViewModel.getUid(), courseHistoryViewModel.getCreatorId());
 
   }
 
@@ -140,7 +141,5 @@ public class CourseHistoryFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    this.courseHistoryViewModel.resetMeetingData();
   }
-
 }

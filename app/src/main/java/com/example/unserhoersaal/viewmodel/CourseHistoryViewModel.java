@@ -8,6 +8,8 @@ import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
+import com.example.unserhoersaal.utils.DateTimePicker;
+import com.example.unserhoersaal.utils.NavUtil;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.Calendar;
@@ -26,10 +28,12 @@ public class CourseHistoryViewModel extends ViewModel {
   public StateLiveData<MeetingsModel> meetingModelInputState = new StateLiveData<>();
   public StateLiveData<String> userId;
   private ArrayListUtil arrayListUtil;
+  private Boolean isEditing = false;
+  private String timeInputForDisplay;
+  private String endTimeInputForDisplay;
 
   /** Initialise the ViewModel. */
   public void init() {
-    Log.d(TAG, "init: ");
     if (this.meetings != null) {
       return;
     }
@@ -82,7 +86,6 @@ public class CourseHistoryViewModel extends ViewModel {
   }
 
   public void setCourse(CourseModel course) {
-    Log.d(TAG, course.getKey());
     this.courseHistoryRepository.setCourse(course);
   }
 
@@ -120,7 +123,13 @@ public class CourseHistoryViewModel extends ViewModel {
     meetingsModel.setCreationTime(new Date().getTime());
 
     this.meetingModelInputState.postCreate(new MeetingsModel());
-    this.courseHistoryRepository.createMeeting(meetingsModel);
+
+    if (isEditing) {
+      this.courseHistoryRepository.editMeeting(meetingsModel);
+    } else {
+      this.courseHistoryRepository.createMeeting(meetingsModel);
+
+    }
   }
 
   private String parseMeetingDate(MeetingsModel meetingsModel) {
@@ -150,6 +159,45 @@ public class CourseHistoryViewModel extends ViewModel {
     calendar.set(Calendar.MINUTE, meetingsModel.getMinuteEndInput());
 
     return calendar.getTimeInMillis();
+  }
+
+  public String  getCreatorId() {
+    return courseHistoryRepository.
+            getCourse().getValue().getData().getCreatorId();
+  }
+
+  public void setTimeInputForDisplay(int hour, int minute) {
+    String timeInputForDisplay = DateTimePicker.formatTime(hour, minute);
+    this.timeInputForDisplay = timeInputForDisplay;
+  }
+
+  public void setEndTimeInputForDisplay(int hour, int minute) {
+    String endTimeInputForDisplay = DateTimePicker.formatTime(hour, minute);
+    this.endTimeInputForDisplay = endTimeInputForDisplay;
+  }
+
+  public String getTimeInputForDisplay() {
+    return timeInputForDisplay;
+  }
+
+  public String getEndTimeInputForDisplay() {
+    return endTimeInputForDisplay;
+  }
+
+  public String getUid() {
+    return courseHistoryRepository.getUid();
+  }
+
+  public void setMeetingModelInputState(StateLiveData<MeetingsModel> meetingModelInputState) {
+    this.meetingModelInputState = meetingModelInputState;
+  }
+
+  public void setIsEditing(Boolean isEditing) {
+    this.isEditing = isEditing;
+  }
+
+  public Boolean getIsEditing() {
+    return isEditing;
   }
 
 }

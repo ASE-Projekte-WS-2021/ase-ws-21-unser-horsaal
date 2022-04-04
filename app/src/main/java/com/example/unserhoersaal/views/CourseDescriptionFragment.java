@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ public class CourseDescriptionFragment extends Fragment {
   private CourseDescriptionViewModel courseDescriptionViewModel;
   private CourseParticipantsViewModel courseParticipantsViewModel;
   private FragmentCourseDescriptionBinding binding;
-
   public CourseDescriptionFragment() {
     // Required empty public constructor
   }
@@ -100,7 +100,9 @@ public class CourseDescriptionFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseDescriptionFragmentToolbar
             .setNavigationOnClickListener(v ->
-            navController.navigateUp());
+             navController.navigateUp());
+    this.binding.setIsCreator(courseDescriptionViewModel.isCreator());
+
   }
 
 

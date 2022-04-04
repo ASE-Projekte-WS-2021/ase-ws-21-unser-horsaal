@@ -25,8 +25,10 @@ public class CourseDescriptionRepository {
   private final FirebaseAuth firebaseAuth;
   private final DatabaseReference databaseReference;
   private static CourseDescriptionRepository instance;
+  private String creatorId;
   private final StateLiveData<String> courseId = new StateLiveData<>();
   private final StateLiveData<CourseModel> courseModel = new StateLiveData<>();
+
 
   /**
    * Constructor.
@@ -169,4 +171,15 @@ public class CourseDescriptionRepository {
             });
   }
 
+  public String getUid() {
+    return firebaseAuth.getUid();
+  }
+
+  public String getCreatorId() {
+    return creatorId;
+  }
+
+  public void setCreatorId(String creatorId) {
+    this.creatorId = creatorId;
+  }
 }
