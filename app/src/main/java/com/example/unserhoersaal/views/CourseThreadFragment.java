@@ -109,4 +109,9 @@ public class CourseThreadFragment extends Fragment {
     );
   }
 
+  public boolean onDeleteThreadMessage(View v) {
+    //logic goes here
+    return false;
+  }
+
 }

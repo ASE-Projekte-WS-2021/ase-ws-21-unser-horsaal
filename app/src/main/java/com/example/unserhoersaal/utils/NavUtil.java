@@ -172,7 +172,7 @@ public class NavUtil {
   /** Shows Confirmation Dialog when User deletes a Thread Message. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter({"viewmodel", "model"})
-  public static void deleteAnswerText(View view,
+  public static boolean deleteAnswerText(View view,
                                        CurrentCourseViewModel vm,
                                        MessageModel model) {
 
@@ -195,6 +195,7 @@ public class NavUtil {
       dialog.show();
 
     }
+    return false;
   }
 
   /** Navigates to CourseEdit. */
