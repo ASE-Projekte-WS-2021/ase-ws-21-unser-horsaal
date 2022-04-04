@@ -140,13 +140,11 @@ public class CreateCourseFragment extends Fragment {
 
   public void changeToEditText() {
     binding.createCourseFragmentToolbarTitle.setText(R.string.edit_course_string);
-    binding.createCourseFragmentSubTitel.setText(R.string.edit_course_information_string);
     binding.createCourseFragmentCreateButton.setText(R.string.edit_course_button);
   }
 
   public void changeToCreateText() {
     binding.createCourseFragmentToolbarTitle.setText(R.string.create_course_string);
-    binding.createCourseFragmentSubTitel.setText(R.string.create_course_fragment_information_string);
     binding.createCourseFragmentCreateButton.setText(R.string.create_course_create_button);
   }
 

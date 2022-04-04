@@ -185,8 +185,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_coursesFragment_to_createCourseInformationFragment"
-            app:destination="@id/createCourseInformationFragment" />
+            android:id="@+id/action_coursesFragment_to_createCourseFragment"
+            app:destination="@id/createCourseFragment" />
     </fragment>
     <fragment
         android:id="@+id/courseHistoryFragment"
@@ -458,22 +458,6 @@
         <action
             android:id="@+id/action_verificationFragment_to_enterCourseFragment"
             app:destination="@id/enterCourseFragment"/>
-    </fragment>
-    <fragment
-        android:id="@+id/createCourseInformationFragment"
-        android:name="com.example.unserhoersaal.views.CreateCourseInformationFragment"
-        android:label="CreateCourseInformationFragment"
-        tools:layout="@layout/fragment_create_course_information">
-        <action
-            android:id="@+id/action_createCourseInformationFragment_to_coursesFragment"
-            app:destination="@id/coursesFragment"
-            app:popUpTo="@id/coursesFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_createCourseInformationFragment_to_createCourseFragment"
-            app:destination="@id/createCourseFragment"
-            app:popUpTo="@id/coursesFragment"
-            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/createPollFragment"

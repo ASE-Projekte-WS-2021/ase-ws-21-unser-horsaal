@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/app_background"
+        android:animateLayoutChanges="true"
         tools:context=".views.CourseHistoryFragment">
 
         <TextView
@@ -33,10 +34,12 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/black"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentCourseCard"
             android:visibility="gone"/>
 
         <ProgressBar
@@ -66,44 +69,74 @@
                 android:id="@+id/courseHistoryFragmentToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_history_fragment_subtitle"
+                android:text="@string/course_history_fragment_toolbar_title"
                 style="@style/toolbarTitleStyle"/>
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <LinearLayout
-            android:id="@+id/courseHistoryFragmentSubtitleContainer"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/courseHistoryFragmentCourseCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/custom_ripple_blue"
-            android:paddingBottom="8dp"
             android:onClick="@{(view) -> NavUtil.navigateToDescription(view, vm.course.data.key, vm.course.data.creatorId)}"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentToolbar">
 
-            <TextView
-                android:id="@+id/courseHistoryFragmentSubtitle"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:text="@{vm.course.data.title}"
-                style="@style/toolbarSubtitleStyle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentToolbar"/>
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/courseHistoryFragmentDescriptionInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/course_history_fragment_subtitle_information"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/courseHistoryFragmentCourseTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="@{vm.course.data.title}"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/courseHistoryFragmentTitleInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_history_title_hint"
+                    android:textAlignment="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentCourseTitle"/>
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/course_history_image"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentTitleInfo"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/courseHistoryFragmentMeetingsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/course_history_meetings_textview"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentCourseCard"
+            style="@style/headerTextView"/>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -111,11 +144,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:adapter="@{adapter}"
+            android:layout_marginTop="8dp"
             app:initLayoutManager="@{R.id.courseHistoryFragmentCoursesRecyclerView}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseHistoryFragmentSubtitleContainer"
+            app:layout_constraintTop_toBottomOf="@+id/courseHistoryFragmentMeetingsTextView"
             tools:listitem="@layout/meeting_card" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
