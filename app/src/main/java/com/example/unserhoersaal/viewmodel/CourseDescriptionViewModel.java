@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.util.Log;
-import android.graphics.Bitmap;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -59,13 +58,5 @@ public class CourseDescriptionViewModel extends ViewModel {
     this.courseId.postUpdate(null);
     this.courseDescriptionRepository.unregisterFromCourse(courseKey);
   }
-/*
-  public void setQrCodeBitmap(Bitmap qrCodeBitmap) {
-    this.qrCodeBitmap = qrCodeBitmap;
-  }
 
-  public Bitmap getQrCodeBitmap() {
-    return this.qrCodeBitmap;
-  }
- */
 }

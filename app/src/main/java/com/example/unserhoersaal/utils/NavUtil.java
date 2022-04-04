@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.CourseModel;
@@ -142,6 +141,9 @@ public class NavUtil {
     dialog.show();
   }
 
+  /** Used in OnboadingWrapperFragment for users that do not want to experience the onboarding.
+   * They skip directly to the registration fragment. Setting onboarding_complete to true so
+   * that it will not be displayed on the next opening of the app. */
   @BindingAdapter("skipOnboarding")
   public static void skipOnboarding(View view, int navAction) {
     SharedPreferences sharedPreferences = view.getContext()

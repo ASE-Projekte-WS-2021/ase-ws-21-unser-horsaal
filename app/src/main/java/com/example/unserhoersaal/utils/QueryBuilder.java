@@ -5,6 +5,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.TagEnum;
 import java.util.List;
 
+/** Used in CourseFragment and QuestionFragment to query all accessable values in a thread. */
 public class QueryBuilder {
 
   public String userQuery;
@@ -57,6 +58,7 @@ public class QueryBuilder {
     return this;
   }
 
+  /** compares user query with all properties that are not null and checks if they match. */
   public boolean matchUserQuery(@NonNull CharSequence userQuery) {
     this.userQuery = userQuery.toString().trim().toLowerCase();
 
@@ -64,7 +66,7 @@ public class QueryBuilder {
             || (this.text != null && !this.text.equals("") && this.matchString(this.text))
             || (this.pageNumber != null
                 && !this.pageNumber.equals("") && this.matchString(this.pageNumber))
-            || (this.hashTag != null&& !this.hashTag.equals("") && this.matchString(this.hashTag))
+            || (this.hashTag != null && !this.hashTag.equals("") && this.matchString(this.hashTag))
             || (this.institution != null
                 && !this.institution.equals("") && this.matchString(this.institution))
             || (this.creatorName != null

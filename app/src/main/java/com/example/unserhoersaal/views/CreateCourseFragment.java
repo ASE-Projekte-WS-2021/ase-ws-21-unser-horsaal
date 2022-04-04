@@ -117,7 +117,7 @@ public class CreateCourseFragment extends Fragment {
   private void initToolbar() {
     this.binding.createCourseToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createCourseToolbar.setNavigationOnClickListener(v ->
-      this.navController.navigateUp());
+            this.navController.navigateUp());
   }
 
   /** Signs the creator in the course. */

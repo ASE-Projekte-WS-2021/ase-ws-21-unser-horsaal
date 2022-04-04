@@ -192,7 +192,8 @@ public class Config {
   public static final String AUTH_EMAIL_EMPTY = "Bitte gib eine Email-Adresse ein!";
   public static final String AUTH_EMAIL_WRONG_PATTERN_REGISTRATION =
           "Email ist ungültig oder bereits vergeben!";
-  public static final String AUTH_EMAIL_EXISTS = "Ein Account zu dieser Email-Adresse existiert bereits!";
+  public static final String AUTH_EMAIL_EXISTS =
+          "Ein Account zu dieser Email-Adresse existiert bereits!";
   public static final String AUTH_EMAIL_WRONG_PATTERN_LOGIN = "Ungültige Email-Adresse!";
   public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
   public static final String AUTH_PASSWORD_WRONG_PATTERN =

@@ -58,10 +58,11 @@ public class CourseHistoryViewModel extends ViewModel {
   }
 
   /** Sort the meetings list.
+   *
    * @param meetingsModelList list of meetingmodels to filter
    */
   public void sortMeetingsByNewest(List<MeetingsModel> meetingsModelList) {
-   this.arrayListUtil.sortMeetingListByEventTime(meetingsModelList);
+    this.arrayListUtil.sortMeetingListByEventTime(meetingsModelList);
   }
 
   public StateLiveData<CourseModel> getCourse() {
@@ -72,7 +73,9 @@ public class CourseHistoryViewModel extends ViewModel {
     return this.meetingsModelMutableLiveData;
   }
 
-  public StateLiveData<String> getUserId() {return this.userId;}
+  public StateLiveData<String> getUserId() {
+    return this.userId;
+  }
 
   public void setUserId() {
     this.courseHistoryRepository.setUserId();

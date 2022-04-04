@@ -46,9 +46,10 @@ public class OwnedCoursesRepository {
     return instance;
   }
 
+  /** JavaDoc. */
   public void setUserId() {
     String uid;
-    if (this.firebaseAuth.getCurrentUser() == null ) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
       return;
     }
     uid = this.firebaseAuth.getCurrentUser().getUid();
