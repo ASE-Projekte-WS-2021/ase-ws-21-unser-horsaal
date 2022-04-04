@@ -36,252 +36,334 @@
                 style="@style/toolbarTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{vm.courseModel.data.title}"/>
+                android:text="@{vm.courseModel.data.title}"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginEnd="16dp"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <TableLayout
-            android:id="@+id/tableLayout"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:stretchColumns="2"
-            android:shrinkColumns="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseDescriptionFragmentToolbar">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentToolbar"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <TableRow
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/courseDescriptionFragmentCreatorIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:src="@drawable/ic_baseline_account_circle_24"
-                    app:tint="@color/app_blue" />
+                android:layout_height="wrap_content"
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/courseDescriptionFragmentCreatorTextView"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/courseDescriptionFragmentCourseInformationString"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:text="@string/course_description_fragment_creator"
-                    android:layout_marginStart="16dp" />
+                    android:text="@string/course_description_course_information"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/headerTextView"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/courseDescriptionFragmentCourseInformationCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentCourseInformationString">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:id="@+id/courseDescriptionFragmentCreatorContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                setImage="@{vm.courseModel.data.photoUrl}"/>
+
+                            <TextView
+                                android:id="@+id/courseDescriptionCreator"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.courseModel.data.creatorName}"
+                                android:layout_marginStart="16dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/courseDescriptionFragmentInstitutionContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentCreatorContainer">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_institution_24"/>
+
+                            <TextView
+                                android:id="@+id/courseDescriptionFragmentInstitution"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.courseModel.data.institution}"
+                                android:layout_marginStart="16dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/courseDescriptionFragmentDescriptionContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentInstitutionContainer">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_description_24"/>
+
+                            <TextView
+                                android:id="@+id/courseDescriptionFragmentCourseDescription"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.courseModel.data.description}"
+                                android:layout_marginStart="16dp"/>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
-                    android:id="@+id/courseDescriptionCreator"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/courseDescriptionFragmentCourseOptionsTextView"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:text="@{vm.courseModel.data.creatorName}"
-                    android:textAlignment="viewEnd"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp" />
+                    android:text="@string/course_description_course_options"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentCourseInformationCard"
+                    style="@style/headerTextView"/>
 
-            </TableRow>
-
-            <TableRow
-                android:background="@color/white"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/courseDescriptionFragmentInstitutionIcon"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/courseDescriptionFragmentOptionsContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:src="@drawable/ic_baseline_institution_24"
-                    app:tint="@color/app_blue" />
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentCourseOptionsTextView">
 
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentInstitutionTextView"
-                    android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/courseDescriptionShareContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.data.codeMapping)}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/courseDescriptionFragmentShareImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_share_24"
+                                app:tint="@color/grey"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/course_description_share"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/courseDescriptionFragmentShareImage"
+                                app:layout_constraintTop_toTopOf="@id/courseDescriptionFragmentShareImage"
+                                app:layout_constraintBottom_toBottomOf="@id/courseDescriptionFragmentShareImage"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/courseDescriptionFragmentShareImage"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/courseDescriptionFragmentCopyCodeContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:onClick="@{(view) -> Clipboard.copyCodeToClipboard(view, vm.courseModel.data.codeMapping)}"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/custom_ripple"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/courseDescriptionShareContainer">
+
+                            <ImageView
+                                android:id="@+id/courseDescriptionFragmentCopyCodeImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_vpn_key_24"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                android:id="@+id/courseDescriptionFragmentCopyCodeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/course_description_copy_code"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/courseDescriptionFragmentCopyCodeImage"
+                                app:layout_constraintTop_toTopOf="@id/courseDescriptionFragmentCopyCodeImage"
+                                app:layout_constraintBottom_toBottomOf="@id/courseDescriptionFragmentCopyCodeImage"/>
+
+                            <ImageView
+                                android:id="@+id/courseDescriptionFragmentCopyImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_content_copy_24"
+                                app:tint="@color/grey"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/courseDescriptionFragmentQrContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/custom_ripple"
+                            android:onClick="@{(view) -> QrCodeCreator.generateQrCode(view, vm.courseModel.data.codeMapping, vm)}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentCopyCodeContainer">
+
+                            <ImageView
+                                android:id="@+id/courseDescriptionFragmentQrImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_qr_code_scanner_24"
+                                app:tint="@color/grey"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="QR-Beitrittscode generieren"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/courseDescriptionFragmentQrImage"
+                                app:layout_constraintTop_toTopOf="@id/courseDescriptionFragmentQrImage"
+                                app:layout_constraintBottom_toBottomOf="@id/courseDescriptionFragmentQrImage"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/courseDescriptionFragmentUnsubscribeContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:onClick="@{(view) -> NavUtil.unregisterFromCourse(view, vm)}"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/custom_ripple"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentQrContainer">
+
+                            <ImageView
+                                android:id="@+id/courseDescriptionFragmentUnsubscribeImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_logout_24"
+                                app:tint="@color/red"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                android:id="@+id/courseDescriptionFragmentUnsubscribeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/course_description_unsubscribe_from_course"
+                                android:textColor="@color/red"
+                                android:layout_marginStart="16dp"
+                                app:layout_constraintStart_toEndOf="@id/courseDescriptionFragmentUnsubscribeImage"
+                                app:layout_constraintTop_toTopOf="@id/courseDescriptionFragmentUnsubscribeImage"
+                                app:layout_constraintBottom_toBottomOf="@id/courseDescriptionFragmentUnsubscribeImage"/>
+
+                            <ImageView
+                                android:id="@+id/courseDescriptionFragmentUnsubscribeArrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/red"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/courseDescriptionFragmentParticipantsContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:text="@string/course_description_fragment_institution_textview"
-                    android:layout_marginStart="16dp" />
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/courseDescriptionFragmentOptionsContainer">
 
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentInstitution"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:text="@{vm.courseModel.data.institution}"
-                    android:textAlignment="viewEnd"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp" />
+                </com.google.android.material.card.MaterialCardView>
 
-            </TableRow>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TableRow
-                android:id="@+id/courseDescriptionFragmentCourseDescriptionContainer"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/custom_ripple"
-                android:padding="8dp"
-                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseDescriptionDetailFragment)}">
-
-                <ImageView
-                    android:id="@+id/courseDescriptionFragmentCourseDescriptionIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:src="@drawable/ic_baseline_description_24"
-                    android:layout_gravity="center"
-                    app:tint="@color/app_blue" />
-
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentCourseDescriptionTextViewTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:text="@string/course_description_fragment_description_textview"
-                    android:layout_marginStart="16dp"
-                    android:layout_gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentCourseDescription"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.courseModel.data.description}"
-                    android:textAlignment="viewEnd"
-                    android:textStyle="bold"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    android:layout_column="3"
-                    android:layout_marginEnd="8dp"
-                    android:layout_gravity="center_vertical"
-                    app:tint="@color/black" />
-
-            </TableRow>
-
-            <TableRow
-                android:background="@color/white"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/courseDescriptionFragmentEnterKeyIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:src="@drawable/ic_baseline_vpn_key_24"
-                    app:tint="@color/app_blue" />
-
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentEnterKeyTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:text="@string/course_description_fragment_enter_key"
-                    android:layout_marginStart="16dp" />
-
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentEnterKey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:text="@{Format.formatEnterKey(courseDescriptionFragmentEnterKey, vm.courseModel.data.codeMapping)}"
-                    android:textAlignment="viewEnd"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp" />
-
-                <ImageView
-                    android:onClick="@{(view) -> Clipboard.copyCodeToClipboard(view, vm.courseModel.data.codeMapping)}"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_content_copy_24"
-                    android:layout_column="3"
-                    android:layout_marginEnd="8dp"
-                    android:padding="6dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/custom_ripple"
-                    app:tint="@color/black" />
-
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/courseDescriptionFragmentCourseParticipantsContainer"
-                android:background="@drawable/custom_ripple"
-                android:padding="8dp"
-                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseParticipantsFragment)}">
-
-                <ImageView
-                    android:id="@+id/courseDescriptionFragmentParticipantsIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:src="@drawable/ic_baseline_people_24"
-                    app:tint="@color/app_blue" />
-
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentParticipantsTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:text="@string/course_description_fragment_participants_textview"
-                    android:layout_marginStart="16dp" />
-
-                <ImageView
-                    android:id="@+id/courseDescriptionFragmentExpandParticipantsIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="3"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    app:tint="@color/black" />
-
-            </TableRow>
-
-            <TableRow
-                android:background="@drawable/custom_ripple"
-                android:padding="8dp"
-                android:layout_marginTop="2dp">
-
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentUnsubscribeTextView"
-                    android:onClick="@{(view) -> NavUtil.unregisterFromCourse(view, vm)}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_span="4"
-                    android:text="@string/course_description_unsubscribe_from_course"
-                    android:textAlignment="center"
-                    android:textColor="@color/red"
-                    android:textStyle="bold" />
-
-            </TableRow>
-
-        </TableLayout>
-
-        <Button
-            android:id="@+id/qrCodeButton"
-            android:onClick="@{(view) -> QrCodeCreator.generateQrCode(view, vm.courseModel.data.codeMapping, vm)}"
-            android:text="qrCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="31dp"
-            android:layout_marginStart="23dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/courseDescriptionFragmentShareCourseFab"
-            android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.data.codeMapping)}"
             style="@style/fabStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_share_24"
+            android:src="@drawable/ic_baseline_edit_calendar_24"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"

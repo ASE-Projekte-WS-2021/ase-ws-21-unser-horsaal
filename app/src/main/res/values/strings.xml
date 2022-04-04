@@ -253,4 +253,8 @@
     <string name="create_course_description_hint">In diesem Kurs geht es um…</string>
     <string name="create_course_institution_hint">Universität Regensburg</string>
     <string name="course_history_title_hint">Für Informationen klicken</string>
+    <string name="course_description_course_information">Kursinformationen</string>
+    <string name="course_description_course_options">Kursoptionen</string>
+    <string name="course_description_share">Kurs teilen</string>
+    <string name="course_description_copy_code">Beitrittscode kopieren</string>
 </resources>
