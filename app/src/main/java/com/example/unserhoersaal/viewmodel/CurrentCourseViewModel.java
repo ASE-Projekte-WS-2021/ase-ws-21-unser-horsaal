@@ -38,7 +38,6 @@ public class CurrentCourseViewModel extends ViewModel {
     this.threadId = this.currentCourseRepository.getThreadId();
     this.meeting = this.currentCourseRepository.getMeeting();
     this.thread = this.currentCourseRepository.getThread();
-    this.currentCourseRepository.setUserId();
     this.userId = this.currentCourseRepository.getUserId();
     this.messageModelInputState.postCreate(new MessageModel());
 
@@ -97,9 +96,10 @@ public class CurrentCourseViewModel extends ViewModel {
     }
 
     messageModel.setCreationTime(System.currentTimeMillis());
-
-    this.messageModelInputState.postCreate(new MessageModel());
-    this.currentCourseRepository.sendMessage(messageModel);
+    if (!messageModel.getText().equals("")) {
+      this.messageModelInputState.postCreate(new MessageModel());
+      this.currentCourseRepository.sendMessage(messageModel);
+    }
   }
 
   public void setThreadId(String threadId) {
@@ -113,6 +113,10 @@ public class CurrentCourseViewModel extends ViewModel {
 
   public void setMeeting(MeetingsModel meeting) {
     this.currentCourseRepository.setMeetingId(meeting);
+  }
+
+  public void setUserId() {
+    this.currentCourseRepository.setUserId();
   }
 
   /** JavaDoc for this method. */

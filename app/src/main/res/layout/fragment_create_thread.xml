@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.unserhoersaal.viewmodel.CourseMeetingViewModel" />
+            type="com.example.unserhoersaal.viewmodel.QuestionsViewModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
@@ -255,8 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:text="@string/create_thread_fragment_button_send"
-                    app:backgroundTint="@color/call_to_action_orange"
-                    style="@style/wideOrangeButton"/>
+                    style="@style/wideBlueButton"/>
 
 
             </LinearLayout>

@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.views;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +15,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
-import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.enums.ErrorTag;
-import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
@@ -35,7 +32,6 @@ public class RegistrationFragment extends Fragment {
   private FragmentRegistrationBinding binding;
   private RegistrationViewModel registrationViewModel;
   private NavController navController;
-  private DeepLinkMode deepLinkMode;
 
   public RegistrationFragment() {
       // Required empty public constructor
@@ -59,7 +55,6 @@ public class RegistrationFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    this.deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
@@ -86,11 +81,11 @@ public class RegistrationFragment extends Fragment {
 
     if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE
             && firebaseUserStateData.getData() != null) {
+      this.registrationViewModel.setDefaultInputState();
       navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.registrationFragmentProgressSpinner.setVisibility(View.VISIBLE);
       this.binding.registrationFragmentButton.setEnabled(false);
-      this.binding.registrationFragmentButton.setBackgroundColor(Color.GRAY);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
         this.binding.registrationFragmentUserEmailErrorText
@@ -120,7 +115,6 @@ public class RegistrationFragment extends Fragment {
     this.binding.registrationFragmentPasswordErrorText.setVisibility(View.GONE);
     this.binding.registrationFragmentProgressSpinner.setVisibility(View.GONE);
     this.binding.registrationFragmentButton.setEnabled(true);
-    this.binding.registrationFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
 

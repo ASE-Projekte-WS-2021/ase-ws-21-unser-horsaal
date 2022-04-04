@@ -2,9 +2,11 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.MeetingAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseHistoryBinding;
@@ -34,6 +38,7 @@ public class CourseHistoryFragment extends Fragment {
   private CourseDescriptionViewModel courseDescriptionViewModel;
   private NavController navController;
   private MeetingAdapter meetingAdapter;
+
 
   public CourseHistoryFragment() {
     // Required empty public constructor
@@ -59,8 +64,13 @@ public class CourseHistoryFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
+
     this.connectAdapter();
     this.connectBinding();
+
+    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
+            this::meetingsLiveDataCallback);
+
     this.initToolbar();
   }
 
@@ -75,8 +85,7 @@ public class CourseHistoryFragment extends Fragment {
     this.courseMeetingViewModel.init();
     this.courseDescriptionViewModel.init();
 
-    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
-            this::meetingsLiveDataCallback);
+
   }
 
   @SuppressLint("NotifyDataSetChanged")
@@ -85,9 +94,10 @@ public class CourseHistoryFragment extends Fragment {
       return;
     }
     this.resetBindings();
-    //sort meeting by oldest
-    this.courseHistoryViewModel.sortMeetings(listStateData.getData(), "oldest");
+    //sort meeting by newest
+    this.courseHistoryViewModel.sortMeetingsByNewest(listStateData.getData());
     this.meetingAdapter.notifyDataSetChanged();
+
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.VISIBLE);
@@ -110,6 +120,7 @@ public class CourseHistoryFragment extends Fragment {
     this.meetingAdapter =
             new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData(),
                     this.courseHistoryViewModel.getUid(), courseHistoryViewModel.getCreatorId());
+
   }
 
   private void connectBinding() {
@@ -124,7 +135,7 @@ public class CourseHistoryFragment extends Fragment {
     this.binding.courseHistoryFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseHistoryFragmentToolbar.setNavigationOnClickListener(v ->
-            navController.navigate(R.id.action_courseHistoryFragment_to_coursesFragment));
+            navController.navigateUp());
   }
 
   @Override

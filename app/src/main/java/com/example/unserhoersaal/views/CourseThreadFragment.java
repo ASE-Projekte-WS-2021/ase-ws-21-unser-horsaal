@@ -103,10 +103,7 @@ public class CourseThreadFragment extends Fragment {
     this.binding.currentCourseFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.currentCourseFragmentToolbar
-            .setNavigationOnClickListener(v ->
-                    navController.navigate(
-                            R.id.action_courseThreadFragment_to_courseMeetingFragment)
-    );
+            .setNavigationOnClickListener(v -> navController.navigateUp());
   }
 
   public boolean onDeleteThreadMessage(View v) {

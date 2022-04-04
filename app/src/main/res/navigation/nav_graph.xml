@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_loginFragment_to_verificationFragment"
             app:destination="@id/verificationFragment"/>
+        <action
+            android:id="@+id/action_loginFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment"/>
         <argument
             android:name="codeMapping"
             android:defaultValue="@null"
@@ -115,6 +118,7 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -275,13 +279,6 @@
         android:name="com.example.unserhoersaal.views.CourseMeetingFragment"
         android:label="fragment_course_meeting"
         tools:layout="@layout/fragment_course_meeting">
-        <action
-            android:id="@+id/action_courseMeetingFragment_to_currentCourseFragment"
-            app:destination="@id/currentCourseFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
 
         <action
             android:id="@+id/action_courseMeetingFragment_to_courseHistoryFragment"
@@ -302,6 +299,9 @@
         <action
             android:id="@+id/action_courseMeetingFragment_to_createThreadFragment"
             app:destination="@id/createThreadFragment" />
+        <action
+            android:id="@+id/action_courseMeetingFragment_to_createPollFragment"
+            app:destination="@id/createPollFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileNameFragment"
@@ -313,8 +313,8 @@
             app:destination="@id/profileFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_top"
             app:popUpTo="@id/profileFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -328,8 +328,8 @@
             app:destination="@id/profileFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_top"
             app:popUpTo="@id/profileFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -343,8 +343,8 @@
             app:destination="@id/profileFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_top"
             app:popUpTo="@id/profileFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -352,17 +352,7 @@
         android:id="@+id/courseThreadFragment"
         android:name="com.example.unserhoersaal.views.CourseThreadFragment"
         android:label="fragment_course_thread"
-        tools:layout="@layout/fragment_course_thread">
-        <action
-            android:id="@+id/action_courseThreadFragment_to_courseMeetingFragment"
-            app:destination="@id/courseMeetingFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"
-            app:popUpTo="@id/courseMeetingFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_course_thread"/>
     <fragment
         android:id="@+id/enterCourseDetailFragment"
         android:name="com.example.unserhoersaal.views.EnterCourseDetailFragment"
@@ -370,7 +360,8 @@
         tools:layout="@layout/fragment_enter_course_detail" >
         <action
             android:id="@+id/action_enterCourseDetailFragment_to_courseHistoryFragment"
-            app:destination="@id/courseHistoryFragment" />
+            app:destination="@id/courseHistoryFragment"
+            app:popUpTo="@id/coursesFragment" />
         <action
             android:id="@+id/action_enterCourseDetailFragment_to_enterCourseFragment"
             app:destination="@id/enterCourseFragment"
@@ -445,6 +436,11 @@
             app:destination="@id/courseMeetingFragment"
             app:popUpTo="@id/courseMeetingFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_createThreadFragment_to_courseThreadFragment"
+            app:destination="@id/courseThreadFragment"
+            app:popUpTo="@id/courseMeetingFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/verificationFragment"
@@ -457,6 +453,9 @@
         <action
             android:id="@+id/action_verificationFragment_to_coursesFragment"
             app:destination="@id/coursesFragment" />
+        <action
+            android:id="@+id/action_verificationFragment_to_enterCourseFragment"
+            app:destination="@id/enterCourseFragment"/>
     </fragment>
     <fragment
         android:id="@+id/createCourseInformationFragment"
@@ -472,6 +471,29 @@
             android:id="@+id/action_createCourseInformationFragment_to_createCourseFragment"
             app:destination="@id/createCourseFragment"
             app:popUpTo="@id/coursesFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPollFragment"
+        android:name="com.example.unserhoersaal.views.CreatePollFragment"
+        android:label="CreatePollFragment"
+        tools:layout="@layout/fragment_create_poll">
+        <action
+            android:id="@+id/action_createPollFragment_to_courseMeetingFragment"
+            app:destination="@id/courseMeetingFragment"
+            app:popUpTo="@id/courseMeetingFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.example.unserhoersaal.views.OnBoardingWrapperFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding_wrapper">
+        <action
+            android:id="@+id/action_onboardingFragment_to_registrationFragment"
+            app:destination="@+id/registrationFragment"/>
+        <action
+            android:id="@+id/action_onboardingFragment_to_verificationFragment"
+            app:destination="@+id/verificationFragment"/>
     </fragment>
 </navigation>

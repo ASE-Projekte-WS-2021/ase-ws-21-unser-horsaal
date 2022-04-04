@@ -100,7 +100,7 @@ public class EditProfilePasswordFragment extends Fragment {
     this.binding.editProfilePasswordFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.editProfilePasswordFragmentToolbar.setNavigationOnClickListener(v ->
-            navController.navigate(R.id.action_editProfilePasswordFragment_to_profileFragment));
+            navController.navigateUp());
   }
 
   @Override

@@ -186,6 +186,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{(view) -> vm.createMeeting()}"
                     android:text="@string/create_course_meeting_meeting_button"
+                    style="@style/wideBlueButton"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

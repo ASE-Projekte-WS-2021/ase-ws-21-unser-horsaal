@@ -1,51 +1,39 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.play.core.tasks.Task;
 import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 // source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/tree/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/model [30.12.2021]
 
-/** This class manages the data base access for the user identification. */
+/**
+ * This class manages the data base access for the user identification.
+ */
 public class AuthAppRepository {
 
   private static final String TAG = "AuthAppRepo";
 
   private static AuthAppRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
   private FirebaseUser firebaseUser = null;
-  private StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
-  private StateLiveData<Boolean> emailSentLiveData = new StateLiveData<>();
+  private final StateLiveData<FirebaseUser> userLiveData = new StateLiveData<>();
+  private final StateLiveData<Boolean> emailSentLiveData = new StateLiveData<>();
 
-  /** Gives back an Instance of AuthAppRepository. */
-  public static AuthAppRepository getInstance() {
-    if (instance == null) {
-      instance = new AuthAppRepository();
-    }
-    return instance;
-  }
-
-  /** Constructor Description. */
+  /**
+   * Constructor.
+   */
   public AuthAppRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -57,7 +45,18 @@ public class AuthAppRepository {
     this.emailSentLiveData.postCreate(Boolean.FALSE);
   }
 
-  /** Gives back the current UserModel. */
+  /**
+   * Gives back an Instance of AuthAppRepository.
+   *
+   * @return Instance of the AuthAppRepository
+   */
+  public static AuthAppRepository getInstance() {
+    if (instance == null) {
+      instance = new AuthAppRepository();
+    }
+    return instance;
+  }
+
   public StateLiveData<FirebaseUser> getUserStateLiveData() {
     return this.userLiveData;
   }
@@ -66,7 +65,12 @@ public class AuthAppRepository {
     return this.emailSentLiveData;
   }
 
-  /** This method is logging in the user.*/
+  /**
+   * This method is logging in the user.
+   *
+   * @param email Entered email address of the user
+   * @param password Entered password from the user
+   */
   public void login(String email, String password) {
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
@@ -85,7 +89,13 @@ public class AuthAppRepository {
             });
   }
 
-  /** This method registers a new user.*/
+  /**
+   * This method registers a new user.
+   *
+   * @param username chosen username from the user
+   * @param email email address of the user
+   * @param password chosen password from the user
+   */
   public void register(String username, String email, String password) {
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
@@ -97,14 +107,29 @@ public class AuthAppRepository {
                 Log.d(TAG, "Successfully registered with firebase auth.");
                 this.createNewUser(username, email, this.firebaseUser.getUid());
               } else {
-                Log.e(TAG, "user registration failed.");
-                this.userLiveData.postError(
-                        new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
+                if (task.getException() instanceof FirebaseTooManyRequestsException) {
+                  Log.e(TAG, Config.INTERNAL_AUTH_TOO_MANY_REQUESTS);
+                  this.userLiveData.postError(
+                          new Error(Config.AUTH_VERIFICATION_TOO_MANY_REQUESTS), ErrorTag.REPO);
+                } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                  Log.e(TAG, "email is already existing");
+                  this.userLiveData.postError(
+                          new Error(Config.AUTH_EMAIL_EXISTS), ErrorTag.REPO);
+                } else {
+                  Log.e(TAG, "user registration failed.");
+                  this.userLiveData.postError(
+                          new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
+                }
               }
             });
   }
 
-  /** Method creates a new user. **/
+  /** Method creates a new user.
+   *
+   * @param username name of the user
+   * @param email email of the user
+   * @param uid UserId in the database
+   */
   private void createNewUser(String username, String email, String uid) {
     UserModel newUser = new UserModel();
     newUser.setDisplayName(username);
@@ -117,6 +142,7 @@ public class AuthAppRepository {
             .addOnSuccessListener(unused -> {
               Log.d(TAG, "A new user was created in the database");
               this.sendVerificationEmail();
+              this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, "Could not create a new user!");
@@ -125,80 +151,41 @@ public class AuthAppRepository {
             });
   }
 
-  /** sends a verification email to the email address that the user provided after a user is created
-   * in the database. */
-  private void sendVerificationEmail() {
-    this.firebaseUser.sendEmailVerification()
-            .addOnCompleteListener(task1 -> {
-              if (task1.isSuccessful()) {
-                Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                this.userLiveData.postUpdate(this.firebaseUser);
-                this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
-              } else {
-                Log.e(TAG,  Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
-                this.userLiveData.postError(
-                        new Error(Config.AUTH_VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
-              }
-            });
-  }
-
-  /** listenr: changes on firebase user status. */
-  private FirebaseAuth.AuthStateListener authStateListenerVerification() {
-    return firebaseAuth1 -> {
-      Log.d(TAG, "Firebase Auth State changed");
-      this.firebaseUser = firebaseAuth1.getCurrentUser();
-      if (this.firebaseUser != null && this.firebaseUser.isEmailVerified()) {
-        Log.d(TAG, "User verified.");
-        this.userLiveData.postUpdate(this.firebaseUser);
-        this.firebaseAuth.removeAuthStateListener(this.authStateListenerVerification());
-      } else {
-        Log.w(TAG, "User konnte nicht verifiziert werden.");
-      }
-    };
-  }
-
-  /** Method to reset the password via password reset email.*/
-  public void resetPassword(String mail) {
-    this.userLiveData.postLoading();
-
-    this.firebaseAuth
-            .sendPasswordResetEmail(mail)
-            .addOnCompleteListener(task -> {
-              if (task.isSuccessful()) {
-                Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_SUCCESS);
-                this.userLiveData.postUpdate(this.firebaseUser);
-              } else {
-                Log.d(TAG, Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED);
-                this.userLiveData.postError(
-                        new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
-              }
-            });
-  }
-
-  /** Method to (re)send a email verification.*/
-  public void resendVerificationEmail() {
-    if (this.firebaseUser == null) {
+  /**
+   * Method to (re)send a email verification.
+   */
+  public void sendVerificationEmail() {
+    if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.userLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      this.emailSentLiveData.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
     } else {
-      this.firebaseUser
+      this.firebaseAuth.getCurrentUser()
               .sendEmailVerification()
-              .addOnCompleteListener(task1 -> {
-                if (task1.isSuccessful()) {
-                  Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                  this.userLiveData.postUpdate(this.firebaseUser);
-                  //add an authstatelistener so we can live observe when user clicks the email
-                  this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
+              .addOnSuccessListener(unused -> {
+                Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
+                this.emailSentLiveData.postUpdate(Boolean.TRUE);
+                this.emailSentLiveData.postCreate(Boolean.FALSE);
+              })
+              .addOnFailureListener(e -> {
+                if (e instanceof FirebaseTooManyRequestsException) {
+                  Log.d(TAG, "too many requests");
+                  this.emailSentLiveData.postError(
+                          new Error(Config.AUTH_VERIFICATION_TOO_MANY_REQUESTS), ErrorTag.REPO);
                 } else {
                   Log.e(TAG, Config.AUTH_VERIFICATION_EMAIL_NOT_SENT);
-                  this.userLiveData.postError(
+                  Log.e(TAG, e.getMessage());
+                  this.emailSentLiveData.postError(
                           new Error(Config.AUTH_VERIFICATION_EMAIL_NOT_SENT), ErrorTag.REPO);
                 }
               });
     }
   }
 
-  /** JavaDoc. */
+  /**
+   * Sends a email to the user with a link, which can be used to reset the password.
+   *
+   * @param email The email address to which the reset mail is sent
+   */
   public void sendPasswordResetMail(String email) {
     this.firebaseAuth
             .sendPasswordResetEmail(email)
@@ -216,13 +203,17 @@ public class AuthAppRepository {
             });
   }
 
-  /** Logging out the current user. */
+  /**
+   * Logging out the current user.
+   */
   public void logOut() {
     this.firebaseAuth.signOut();
     this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
   }
 
-  /** Method to delete an user account. */
+  /**
+   * Method to delete an user account.
+   */
   public void deleteAccount() {
     //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
     this.userLiveData.postLoading();
@@ -234,7 +225,11 @@ public class AuthAppRepository {
     //TODO: maybe remove user data in likes and blocked
   }
 
-  /** Delete all connections between a user and his courses. */
+  /**
+   * Delete all connections between a user and his courses.
+   *
+   * @param uid id of the user, that is removed from the courses
+   */
   private void removeCourses(String uid) {
     List<String> courseIdList = new ArrayList<>();
 
@@ -253,7 +248,12 @@ public class AuthAppRepository {
 
   }
 
-  /** Remove the user from all courses the user is signed in. */
+  /**
+   * Remove the user from all courses the user is signed in.
+   *
+   * @param courseIdList list of courses to leave
+   * @param uid user, which leaves the courses
+   */
   private void removeUserFromCourses(List<String> courseIdList, String uid) {
     for (String courseId : courseIdList) {
       this.databaseReference.child(Config.CHILD_COURSES_USER)
@@ -263,10 +263,11 @@ public class AuthAppRepository {
     }
     //TODO wait for removing the user from courses
     deleteUser();
-
   }
 
-  /** Delete the user data in firebase auth. */
+  /**
+   * Delete the user data in firebase auth.
+   */
   private void deleteUser() {
     FirebaseUser user = this.firebaseAuth.getCurrentUser();
     this.firebaseAuth.signOut();
@@ -277,13 +278,16 @@ public class AuthAppRepository {
     });
   }
 
-
-  /** Reloads the current FirebaseUser object so that we can see if the email was verified. */
-  public void reloadFirebaseUser() {
+  /**
+   * Reloads the current FirebaseUser object so that we can see if the email was verified.
+   */
+  public void isUserEmailVerified() {
     if (this.firebaseAuth.getCurrentUser() !=  null) {
-      Log.d(TAG, "reloaded current user");
       this.firebaseAuth.getCurrentUser().reload();
-      this.firebaseAuth.addAuthStateListener(this.authStateListenerVerification());
+      if (this.firebaseAuth.getCurrentUser().isEmailVerified()) {
+        Log.d(TAG, "user has verified his email");
+        this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
+      }
     }
   }
 

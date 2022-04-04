@@ -25,6 +25,7 @@ public class ProfileFragment extends Fragment {
   private NavController navController;
   private FragmentProfileBinding binding;
   private SelectPhotoLifeCycleObs selectPhotoLifeCycleObs;
+
   public ProfileFragment() {
     // Required empty public constructor
   }
@@ -78,8 +79,7 @@ public class ProfileFragment extends Fragment {
     this.binding.profileFragmentToolbar.inflateMenu(R.menu.profile_fragment_toolbar);
     this.binding.profileFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.profileFragmentToolbar.setNavigationOnClickListener(v ->
-            navController.navigate(R.id.action_profileFragment_to_coursesFragment)
-    );
+            navController.navigateUp());
     this.binding.profileFragmentToolbar.setOnMenuItemClickListener(item -> {
       if (item.getItemId() == R.id.profileFragmentToolbarLogout) {
         profileViewModel.logout();

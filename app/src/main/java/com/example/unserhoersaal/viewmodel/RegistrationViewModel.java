@@ -113,9 +113,6 @@ public class RegistrationViewModel extends ViewModel {
       return;
     }
 
-    this.userInputState.postCreate(new UserModel());
-    //do not listen for this status because we would get two spinner loops
-    this.passwordInputState.postCreate(new PasswordModel());
     this.authAppRepository.register(userName, email, password);
   }
 

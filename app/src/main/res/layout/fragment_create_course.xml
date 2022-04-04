@@ -177,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:onClick="@{(view) -> vm.createCourse()}"
                         android:text="@string/create_course_create_button"
-                        style="@style/wideOrangeButton"
+                        style="@style/wideBlueButton"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

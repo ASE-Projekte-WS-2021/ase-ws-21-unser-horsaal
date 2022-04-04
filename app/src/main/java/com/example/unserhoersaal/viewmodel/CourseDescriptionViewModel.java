@@ -62,8 +62,6 @@ public class CourseDescriptionViewModel extends ViewModel {
     this.courseDescriptionRepository.unregisterFromCourse(courseKey);
   }
 
-
-
   public Boolean isCreator() {
     if (courseDescriptionRepository.getUid().equals(
             courseDescriptionRepository.getCreatorId()
@@ -73,5 +71,6 @@ public class CourseDescriptionViewModel extends ViewModel {
       return false;
     }
   }
+
 
 }

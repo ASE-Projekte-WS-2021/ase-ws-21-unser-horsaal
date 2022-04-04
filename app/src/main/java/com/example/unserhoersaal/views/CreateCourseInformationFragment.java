@@ -1,18 +1,15 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseInformationBinding;
 
@@ -51,7 +48,6 @@ public class CreateCourseInformationFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createCourseInformationFragmentToolbar
             .setNavigationOnClickListener(v ->
-                    navController.navigate(R.id
-                            .action_createCourseInformationFragment_to_coursesFragment));
+                    navController.navigateUp());
   }
 }

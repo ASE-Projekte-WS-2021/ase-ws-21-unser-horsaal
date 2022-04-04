@@ -3,6 +3,10 @@ package com.example.unserhoersaal.utils;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Message;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
@@ -10,7 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
+import com.example.unserhoersaal.adapter.LiveChatAdapter;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.MessageModel;
@@ -21,6 +27,7 @@ import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
 /** Class for Navigation. */
@@ -64,6 +71,11 @@ public class NavUtil {
             view.getContext()).get(CurrentCourseViewModel.class);
     currentCourseViewModel.init();
     currentCourseViewModel.setMeeting(model);
+    LiveChatViewModel liveChatViewModel =
+            new ViewModelProvider((ViewModelStoreOwner) view.getContext())
+                    .get(LiveChatViewModel.class);
+    liveChatViewModel.init();
+    liveChatViewModel.setMeeting(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_courseMeetingFragment);
@@ -241,6 +253,24 @@ public class NavUtil {
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_createCourseMeetingFragment);
+
+  /** Used in OnboadingWrapperFragment for users that do not want to experience the onboarding.
+   * They skip directly to the registration fragment. Setting onboarding_complete to true so
+   * that it will not be displayed on the next opening of the app. */
+  @BindingAdapter("skipOnboarding")
+  public static void skipOnboarding(View view, int navAction) {
+    SharedPreferences sharedPreferences = view.getContext()
+            .getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
+    sharedPreferences.edit().putBoolean(Config.SHARED_PREF_ONBOARDING_KEY, true).apply();
+    NavController navController = Navigation.findNavController(view);
+    navController.navigate(navAction);
+  }
+
+  @BindingAdapter("openBrowser")
+  public static void openBrowser(View view, String destination) {
+    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
+    view.getContext().startActivity(i);
+
   }
 
 }
