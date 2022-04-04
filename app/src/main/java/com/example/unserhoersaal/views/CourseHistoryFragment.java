@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.MeetingAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseHistoryBinding;
@@ -62,6 +64,7 @@ public class CourseHistoryFragment extends Fragment {
     this.connectAdapter();
     this.connectBinding();
     this.initToolbar();
+    this.setupScrolling();
   }
 
   private void initViewModel() {
@@ -130,6 +133,21 @@ public class CourseHistoryFragment extends Fragment {
   public void onResume() {
     super.onResume();
     this.courseHistoryViewModel.resetMeetingData();
+  }
+
+  private void setupScrolling() {
+    View courseCard = this.binding.courseHistoryFragmentCourseCard;
+    this.binding.courseHistoryFragmentCoursesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        if (!recyclerView.canScrollVertically(-1)){
+          courseCard.setVisibility(View.VISIBLE);
+        } else {
+          courseCard.setVisibility(View.GONE);
+        }
+      }
+    });
   }
 
 }
