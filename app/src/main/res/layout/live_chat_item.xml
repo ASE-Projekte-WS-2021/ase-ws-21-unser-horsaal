@@ -28,13 +28,24 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/liveChatItemAuthorAndDate"
+            android:id="@+id/liveChatItemAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.creatorName.concat(Format.getFormatedDateTime(liveChatItemAuthorAndDate, model.creationTime))}"
+            android:text="@{model.creatorName}"
             android:layout_marginStart="8dp"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@id/liveChatItemAuthorImage"
+            app:layout_constraintTop_toTopOf="@id/liveChatItemAuthorImage"
+            app:layout_constraintBottom_toBottomOf="@id/liveChatItemAuthorImage"/>
+
+        <TextView
+            android:id="@+id/liveChatItemDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Format.getFormatedDateTime(liveChatItemDate, model.creationTime)}"
+            android:layout_marginStart="8dp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/liveChatItemAuthor"
             app:layout_constraintTop_toTopOf="@id/liveChatItemAuthorImage"
             app:layout_constraintBottom_toBottomOf="@id/liveChatItemAuthorImage"/>
 
@@ -45,7 +56,7 @@
             app:cardCornerRadius="8dp"
             app:contentPadding="8dp"
             app:layout_constraintStart_toEndOf="@id/liveChatItemAuthorImage"
-            app:layout_constraintTop_toBottomOf="@id/liveChatItemAuthorAndDate"
+            app:layout_constraintTop_toBottomOf="@id/liveChatItemAuthor"
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView

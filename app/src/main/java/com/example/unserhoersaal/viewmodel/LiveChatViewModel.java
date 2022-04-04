@@ -47,7 +47,7 @@ public class LiveChatViewModel extends ViewModel {
   public void sendMessage() {
     sldMessageModelInputState.postLoading();
     LiveChatMessageModel liveChatMessageModel = Validation.checkStateLiveData(this.sldMessageModelInputState, TAG);
-    if (liveChatMessageModel.getText() == null) {
+    if (liveChatMessageModel.getText() == null ) {
       this.sldMessageModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
       return;
     } else if (!Validation.stringHasPattern(liveChatMessageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
@@ -58,7 +58,9 @@ public class LiveChatViewModel extends ViewModel {
 
     liveChatMessageModel.setCreationTime(System.currentTimeMillis());
 
-    this.liveChatRepository.sendMessage(liveChatMessageModel);
+    if (!liveChatMessageModel.getText().equals("")) {
+      this.liveChatRepository.sendMessage(liveChatMessageModel);
+    }
   }
 
   public MeetingsModel getMeeting() {
