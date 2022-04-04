@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -17,23 +16,31 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/** For Loading all Participants registered in a Course. Displayed in Course Description. */
+/**
+ * For Loading all Participants registered in a Course. Displayed in Course Description.
+ */
 public class CourseParticipantsRepository {
 
   private static final String TAG = "CourseParticipantsRepo";
 
   private static CourseParticipantsRepository instance;
-  private DatabaseReference databaseReference;
-  private StateLiveData<String> courseId = new StateLiveData<>();
-  private StateLiveData<List<UserModel>> users = new StateLiveData<>();
+  private final DatabaseReference databaseReference;
+  private final StateLiveData<String> courseId = new StateLiveData<>();
+  private final StateLiveData<List<UserModel>> users = new StateLiveData<>();
 
-  /** JavaDoc. */
+  /**
+   * Constructor.
+   */
   public CourseParticipantsRepository() {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.users.postCreate(new ArrayList<>());
   }
 
-  /** Returns the instance of this singleton class. */
+  /**
+   * Returns the instance of this singleton class.
+   *
+   * @return Instance of the CourseParticipantsRepository
+   */
   public static CourseParticipantsRepository getInstance() {
     if (instance == null) {
       instance = new CourseParticipantsRepository();
@@ -49,6 +56,9 @@ public class CourseParticipantsRepository {
     return this.users;
   }
 
+  /**
+   * Loads all users of a course.
+   */
   private void loadUsers() {
     this.databaseReference
             .child(Config.CHILD_COURSES_USER)
@@ -85,7 +95,11 @@ public class CourseParticipantsRepository {
             });
   }
 
-  /** TODO. */
+  /**
+   * Set the courseId of a new course and starts the loading of the participants.
+   *
+   * @param courseId Id of the new course
+   */
   public void setCourseId(String courseId) {
     if (courseId == null) {
       return;
@@ -93,8 +107,7 @@ public class CourseParticipantsRepository {
     if (this.courseId == null
             || this.courseId.getValue() == null
             || this.courseId.getValue().getData() == null
-            || !this.courseId.getValue().getData().equals(courseId))
-    {
+            || !this.courseId.getValue().getData().equals(courseId)) {
       this.courseId.postUpdate(courseId);
       this.loadUsers();
     }
