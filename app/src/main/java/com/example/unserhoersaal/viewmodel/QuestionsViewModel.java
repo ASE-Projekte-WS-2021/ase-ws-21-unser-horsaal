@@ -9,7 +9,7 @@ import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
-import com.example.unserhoersaal.repository.CourseMeetingRepository;
+import com.example.unserhoersaal.repository.QuestionRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
@@ -22,7 +22,7 @@ public class QuestionsViewModel extends ViewModel {
 
   private static final String TAG = "QuestionsViewModel";
 
-  private CourseMeetingRepository courseMeetingRepository;
+  private QuestionRepository questionRepository;
   private AuthAppRepository authAppRepository;
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<List<ThreadModel>> threads;
@@ -30,7 +30,8 @@ public class QuestionsViewModel extends ViewModel {
   private StateLiveData<List<ThreadModel>> outFilteredThreads = new StateLiveData<>();
   public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
   private final StateLiveData<SortEnum> sortEnum = new StateLiveData<>();
-  private final StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
+  private StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
+  private ArrayList<FilterEnum> enumArray = new ArrayList<>();
   private ArrayListUtil arrayListUtil;
 
   /** Initialise the ViewModel. */
@@ -39,14 +40,14 @@ public class QuestionsViewModel extends ViewModel {
       return;
     }
 
-    this.courseMeetingRepository = CourseMeetingRepository.getInstance();
+    this.questionRepository = QuestionRepository.getInstance();
     this.authAppRepository = AuthAppRepository.getInstance();
-    this.meeting = this.courseMeetingRepository.getMeeting();
+    this.meeting = this.questionRepository.getMeeting();
     this.threadModelMutableLiveData =
-            this.courseMeetingRepository.getThreadModelMutableLiveData();
+            this.questionRepository.getThreadModelMutableLiveData();
 
     if (this.meeting.getValue() != null) {
-      this.threads = this.courseMeetingRepository.getThreads();
+      this.threads = this.questionRepository.getThreads();
     }
     this.threadModelInputState.postCreate(new ThreadModel());
 
@@ -81,7 +82,7 @@ public class QuestionsViewModel extends ViewModel {
     MeetingsModel actualMeeting = Validation.checkStateLiveData(this.meeting, TAG);
     String userId = firebaseUser.getUid();
     this.arrayListUtil.filterThreadList(threadsModelList, outFilteredThreads,
-            filterEnum, actualMeeting, userId);
+            filterEnum, enumArray, actualMeeting, userId);
   }
 
   public StateLiveData<MeetingsModel> getMeeting() {
@@ -92,8 +93,22 @@ public class QuestionsViewModel extends ViewModel {
     this.sortEnum.postUpdate(sortEnum);
   }
 
+  /** JavaDoc. */
   public void setFilterEnum(FilterEnum filterEnum) {
-    this.filterEnum.postUpdate(filterEnum);
+    if (!enumArray.contains(filterEnum)) {
+      this.enumArray.add(filterEnum);
+      this.filterEnum.postUpdate(filterEnum);
+    } else {
+      this.enumArray.remove(filterEnum);
+      this.filterEnum.postUpdate(FilterEnum.NONE);
+    }
+  }
+
+  /** JavaDoc. */
+  public void resetFilters() {
+    this.enumArray.clear();
+    this.filterEnum.postUpdate(FilterEnum.NONE);
+    this.filterEnum.postUpdate(FilterEnum.RESET);
   }
 
   public StateLiveData<SortEnum> getSortEnum() {
@@ -118,7 +133,7 @@ public class QuestionsViewModel extends ViewModel {
   }
 
   public void setMeeting(MeetingsModel meeting) {
-    this.courseMeetingRepository.setMeeting(meeting);
+    this.questionRepository.setMeeting(meeting);
   }
 
   /** Create a new Thread. */
@@ -141,6 +156,6 @@ public class QuestionsViewModel extends ViewModel {
     }
 
     this.threadModelInputState.postCreate(new ThreadModel());
-    this.courseMeetingRepository.createThread(threadModel);
+    this.questionRepository.createThread(threadModel);
   }
 }

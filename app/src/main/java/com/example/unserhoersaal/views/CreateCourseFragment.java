@@ -54,6 +54,12 @@ public class CreateCourseFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
+
+    if (createCourseViewModel.getIsEditing()) {
+      changeToEditText();
+    } else {
+      changeToCreateText();
+    }
     this.connectBinding();
     this.initToolbar();
   }
@@ -75,7 +81,6 @@ public class CreateCourseFragment extends Fragment {
     if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesCreateFragmentProgressSpinner.setVisibility(View.VISIBLE);
       this.binding.createCourseFragmentCreateButton.setEnabled(false);
-      this.binding.createCourseFragmentCreateButton.setBackgroundColor(Color.GRAY);
     } else if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (courseModelStateData.getErrorTag() == ErrorTag.TITLE) {
         System.out.println(courseModelStateData.getError().getMessage());
@@ -96,7 +101,7 @@ public class CreateCourseFragment extends Fragment {
         this.binding.createCourseFragmentCourseGeneralErrorText.setVisibility(View.VISIBLE);
       }
     }
-    if (courseModelStateData.getData() != null) {
+    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       courseCreated(courseModelStateData.getData());
     }
   }
@@ -108,7 +113,6 @@ public class CreateCourseFragment extends Fragment {
     this.binding.createCourseFragmentCourseDescriptionErrorText.setVisibility(View.GONE);
     this.binding.createCourseFragmentCourseTitleErrorText.setVisibility(View.GONE);
     this.binding.createCourseFragmentCreateButton.setEnabled(true);
-    this.binding.createCourseFragmentCreateButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {
@@ -119,20 +123,42 @@ public class CreateCourseFragment extends Fragment {
   private void initToolbar() {
     this.binding.createCourseToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createCourseToolbar.setNavigationOnClickListener(v ->
-      this.navController.navigateUp());
+            this.navController.navigateUp());
   }
 
   /** Signs the creator in the course. */
   public void courseCreated(CourseModel course) {
     this.courseHistoryViewModel.setCourse(course);
     this.createCourseViewModel.resetCourseModelInput();
-    this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
+    if (createCourseViewModel.getIsEditing()) {
+      this.navController.navigate(R.id.action_createCourseFragment_to_courseDescriptionFragment);
+    } else {
+      this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
+
+    }
   }
+
+  public void changeToEditText() {
+    binding.createCourseFragmentToolbarTitle.setText(R.string.edit_course_string);
+    binding.createCourseFragmentCreateButton.setText(R.string.edit_course_button);
+  }
+
+  public void changeToCreateText() {
+    binding.createCourseFragmentToolbarTitle.setText(R.string.create_course_string);
+    binding.createCourseFragmentCreateButton.setText(R.string.create_course_create_button);
+  }
+
 
   @Override
   public void onResume() {
     super.onResume();
-    this.createCourseViewModel.resetCourseModelInput();
   }
-  
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    this.createCourseViewModel.setIsEditing(false);
+    this.createCourseViewModel.resetCourseModelInput();
+
+  }
 }

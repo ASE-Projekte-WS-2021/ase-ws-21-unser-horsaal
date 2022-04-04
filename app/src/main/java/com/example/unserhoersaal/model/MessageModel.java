@@ -16,6 +16,7 @@ public class MessageModel {
   private String creatorName;
   private LikeStatus likeStatus;
   private String photoUrl;
+  private Boolean isTextDeleted = false;
 
   /**Default class constructor.**/
   public MessageModel() {
@@ -93,4 +94,9 @@ public class MessageModel {
   public void setLikeStatus(LikeStatus likeStatus) {
     this.likeStatus = likeStatus;
   }
+
+  public void setIsTextDeleted(Boolean isTextDeleted) { this.isTextDeleted = isTextDeleted; }
+
+  public Boolean getIsTextDeleted() { return this.isTextDeleted; }
+
 }

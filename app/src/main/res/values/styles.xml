@@ -2,7 +2,7 @@
 <resources>
     <style name="wideBlueButton" parent="TextAppearance.MaterialComponents.Button">
         <item name="cornerRadius">4dp</item>
-        <item name="backgroundTint">@color/app_blue</item>
+        <item name="backgroundTint">@color/button_blue_state</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -15,14 +15,14 @@
     </style>
 
     <style name="wideRedButton" parent="TextAppearance.MaterialComponents.Button">
-        <item name="cornerRadius">4dp</item>
+        <item name="cornerRadius">8dp</item>
         <item name="backgroundTint">@color/red</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="textInputField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="cornerRadius">4dp</item>
+        <item name="cornerRadius">8dp</item>
         <item name="boxStrokeColor">@color/app_blue</item>
         <item name="hintTextColor">@color/app_blue</item>
     </style>
@@ -89,6 +89,12 @@
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="boxStrokeColor">@color/app_blue</item>
+    </style>
+
+    <style name="headerTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/app_blue</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

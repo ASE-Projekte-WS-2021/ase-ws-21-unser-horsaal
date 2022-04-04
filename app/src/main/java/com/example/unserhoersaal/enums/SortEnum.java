@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.enums;
 
+/** JavaDoc. */
 public enum SortEnum {
   NEWEST,
   MOST_LIKES,

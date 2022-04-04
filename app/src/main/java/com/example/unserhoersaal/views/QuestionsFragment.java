@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,7 +61,8 @@ public class QuestionsFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
-    this.setupScrolling();
+    this.initSearchView();
+    this.setupScrolling()
   }
 
   private void initViewModel() {
@@ -137,49 +139,24 @@ public class QuestionsFragment extends Fragment {
     }
 
     //TODO: is there a better solution to trigger the callback function for threads?
+    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel.getThreads()
             .getValue().getData());
   }
 
   private void filterEnumCallback(StateData<FilterEnum> filterEnum) {
-    if (filterEnum.getData() != FilterEnum.SOLVED) {
-      this.binding.questionChipAnswered.setChecked(Boolean.FALSE);
-      this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.UNSOLVED) {
+    if (filterEnum.getData() == FilterEnum.SOLVED) {
       this.binding.questionChipUnanswered.setChecked(Boolean.FALSE);
       this.binding.questionChipUnansweredActivated.setVisibility(View.GONE);
     }
-    if (filterEnum.getData() != FilterEnum.OWN) {
-      this.binding.questionChipOwn.setChecked(Boolean.FALSE);
-      this.binding.questionChipOwnActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.CREATOR) {
-      this.binding.questionChipCreator.setChecked(Boolean.FALSE);
-      this.binding.questionChipCreatorActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.SUBJECT_MATTER) {
-      this.binding.questionChipSubjectMatter.setChecked(Boolean.FALSE);
-      this.binding.questionChipSubjectMatterActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.ORGANISATION) {
-      this.binding.questionChipOrganisation.setChecked(Boolean.FALSE);
-      this.binding.questionChipOrganisationActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.MISTAKE) {
-      this.binding.questionChipMistake.setChecked(Boolean.FALSE);
-      this.binding.questionChipMistakeActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.EXAMINATION) {
-      this.binding.questionChipExamination.setChecked(Boolean.FALSE);
-      this.binding.questionChipExaminationActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.OTHER) {
-      this.binding.questionChipOther.setChecked(Boolean.FALSE);
-      this.binding.questionChipOtherActivated.setVisibility(View.GONE);
+    if (filterEnum.getData() == FilterEnum.UNSOLVED) {
+      this.binding.questionChipAnswered.setChecked(Boolean.FALSE);
+      this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
     }
 
+
     //TODO: is there a better solution to trigger the callback funtion for threads?
+    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel
             .getThreads().getValue().getData());
   }
@@ -200,13 +177,35 @@ public class QuestionsFragment extends Fragment {
     this.binding.setAdapter(this.threadAdapter);
   }
 
+  private void initSearchView() {
+    this.binding
+            .questionsFragmentSearchView
+            .setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+              @Override
+              public boolean onQueryTextSubmit(String query) {
+                return false;
+              }
+
+              @Override
+              public boolean onQueryTextChange(String newText) {
+                threadAdapter.getFilter().filter(newText);
+                return false;
+              }
+            });
+  }
+
   @Override
   public void onResume() {
     super.onResume();
     this.questionsViewModel.resetThreadModelInput();
-    this.questionsViewModel.setFilterEnum(FilterEnum.NONE);
     this.questionsViewModel.setSortEnum(SortEnum.NEWEST);
   }
+
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.questionsViewModel.resetFilters();
 
   /**Hides Infocontainer when scrolling down and shows it when scrolling to top.*/
   private void setupScrolling() {
@@ -224,5 +223,6 @@ public class QuestionsFragment extends Fragment {
         }
       }
     });
+
   }
 }

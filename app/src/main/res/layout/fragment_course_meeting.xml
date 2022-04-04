@@ -7,13 +7,6 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.CourseMeetingViewModel" />
-        <import type="android.view.View"/>
-        <import type="com.example.unserhoersaal.R"/>
-        <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
-        <import type="com.example.unserhoersaal.utils.NavUtil"/>
-        <import type="com.example.unserhoersaal.utils.FilterSortUtil"/>
-        <import type="com.example.unserhoersaal.enums.SortEnum"/>
-        <import type="com.example.unserhoersaal.enums.FilterEnum"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

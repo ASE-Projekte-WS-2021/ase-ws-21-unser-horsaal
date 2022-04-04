@@ -173,12 +173,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/threadCardHashtagOne"
                 app:layout_constraintEnd_toStartOf="@id/threadCardVoteContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/threadCardThreadInfoContainer"
-                tools:text="@{model.text}"/>
+                android:text="@{model.isTextDeleted ? @string/deleted_message_text : model.text}"
+                android:textColor="@{ model.isTextDeleted ?  @color/grey : @color/black}"/>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/threadCardThreadInfoContainer"
