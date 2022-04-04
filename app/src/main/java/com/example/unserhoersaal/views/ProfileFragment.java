@@ -25,6 +25,7 @@ public class ProfileFragment extends Fragment {
   private NavController navController;
   private FragmentProfileBinding binding;
   private SelectPhotoLifeCycleObs selectPhotoLifeCycleObs;
+
   public ProfileFragment() {
     // Required empty public constructor
   }

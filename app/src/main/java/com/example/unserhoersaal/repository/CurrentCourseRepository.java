@@ -203,9 +203,8 @@ public class CurrentCourseRepository {
               updateAnswerCount();
               message.setKey(messageId);
             }).addOnFailureListener(e ->
-              Log.e(TAG, "Nachricht konnte nicht versent werden: " + e.getMessage())
-            );
-
+              Log.e(TAG, "Nachricht konnte nicht versent werden: " + e.getMessage()
+              ));
   }
 
   /**

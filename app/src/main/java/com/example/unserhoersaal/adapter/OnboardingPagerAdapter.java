@@ -5,12 +5,13 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.views.OnBoardingAccountFragment;
+import com.example.unserhoersaal.views.OnBoardingCourseOverviewFragment;
 import com.example.unserhoersaal.views.OnBoardingFinishFragment;
 import com.example.unserhoersaal.views.OnBoardingMeetingOverviewFragment;
-import com.example.unserhoersaal.views.OnBoardingWelcomeFragment;
 import com.example.unserhoersaal.views.OnBoardingUserNameFragment;
-import com.example.unserhoersaal.views.OnBoardingCourseOverviewFragment;
+import com.example.unserhoersaal.views.OnBoardingWelcomeFragment;
 
+/** Used in OnboardingWrapperFragment in ViewPager. */
 public class OnboardingPagerAdapter extends FragmentStateAdapter {
 
   public OnboardingPagerAdapter(@NonNull Fragment fragment) {

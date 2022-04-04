@@ -24,6 +24,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
   private List<ThreadModel> filteredLocalDataSet;
   private final CurrentCourseViewModel currentCourseViewModel;
 
+  /** JavaDoc. */
   public ThreadAdapter(List<ThreadModel> dataSet, CurrentCourseViewModel currentCourseViewModel) {
     this.originalLocalDataSet = dataSet;
     this.filteredLocalDataSet = dataSet;
@@ -49,10 +50,15 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
   @Override
   public int getItemCount() {
-    if (this.filteredLocalDataSet == null) return 0;
+    if (this.filteredLocalDataSet == null) {
+      return 0;
+    }
+
     return this.filteredLocalDataSet.size();
   }
 
+  /** Filters local data set according to the user query and model properties
+   * added to the query builder. */
   //code reference: https://stackoverflow.com/a/17960339/13620136
   public Filter getFilter() {
     return new Filter() {
@@ -105,6 +111,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
       this.binding = binding;
     }
 
+    /** adds viewmodel and binding to each recyleview item. */
     public void connect(ThreadModel model, CurrentCourseViewModel currentCourseViewModel) {
       this.binding.setModel(model);
       this.binding.setVm(currentCourseViewModel);

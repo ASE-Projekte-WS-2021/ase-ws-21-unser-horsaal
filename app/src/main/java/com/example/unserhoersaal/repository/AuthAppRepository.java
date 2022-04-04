@@ -107,7 +107,7 @@ public class AuthAppRepository {
                 Log.d(TAG, "Successfully registered with firebase auth.");
                 this.createNewUser(username, email, this.firebaseUser.getUid());
               } else {
-                if (task.getException() instanceof FirebaseTooManyRequestsException){
+                if (task.getException() instanceof FirebaseTooManyRequestsException) {
                   Log.e(TAG, Config.INTERNAL_AUTH_TOO_MANY_REQUESTS);
                   this.userLiveData.postError(
                           new Error(Config.AUTH_VERIFICATION_TOO_MANY_REQUESTS), ErrorTag.REPO);

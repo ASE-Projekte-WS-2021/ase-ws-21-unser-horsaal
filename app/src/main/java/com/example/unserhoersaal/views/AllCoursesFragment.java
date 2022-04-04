@@ -74,17 +74,17 @@ public class AllCoursesFragment extends Fragment {
     this.binding
             .courseFragmentObjectSearchView
             .setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-      @Override
-      public boolean onQueryTextSubmit(String query) {
-        return false;
-      }
+              @Override
+              public boolean onQueryTextSubmit(String query) {
+                return false;
+              }
 
-      @Override
-      public boolean onQueryTextChange(String newText) {
-        coursesAdapter.getFilter().filter(newText);
-        return false;
-      }
-    });
+              @Override
+              public boolean onQueryTextChange(String newText) {
+                coursesAdapter.getFilter().filter(newText);
+                return false;
+              }
+            });
   }
 
 }

@@ -2,7 +2,6 @@ package com.example.unserhoersaal.model;
 
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.enums.TagEnum;
-
 import java.util.ArrayList;
 import java.util.List;
 
