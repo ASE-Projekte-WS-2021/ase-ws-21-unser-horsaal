@@ -253,6 +253,7 @@ public class NavUtil {
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_createCourseMeetingFragment);
+  }
 
   /** Used in OnboadingWrapperFragment for users that do not want to experience the onboarding.
    * They skip directly to the registration fragment. Setting onboarding_complete to true so
