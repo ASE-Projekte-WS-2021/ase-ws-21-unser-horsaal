@@ -258,4 +258,7 @@
     <string name="course_description_share">Kurs teilen</string>
     <string name="course_description_copy_code">Beitrittscode kopieren</string>
     <string name="course_history_meetings_textview">Hier gibt es folgende Sitzungen:</string>
+    <string name="create_course_meeting_info">Eine Sitzung ist ein virtueller Raum für eine einzelne Vorlesungs-Einheit</string>
+    <string name="create_course_meeting_title">Einführung in die Angewandte…</string>
+    <string name="create_course_meeting_title_text">Titel der Sitzung</string>
 </resources>

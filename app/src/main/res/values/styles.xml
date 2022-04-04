@@ -22,7 +22,7 @@
     </style>
 
     <style name="textInputField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="cornerRadius">4dp</item>
+        <item name="cornerRadius">8dp</item>
         <item name="boxStrokeColor">@color/app_blue</item>
         <item name="hintTextColor">@color/app_blue</item>
     </style>
