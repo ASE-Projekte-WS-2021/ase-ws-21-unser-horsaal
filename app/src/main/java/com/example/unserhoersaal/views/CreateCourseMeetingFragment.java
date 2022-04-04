@@ -108,7 +108,6 @@ public class CreateCourseMeetingFragment extends Fragment {
 
   private void changeTextToEdit() {
     binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
-    binding.createCourseMeetingSubtitle.setText(R.string.edit_course_meeting_subtitle);
     binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
 
     binding.createCourseMeetingDatePicker.setText(courseHistoryViewModel.meetingModelInputState
@@ -122,7 +121,6 @@ public class CreateCourseMeetingFragment extends Fragment {
 
   private void changeTextToCreate() {
     binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_toolbar_title);
-    binding.createCourseMeetingSubtitle.setText(R.string.create_course_meeting_subtitle);
     binding.createCourseMeetingFragmentButton.setText(R.string.create_course_meeting_meeting_button);
 
     binding.createCourseMeetingDatePicker.setText(R.string.current_date_placeholder);

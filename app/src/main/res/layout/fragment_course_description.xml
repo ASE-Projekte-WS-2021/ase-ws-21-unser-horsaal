@@ -391,16 +391,6 @@
 
         </ScrollView>
 
-        <Button
-            android:id="@+id/editProfileButton"
-            android:text="Kurs bearbeiten"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{(view) -> NavUtil.navigateToCourseEdit(view, vm.courseModel.data)}"
-            android:visibility="@{isCreator ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/courseDescriptionFragmentShareCourseFab" />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/courseDescriptionFragmentShareCourseFab"
             style="@style/fabStyle"
@@ -411,7 +401,9 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:onClick="@{(view) -> NavUtil.navigateToCourseEdit(view, vm.courseModel.data)}"
+            android:visibility="@{isCreator ? View.VISIBLE : View.GONE}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
