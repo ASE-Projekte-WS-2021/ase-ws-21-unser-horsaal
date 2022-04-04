@@ -189,7 +189,8 @@
     <string name="auto_login_after_verification">Wir leiten dich automatisch weiter, sobald du verifiziert wurdest!</string>
     <style name="course_participants_fragment_title">Teilnehmer:innen</style>
     <string name="startzeit">Startzeit</string>
-    <string name="endzeit">Endzeit</string>
+    <string name="duration_in_hours">Dauer in Stunden</string>
+    <string name="duration_in_minutes">Dauer in Minuten</string>
     <string name="create_course_information_button_string">Zur Erstellung</string>
     <string name="edit_course_string">Kurs bearbeiten</string>
     <string name="edit_course_information_string">Hast du einen Fehler beim erstellen deines Kurses gemacht? Kein Problem! Bearbeite hier deine Einträge und behebe die Fehler.</string>

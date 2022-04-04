@@ -245,10 +245,11 @@ public class NavUtil {
     courseHistoryViewModel.setIsEditing(true);
 
     MeetingsModel meetingsModel = meetingsModelStateLiveData.getValue().getData();
-    courseHistoryViewModel.setTimeInputForDisplay(meetingsModel
+    //TODO anpassen an meeting changes
+    /*courseHistoryViewModel.setTimeInputForDisplay(meetingsModel
             .getHourInput(), meetingsModel.getMinuteInput());
     courseHistoryViewModel.setEndTimeInputForDisplay(meetingsModel
-            .getHourEndInput(), meetingsModel.getMinuteEndInput());
+            .getHourEndInput(), meetingsModel.getMinuteEndInput());*/
 
 
     NavController navController = Navigation.findNavController(view);

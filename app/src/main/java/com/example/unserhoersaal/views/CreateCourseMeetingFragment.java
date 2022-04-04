@@ -132,7 +132,6 @@ public class CreateCourseMeetingFragment extends Fragment {
     binding.createCourseMeetingDatePicker.setText(courseHistoryViewModel.meetingModelInputState
             .getValue().getData().getMeetingDate());
     binding.createCourseMeetingTimePicker.setText(courseHistoryViewModel.getTimeInputForDisplay());
-    binding.createCourseMeetingEndTimePicker.setText(courseHistoryViewModel.getEndTimeInputForDisplay());
 
 
 
@@ -144,7 +143,6 @@ public class CreateCourseMeetingFragment extends Fragment {
 
     binding.createCourseMeetingDatePicker.setText(R.string.current_date_placeholder);
     binding.createCourseMeetingTimePicker.setText(R.string.startzeit);
-    binding.createCourseMeetingEndTimePicker.setText(R.string.endzeit);
   }
 
   @Override
