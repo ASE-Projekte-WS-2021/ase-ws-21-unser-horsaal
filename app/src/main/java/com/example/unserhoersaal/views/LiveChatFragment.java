@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.unserhoersaal.R;
@@ -73,7 +72,6 @@ public class LiveChatFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
-    this.setupScrolling();
   }
 
   @SuppressLint("NotifyDataSetChanged")
@@ -150,23 +148,5 @@ public class LiveChatFragment extends Fragment {
   public void onDestroy() {
     super.onDestroy();
     KeyboardUtil.hideKeyboard(getActivity());
-  }
-
-  /**Hides Infocontainer when scrolling down and shows it when scrolling to top.*/
-  private void setupScrolling() {
-    View infocontainer = this.binding.liveChatFragmentInfoContainer;
-    this.binding.liveChatFragmentChatRecycler.addOnScrollListener(new RecyclerView
-            .OnScrollListener() {
-
-      @Override
-      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
-        if (!recyclerView.canScrollVertically(-1)) {
-          infocontainer.setVisibility(View.VISIBLE);
-        } else {
-          infocontainer.setVisibility(View.GONE);
-        }
-      }
-    });
   }
 }
