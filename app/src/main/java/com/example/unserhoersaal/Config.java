@@ -35,6 +35,9 @@ public class Config {
   public static final int MEETING_DESCRIPTION_LENGTH_MIN = 0; //optional
   public static final int MEETING_DESCRIPTION_LENGTH_MAX = 500;
 
+  public static final int TIME_HOUR_TO_MILLI = 3600000;
+  public static final int TIME_MINUTE_TO_MILLI = 60000;
+
   public static final int CODE_MAPPING_LENGTH = 9;
 
   /**=======================.
@@ -264,6 +267,11 @@ public class Config {
   public static final String POLL_MODEL_NULL = "pollModel is null.";
 
   public static final String MEETING_OBJECT_NULL = "meetingObj is null.";
+
+  public static final String CREATE_MEETING_DATE_WRONG = "Es wurde kein Datum gewählt!";
+  public static final String CREATE_MEETING_TIME_WRONG = "Es wurde kein Startzeitpunkt gewählt!";
+  public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Es wurde kein Dauer in Stunden gewählt!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Es wurde kein Dauer in Minuten gewählt!";
 
   /**=======================.
    *  Avatar Placeholder Ids
