@@ -245,4 +245,11 @@
     <string name="enter_course_detail_description">Beschreibung</string>
     <string name="enter_course_detail_title">Kurs gefunden!</string>
     <string name="enter_course_qr_text">Via QR-Code beitreten</string>
+    <string name="create_course_card_info">Dies ist der erste Schritt, um deine Vorlesung digital zu unterstützen!</string>
+    <string name="create_course_title_string">Kurstitel</string>
+    <string name="create_course_description_textview">Kursbeschreibung</string>
+    <string name="create_course_institution">Hochschule</string>
+    <string name="create_course_title_hint">Kurs im WS22</string>
+    <string name="create_course_description_hint">In diesem Kurs geht es um…</string>
+    <string name="create_course_institution_hint">Universität Regensburg</string>
 </resources>

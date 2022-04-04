@@ -34,79 +34,151 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/createCourseFragmentConstraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@color/app_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/createCourseToolbar">
-
-            <TextView
-                style="@style/toolbarSubtitleStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/create_course_fragment_information_string"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <ScrollView
-            android:id="@+id/createCourseFragmentScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/createCourseFragmentConstraintLayout">
+            app:layout_constraintTop_toBottomOf="@id/createCourseToolbar">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_margin="32dp"
-                android:orientation="vertical">
+                android:padding="16dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/createCourseFragmentInfoContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/createCourseFragmentInfoContainerText"
+                            style="@style/headerTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/create_course_card_info"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/createCourseFragmentLiveChatImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_chat_24"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/createCourseFragmentInfoContainerText"
+                            app:tint="@color/grey" />
+
+                        <ImageView
+                            android:id="@+id/createCourseFragmentPollImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_poll_24"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintEnd_toStartOf="@id/createCourseFragmentQuestionAnswerImage"
+                            app:layout_constraintStart_toEndOf="@id/createCourseFragmentLiveChatImage"
+                            app:layout_constraintTop_toBottomOf="@id/createCourseFragmentInfoContainerText"
+                            app:tint="@color/grey" />
+
+                        <ImageView
+                            android:id="@+id/createCourseFragmentQuestionAnswerImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_question_answer_24"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/createCourseFragmentInfoContainerText"
+                            app:tint="@color/grey" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/createCourseFragmentTitleTextView"
+                    style="@style/headerTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_course_title_string"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/createCourseFragmentInfoContainer" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/createCourseFragmentCourseTitleInputField"
+                    style="@style/inputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_title_hint"
-                    style="@style/inputField">
+                    android:layout_marginTop="8dp"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/createCourseFragmentTitleTextView">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseTitleEditText"
                         android:text="@={vm.courseModelInputState.data.title}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
+                        android:singleLine="false"
                         android:background="@drawable/rounded_corners"
-                        android:maxLength="100"/>
+                        android:maxLength="100"
+                        android:hint="@string/create_course_title_hint"
+                        android:paddingTop="12dp"/>
 
                     <TextView
                         android:id="@+id/createCourseFragmentCourseTitleErrorText"
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/createCourseFragmentCourseDescriptionInputField"
+                <TextView
+                    android:id="@+id/createCourseFragmentDescriptionTextView"
+                    style="@style/headerTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_course_description"
-                    style="@style/inputField">
+                    android:text="@string/create_course_description_textview"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/createCourseFragmentCourseTitleInputField" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/createCourseFragmentCourseDescriptionInputField"
+                    style="@style/inputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:hintEnabled="false"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="500"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/createCourseFragmentDescriptionTextView">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseDescriptionEditText"
@@ -116,24 +188,43 @@
                         android:imeOptions="actionDone"
                         android:singleLine="false"
                         android:background="@drawable/rounded_corners"
-                        android:maxLength="500"/>
+                        android:maxLength="500"
+                        android:hint="@string/create_course_description_hint"
+                        android:paddingTop="12dp"/>
 
                     <TextView
                         android:id="@+id/createCourseFragmentCourseDescriptionErrorText"
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/createCourseFragmentCourseInstitutionInputField"
+                <TextView
+                    android:id="@+id/createCourseFragmentInstitutionHeader"
+                    style="@style/headerTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:hint="@string/create_course_fragment_course_institution"
-                    style="@style/inputField">
+                    android:text="@string/create_course_institution"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/createCourseFragmentCourseDescriptionInputField" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/createCourseFragmentCourseInstitutionInputField"
+                    style="@style/inputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:hintEnabled="false"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="75"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/createCourseFragmentInstitutionHeader">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/createCourseFragmentCourseInstitutionEditText"
@@ -141,16 +232,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
-                        android:singleLine="true"
+                        android:singleLine="false"
                         android:background="@drawable/rounded_corners"
-                        android:maxLength="75"/>
+                        android:maxLength="75"
+                        android:paddingTop="12dp"
+                        android:hint="@string/create_course_institution_hint" />
 
                     <TextView
                         android:id="@+id/createCourseFragmentCourseInstitutionErrorText"
                         android:visibility="gone"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,26 +254,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/createCourseFragmentCreateButtonWrapper"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="64dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/createCourseFragmentCourseInstitutionInputField">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/createCourseFragmentCreateButton"
+                        style="@style/wideOrangeButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:onClick="@{(view) -> vm.createCourse()}"
                         android:text="@string/create_course_create_button"
-                        style="@style/wideBlueButton"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ProgressBar
                         android:id="@+id/coursesCreateFragmentProgressSpinner"
@@ -199,8 +295,10 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
