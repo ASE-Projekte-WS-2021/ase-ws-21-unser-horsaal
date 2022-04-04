@@ -118,6 +118,7 @@ public class LoginFragment extends Fragment {
     this.coursesViewModel.init();
     this.profileViewModel.init();
     this.courseHistoryViewModel.init();
+    this.currentCourseViewModel.init();
     this.loginViewModel
             .getUserLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
