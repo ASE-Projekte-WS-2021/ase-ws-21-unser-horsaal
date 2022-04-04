@@ -91,9 +91,10 @@ public class CurrentCourseViewModel extends ViewModel {
     }
 
     messageModel.setCreationTime(System.currentTimeMillis());
-
-    this.messageModelInputState.postCreate(new MessageModel());
-    this.currentCourseRepository.sendMessage(messageModel);
+    if (!messageModel.getText().equals("")) {
+      this.messageModelInputState.postCreate(new MessageModel());
+      this.currentCourseRepository.sendMessage(messageModel);
+    }
   }
 
   public void setThreadId(String threadId) {

@@ -313,7 +313,13 @@ public class Config {
   public static final int NO_STROKE = 0;
 
   /**=======================.
+   *  Live-Chat
+   * ======================= */
+  public static final String LIVE_CHAT_MESSAGES_CHILD = "LiveChatMessages";
+
+  /**=======================.
    *  Impressum
    * ======================= */
   public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
+
 }
