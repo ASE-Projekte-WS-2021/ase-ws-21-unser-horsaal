@@ -66,7 +66,6 @@ public class LiveChatViewModel extends ViewModel {
   }
 
   public void setMeeting(MeetingsModel meeting) {
-    Log.d("Hier","in setMeeting vm" +  meeting.getKey());
     this.meeting = meeting;
     this.liveChatRepository.setMeetingAndListener(meeting);
   }

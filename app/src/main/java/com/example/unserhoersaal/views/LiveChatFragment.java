@@ -2,8 +2,10 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.database.DataSetObserver;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.example.unserhoersaal.adapter.ChatAdapter;
 import com.example.unserhoersaal.adapter.LiveChatAdapter;
 import com.example.unserhoersaal.databinding.FragmentLiveChatBinding;
 import com.example.unserhoersaal.model.LiveChatMessageModel;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
@@ -38,7 +41,7 @@ public class LiveChatFragment extends Fragment {
   private FragmentLiveChatBinding binding;
   private LiveChatViewModel liveChatViewModel;
   private NavController navController;
-  private LiveChatAdapter liveChatAdapter;
+  public LiveChatAdapter liveChatAdapter;
   private int messageSize;
   RecyclerView recyclerView;
 
@@ -89,7 +92,7 @@ public class LiveChatFragment extends Fragment {
     this.liveChatAdapter.notifyDataSetChanged();
     Log.d("Hier", "in messagelist callback: " + messageSize);
 
-    recyclerView.scrollToPosition(messageSize - 1);
+    //recyclerView.scrollToPosition(messageSize - 1);
 
     if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
@@ -107,7 +110,7 @@ public class LiveChatFragment extends Fragment {
               public void onChanged() {
                 super.onChanged();
                 Log.d("Hier", "in messagelist callback: " + messageSize);
-                //recyclerView.scrollToPosition(messageSize - 1);
+                recyclerView.scrollToPosition(messageSize - 1);
               }
             }
     );
@@ -126,12 +129,25 @@ public class LiveChatFragment extends Fragment {
   }
 
   public void sendMessage() {
+    KeyboardUtil.hideKeyboard(getActivity());
     liveChatViewModel.sendMessage();
     binding.liveChatFragmentInputField.getEditText().getText().clear();
-
-
-
   }
 
+  public void onClickEditText() {
+    final Handler handler = new Handler(Looper.getMainLooper());
+    handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        liveChatAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(messageSize - 1);
+      }
+    }, 500);
+  }
 
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    KeyboardUtil.hideKeyboard(getActivity());
+  }
 }

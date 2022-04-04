@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.LiveChatViewModel" />
+        <variable
+            name="model"
+            type="com.example.unserhoersaal.model.LiveChatMessageModel" />
+        <variable
+            name="adapter"
+            type="com.example.unserhoersaal.adapter.LiveChatAdapter" />
+        <variable
+            name="fragment"
+            type="com.example.unserhoersaal.views.LiveChatFragment" />
+        <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.TagEnum"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_background"
+        android:animateLayoutChanges="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".views.LiveChatFragment">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/liveChatFragmentInfoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:elevation="2dp"
+            android:backgroundTint="@color/transparent"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/liveChatFragmentInfoImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/live_chat_image"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/live_chat_info"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_margin="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/liveChatFragmentInfoImage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/liveChatFragmentStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15:15"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/liveChatFragmentHyphen"
+            app:layout_constraintTop_toTopOf="@id/liveChatFragmentHyphen"/>
+
+        <TextView
+            android:id="@+id/liveChatFragmentHyphen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="-"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/liveChatFragmentInfoContainer"/>
+
+        <TextView
+            android:id="@+id/liveChatFragmentEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="16:45"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/liveChatFragmentHyphen"
+            app:layout_constraintTop_toTopOf="@id/liveChatFragmentHyphen"/>
+
+        <com.l4digital.fastscroll.FastScrollRecyclerView
+            android:id="@+id/liveChatFragmentChatRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/liveChatFragmentEndTime"
+            app:layout_constraintBottom_toTopOf="@id/courseThreadFragmentSendMessageContainer"
+            app:bubbleColor="@color/app_blue"
+            app:bubbleSize="small"
+            app:bubbleTextSize="16sp"
+            tools:listitem="@layout/live_chat_item"
+            android:adapter="@{adapter}"
+            app:initLayoutManager="@{R.id.liveChatFragmentChatRecycler}"
+            android:layout_marginBottom="16dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/courseThreadFragmentSendMessageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@color/app_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/liveChatFragmentChatRecycler">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/liveChatFragmentInputField"
+                style="@style/inputField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+
+                android:layout_marginEnd="8dp"
+                app:hintEnabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/liveChatFragmentSendButton"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/liveChatFragmentEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/rounded_corners"
+                    android:hint="@string/current_course_edit_text_hint"
+                    android:maxLength="500"
+                    android:text="@={vm.sldMessageModelInputState.data.text}"
+                    android:onClick="@{(view) -> fragment.onClickEditText()}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/liveChatFragmentSendButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/call_to_action_orange"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:insetTop="0dp"
+                android:onClick="@{(view) -> fragment.sendMessage()}"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/ic_baseline_send_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
