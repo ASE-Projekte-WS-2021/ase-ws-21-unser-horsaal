@@ -7,6 +7,7 @@ import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -106,9 +107,19 @@ public class AuthAppRepository {
                 Log.d(TAG, "Successfully registered with firebase auth.");
                 this.createNewUser(username, email, this.firebaseUser.getUid());
               } else {
-                Log.e(TAG, "user registration failed.");
-                this.userLiveData.postError(
-                        new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
+                if (task.getException() instanceof FirebaseTooManyRequestsException) {
+                  Log.e(TAG, Config.INTERNAL_AUTH_TOO_MANY_REQUESTS);
+                  this.userLiveData.postError(
+                          new Error(Config.AUTH_VERIFICATION_TOO_MANY_REQUESTS), ErrorTag.REPO);
+                } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                  Log.e(TAG, "email is already existing");
+                  this.userLiveData.postError(
+                          new Error(Config.AUTH_EMAIL_EXISTS), ErrorTag.REPO);
+                } else {
+                  Log.e(TAG, "user registration failed.");
+                  this.userLiveData.postError(
+                          new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
+                }
               }
             });
   }

@@ -11,7 +11,6 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.CourseItemCardBinding;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.QueryBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +50,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
   }
 
   //code reference: https://stackoverflow.com/a/17960339/13620136
+  /** JavaDoc. */
   public Filter getFilter() {
     return new Filter() {
       @Override

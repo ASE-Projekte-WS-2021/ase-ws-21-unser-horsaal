@@ -28,6 +28,7 @@ import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseUser;
 
+/** Used in OnboardingWrapperFragment in ViewPager. */
 public class OnBoardingWrapperFragment extends Fragment {
 
   private static final String TAG = "OnBoardingWrapperFragment";
@@ -44,7 +45,9 @@ public class OnBoardingWrapperFragment extends Fragment {
 
   @Nullable
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(@NonNull LayoutInflater inflater,
+                           @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_onboarding_wrapper, container, false);
     return this.binding.getRoot();
@@ -90,10 +93,12 @@ public class OnBoardingWrapperFragment extends Fragment {
       this.binding.onboardingFragmentFinishButton.setBackgroundColor(Color.GRAY);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (firebaseUserStateData.getErrorTag() == ErrorTag.USERNAME) {
-        this.binding.onboardingFragmentViewPager.setCurrentItem(Config.ONBOARDING_USERNAME_FRAGMENT_POSITION);
+        this.binding.onboardingFragmentViewPager
+                .setCurrentItem(Config.ONBOARDING_USERNAME_FRAGMENT_POSITION);
       } else if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL
               || firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
-        this.binding.onboardingFragmentViewPager.setCurrentItem(Config.ONBOARDING_ACCOUNT_FRAGMENT_POSITION);
+        this.binding.onboardingFragmentViewPager
+                .setCurrentItem(Config.ONBOARDING_ACCOUNT_FRAGMENT_POSITION);
       } else {
         Toast.makeText(getContext(), Config.AUTH_REGISTRATION_FAILED, Toast.LENGTH_SHORT).show();
       }

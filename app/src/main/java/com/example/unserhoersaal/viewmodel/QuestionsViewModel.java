@@ -93,6 +93,7 @@ public class QuestionsViewModel extends ViewModel {
     this.sortEnum.postUpdate(sortEnum);
   }
 
+  /** JavaDoc. */
   public void setFilterEnum(FilterEnum filterEnum) {
     if (!enumArray.contains(filterEnum)) {
       this.enumArray.add(filterEnum);
@@ -103,6 +104,7 @@ public class QuestionsViewModel extends ViewModel {
     }
   }
 
+  /** JavaDoc. */
   public void resetFilters() {
     this.enumArray.clear();
     this.filterEnum.postUpdate(FilterEnum.NONE);

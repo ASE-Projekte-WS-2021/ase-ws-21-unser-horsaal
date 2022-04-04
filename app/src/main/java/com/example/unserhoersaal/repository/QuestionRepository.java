@@ -204,7 +204,7 @@ public class QuestionRepository {
     }
     Tasks.whenAll(likeList).addOnSuccessListener(unused -> {
       for (int i = 0; i < likeList.size(); i++) {
-        if(!likeList.get(i).getResult().exists()) {
+        if (!likeList.get(i).getResult().exists()) {
           threadList.get(i).setLikeStatus(LikeStatus.NEUTRAL);
         } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.LIKE) {
           threadList.get(i).setLikeStatus(LikeStatus.LIKE);

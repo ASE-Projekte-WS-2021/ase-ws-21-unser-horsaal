@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentOnboardingWelcomeBinding;
 
+/** Used in OnboardingWrapperFragment in ViewPager. */
 public class OnBoardingWelcomeFragment extends Fragment {
 
   private FragmentOnboardingWelcomeBinding binding;
@@ -22,7 +23,9 @@ public class OnBoardingWelcomeFragment extends Fragment {
 
   @Nullable
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(@NonNull LayoutInflater inflater,
+                           @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_onboarding_welcome, container, false);
     return this.binding.getRoot();

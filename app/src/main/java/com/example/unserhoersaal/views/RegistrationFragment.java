@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.views;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +81,7 @@ public class RegistrationFragment extends Fragment {
 
     if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE
             && firebaseUserStateData.getData() != null) {
+      this.registrationViewModel.setDefaultInputState();
       navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.registrationFragmentProgressSpinner.setVisibility(View.VISIBLE);

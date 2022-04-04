@@ -92,7 +92,6 @@ public class ProfileViewModel extends ViewModel {
       return;
     }
 
-    this.userInputState.postCreate(new UserModel());
     this.profileRepository.changeDisplayName(displayName);
   }
 
@@ -117,7 +116,6 @@ public class ProfileViewModel extends ViewModel {
       return;
     }
 
-    this.userInputState.postCreate(new UserModel());
     this.profileRepository.changeInstitution(institution);
   }
 
@@ -148,14 +146,13 @@ public class ProfileViewModel extends ViewModel {
       Log.d(TAG, "newPassword is null.");
       this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
       return;
-    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
+    } else if (!Validation.stringHasPattern(newPassword, Config.REGEX_PATTERN_PASSWORD)) {
       Log.d(TAG, "newPassword has wrong pattern.");
       this.profileChanged.postError(
               new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
       return;
     }
 
-    this.passwordInputState.postCreate(new PasswordModel());
     this.profileRepository.changePassword(oldPassword, newPassword);
   }
 
