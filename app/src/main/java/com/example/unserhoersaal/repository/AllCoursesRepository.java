@@ -5,8 +5,8 @@ import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
-import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.model.UserModel;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,42 +19,62 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/** This class manages the database access for the overview of the courses of a user. */
-public class CoursesRepository {
+/**
+ * This class manages the database access for the overview of all courses of a user.
+ */
+public class AllCoursesRepository {
 
-  private static final String TAG = "CoursesRepo";
+  private static final String TAG = "AllCoursesRepo";
 
-  private static CoursesRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private ArrayList<CourseModel> userCoursesList = new ArrayList<>();
-  private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
+  private static AllCoursesRepository instance;
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<CourseModel> allCoursesList = new ArrayList<>();
+  private final StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
+  private String userId;
 
-  public CoursesRepository() {
+  public AllCoursesRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
-  /** This method generates the Instance of the CourseRepository. */
-  public static CoursesRepository getInstance() {
+  /**
+   * This method generates the instance of the AllCoursesRepository.
+   *
+   * @return Instance of AllCoursesRepository
+   */
+  public static AllCoursesRepository getInstance() {
     if (instance == null) {
-      instance = new CoursesRepository();
+      instance = new AllCoursesRepository();
     }
     return instance;
   }
 
-  /** This method provides all courses a user has signed up for. */
-  public StateLiveData<List<CourseModel>> getUserCourses() {
-    if (this.userCoursesList.size() == 0) {
-      this.loadUserCourses();
+  /**
+   * Set the userId if a new account is logged in and load all courses of the new user.
+   */
+  public void setUserId() {
+    String uid;
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return;
     }
+    uid = this.firebaseAuth.getCurrentUser().getUid();
+    if (this.userId == null || !this.userId.equals(uid)) {
+      this.userId = uid;
+      this.loadAllCourses();
+    }
+  }
 
-    this.courses.postCreate(this.userCoursesList);
+  public StateLiveData<List<CourseModel>> getAllCourses() {
+    this.courses.postCreate(this.allCoursesList);
     return this.courses;
   }
 
-  /** This method loads all courses in which the user is signed in. */
-  public void loadUserCourses() {
+  /**
+   * This method loads all courses in which the user is signed in
+   * and updates the data if it changes.
+   */
+  private void loadAllCourses() {
     this.courses.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
@@ -98,12 +118,16 @@ public class CoursesRepository {
     });
   }
 
-  public Task<DataSnapshot> getCourseTask(String courseId) {
+  private Task<DataSnapshot> getCourseTask(String courseId) {
     return this.databaseReference.child(Config.CHILD_COURSES).child(courseId).get();
   }
 
-  /** TODO. */
-  public void getAuthor(List<CourseModel> authorList) {
+  /**
+   * Load the picture and name of the course creator.
+   *
+   *  @param authorList List of all courses the user is signed in
+   */
+  private void getAuthor(List<CourseModel> authorList) {
     List<Task<DataSnapshot>> authorNames = new ArrayList<>();
     for (CourseModel course : authorList) {
       authorNames.add(getAuthorData(course.getCreatorId()));
@@ -118,14 +142,14 @@ public class CoursesRepository {
           authorList.get(i).setPhotoUrl(author.getPhotoUrl());
         }
       }
-      userCoursesList.clear();
-      userCoursesList.addAll(authorList);
+      allCoursesList.clear();
+      allCoursesList.addAll(authorList);
 
-      courses.postUpdate(userCoursesList);
+      courses.postUpdate(allCoursesList);
     });
   }
 
-  public Task<DataSnapshot> getAuthorData(String authorId) {
+  private Task<DataSnapshot> getAuthorData(String authorId) {
     return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
   }
 

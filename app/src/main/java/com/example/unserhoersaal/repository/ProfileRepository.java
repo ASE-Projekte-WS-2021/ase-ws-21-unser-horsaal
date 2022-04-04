@@ -36,13 +36,13 @@ public class ProfileRepository {
   private StorageReference storageReference;
   private StateLiveData<UserModel> user = new StateLiveData<>();
   private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
+  private String userId;
 
   /** TODO. */
   public ProfileRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.storageReference = FirebaseStorage.getInstance().getReference();
-    this.loadUser();
     this.profileChanged.postCreate(Boolean.FALSE);
   }
 
@@ -60,6 +60,18 @@ public class ProfileRepository {
 
   public StateLiveData<Boolean> getProfileChanged() {
     return this.profileChanged;
+  }
+
+  public void setUserId() {
+    String uid;
+    if (this.firebaseAuth.getCurrentUser() == null ) {
+      return;
+    }
+    uid = this.firebaseAuth.getCurrentUser().getUid();
+    if (this.userId == null || !this.userId.equals(uid)) {
+      this.userId = uid;
+      this.loadUser();
+    }
   }
 
   /** Loads an user from the database. */

@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.TodaysCoursesRepository;
+import com.example.unserhoersaal.utils.StateLiveData;
+
 import java.util.List;
 
 /** ViewModel for TodayCoursesFragment. */
@@ -13,7 +15,7 @@ public class TodaysCoursesViewModel extends ViewModel {
   private static final String TAG = "TodaysCoursesViewModel";
 
   private TodaysCoursesRepository todaysCoursesRepository;
-  private MutableLiveData<List<CourseModel>> todaysCourses;
+  private StateLiveData<List<CourseModel>> todaysCourses;
 
   /** Initialize the ViewModel. */
   public void init() {
@@ -24,11 +26,11 @@ public class TodaysCoursesViewModel extends ViewModel {
     this.todaysCourses = this.todaysCoursesRepository.getTodaysCourses();
   }
 
-  public LiveData<List<CourseModel>> getTodaysCourses() {
+  public StateLiveData<List<CourseModel>> getTodaysCourses() {
     return this.todaysCourses;
   }
 
-  public void loadTodaysCourses() {
-    this.todaysCoursesRepository.loadTodaysCourses();
+  public void setUserId() {
+    this.todaysCoursesRepository.setUserId();
   }
 }

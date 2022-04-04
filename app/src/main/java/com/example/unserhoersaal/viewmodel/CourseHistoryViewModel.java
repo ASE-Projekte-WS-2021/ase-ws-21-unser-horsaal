@@ -72,7 +72,11 @@ public class CourseHistoryViewModel extends ViewModel {
     return this.meetingsModelMutableLiveData;
   }
 
-  public StateLiveData<String> getUser() {return this.userId;}
+  public StateLiveData<String> getUserId() {return this.userId;}
+
+  public void setUserId() {
+    this.courseHistoryRepository.setUserId();
+  }
 
   public void setCourse(CourseModel course) {
     Log.d(TAG, course.getKey());
