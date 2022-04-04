@@ -16,26 +16,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".views.TodaysCoursesFragment">
-
-        <SearchView
-            android:id="@+id/todaysCoursesFragmentSearchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:queryHint="@string/courses_search_string"
-            android:background="@color/white"
-            android:layout_margin="16dp"
-            android:searchIcon="@drawable/ic_baseline_search_black_24"
-            android:elevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/todaysCoursesFragmentTitleTextView"
@@ -55,14 +40,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/todaysCoursesFragmentRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:adapter="@{adapter}"
-            android:layout_marginTop="16dp"
             app:initLayoutManager="@{R.id.todaysCoursesFragmentRecyclerView}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/todaysCoursesFragmentSearchView"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/course_item_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

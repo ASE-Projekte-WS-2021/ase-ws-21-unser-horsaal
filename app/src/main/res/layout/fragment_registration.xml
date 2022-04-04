@@ -151,14 +151,16 @@
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:onClick="@{() -> vm.register()}"
+                        android:background="@drawable/app_background"
                         android:layout_gravity="center"
                         android:layout_marginTop="32dp"
                         android:text="@string/registration_fragment_registrate_button_string"
+                        app:backgroundTint="@null"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        style="@style/wideBlueButton"/>
+                        style="@style/wideOrangeButton"/>
 
                     <ProgressBar
                         android:id="@+id/registrationFragmentProgressSpinner"
@@ -203,17 +205,6 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/registrationFragmentImpressum"
-                    android:onClick="@{(view) -> NavUtil.openBrowser(view, Config.GITHUB_LINK_LEGAL)}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/registration_impressum"
-                    android:textAlignment="center"
-                    android:textColor="@color/call_to_action_darker_orange"
-                    android:textStyle="bold"/>
 
             </LinearLayout>
 

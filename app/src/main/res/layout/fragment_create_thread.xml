@@ -255,7 +255,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:text="@string/create_thread_fragment_button_send"
-                    style="@style/wideBlueButton"/>
+                    app:backgroundTint="@color/call_to_action_orange"
+                    style="@style/wideOrangeButton"/>
 
 
             </LinearLayout>

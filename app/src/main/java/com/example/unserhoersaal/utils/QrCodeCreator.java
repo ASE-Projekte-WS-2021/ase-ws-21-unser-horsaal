@@ -43,31 +43,28 @@ public class QrCodeCreator {
     }
   }
 
-  /** JavaDoc. */
-  public static void saveImage(Bitmap bitmap, @NonNull String name, Context context)
-          throws IOException {
+  public static void saveImage(Bitmap bitmap, @NonNull String name, Context context) throws IOException {
+    OutputStream fos;
+
     ContentResolver resolver = context.getContentResolver();
     ContentValues contentValues = new ContentValues();
     contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
     contentValues.put(MediaStore.MediaColumns.MIME_TYPE, Config.TYPE_PNG);
-    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Config.PATH_FOR_QR_CODE
-            + Config.QR_CODE_FILE_NAME);
+    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Config.PATH_FOR_QR_CODE + Config.QR_CODE_FILE_NAME);
     Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-    OutputStream fos = resolver.openOutputStream(imageUri);
+    fos = resolver.openOutputStream(imageUri);
 
     bitmap.compress(Bitmap.CompressFormat.PNG, Config.QR_CODE_COMPRESSION, fos);
     fos.flush();
     fos.close();
   }
 
-  /** JavaDoc. */
   //TODO: andere lösung als in die gallerie zu gehen.
   public static void galleryIntent(Context context) {
     Intent intent = new Intent();
     intent.setType(Config.TYPE_IMAGE);
     intent.setAction(Intent.ACTION_VIEW);
     Activity activity = (Activity) context;
-    activity.startActivity(Intent.createChooser(intent, Config.GALLERY_INTENT_TITLE), null);
+    activity.startActivity(Intent.createChooser(intent, Config.GALLERY_INTENT_TITLE),null);
   }
-
 }

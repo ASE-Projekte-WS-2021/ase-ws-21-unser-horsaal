@@ -19,11 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ChatAdapter;
 import com.example.unserhoersaal.model.MessageModel;
-import com.example.unserhoersaal.utils.NavUtil;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
-import com.google.android.material.card.MaterialCardView;
-
 import java.util.List;
 
 /** Fragment for current course.*/
@@ -37,7 +34,6 @@ public class CurrentCourseFragment extends Fragment {
   private RecyclerView recyclerView;
   private ChatAdapter chatAdapter;
   private CurrentCourseViewModel currentCourseViewModel;
-  private MaterialCardView materialCardView;
 
   public CurrentCourseFragment() {
     // Required empty public constructor
@@ -74,7 +70,6 @@ public class CurrentCourseFragment extends Fragment {
     this.currentCourseViewModel.getMessages()
             .observe(getViewLifecycleOwner(),
                     list -> chatAdapter.notifyDataSetChanged());
-
   }
 
   private void initUi(View view) {
@@ -82,7 +77,6 @@ public class CurrentCourseFragment extends Fragment {
     this.sendQuestionButton = view.findViewById(R.id.currentCourseFragmentSendQuestionButton);
     this.courseKeyTextView = view.findViewById(R.id.courseKeyTextView);
     this.recyclerView = view.findViewById(R.id.chatRecyclerView);
-    this.materialCardView = view.findViewById(R.id.currentCourseFragmentMaterialCardView);
 
     this.sendQuestionButton.setOnClickListener(view1 ->
         currentCourseViewModel.sendMessage()

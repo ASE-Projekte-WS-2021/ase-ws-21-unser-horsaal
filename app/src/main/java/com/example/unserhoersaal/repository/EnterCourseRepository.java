@@ -170,29 +170,27 @@ public class EnterCourseRepository {
             .child(course.getKey())
             .setValue(Boolean.TRUE)
             .addOnSuccessListener(unused -> {
-              this.databaseReference
-                      .child(Config.CHILD_COURSES_USER)
-                      .child(course.getKey())
-                      .child(uid)
-                      .setValue(Boolean.TRUE)
-                      .addOnSuccessListener(unused1 -> {
-                        this.databaseReference
-                                .child(Config.CHILD_COURSES)
-                                .child(course.getKey())
-                                .child(Config.CHILD_MEMBER_COUNT)
-                                .setValue(ServerValue.increment(1))
-                                .addOnSuccessListener(unused2 ->
-                                        enteredCourse.postUpdate(course))
-                                .addOnFailureListener(e -> {
-                                  Log.e(TAG, e.getMessage());
-                                  enteredCourse.postError(
-                                          new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
-                                });
-                      }).addOnFailureListener(e -> {
-                        Log.e(TAG, e.getMessage());
-                        enteredCourse.postError(
-                                new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
-                      });
+                    databaseReference
+                            .child(Config.CHILD_COURSES_USER)
+                            .child(course.getKey())
+                            .child(uid)
+                    .setValue(Boolean.TRUE)
+                    .addOnSuccessListener(unused1 -> {
+                      this.databaseReference.child(Config.CHILD_COURSES)
+                              .child(course.getKey())
+                              .child(Config.CHILD_MEMBER_COUNT)
+                              .setValue(ServerValue.increment(1))
+                              .addOnSuccessListener(unused2 -> enteredCourse.postUpdate(course))
+                              .addOnFailureListener(e -> {
+                                Log.e(TAG, e.getMessage());
+                                enteredCourse.postError(
+                                        new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+                              });
+                    }).addOnFailureListener(e -> {
+                      Log.e(TAG, e.getMessage());
+                      enteredCourse.postError(
+                              new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+                    });
             }).addOnFailureListener(e -> {
               Log.e(TAG, e.getMessage());
               enteredCourse.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);

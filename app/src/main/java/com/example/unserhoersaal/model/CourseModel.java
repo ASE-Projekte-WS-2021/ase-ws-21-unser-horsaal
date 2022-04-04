@@ -12,6 +12,7 @@ public class CourseModel {
   //private String groupIcon;
   private String institution;
   private String title;
+
   private String key;
   private String creatorName;
   private String photoUrl;

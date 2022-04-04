@@ -106,9 +106,4 @@ public class CourseThreadFragment extends Fragment {
             .setNavigationOnClickListener(v -> navController.navigateUp());
   }
 
-  public boolean onDeleteThreadMessage(View v) {
-    //logic goes here
-    return false;
-  }
-
 }

@@ -75,7 +75,7 @@ public class RegistrationViewModel extends ViewModel {
 
     /* User input*/
     String userName = userModel.getDisplayName();
-    String email = userModel.getEmail();
+    String email = userModel.getEmail().trim();
     String password = passwordModel.getCurrentPassword();
 
     /* Check if username input is empty or has wrong pattern.*/
@@ -113,6 +113,9 @@ public class RegistrationViewModel extends ViewModel {
       return;
     }
 
+    this.userInputState.postCreate(new UserModel());
+    //do not listen for this status because we would get two spinner loops
+    this.passwordInputState.postCreate(new PasswordModel());
     this.authAppRepository.register(userName, email, password);
   }
 

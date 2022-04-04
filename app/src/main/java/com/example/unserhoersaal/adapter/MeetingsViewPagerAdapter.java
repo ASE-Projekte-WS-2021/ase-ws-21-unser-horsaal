@@ -40,6 +40,6 @@ public class MeetingsViewPagerAdapter extends FragmentStateAdapter {
 
   @Override
   public int getItemCount() {
-    return Config.MEETINGS_NUMBER_OF_TABS;
+    return Config.COURSES_NUMBER_OF_TABS;
   }
 }

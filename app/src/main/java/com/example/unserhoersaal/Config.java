@@ -93,20 +93,6 @@ public class Config {
   public static final String CHILD_PHOTO_URL = "photoUrl";
   public static final String CHILD_MEETINGS_COUNT = "meetingsCount";
   public static final String CHILD_MEMBER_COUNT = "memberCount";
-  public static final String CHILD_POLL = "poll";
-  public static final String CHILD_USER_POLL = "userPoll";
-  public static final String CHILD_POLL_USER = "pollUser";
-  public static final String CHILD_VOTES_COUNT = "votesCount";
-  public static final String CHILD_OPTION_COUNT_1 = "optionsCount1";
-  public static final String CHILD_OPTION_COUNT_2 = "optionsCount2";
-  public static final String CHILD_OPTION_COUNT_3 = "optionsCount3";
-  public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
-
-  /**=======================.
-   * Shared Preferences Keys
-   * ======================= */
-  public static final String SHARED_PREF_KEY = "settings";
-  public static final String SHARED_PREF_ONBOARDING_KEY = "onboard_complete";
 
   /**=======================.
    * Tabviews
@@ -127,41 +113,15 @@ public class Config {
   public static final String TAB_POLL_NAME = "Abstimmungen";
   public static final int TAB_QUESTIONS = 2;
   public static final String TAB_QUESTIONS_NAME = "Fragen";
-  public static final int MEETINGS_NUMBER_OF_TABS = 3;
+  public static final int MMEETINGS_NUMBER_OF_TABS = 3;
 
-  //Onboarding TabView
-  public static final int ONBOARDING_FRAGMENT_TAB_LENGTH = 6;
-  public static final int ONBOARDING_USERNAME_FRAGMENT_POSITION = 1;
-  public static final int ONBOARDING_ACCOUNT_FRAGMENT_POSITION = 3;
 
-  /**=======================.
-   * Poll
-   * ======================= */
-  //PollUtil
-  public static final String PERCENTAGE_SING = "%";
-  public static final int POLL_BAR_MIN_LENGTH = 1;
-  public static final int POLL_BAR_LENGTH_FACTOR = 5;
-  public static final int FACTOR_PROPORTION_TO_PERCENTAGE = 100;
 
-  //PollViewModel
-  public static final String OPTION_YES = "Ja";
-  public static final String OPTION_NO = "Nein";
-  public static final String OPTION_EMPTY = "";
-
-  /**=======================.
-   * Search Hint
-   * ======================= */
-  public static final String SEARCH_VIEW_HINT = "Deine Suche ...";
-  public static final String TAG_SUBJECT_MATTER = "lehrstoff";
-  public static final String TAG_EXAMINATION = "prüfung";
-  public static final String TAG_MISTAKE = "fehler";
-  public static final String TAG_ORGANISATION = "organisatorisch";
-  public static final String TAG_OTHER = "sonstiges";
 
   /**=======================.
    * Internal Error Messages
    * ======================= */
-  public static final String INTERNAL_AUTH_TOO_MANY_REQUESTS = "To many requests";
+
   public static final String FIREBASE_USER_NULL = "Firebase User is null";
   public static final String STATE_LIVE_DATA_NULL = "Databinding Error";
   public static final String AUTH_LOGOUT_SUCCESS = "";
@@ -175,6 +135,7 @@ public class Config {
   public static final String UNSPECIFIC_ERROR =
           "Ein Fehler ist aufgetreten!"; //hide too specific error from user
 
+
   public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
   public static final String DATABINDING_TITLE_WRONG_PATTERN =
           "Der Titel enthält ungültige Charaktere!"; //TODO: add characters
@@ -185,15 +146,10 @@ public class Config {
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
           "Der Beitrittscode enthält ungültige Charaktere.";
-  public static final String DATABINDING_OPTION_NULL = "Option 1 und 2 dürfen nicht leer sein";
-  public static final String DATABINDING_OPTION_WRONG_PATTERN =
-          "Option 1 und/oder 2 enthalten ungültige Charaktere.";
 
   public static final String AUTH_EMAIL_EMPTY = "Bitte gib eine Email-Adresse ein!";
   public static final String AUTH_EMAIL_WRONG_PATTERN_REGISTRATION =
           "Email ist ungültig oder bereits vergeben!";
-  public static final String AUTH_EMAIL_EXISTS =
-          "Ein Account zu dieser Email-Adresse existiert bereits!";
   public static final String AUTH_EMAIL_WRONG_PATTERN_LOGIN = "Ungültige Email-Adresse!";
   public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
   public static final String AUTH_PASSWORD_WRONG_PATTERN =
@@ -258,13 +214,6 @@ public class Config {
   public static final String MESSAGES_FAILED_TO_LOAD = "Nachrichten konnten nicht geladen werden!";
   public static final String NO_PICUTRE_SELECTED = "Es wurde kein Bild selektiert!";
 
-  public static final String POLL_CREATION_FAILURE = "Die Umfrage konnte nicht erstellt werden!";
-  public static final String POLLS_FAILED_TO_LOAD = "Polls konnten nicht geladen werden!";
-  public static final String POLL_ID_NULL = "PollId is null.";
-  public static final String POLL_MODEL_NULL = "pollModel is null.";
-
-  public static final String MEETING_OBJECT_NULL = "meetingObj is null.";
-
   /**=======================.
    *  Avatar Placeholder Ids
    * ======================= */
@@ -311,16 +260,4 @@ public class Config {
    * ======================= */
   public static final int CARD_STROKE_WIDTH = 2;
   public static final int NO_STROKE = 0;
-
-  /**=======================.
-   *  Live-Chat
-   * ======================= */
-  public static final String LIVE_CHAT_MESSAGES_CHILD = "LiveChatMessages";
-
-  /**=======================.
-   *  Impressum
-   * ======================= */
-  public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
-
-
 }

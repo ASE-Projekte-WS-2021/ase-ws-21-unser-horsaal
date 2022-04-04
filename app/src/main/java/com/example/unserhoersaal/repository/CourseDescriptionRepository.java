@@ -6,45 +6,37 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-/**
- *  Repository for the CourseDescriptionViewModel.
- */
+/** Repository for the CourseDescriptionViewModel. */
 public class CourseDescriptionRepository {
 
-  private static final String TAG = "CourseDescriptionRepo";
+  private static final String TAG = "CourseDescriptionRepository";
 
-  private final FirebaseAuth firebaseAuth;
-  private final DatabaseReference databaseReference;
+  private FirebaseAuth firebaseAuth;
+  private DatabaseReference databaseReference;
   private static CourseDescriptionRepository instance;
-  private String creatorId;
-  private final StateLiveData<String> courseId = new StateLiveData<>();
-  private final StateLiveData<CourseModel> courseModel = new StateLiveData<>();
+  private StateLiveData<String> courseId = new StateLiveData<>();
+  private StateLiveData<CourseModel> courseModel = new StateLiveData<>();
+  private ValueEventListener listener;
 
-
-  /**
-   * Constructor.
-   */
+  /** JavaDoc. */
   public CourseDescriptionRepository() {
+    this.initListener();
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.courseModel.postCreate(new CourseModel());
     this.courseId.postCreate(null);
   }
 
-  /**
-   * Generates an instance of CourseDescriptionRepository.
-   *
-   * @return Instance of CourseDescriptionRepository
-   */
+  /** Generates an instance of CourseDescriptionRepository. */
   public static CourseDescriptionRepository getInstance() {
     if (instance == null) {
       instance = new CourseDescriptionRepository();
@@ -60,16 +52,29 @@ public class CourseDescriptionRepository {
     return this.courseModel;
   }
 
-  /**
-   * Loads the description of a course.
-   */
-  public void loadDescription() {
-    this.courseModel.postLoading();
+  /** Sets the current course. */
+  public void setCourseId(String newCourseId) {
+    String oldKey = Validation.checkStateLiveData(this.courseId, TAG);
 
+    if (oldKey != null) {
+      this.databaseReference
+              .child(Config.CHILD_COURSES)
+              .child(oldKey)
+              .removeEventListener(this.listener);
+    }
 
-    Query query = this.databaseReference.child(Config.CHILD_COURSES)
-            .child(this.courseId.getValue().getData());
-    query.addValueEventListener(new ValueEventListener() {
+    this.databaseReference
+            .child(Config.CHILD_COURSES)
+            .child(newCourseId)
+            .addValueEventListener(this.listener);
+
+    this.courseModel.postUpdate(new CourseModel());
+    this.courseId.postCreate(newCourseId);
+  }
+
+  /** Initializes the listener for the database access. */
+  public void initListener() {
+    this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
@@ -87,28 +92,11 @@ public class CourseDescriptionRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "setCourseId task failed.");
+        Log.e(TAG, "setcourseid task failed.");
         courseModel.postError(
                 new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
-    });
-  }
-
-  /**
-   * Sets the id of a new course the user wants to read the description.
-   *
-   * @param newCourseId Id of the course
-   */
-  public void setCourseId(String newCourseId) {
-    if (newCourseId == null) {
-      return;
-    }
-    if (this.courseId.getValue() == null
-            || this.courseId.getValue().getData() == null
-            || !this.courseId.getValue().getData().equals(newCourseId)) {
-      this.courseId.postUpdate(newCourseId);
-      this.loadDescription();
-    }
+    };
   }
 
   private void getAuthorName(CourseModel course) {
@@ -119,7 +107,7 @@ public class CourseDescriptionRepository {
             .get();
 
     task.addOnSuccessListener(dataSnapshot -> {
-      if (dataSnapshot.exists()) {
+      if(dataSnapshot.exists()) {
         course.setCreatorName(dataSnapshot.getValue(String.class));
       } else {
         course.setCreatorName(Config.UNKNOWN_USER);
@@ -132,11 +120,7 @@ public class CourseDescriptionRepository {
     });
   }
 
-  /**
-   * Unregisters a user from a course in real time database.
-   *
-   * @param id id of the course
-   */
+  /** unregisters a user from a course in real time database. */
   public void unregisterFromCourse(String id) {
     this.courseModel.postLoading();
 
@@ -171,15 +155,4 @@ public class CourseDescriptionRepository {
             });
   }
 
-  public String getUid() {
-    return firebaseAuth.getUid();
-  }
-
-  public String getCreatorId() {
-    return creatorId;
-  }
-
-  public void setCreatorId(String creatorId) {
-    this.creatorId = creatorId;
-  }
 }

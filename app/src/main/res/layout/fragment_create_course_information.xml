@@ -56,7 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_course_information_button_string"
-            style="@style/wideBlueButton"
+            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_createCourseInformationFragment_to_createCourseFragment)}"
+            app:backgroundTint="@color/call_to_action_orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/createCourseInformationFragmentImage" />

@@ -79,7 +79,7 @@ public class LoginViewModel extends ViewModel {
       return;
     }
 
-    String email = userModel.getEmail();
+    String email = userModel.getEmail().trim();
     String password = passwordModel.getCurrentPassword();
 
     if (Validation.emptyString(email)) {
@@ -104,6 +104,7 @@ public class LoginViewModel extends ViewModel {
       return;
     }
 
+    this.setDefaultInputState();
     this.authAppRepository.login(email, password);
   }
 
@@ -113,7 +114,7 @@ public class LoginViewModel extends ViewModel {
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
+      Log.e(TAG, "LoginViewModel>sendPasswordResetMail userModel is null.");
       this.emailSentLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -129,6 +130,7 @@ public class LoginViewModel extends ViewModel {
               new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
     } else {
 
+      this.setDefaultInputState();
       this.authAppRepository.sendPasswordResetMail(email);
     }
   }
@@ -136,7 +138,7 @@ public class LoginViewModel extends ViewModel {
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
   public void sendVerificationEmail() {
-    this.emailSentLiveData.postLoading();
+    this.userLiveData.postLoading();
     this.authAppRepository.sendVerificationEmail();
   }
 

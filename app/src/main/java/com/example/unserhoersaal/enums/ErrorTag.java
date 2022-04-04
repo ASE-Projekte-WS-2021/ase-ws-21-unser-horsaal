@@ -13,6 +13,5 @@ public enum ErrorTag {
   INSTITUTION,
   REPO,
   VM,
-  DATE_TIME_PICKER,
-  OPTION
+  DATE_TIME_PICKER
 }

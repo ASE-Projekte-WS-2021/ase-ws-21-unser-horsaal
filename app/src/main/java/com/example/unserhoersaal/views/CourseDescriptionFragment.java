@@ -1,10 +1,16 @@
 package com.example.unserhoersaal.views;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -26,6 +32,7 @@ public class CourseDescriptionFragment extends Fragment {
   private CourseDescriptionViewModel courseDescriptionViewModel;
   private CourseParticipantsViewModel courseParticipantsViewModel;
   private FragmentCourseDescriptionBinding binding;
+
   public CourseDescriptionFragment() {
     // Required empty public constructor
   }
@@ -100,9 +107,7 @@ public class CourseDescriptionFragment extends Fragment {
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseDescriptionFragmentToolbar
             .setNavigationOnClickListener(v ->
-             navController.navigateUp());
-    this.binding.setIsCreator(courseDescriptionViewModel.isCreator());
-
+            navController.navigateUp());
   }
 
 

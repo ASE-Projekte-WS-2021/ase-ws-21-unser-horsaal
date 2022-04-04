@@ -1,6 +1,9 @@
 package com.example.unserhoersaal.utils;
 
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
+
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;

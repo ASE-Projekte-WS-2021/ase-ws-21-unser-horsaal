@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentResetPasswordBinding;
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
@@ -82,6 +84,7 @@ public class ResetPasswordFragment extends Fragment {
     } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.resetPasswordFragmentSpinner.setVisibility(View.VISIBLE);
       this.binding.resetPasswordFragmentButton.setEnabled(false);
+      this.binding.resetPasswordFragmentButton.setBackgroundColor(Color.GRAY);
     } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
       this.binding.resetPasswordErrorText
               .setText(booleanStateData.getError().getMessage());
@@ -93,6 +96,7 @@ public class ResetPasswordFragment extends Fragment {
     this.binding.resetPasswordFragmentSpinner.setVisibility(View.GONE);
     this.binding.resetPasswordErrorText.setVisibility(View.GONE);
     this.binding.resetPasswordFragmentButton.setEnabled(true);
+    this.binding.resetPasswordFragmentButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {
@@ -101,8 +105,8 @@ public class ResetPasswordFragment extends Fragment {
   }
 
   @Override
-  public void onPause() {
-    super.onPause();
+  public void onResume() {
+    super.onResume();
     this.resetBindings();
   }
 }

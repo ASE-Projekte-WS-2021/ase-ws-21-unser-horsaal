@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.unserhoersaal.Config;
-import com.example.unserhoersaal.views.AllCoursesFragment;
+import com.example.unserhoersaal.views.CoursesObjectFragment;
 import com.example.unserhoersaal.views.OwnedCoursesFragment;
 import com.example.unserhoersaal.views.TodaysCoursesFragment;
 
@@ -26,13 +26,13 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         fragment = new TodaysCoursesFragment();
         break;
       case Config.TAB_ALL:
-        fragment = new AllCoursesFragment();
+        fragment = new CoursesObjectFragment();
         break;
       case Config.TAB_OWNED:
         fragment = new OwnedCoursesFragment();
         break;
       default:
-        fragment = new AllCoursesFragment();
+        fragment = new CoursesObjectFragment();
         break;
     }
     return fragment;

@@ -16,28 +16,21 @@
         android:background="@color/app_background"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/registration_successful"/>
-
         <TextView
             android:id="@+id/verificationFragmentTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/registration_successful"
+            android:layout_marginTop="64dp"
+            android:text="@string/verification_mail"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@color/app_blue"
+            android:textColor="@color/black"
             android:textSize="32sp"
             android:textStyle="bold" />
 
         <TextView
             android:text="@string/email_was_sent"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:layout_marginStart="54dp"
             android:layout_marginEnd="54dp"
             android:textSize="16sp"
@@ -46,7 +39,7 @@
 
         <TextView
             android:text="@string/auto_login_after_verification"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:layout_marginStart="54dp"
             android:layout_marginEnd="54dp"
             android:textSize="16sp"
@@ -55,7 +48,7 @@
 
         <TextView
             android:id="@+id/verificationFragmentErrorText"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:layout_marginStart="54dp"
             android:layout_marginEnd="54dp"
             android:layout_width="match_parent"
@@ -76,7 +69,6 @@
                     android:onClick="@{() -> vm.sendVerificationEmail()}"
                     android:text="@string/send_again"
                     android:layout_gravity="center"
-                    style="@style/wideBlueButton"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -105,8 +97,7 @@
             android:onClick="@{(view) -> vm.logout()}"
             android:layout_width="300dp"
             android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            style="@style/wideOrangeButton">
+            android:layout_height="wrap_content">
 
         </com.google.android.material.button.MaterialButton>
 

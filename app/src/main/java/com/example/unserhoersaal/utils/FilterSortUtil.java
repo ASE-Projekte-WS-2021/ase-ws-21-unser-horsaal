@@ -52,7 +52,7 @@ public class FilterSortUtil {
                                   FilterEnum filterEnum) {
     view.setChecked(Boolean.FALSE);
     chipActivated.setVisibility(View.GONE);
-    vm.setFilterEnum(filterEnum);
+    vm.setFilterEnum(FilterEnum.NONE);
   }
 
 }

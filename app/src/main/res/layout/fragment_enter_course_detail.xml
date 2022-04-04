@@ -12,198 +12,86 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/enterCourseDetailFragmentToolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/app_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            tools:context=".views.EnterCourseDetailFragment">
 
-            <TextView
-                style="@style/toolbarTitleStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/enter_course_detail_title" />
-
-        </com.google.android.material.appbar.MaterialToolbar>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:fillViewport="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enterCourseDetailFragmentToolbar">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/app_background"
-                android:padding="16dp"
-                tools:context=".views.EnterCourseDetailFragment">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/enterCourseDetailFragmentSuccessImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_baseline_check_circle_24"
-                    app:tint="@color/green"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/course_found_image" />
 
                 <TextView
-                    android:id="@+id/enterCourseDetailFragmentInfoHeader"
-                    style="@style/headerTextView"
+                    android:id="@+id/enterCourseDetailFragmentCourseTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/course_found_info"
-                    android:textAlignment="center"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentSuccessImage"/>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/enterCourseDetailFragmentCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:text="@{vm.course.data.title}"
                     android:layout_marginTop="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentInfoHeader">
+                    style="@style/toolbarSubtitleStyle" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
+                <TextView
+                    android:id="@+id/enterCourseDetailFragmentCourseCreator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.course.data.creatorName}"
+                    android:layout_marginTop="8dp"
+                    style="@style/toolbarSubtitleStyle" />
 
-                        <TextView
-                            android:id="@+id/enterCourseDetailFragmentCourseTitleHeader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/enter_course_detail_title_header"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/enterCourseDetailFragmentCourseTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.course.data.title}"
-                            android:layout_marginTop="8dp"
-                            android:textColor="@color/app_blue"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCourseTitleHeader" />
-
-                        <TextView
-                            android:id="@+id/enterCourseDetailFragmentCourseCreatorHeader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ersteller:in"
-                            android:layout_marginTop="8dp"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCourseTitle" />
-
-                        <ImageView
-                            android:id="@+id/enterCourseFragmentCourseCreatorImage"
-                            setImage="@{vm.course.data.photoUrl}"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_marginTop="8dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCourseCreatorHeader" />
-
-                        <TextView
-                            android:id="@+id/enterCourseDetailFragmentCourseCreator"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.course.data.creatorName}"
-                            android:layout_marginStart="8dp"
-                            android:textColor="@color/app_blue"
-                            app:layout_constraintBottom_toBottomOf="@id/enterCourseFragmentCourseCreatorImage"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/enterCourseFragmentCourseCreatorImage"
-                            app:layout_constraintTop_toTopOf="@id/enterCourseFragmentCourseCreatorImage" />
-
-                        <TextView
-                            android:id="@+id/enterCourseDetailFragmentCourseInstitutionHeader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/enter_course_detail_institution"
-                            android:layout_marginTop="8dp"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCourseCreator" />
-
-                        <TextView
-                            android:id="@+id/enterCourseDetailFragmentCourseInstitution"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.course.data.institution}"
-                            android:layout_marginTop="8dp"
-                            android:textColor="@color/app_blue"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCourseInstitutionHeader" />
-
-                        <TextView
-                            android:id="@+id/enterCourseDetailFragmentCourseDescriptionHeader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/enter_course_detail_description"
-                            android:layout_marginTop="8dp"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCourseInstitution" />
-
-                        <TextView
-                            android:id="@+id/enterCourseDetailFragmentCourseDescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@{vm.course.data.description}"
-                            android:textColor="@color/app_blue"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCourseDescriptionHeader" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/enterCourseDetailFragmentCourseInstitution"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.course.data.institution}"
+                    android:layout_marginTop="8dp"
+                    style="@style/toolbarSubtitleStyle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/enterCourseDetailFragmentEnterButton"
-                    style="@style/wideOrangeButton"
                     android:onClick="@{() -> vm.enterCourse()}"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/enter_course_fragment_enter_button_string"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:layout_gravity="center"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCard"/>
+                    style="@style/wideOrangeButton"
+                    android:backgroundTint="@color/green" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/enterCourseDetailFragmentQuitButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="64dp"
+                    android:backgroundTint="@color/red"
+                    android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_enterCourseDetailFragment_to_enterCourseFragment)}"
+                    android:text="@string/enter_course_detail_fragment_quit_button"
+                    style="@style/wideOrangeButton" />
 
-        </ScrollView>
+            </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </layout>

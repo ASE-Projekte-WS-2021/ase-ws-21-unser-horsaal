@@ -18,7 +18,6 @@ public class CreateCourseViewModel extends ViewModel {
   private CreateCourseRepository createCourseRepository;
   private StateLiveData<CourseModel> courseModel;
   public StateLiveData<CourseModel> courseModelInputState = new StateLiveData<>();
-  private boolean isEditing = false;
 
   /** Initialization of the CreateCourseViewModel. */
   public void init() {
@@ -28,6 +27,10 @@ public class CreateCourseViewModel extends ViewModel {
     this.createCourseRepository = CreateCourseRepository.getInstance();
     this.courseModel = this.createCourseRepository.getUserCourse();
     this.courseModelInputState.postCreate(new CourseModel());
+  }
+
+  public StateLiveData<CourseModel> getCourseModel() {
+    return this.courseModel;
   }
 
   public void resetCourseModelInput() {
@@ -40,7 +43,6 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModel.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
-
     if (courseModel == null) {
       Log.e(TAG, "courseModel is null.");
       this.courseModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
@@ -79,15 +81,10 @@ public class CreateCourseViewModel extends ViewModel {
       return;
     }
 
-    if (isEditing) {
-      this.createCourseRepository.editCourse(courseModel);
+    courseModel.setCodeMapping(this.getCodeMapping());
 
-    }else {
-      courseModel.setCodeMapping(this.getCodeMapping());
-
-      this.courseModelInputState.postCreate(new CourseModel());
-      this.createCourseRepository.createNewCourse(courseModel);
-    }
+    this.courseModelInputState.postCreate(new CourseModel());
+    this.createCourseRepository.createNewCourse(courseModel);
   }
 
   //https://www.codegrepper.com/code-examples/java/how+to+generate+random+letters+in+java
@@ -101,21 +98,4 @@ public class CreateCourseViewModel extends ViewModel {
     return sb.toString();
   }
 
-  public void setIsEditing(Boolean isEditing) {
-    this.isEditing = isEditing;
-  }
-
-  public Boolean getIsEditing() { return isEditing; }
-
-  public StateLiveData<CourseModel> getCourseModel() {
-    return this.courseModel;
-  }
-
-  public void setCourseModelInputState(StateLiveData<CourseModel> courseModelInputState) {
-    this.courseModelInputState = courseModelInputState;
-  }
-
-  public StateLiveData<CourseModel> getCourseModelInputState() {
-    return courseModelInputState;
-  }
 }

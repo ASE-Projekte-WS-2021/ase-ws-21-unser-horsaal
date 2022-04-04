@@ -2,26 +2,30 @@ package com.example.unserhoersaal.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.repository.CoursesRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
+import java.util.List;
 
 /** This class is the ViewModel for the signed up courses. */
 public class CoursesViewModel extends ViewModel {
 
   private static final String TAG = "CoursesViewModel";
 
-  private StateLiveData<String> userId = new StateLiveData<>();
+  private CoursesRepository coursesRepository;
+  private StateLiveData<List<CourseModel>> userCourses;
 
   /** Initializes the database access. */
   public void init() {
-    //todo if ... != null
+    if (this.userCourses != null) {
+      return;
+    }
+    this.coursesRepository = CoursesRepository.getInstance();
+    this.userCourses = this.coursesRepository.getUserCourses();
   }
 
-  public StateLiveData<String> getUserId() {
-    return this.userId;
-  }
-
-  public void setUserId(String userId) {
-    this.userId.postUpdate(userId);
+  public StateLiveData<List<CourseModel>> getUserCourses() {
+    return this.userCourses;
   }
 
   /** Determine the name of the tabs. */
@@ -38,5 +42,7 @@ public class CoursesViewModel extends ViewModel {
     }
   }
 
-
+  public void loadUserCourses() {
+    this.coursesRepository.loadUserCourses();
+  }
 }
