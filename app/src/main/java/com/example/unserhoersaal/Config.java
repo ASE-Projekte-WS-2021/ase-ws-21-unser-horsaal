@@ -260,4 +260,10 @@ public class Config {
    * ======================= */
   public static final int CARD_STROKE_WIDTH = 2;
   public static final int NO_STROKE = 0;
+
+  /**=======================.
+   *  Thread-Sort-Algorithm
+   * ======================= */
+  public static final String ASCENDING = "ascending";
+  public static final String DESCENDING = "descending";
 }

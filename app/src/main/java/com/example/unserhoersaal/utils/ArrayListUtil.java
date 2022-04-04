@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.utils;
 
-import android.util.Log;
-
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.enums.TagEnum;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 public class ArrayListUtil {
-  private static final String TAG = "";
 
   /**
    * Utility class for the sorting and filter options for model lists.
@@ -36,10 +34,10 @@ public class ArrayListUtil {
         sortThreadListByAnswersDesc(threadsModelList);
         break;
       case PAGE_COUNT_UP:
-        sortThreadListByPageNumber(threadsModelList, "ascending");
+        sortThreadListByPageNumber(threadsModelList, Config.ASCENDING);
         break;
       case PAGE_COUNT_DOWN:
-        sortThreadListByPageNumber(threadsModelList, "descending");
+        sortThreadListByPageNumber(threadsModelList, Config.DESCENDING);
         break;
     }
   }
@@ -154,7 +152,7 @@ public class ArrayListUtil {
         if (threadModel.getPageNumber() == null || t1.getPageNumber() == null) {
           return 0;
         }
-        if (order.equals("ascending")) {
+        if (order.equals(Config.ASCENDING)) {
           return Integer.parseInt(threadModel.getPageNumber()) -
                   Integer.parseInt(t1.getPageNumber());
         } else {
