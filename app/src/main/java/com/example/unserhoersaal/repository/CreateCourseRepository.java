@@ -82,7 +82,6 @@ public class CreateCourseRepository {
     }
 
     String courseId = courseModel.getKey();
-    Log.d("Hier", courseId);
 
 
     if (courseId == null) {

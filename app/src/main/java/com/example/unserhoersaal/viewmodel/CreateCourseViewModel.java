@@ -81,7 +81,6 @@ public class CreateCourseViewModel extends ViewModel {
 
     if (isEditing) {
       this.createCourseRepository.editCourse(courseModel);
-      Log.d("Hier", "in isEdit drin");
 
     }else {
       courseModel.setCodeMapping(this.getCodeMapping());

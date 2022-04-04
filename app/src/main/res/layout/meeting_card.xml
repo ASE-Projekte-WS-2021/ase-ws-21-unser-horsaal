@@ -93,17 +93,16 @@
                 app:layout_constraintTop_toTopOf="@id/meetingCardDateImage"
                 tools:text="@{model.meetingDate}"/>
 
-            <Button
-                android:id="@+id/editMeeting"
-                android:text="Edit Meeting"
+            <ImageView
+                android:id="@+id/meetingCardEditMeetingImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="52dp"
+                android:src="@drawable/ic_baseline_edit_24"
                 android:onClick="@{(view) -> NavUtil.navigateToMeetingEdit(view, model)}"
                 android:visibility="@{isCreator ? View.VISIBLE : View.GONE}"
+                app:tint="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

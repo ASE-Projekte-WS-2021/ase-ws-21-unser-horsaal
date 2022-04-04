@@ -34,7 +34,6 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Initialise the ViewModel. */
   public void init() {
-    Log.d(TAG, "init: ");
     if (this.meetings != null) {
       return;
     }
@@ -81,7 +80,6 @@ public class CourseHistoryViewModel extends ViewModel {
   public StateLiveData<String> getUser() {return this.userId;}
 
   public void setCourse(CourseModel course) {
-    Log.d(TAG, course.getKey());
     this.courseHistoryRepository.setCourse(course);
   }
 

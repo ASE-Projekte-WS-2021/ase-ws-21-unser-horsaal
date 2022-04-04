@@ -42,7 +42,6 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseHistoryViewModel.class);
     courseHistoryViewModel.init();
-    Log.d("test", model.getKey());
     courseHistoryViewModel.setCourse(model);
 
     NavController navController = Navigation.findNavController(view);
@@ -97,7 +96,6 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseDescriptionViewModel.class);
     courseDescriptionViewModel.init();
-    Log.d("NAVUTIL", courseId);
     courseDescriptionViewModel.setCourseId(courseId);
     courseDescriptionViewModel.setCreatorId(creatorId);
 
@@ -209,7 +207,6 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
                     .get(CreateCourseViewModel.class);
     createCourseViewModel.init();
-    Log.d("test", model.getKey());
     StateLiveData<CourseModel> courseModelStateLiveData = new StateLiveData<>();
     courseModelStateLiveData.postCreate(model);
     createCourseViewModel.setCourseModelInputState(courseModelStateLiveData);
@@ -229,7 +226,6 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
                     .get(CourseHistoryViewModel.class);
     courseHistoryViewModel.init();
-    Log.d("test", model.getKey());
     StateLiveData<MeetingsModel> meetingsModelStateLiveData = new StateLiveData<>();
     meetingsModelStateLiveData.postCreate(model);
     courseHistoryViewModel.setMeetingModelInputState(meetingsModelStateLiveData);

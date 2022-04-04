@@ -109,7 +109,6 @@ public class CourseDescriptionFragment extends Fragment {
             .setNavigationOnClickListener(v ->
             navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment));
     this.binding.setIsCreator(courseDescriptionViewModel.isCreator());
-    Log.d("Hier" , "frag: " + courseDescriptionViewModel.isCreator());
   }
 
 

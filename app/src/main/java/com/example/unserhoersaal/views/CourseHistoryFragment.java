@@ -34,7 +34,6 @@ public class CourseHistoryFragment extends Fragment {
   private CourseDescriptionViewModel courseDescriptionViewModel;
   private NavController navController;
   private MeetingAdapter meetingAdapter;
-  private Boolean isCreator;
 
   public CourseHistoryFragment() {
     // Required empty public constructor

@@ -65,9 +65,6 @@ public class CourseDescriptionViewModel extends ViewModel {
 
 
   public Boolean isCreator() {
-    Log.d("Hier", "vm uid: " + courseDescriptionRepository.getUid());
-    Log.d("Hier", "vm creatorId: " + courseDescriptionRepository.getCreatorId());
-
     if (courseDescriptionRepository.getUid().equals(
             courseDescriptionRepository.getCreatorId()
     )){

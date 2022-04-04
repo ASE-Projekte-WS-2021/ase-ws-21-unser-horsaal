@@ -30,7 +30,6 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
     } else {
       isCreator = false;
     }
-    Log.d("Hier", "" + isCreator);
   }
 
   @NonNull

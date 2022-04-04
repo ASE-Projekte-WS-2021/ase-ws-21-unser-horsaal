@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -60,7 +59,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     /** connect updated list with adapter child. */
     public void connect(MessageModel messageModel, CurrentCourseViewModel currentCourseViewModel) {
-      Log.d("Hier in Recyclerview", "" + messageModel.getIsTextDeleted());
       this.binding.setModel(messageModel);
       this.binding.setVm(currentCourseViewModel);
       this.binding.executePendingBindings();
