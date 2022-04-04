@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class CourseDescriptionRepository {
 
-  private static final String TAG = "CourseDescriptionRepository";
+  private static final String TAG = "CourseDescriptionRepo";
 
   private final FirebaseAuth firebaseAuth;
   private final DatabaseReference databaseReference;
