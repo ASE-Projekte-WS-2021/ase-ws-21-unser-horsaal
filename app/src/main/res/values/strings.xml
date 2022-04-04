@@ -261,4 +261,5 @@
     <string name="create_course_meeting_info">Eine Sitzung ist ein virtueller Raum für eine einzelne Vorlesungs-Einheit</string>
     <string name="create_course_meeting_title">Einführung in die Angewandte…</string>
     <string name="create_course_meeting_title_text">Titel der Sitzung</string>
+    <string name="coruse_description_participants">Teilnehmer:innen</string>
 </resources>

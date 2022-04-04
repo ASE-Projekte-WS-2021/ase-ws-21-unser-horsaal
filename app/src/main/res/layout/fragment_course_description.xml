@@ -343,6 +343,36 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_courseDescriptionFragment_to_courseParticipantsFragment)}"
+                    android:background="@drawable/custom_ripple_app_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/courseDescriptionFragmentOptionsContainer">
+
+                    <TextView
+                        style="@style/headerTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coruse_description_participants"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/courseDescriptionFragmentParticipantsArrowImage"
+                        app:layout_constraintBottom_toBottomOf="@id/courseDescriptionFragmentParticipantsArrowImage"/>
+
+                    <ImageView
+                        android:id="@+id/courseDescriptionFragmentParticipantsArrowImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/courseDescriptionFragmentParticipantsContainer"
                     android:layout_width="match_parent"
