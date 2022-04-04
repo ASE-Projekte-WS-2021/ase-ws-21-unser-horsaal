@@ -127,17 +127,29 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:id="@+id/courseHistoryFragmentMeetingsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/course_history_meetings_textview"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentCourseCard"
+            style="@style/headerTextView"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/courseHistoryFragmentCoursesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:adapter="@{adapter}"
+            android:layout_marginTop="8dp"
             app:initLayoutManager="@{R.id.courseHistoryFragmentCoursesRecyclerView}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/courseHistoryFragmentCourseCard"
+            app:layout_constraintTop_toBottomOf="@+id/courseHistoryFragmentMeetingsTextView"
             tools:listitem="@layout/meeting_card" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

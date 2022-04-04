@@ -101,6 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentLiveChatContainer">
@@ -110,20 +111,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_baseline_poll_24"
-                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center_vertical"
                         app:tint="@color/black"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/enter_course_poll_information"
-                        android:layout_marginStart="8dp" />
+                        android:layout_marginStart="8dp"
+                        android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentPollContainer">
@@ -133,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_baseline_question_answer_24"
-                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center_vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentPollIcon"
                         app:tint="@color/black"/>
@@ -143,6 +146,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/enter_course_question_answer"
                         android:layout_marginStart="8dp"
+                        android:layout_gravity="center_vertical"
                         app:layout_constraintStart_toEndOf="@id/enterCourseFragmentAnswerQuestionIcon"
                         app:layout_constraintTop_toTopOf="@id/enterCourseFragmentAnswerQuestionIcon"/>
                 </LinearLayout>

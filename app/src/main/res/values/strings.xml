@@ -257,4 +257,5 @@
     <string name="course_description_course_options">Kursoptionen</string>
     <string name="course_description_share">Kurs teilen</string>
     <string name="course_description_copy_code">Beitrittscode kopieren</string>
+    <string name="course_history_meetings_textview">Hier gibt es folgende Sitzungen:</string>
 </resources>

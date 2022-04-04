@@ -100,8 +100,10 @@ public class CourseHistoryFragment extends Fragment {
     }
     if (listStateData.getData().size() == 0) {
       this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
+      this.binding.courseHistoryFragmentMeetingsTextView.setVisibility(View.GONE);
     } else {
       this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
+      this.binding.courseHistoryFragmentMeetingsTextView.setVisibility(View.VISIBLE);
     }
   }
 
