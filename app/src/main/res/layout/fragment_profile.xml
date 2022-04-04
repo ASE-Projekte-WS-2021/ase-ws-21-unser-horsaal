@@ -77,7 +77,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_baseline_camera_alt_24"
-                app:backgroundTint="@color/app_blue"
+                style="@style/wideBlueButton"
                 android:onClick="@{(view) -> selectPhotoLifeCycleObs.selectImage()}"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

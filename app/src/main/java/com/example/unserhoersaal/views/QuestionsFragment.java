@@ -136,49 +136,24 @@ public class QuestionsFragment extends Fragment {
     }
 
     //TODO: is there a better solution to trigger the callback function for threads?
+    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel.getThreads()
             .getValue().getData());
   }
 
   private void filterEnumCallback(StateData<FilterEnum> filterEnum) {
-    if (filterEnum.getData() != FilterEnum.SOLVED) {
-      this.binding.questionChipAnswered.setChecked(Boolean.FALSE);
-      this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.UNSOLVED) {
+    if (filterEnum.getData() == FilterEnum.SOLVED) {
       this.binding.questionChipUnanswered.setChecked(Boolean.FALSE);
       this.binding.questionChipUnansweredActivated.setVisibility(View.GONE);
     }
-    if (filterEnum.getData() != FilterEnum.OWN) {
-      this.binding.questionChipOwn.setChecked(Boolean.FALSE);
-      this.binding.questionChipOwnActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.CREATOR) {
-      this.binding.questionChipCreator.setChecked(Boolean.FALSE);
-      this.binding.questionChipCreatorActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.SUBJECT_MATTER) {
-      this.binding.questionChipSubjectMatter.setChecked(Boolean.FALSE);
-      this.binding.questionChipSubjectMatterActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.ORGANISATION) {
-      this.binding.questionChipOrganisation.setChecked(Boolean.FALSE);
-      this.binding.questionChipOrganisationActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.MISTAKE) {
-      this.binding.questionChipMistake.setChecked(Boolean.FALSE);
-      this.binding.questionChipMistakeActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.EXAMINATION) {
-      this.binding.questionChipExamination.setChecked(Boolean.FALSE);
-      this.binding.questionChipExaminationActivated.setVisibility(View.GONE);
-    }
-    if (filterEnum.getData() != FilterEnum.OTHER) {
-      this.binding.questionChipOther.setChecked(Boolean.FALSE);
-      this.binding.questionChipOtherActivated.setVisibility(View.GONE);
+    if (filterEnum.getData() == FilterEnum.UNSOLVED) {
+      this.binding.questionChipAnswered.setChecked(Boolean.FALSE);
+      this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
     }
 
+
     //TODO: is there a better solution to trigger the callback funtion for threads?
+    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel
             .getThreads().getValue().getData());
   }
@@ -220,7 +195,12 @@ public class QuestionsFragment extends Fragment {
   public void onResume() {
     super.onResume();
     this.questionsViewModel.resetThreadModelInput();
-    this.questionsViewModel.setFilterEnum(FilterEnum.NONE);
     this.questionsViewModel.setSortEnum(SortEnum.NEWEST);
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.questionsViewModel.resetFilters();
   }
 }

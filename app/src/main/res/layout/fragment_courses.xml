@@ -5,16 +5,10 @@
 
     <data>
         <variable
-            name="adapter"
-            type="com.example.unserhoersaal.adapter.CoursesAdapter" />
-        <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.CoursesViewModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
-        <import type="android.view.View"/>
-        <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
-        <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

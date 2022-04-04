@@ -9,7 +9,6 @@ import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.google.android.material.card.MaterialCardView;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

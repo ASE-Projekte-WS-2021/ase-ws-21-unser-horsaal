@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="adapter"
+            type="com.example.unserhoersaal.adapter.OnboardingPagerAdapter" />
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.R"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".views.OnBoardingWrapperFragment"
+        android:background="@color/app_background">
+
+        <TextView
+            android:id="@+id/onboardingFragmentSkip"
+            android:onClick="@{(view) -> NavUtil.skipOnboarding(view, R.id.action_onboardingFragment_to_registrationFragment)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_skip"
+            android:textSize="14sp"
+            android:alpha="0.4"
+            android:textAllCaps="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/onboardingFragmentViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:layout_below="@id/onboardingFragmentSkip"
+            android:layout_above="@id/onboardingFragmentNavigation" />
+
+        <RelativeLayout
+            android:id="@+id/onboardingFragmentNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/onboardingFragmentTabLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_margin="30dp"
+                app:tabBackground="@drawable/onboarding_tab_selector"
+                android:background="@color/app_background"/>
+
+            <Button
+                android:id="@+id/onboardingFragmentNextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:drawableTint="@color/grey"
+                android:visibility="visible"
+                android:text="@string/onboarding_next"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/app_blue"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentEnd="true"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/onboardingFragmentFinishButtonWrapper"
+                android:layout_marginEnd="10dp"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/onboardingFragmentFinishButton"
+                    android:enabled="true"
+                    style="@style/wideBlueButton"
+                    android:visibility="gone"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.register()}"
+                    android:text="@string/onboarding_finish"
+                    app:flow_horizontalBias="0.1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/onboardingFragmentFinishProgressSpinner"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:elevation="8dp"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/white"
+                    android:indeterminateTintMode="src_in"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/onboardingFragmentFinishButtonWrapper"
+                    app:layout_constraintEnd_toEndOf="@+id/onboardingFragmentFinishButtonWrapper"
+                    app:layout_constraintHorizontal_bias="0.975"
+                    app:layout_constraintStart_toStartOf="@+id/onboardingFragmentFinishButtonWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/onboardingFragmentFinishButtonWrapper" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

@@ -45,14 +45,13 @@ public class OwnedCoursesFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
-    this.ownedCoursesViewModel = new ViewModelProvider(getActivity())
+    this.ownedCoursesViewModel = new ViewModelProvider(requireActivity())
             .get(OwnedCoursesViewModel.class);
     this.ownedCoursesViewModel.init();
-    this.ownedCoursesViewModel.loadOwnedCourses();
     this.ownedCoursesViewModel.getOwnedCourses()
             .observe(getViewLifecycleOwner(), ownedCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
-              if (ownedCourses.size() == 0) {
+              if (ownedCourses.getData().size() == 0) {
                 this.binding.ownedCoursesFragmentTitleTextView.setVisibility(View.VISIBLE);
               } else {
                 this.binding.ownedCoursesFragmentTitleTextView.setVisibility(View.GONE);
@@ -62,7 +61,7 @@ public class OwnedCoursesFragment extends Fragment {
 
   private void connectAdapter() {
     this.coursesAdapter = new CoursesAdapter(
-            this.ownedCoursesViewModel.getOwnedCourses().getValue());
+            this.ownedCoursesViewModel.getOwnedCourses().getValue().getData());
   }
 
   private void connectBinding() {
