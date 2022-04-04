@@ -2,19 +2,14 @@ package com.example.unserhoersaal.repository;
 
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.google.android.gms.auth.api.signin.internal.Storage;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +18,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 /** Repository for the ProfileViewModel. */
 public class ProfileRepository {
@@ -36,13 +30,13 @@ public class ProfileRepository {
   private StorageReference storageReference;
   private StateLiveData<UserModel> user = new StateLiveData<>();
   private StateLiveData<Boolean> profileChanged = new StateLiveData<>();
+  private String userId;
 
   /** TODO. */
   public ProfileRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.storageReference = FirebaseStorage.getInstance().getReference();
-    this.loadUser();
     this.profileChanged.postCreate(Boolean.FALSE);
   }
 
@@ -60,6 +54,19 @@ public class ProfileRepository {
 
   public StateLiveData<Boolean> getProfileChanged() {
     return this.profileChanged;
+  }
+
+  /** JavaDoc. */
+  public void setUserId() {
+    String uid;
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return;
+    }
+    uid = this.firebaseAuth.getCurrentUser().getUid();
+    if (this.userId == null || !this.userId.equals(uid)) {
+      this.userId = uid;
+      this.loadUser();
+    }
   }
 
   /** Loads an user from the database. */
@@ -215,6 +222,7 @@ public class ProfileRepository {
             });
   }
 
+  /** JavaDoc. */
   public void uploadImageToFirebase(Uri uri) {
     this.profileChanged.postLoading();
 
@@ -239,29 +247,29 @@ public class ProfileRepository {
       userPhotoRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
         String downloadUriString = downloadUri.toString();
         changePhotoUrl(downloadUriString, uid);
-      }).addOnFailureListener( e -> {
+      }).addOnFailureListener(e -> {
         Log.e(TAG, e.getMessage());
         profileChanged.postError(
                 new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO);
       });
     }).addOnFailureListener(e -> {
-              Log.e(TAG, e.getMessage());
-              profileChanged.postError(
-                      new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO);
-            });
+      Log.e(TAG, e.getMessage());
+      profileChanged.postError(
+              new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO);
+    });
   }
 
+  /** JavaDoc. */
   public void changePhotoUrl(String uri, String uid) {
     this.databaseReference.child(Config.CHILD_USER)
             .child(uid)
             .child(Config.CHILD_PHOTO_URL)
             .setValue(uri).addOnSuccessListener(unused -> {
-      profileChanged.postUpdate(Boolean.TRUE);
-      profileChanged.postCreate(Boolean.FALSE);
-    }).addOnFailureListener(e ->
-                    profileChanged.postError(
-                            new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO));
-
+              profileChanged.postUpdate(Boolean.TRUE);
+              profileChanged.postCreate(Boolean.FALSE);
+            }).addOnFailureListener(e ->
+            profileChanged.postError(
+                    new Error(Config.AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED), ErrorTag.REPO));
   }
 
 }

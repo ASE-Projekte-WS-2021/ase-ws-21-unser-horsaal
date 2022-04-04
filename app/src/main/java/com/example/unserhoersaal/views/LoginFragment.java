@@ -21,11 +21,14 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
 import com.example.unserhoersaal.enums.ErrorTag;
-import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.utils.DeepLinkMode;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
+import com.example.unserhoersaal.viewmodel.CoursesViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
+import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -37,6 +40,10 @@ public class LoginFragment extends Fragment {
   public static final String TAG = "LoginFragment";
 
   private LoginViewModel loginViewModel;
+  private CoursesViewModel coursesViewModel;
+  private ProfileViewModel profileViewModel;
+  private CourseHistoryViewModel courseHistoryViewModel;
+  private CurrentCourseViewModel currentCourseViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -99,7 +106,19 @@ public class LoginFragment extends Fragment {
   private void initViewModel() {
     this.loginViewModel = new ViewModelProvider(requireActivity())
             .get(LoginViewModel.class);
+    this.coursesViewModel = new ViewModelProvider(requireActivity())
+            .get(CoursesViewModel.class);
+    this.profileViewModel = new ViewModelProvider(requireActivity())
+            .get(ProfileViewModel.class);
+    this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
+            .get(CourseHistoryViewModel.class);
+    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
     this.loginViewModel.init();
+    this.coursesViewModel.init();
+    this.profileViewModel.init();
+    this.courseHistoryViewModel.init();
+    this.currentCourseViewModel.init();
     this.loginViewModel
             .getUserLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
@@ -121,8 +140,16 @@ public class LoginFragment extends Fragment {
             || firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE)) {
       if (firebaseUser.isEmailVerified()
               && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+        this.coursesViewModel.setUserId(firebaseUser.getUid());
+        this.profileViewModel.setUserId();
+        this.courseHistoryViewModel.setUserId();
+        this.currentCourseViewModel.setUserId();
         navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
       } else if (firebaseUser.isEmailVerified()) {
+        this.coursesViewModel.setUserId(firebaseUser.getUid());
+        this.profileViewModel.setUserId();
+        this.courseHistoryViewModel.setUserId();
+        this.currentCourseViewModel.setUserId();
         navController.navigate(R.id.action_loginFragment_to_coursesFragment);
       } else if (!firebaseUser.isEmailVerified()) {
         navController.navigate(R.id.action_loginFragment_to_verificationFragment);
@@ -142,7 +169,7 @@ public class LoginFragment extends Fragment {
         this.binding.loginFragmentPasswordErrorText.setVisibility(View.VISIBLE);
       }
       if (firebaseUserStateData.getErrorTag() == ErrorTag.REPO
-              || firebaseUserStateData.getErrorTag() == ErrorTag.VM){
+              || firebaseUserStateData.getErrorTag() == ErrorTag.VM) {
         this.binding.loginFragmentGeneralErrorMessage
                 .setText(firebaseUserStateData.getError().getMessage());
         this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
@@ -164,8 +191,8 @@ public class LoginFragment extends Fragment {
   }
 
   @Override
-  public void onResume() {
-    super.onResume();
+  public void onPause() {
+    super.onPause();
     this.resetBindings();
   }
 }

@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.enums;
 
+/** Enum for filter used in arrayutillist. */
 public enum FilterEnum {
   NONE,
   RESET,

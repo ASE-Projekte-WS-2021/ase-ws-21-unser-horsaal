@@ -2,9 +2,11 @@ package com.example.unserhoersaal.views;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +39,7 @@ public class CourseHistoryFragment extends Fragment {
   private NavController navController;
   private MeetingAdapter meetingAdapter;
 
+
   public CourseHistoryFragment() {
     // Required empty public constructor
   }
@@ -61,8 +64,13 @@ public class CourseHistoryFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
+
     this.connectAdapter();
     this.connectBinding();
+
+    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
+            this::meetingsLiveDataCallback);
+
     this.initToolbar();
     this.setupScrolling();
   }
@@ -78,8 +86,7 @@ public class CourseHistoryFragment extends Fragment {
     this.courseMeetingViewModel.init();
     this.courseDescriptionViewModel.init();
 
-    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
-            this::meetingsLiveDataCallback);
+
   }
 
   @SuppressLint("NotifyDataSetChanged")
@@ -91,6 +98,7 @@ public class CourseHistoryFragment extends Fragment {
     //sort meeting by newest
     this.courseHistoryViewModel.sortMeetingsByNewest(listStateData.getData());
     this.meetingAdapter.notifyDataSetChanged();
+
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.VISIBLE);
@@ -113,7 +121,9 @@ public class CourseHistoryFragment extends Fragment {
 
   private void connectAdapter() {
     this.meetingAdapter =
-            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData());
+            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData(),
+                    this.courseHistoryViewModel.getUid(), courseHistoryViewModel.getCreatorId());
+
   }
 
   private void connectBinding() {
@@ -134,7 +144,6 @@ public class CourseHistoryFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    this.courseHistoryViewModel.resetMeetingData();
   }
 
   private void setupScrolling() {

@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -18,8 +19,17 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
 
   private List<MeetingsModel> localDataSet;
 
-  public MeetingAdapter(List<MeetingsModel> dataSet) {
+  private String uid;
+  private Boolean isCreator;
+
+  public MeetingAdapter(List<MeetingsModel> dataSet, String uid, String creatorId) {
     this.localDataSet = dataSet;
+    this.uid = uid;
+    if (uid.equals(creatorId)) {
+      isCreator = true;
+    } else {
+      isCreator = false;
+    }
   }
 
   @NonNull
@@ -57,6 +67,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
     public void connect(MeetingsModel model) {
       this.binding.setModel(model);
       this.binding.executePendingBindings();
+      this.binding.setIsCreator(isCreator);
     }
 
   }

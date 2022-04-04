@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentOnboardingFinishBinding;
 
+/** Used in OnboardingWrapperFragment in ViewPager. */
 public class OnBoardingFinishFragment extends Fragment {
 
   private FragmentOnboardingFinishBinding binding;
@@ -22,7 +23,9 @@ public class OnBoardingFinishFragment extends Fragment {
 
   @Nullable
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(@NonNull LayoutInflater inflater,
+                           @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_onboarding_finish, container, false);
     return this.binding.getRoot();
@@ -33,7 +36,6 @@ public class OnBoardingFinishFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     this.connectBinding();
   }
-
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());

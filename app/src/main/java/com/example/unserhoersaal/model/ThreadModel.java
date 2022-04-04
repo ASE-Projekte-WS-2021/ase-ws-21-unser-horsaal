@@ -2,7 +2,6 @@ package com.example.unserhoersaal.model;
 
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.enums.TagEnum;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +24,7 @@ public class ThreadModel {
   public String pageNumber;
   public String hashtag;
   public List<TagEnum> tags = new ArrayList<>();
+  private Boolean isTextDeleted = false;
 
   public ThreadModel() {}
 
@@ -138,5 +138,13 @@ public class ThreadModel {
 
   public void setTags(List<TagEnum> tags) {
     this.tags = tags;
+  }
+
+  public void setIsTextDeleted(Boolean isTextDeleted) {
+    this.isTextDeleted = isTextDeleted;
+  }
+
+  public Boolean getIsTextDeleted() {
+    return this.isTextDeleted;
   }
 }

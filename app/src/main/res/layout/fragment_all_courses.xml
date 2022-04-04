@@ -9,7 +9,7 @@
             type="com.example.unserhoersaal.adapter.CoursesAdapter" />
         <variable
             name="vm"
-            type="com.example.unserhoersaal.viewmodel.CoursesViewModel" />
+            type="com.example.unserhoersaal.viewmodel.AllCoursesViewModel" />
         <import type="com.example.unserhoersaal.R"/>
     </data>
 
