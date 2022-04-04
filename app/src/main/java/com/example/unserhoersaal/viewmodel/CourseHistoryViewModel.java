@@ -156,6 +156,12 @@ public class CourseHistoryViewModel extends ViewModel {
               new Error(Config.CREATE_MEETING_MINUTE_DURATION_WRONG),
               ErrorTag.TIME_PICKER_MINUTE_DURATION);
       return;
+    } else if (calendarModel.getMinuteInput() > 59) {
+      Log.d(TAG, "user picked minute duration greater than 59");
+      this.meetingsModelMutableLiveData.postError(
+              new Error(Config.CREATE_MEETING_MINUTE_DURATION_TOO_LONG),
+              ErrorTag.TIME_PICKER_MINUTE_DURATION);
+      return;
     }
 
     meetingsModel.setEventTime(TimeUtil.parseEventTime(calendarModel));
