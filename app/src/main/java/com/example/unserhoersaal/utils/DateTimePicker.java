@@ -6,8 +6,7 @@ import android.util.Log;
 import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.enums.ErrorTag;
-import com.example.unserhoersaal.model.MeetingsModel;
+import com.example.unserhoersaal.model.CalendarModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,17 +21,22 @@ public class DateTimePicker {
   @BindingAdapter("datePicker")
   public static void datePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
-      MeetingsModel meetingModel =
-              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState, TAG);
-      if (meetingModel == null) {
-        Log.e(TAG, "MeetingModel is null");
+      CalendarModel calendarModel =
+              Validation.checkStateLiveData(courseHistoryViewModel.calendarModelStateLiveData, TAG);
+      if (calendarModel == null) {
+        Log.e(TAG, "calendarModel is null");
         return;
       }
 
-      meetingModel.setYearInput(year);
-      meetingModel.setMonthInput(month);
-      meetingModel.setDayOfMonthInput(day);
-      String time = day + "." + (month + 1) + "." + year;
+      calendarModel.setYearInput(year);
+      calendarModel.setMonthInput(month);
+      calendarModel.setDayOfMonthInput(day);
+
+      String dayAsString = day < 10 ? "0" + day : String.valueOf(day);
+      month++;
+      String monthAsString = month < 10 ? "0" + month : String.valueOf(month);
+
+      String time = dayAsString + "." + monthAsString + "." + year;
       view.setText(time);
     };
 
@@ -45,6 +49,7 @@ public class DateTimePicker {
             R.style.dateTimePickerStyle,
             dateSetListener, year, month, day);
     dialog.getDatePicker().setMinDate(new Date().getTime());
+    dialog.getDatePicker().init(year, month, day, null);
     dialog.show();
   }
 
@@ -52,22 +57,20 @@ public class DateTimePicker {
   @BindingAdapter("timePicker")
   public static void timePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
     TimePickerDialog.OnTimeSetListener timeSetListener = (datePicker, hour, minute) -> {
-      MeetingsModel meetingModel =
-              Validation.checkStateLiveData(courseHistoryViewModel.meetingModelInputState, TAG);
-      if (meetingModel == null) {
+      CalendarModel calendarModel =
+              Validation.checkStateLiveData(courseHistoryViewModel.calendarModelStateLiveData, TAG);
+      if (calendarModel == null) {
         Log.e(TAG, "MeetingModel is null");
         return;
       }
 
-      //TODO maybe dont save everything extra in the model and push to database
-      if (view.getId() == R.id.createCourseMeetingTimePicker) {
-        meetingModel.setHourInput(hour);
-        meetingModel.setMinuteInput(minute);
-      } else if (view.getId() == R.id.createCourseMeetingEndTimePicker) {
-        meetingModel.setHourEndInput(hour);
-        meetingModel.setMinuteEndInput(minute);
-      }
-      String time = hour + ":" + minute;
+      calendarModel.setHourInput(hour);
+      calendarModel.setMinuteInput(minute);
+
+      String hourAsString = hour < 10 ? "0" + hour : String.valueOf(hour);
+      String minuteAsString = minute < 10 ? "0" + minute : String.valueOf(minute);
+
+      String time = hourAsString + ":" + minuteAsString;
       view.setText(time);
     };
 
@@ -79,6 +82,7 @@ public class DateTimePicker {
             R.style.dateTimePickerStyle,
             timeSetListener, hour, minute, true
             );
+    timePickerDialog.updateTime(hour, minute);
     timePickerDialog.show();
   }
 

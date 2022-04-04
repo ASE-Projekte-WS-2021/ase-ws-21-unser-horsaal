@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.views;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +74,22 @@ public class CreateCourseMeetingFragment extends Fragment {
         this.binding.createCourseMeetingFragmentTitleErrorText
                 .setText(meetingsModelStateData.getError().getMessage());
         this.binding.createCourseMeetingFragmentTitleErrorText.setVisibility(View.VISIBLE);
+      } else if (meetingsModelStateData.getErrorTag() == ErrorTag.TIME_PICKER_DATE) {
+        this.binding.createCourseMeetingFragmentDatePickerErrorText
+                .setText(meetingsModelStateData.getError().getMessage());
+        this.binding.createCourseMeetingFragmentDatePickerErrorText.setVisibility(View.VISIBLE);
+      } else if (meetingsModelStateData.getErrorTag() == ErrorTag.TIME_PICKER_TIME) {
+        this.binding.createCourseMeetingTimePickerStartTimeErrorText
+                .setText(meetingsModelStateData.getError().getMessage());
+        this.binding.createCourseMeetingTimePickerStartTimeErrorText.setVisibility(View.VISIBLE);
+      } else if (meetingsModelStateData.getErrorTag() == ErrorTag.TIME_PICKER_HOUR_DURATION) {
+        this.binding.createCourseMeetingTimePickerDurationHourErrorText
+                .setText(meetingsModelStateData.getError().getMessage());
+        this.binding.createCourseMeetingTimePickerDurationHourErrorText.setVisibility(View.VISIBLE);
+      } else if (meetingsModelStateData.getErrorTag() == ErrorTag.TIME_PICKER_MINUTE_DURATION) {
+        this.binding.createCourseMeetingTimePickerDurationMinuteErrorText
+                .setText(meetingsModelStateData.getError().getMessage());
+        this.binding.createCourseMeetingTimePickerDurationMinuteErrorText.setVisibility(View.VISIBLE);
       }
     } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
@@ -83,6 +98,10 @@ public class CreateCourseMeetingFragment extends Fragment {
 
   private void resetBindings() {
     this.binding.createCourseMeetingFragmentTitleErrorText.setVisibility(View.GONE);
+    this.binding.createCourseMeetingFragmentDatePickerErrorText.setVisibility(View.GONE);
+    this.binding.createCourseMeetingTimePickerStartTimeErrorText.setVisibility(View.GONE);
+    this.binding.createCourseMeetingTimePickerDurationHourErrorText.setVisibility(View.GONE);
+    this.binding.createCourseMeetingTimePickerDurationMinuteErrorText.setVisibility(View.GONE);
     this.binding.createCourseMeetingFragmentGeneralErrorText.setVisibility(View.GONE);
     this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
     this.binding.createCourseMeetingFragmentButton.setEnabled(true);

@@ -234,4 +234,6 @@
     <string name="onboarding_finish_text_3">Swipe rechts, wenn du mit der Nutzung unserer App einverstanden bist.</string>
     <string name="onboarding_finish_text_4">Impressum | Terms of Use</string>
     <string name="registration_impressum">Impressum</string>
+    <string name="create_meeting_hour_duration">Dauer in Stunden</string>
+    <string name="create_meeting_minute_duration">Dauer in Minuten</string>
 </resources>
