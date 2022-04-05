@@ -149,6 +149,13 @@ public class Config {
   public static final String OPTION_EMPTY = "";
 
   /**=======================.
+   * Profile
+   * ======================= */
+
+  public static final String STORAGE_USER = "users/";
+  public static final String STORAGE_FILENAME = "/profile.jpg";
+
+  /**=======================.
    * Search Hint
    * ======================= */
   public static final String SEARCH_VIEW_HINT = "Deine Suche ...";

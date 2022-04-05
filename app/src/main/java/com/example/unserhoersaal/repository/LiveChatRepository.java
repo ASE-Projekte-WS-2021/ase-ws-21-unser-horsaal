@@ -1,18 +1,12 @@
 package com.example.unserhoersaal.repository;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.example.unserhoersaal.Config;
-import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.LiveChatMessageModel;
 import com.example.unserhoersaal.model.MeetingsModel;
-import com.example.unserhoersaal.model.MessageModel;
-import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,7 +15,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,20 +24,19 @@ public class LiveChatRepository {
   private static final String TAG = "LiveChatRepository";
 
   private static LiveChatRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private ArrayList<LiveChatMessageModel> liveChatMessages = new ArrayList<>();
-  private StateLiveData<List<LiveChatMessageModel>> sldLiveChatMessages = new StateLiveData<>();
-  private StateLiveData<String> sldUserId = new StateLiveData<>();
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<LiveChatMessageModel> liveChatMessages = new ArrayList<>();
+  private final StateLiveData<List<LiveChatMessageModel>> sldLiveChatMessages
+          = new StateLiveData<>();
+  private final StateLiveData<String> sldUserId = new StateLiveData<>();
   private ValueEventListener liveChatMessageListener;
   private MeetingsModel meetingsModel;
-
-
 
   public LiveChatRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    this.sldUserId.postCreate(new String());
+    this.sldUserId.postCreate("");
     this.sldLiveChatMessages.postCreate(liveChatMessages);
     setSldUserId();
   }
@@ -61,7 +53,6 @@ public class LiveChatRepository {
    * Initialise the listener for the database access.
    */
   public void initListener() {
-    Log.d("Hier", "in initlistener");
     this.liveChatMessageListener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -85,7 +76,6 @@ public class LiveChatRepository {
 
   public void setMeetingAndListener(MeetingsModel meeting) {
     this.meetingsModel = meeting;
-    Log.d("Hier", "in repo setmetali" + meeting.getKey());
     this.liveChatMessages.clear();
     this.sldLiveChatMessages.postCreate(liveChatMessages);
     String meetingKey = meeting.getKey();
@@ -171,6 +161,8 @@ public class LiveChatRepository {
     return this.meetingsModel;
   }
 
-  public StateLiveData<List<LiveChatMessageModel>> getSldLiveChatMessages() { return sldLiveChatMessages; }
+  public StateLiveData<List<LiveChatMessageModel>> getSldLiveChatMessages() {
+    return this.sldLiveChatMessages;
+  }
 
 }
