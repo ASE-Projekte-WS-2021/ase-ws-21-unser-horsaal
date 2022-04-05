@@ -30,6 +30,30 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModelInputState.postCreate(new CourseModel());
   }
 
+  public void makeEditable(CourseModel courseModel) {
+    this.isEditing = true;
+
+    CourseModel c = new CourseModel();
+    c.setTitle(courseModel.getTitle());
+    c.setDescription(courseModel.getDescription());
+    c.setInstitution(courseModel.getInstitution());
+    c.setKey(courseModel.getKey());
+    c.setCreatorId(courseModel.getCreatorId());
+    c.setCodeMapping(courseModel.getCodeMapping());
+    c.setMemberCount(courseModel.getMemberCount());
+    c.setCreationTime(courseModel.getCreationTime());
+
+    this.courseModelInputState.postCreate(c);
+  }
+
+  public StateLiveData<CourseModel> getCourseModelInputState() {
+    return courseModelInputState;
+  }
+
+  public StateLiveData<CourseModel> getCourseModel() {
+    return this.courseModel;
+  }
+
   public void resetCourseModelInput() {
     this.courseModelInputState.postCreate(new CourseModel());
     this.courseModel.postCreate(null);
@@ -108,15 +132,5 @@ public class CreateCourseViewModel extends ViewModel {
 
   public Boolean getIsEditing() { return isEditing; }
 
-  public StateLiveData<CourseModel> getCourseModel() {
-    return this.courseModel;
-  }
 
-  public void setCourseModelInputState(StateLiveData<CourseModel> courseModelInputState) {
-    this.courseModelInputState = courseModelInputState;
-  }
-
-  public StateLiveData<CourseModel> getCourseModelInputState() {
-    return courseModelInputState;
-  }
 }

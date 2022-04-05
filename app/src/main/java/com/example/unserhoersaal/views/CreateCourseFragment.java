@@ -15,6 +15,7 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseBinding;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
@@ -71,6 +72,7 @@ public class CreateCourseFragment extends Fragment {
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
     this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
 
     if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesCreateFragmentProgressSpinner.setVisibility(View.VISIBLE);
@@ -142,8 +144,8 @@ public class CreateCourseFragment extends Fragment {
   }
 
   @Override
-  public void onResume() {
-    super.onResume();
+  public void onPause() {
+    super.onPause();
     this.createCourseViewModel.setIsEditing(false);
     this.createCourseViewModel.resetCourseModelInput();
   }

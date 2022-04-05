@@ -220,10 +220,7 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
                     .get(CreateCourseViewModel.class);
     createCourseViewModel.init();
-    StateLiveData<CourseModel> courseModelStateLiveData = new StateLiveData<>();
-    courseModelStateLiveData.postCreate(model);
-    createCourseViewModel.setCourseModelInputState(courseModelStateLiveData);
-    createCourseViewModel.setIsEditing(true);
+    createCourseViewModel.makeEditable(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseDescriptionFragment_to_createCourseFragment);
@@ -235,22 +232,12 @@ public class NavUtil {
     if (model == null) {
       return;
     }
+
     CourseHistoryViewModel courseHistoryViewModel =
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
                     .get(CourseHistoryViewModel.class);
     courseHistoryViewModel.init();
-    StateLiveData<MeetingsModel> meetingsModelStateLiveData = new StateLiveData<>();
-    meetingsModelStateLiveData.postCreate(model);
-    courseHistoryViewModel.setMeetingModelInputState(meetingsModelStateLiveData);
-    courseHistoryViewModel.setIsEditing(true);
-
-    MeetingsModel meetingsModel = meetingsModelStateLiveData.getValue().getData();
-    //TODO anpassen an meeting changes
-    /*courseHistoryViewModel.setTimeInputForDisplay(meetingsModel
-            .getHourInput(), meetingsModel.getMinuteInput());
-    courseHistoryViewModel.setEndTimeInputForDisplay(meetingsModel
-            .getHourEndInput(), meetingsModel.getMinuteEndInput());*/
-
+    courseHistoryViewModel.makeEditable(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_createCourseMeetingFragment);

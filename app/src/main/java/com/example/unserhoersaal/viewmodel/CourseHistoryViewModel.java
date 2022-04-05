@@ -55,6 +55,16 @@ public class CourseHistoryViewModel extends ViewModel {
     this.arrayListUtil = new ArrayListUtil();
   }
 
+  public void makeEditable(MeetingsModel meetingsModel) {
+    this.isEditing = true;
+
+    MeetingsModel m = new MeetingsModel();
+    m.setKey(meetingsModel.getKey());
+    m.setTitle(meetingsModel.getTitle());
+
+    this.meetingModelInputState.postCreate(m);
+  }
+
   public void resetMeetingData() {
     this.meetingModelInputState.postCreate(new MeetingsModel());
     this.calendarModelStateLiveData.postCreate(new CalendarModel());
