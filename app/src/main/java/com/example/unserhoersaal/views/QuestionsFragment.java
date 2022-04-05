@@ -225,6 +225,6 @@ public class QuestionsFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.questionsViewModel.resetFilters();
-    resetFilterChips();
+    this.resetFilterChips();
   }
 }
