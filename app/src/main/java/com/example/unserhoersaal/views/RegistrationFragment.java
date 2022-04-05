@@ -15,7 +15,6 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentRegistrationBinding;
-import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
@@ -72,51 +71,26 @@ public class RegistrationFragment extends Fragment {
     this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
 
-    if (firebaseUserStateData == null) { //-> move to other method
+    if (firebaseUserStateData == null) {
       Log.e(TAG, "FirebaseUserStateData is null");
       this.binding.registrationFragmentGeneralErrorText.setText(Config.UNSPECIFIC_ERROR);
       this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
       return;
     }
 
+    this.navigateUser(firebaseUserStateData);
+  }
+
+  private void navigateUser(StateData<FirebaseUser> firebaseUserStateData) {
     if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE
             && firebaseUserStateData.getData() != null) {
-      this.registrationViewModel.setDefaultInputState();
-      navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.registrationFragmentProgressSpinner.setVisibility(View.VISIBLE);
-      this.binding.registrationFragmentButton.setEnabled(false);
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
-        this.binding.registrationFragmentUserEmailErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.registrationFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
-      } else if (firebaseUserStateData.getErrorTag() == ErrorTag.USERNAME) {
-        this.binding.registrationFragmentUserErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.registrationFragmentUserErrorText.setVisibility(View.VISIBLE);
-      } else if (firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
-        this.binding.registrationFragmentPasswordErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.registrationFragmentPasswordErrorText.setVisibility(View.VISIBLE);
-      } else {
-        this.binding.registrationFragmentGeneralErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
-      }
+      this.navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
     }
-
   }
 
   private void resetBindings() {
     this.binding.registrationFragmentGeneralErrorText.setVisibility(View.GONE);
-    this.binding.registrationFragmentUserEmailErrorText.setVisibility(View.GONE);
-    this.binding.registrationFragmentUserErrorText.setVisibility(View.GONE);
-    this.binding.registrationFragmentPasswordErrorText.setVisibility(View.GONE);
-    this.binding.registrationFragmentProgressSpinner.setVisibility(View.GONE);
-    this.binding.registrationFragmentButton.setEnabled(true);
   }
-
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -124,8 +98,11 @@ public class RegistrationFragment extends Fragment {
   }
 
   @Override
-  public void onResume() {
-    super.onResume();
+  public void onPause() {
+    super.onPause();
     this.resetBindings();
+    this.registrationViewModel.setDefaultInputState();
+    this.registrationViewModel.setLiveDataComplete();
   }
+
 }

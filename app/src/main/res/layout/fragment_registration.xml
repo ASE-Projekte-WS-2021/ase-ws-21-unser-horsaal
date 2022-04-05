@@ -11,6 +11,8 @@
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.Config" />
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +33,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
@@ -65,7 +67,8 @@
 
                     <TextView
                         android:id="@+id/registrationFragmentUserErrorText"
-                        android:visibility="gone"
+                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.USERNAME ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.userInputState.error.message}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -92,7 +95,8 @@
 
                     <TextView
                         android:id="@+id/registrationFragmentUserEmailErrorText"
-                        android:visibility="gone"
+                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.userInputState.error.message}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -122,7 +126,8 @@
 
                     <TextView
                         android:id="@+id/registrationFragmentPasswordErrorText"
-                        android:visibility="gone"
+                        android:visibility="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.passwordInputState.error.message}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -132,7 +137,8 @@
 
                 <TextView
                     android:id="@+id/registrationFragmentGeneralErrorText"
-                    android:visibility="gone"
+                    android:visibility="@{vm.userStateLiveData.status == StateData.DataStatus.ERROR &amp;&amp; (vm.userStateLiveData.errorTag == ErrorTag.REPO || vm.userStateLiveData.errorTag == ErrorTag.VM) ? View.VISIBLE : View.GONE}"
+                    android:text="@{vm.userStateLiveData.error.message}"
                     android:textColor="@color/red"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -150,6 +156,7 @@
                         android:id="@+id/registrationFragmentButton"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
+                        android:enabled="@{vm.userStateLiveData.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{() -> vm.register()}"
                         android:layout_gravity="center"
                         android:layout_marginTop="32dp"
@@ -168,7 +175,7 @@
                         android:indeterminate="true"
                         android:indeterminateTint="@color/white"
                         android:indeterminateTintMode="src_in"
-                        android:visibility="gone"
+                        android:visibility="@{vm.userStateLiveData.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="@+id/registrationFragmentButton"
                         app:layout_constraintEnd_toEndOf="@+id/registrationFragmentButton"
                         app:layout_constraintHorizontal_bias="0.975"

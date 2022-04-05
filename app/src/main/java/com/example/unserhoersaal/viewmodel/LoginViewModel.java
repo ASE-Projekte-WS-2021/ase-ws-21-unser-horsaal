@@ -71,7 +71,7 @@ public class LoginViewModel extends ViewModel {
     this.userLiveData.postComplete();
   }
 
-  /** JavaDoc for this method. */
+  /** checks login parameter before using firebase login API. */
   public void login() {
     this.userInputState.postLoading();
     this.passwordInputState.postLoading();
@@ -87,22 +87,31 @@ public class LoginViewModel extends ViewModel {
     String email = userModel.getEmail();
     String password = passwordModel.getCurrentPassword();
 
-    if (Validation.emptyString(email)) {
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-    } else if (!Validation.emailHasPattern(email)) {
-      this.userInputState.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
-    } else if (Validation.emptyString(password)) {
-      this.passwordInputState.postError(
-              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
-    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
-      this.passwordInputState.postError(
-              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
-    } else {
+    if (this.registrationCheckInput(email, password)) {
       this.userInputState.postComplete();
       this.passwordInputState.postComplete();
       this.authAppRepository.login(email, password);
     }
+  }
+
+  private boolean registrationCheckInput(String email, String password) {
+    if (Validation.emptyString(email)) {
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      return false;
+    } else if (!Validation.emailHasPattern(email)) {
+      this.userInputState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
+      return false;
+    } else if (Validation.emptyString(password)) {
+      this.passwordInputState.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return false;
+    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
+      this.passwordInputState.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return false;
+    }
+    return true;
   }
 
   /** Send reset password email.*/
@@ -118,17 +127,21 @@ public class LoginViewModel extends ViewModel {
 
     String email = userModel.getEmail();
 
-    if (Validation.emptyString(email)) {
-      Log.d(TAG, "email is null.");
-      this.emailSentLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-    } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, "email has wrong pattern.");
-      this.emailSentLiveData.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
-    } else {
-
+    if (this.sendPasswordCheckInput(email)) {
       this.authAppRepository.sendPasswordResetMail(email);
     }
+  }
+
+  private boolean sendPasswordCheckInput(String email) {
+    if (Validation.emptyString(email)) {
+      this.emailSentLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      return false;
+    } else if (!Validation.emailHasPattern(email)) {
+      this.emailSentLiveData.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
+      return false;
+    }
+    return true;
   }
 
   /** Resend email verification email. Requires a logged in user! Cant send an email without
