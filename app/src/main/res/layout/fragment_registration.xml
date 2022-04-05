@@ -22,7 +22,7 @@
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
@@ -41,7 +41,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="32dp"
                     android:text="@string/registration_fragment_title"
                     android:textAlignment="center" />
 
@@ -50,7 +50,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="32dp"
                     android:hint="@string/registration_fragment_user_name"
                     app:counterEnabled="true"
                     app:counterMaxLength="15"
