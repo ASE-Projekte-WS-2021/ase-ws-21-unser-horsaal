@@ -6,23 +6,29 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.ThreadCardBinding;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.utils.QueryBuilder;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import com.l4digital.fastscroll.FastScroller;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Adapter for the RecyclerView inCourseMeetingRepository. */
-public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
+public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder>
+        implements FastScroller.SectionIndexer {
 
   private static final String TAG = "ThreadAdapter";
 
   private final List<ThreadModel> originalLocalDataSet;
   private List<ThreadModel> filteredLocalDataSet;
   private final CurrentCourseViewModel currentCourseViewModel;
+  private ThreadModel visibleItem;
 
   /** JavaDoc. */
   public ThreadAdapter(List<ThreadModel> dataSet, CurrentCourseViewModel currentCourseViewModel) {
@@ -100,6 +106,39 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
       }
     };
   }
+
+  /**Source: https://stackoverflow.com/questions/24989218/get-visible-items-in-recyclerview.*/
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+    if (manager instanceof LinearLayoutManager && getItemCount() > 0) {
+      LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
+      recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+          super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+          super.onScrolled(recyclerView, dx, dy);
+          int visiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+          if (visiblePosition > -1) {
+            visibleItem = filteredLocalDataSet.get(visiblePosition);
+          }
+        }
+      });
+    }
+  }
+
+  @Override
+  public CharSequence getSectionText(int position) {
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd:MM:yyyy");
+    return sdf.format(this.visibleItem.getCreationTime());
+
+  }
+
 
   /** Viewholder for an thread item. */
   public class ViewHolder extends RecyclerView.ViewHolder {
