@@ -210,7 +210,7 @@
         <entry key="app/src/main/res/layout/fragment_enter_course.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_enter_course_detail.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_live_chat.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_no_course_found.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_onboarding_account.xml" value="0.22" />

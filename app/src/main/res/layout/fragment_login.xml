@@ -11,6 +11,8 @@
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +31,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
@@ -58,6 +60,7 @@
                     android:layout_marginTop="32dp"
                     android:hint="@string/login_fragment_user_email_hint"
                     android:layout_gravity="center"
+                    app:endIconMode="clear_text"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -70,7 +73,8 @@
 
                     <TextView
                         android:id="@+id/loginFragmentUserEmailErrorText"
-                        android:visibility="gone"
+                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.userInputState.error.message}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -99,7 +103,8 @@
 
                     <TextView
                         android:id="@+id/loginFragmentPasswordErrorText"
-                        android:visibility="gone"
+                        android:visibility="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.passwordInputState.error.message}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -109,7 +114,8 @@
 
                 <TextView
                     android:id="@+id/loginFragmentGeneralErrorMessage"
-                    android:visibility="gone"
+                    android:visibility="@{vm.userLiveData.status == StateData.DataStatus.ERROR &amp;&amp; (vm.userLiveData.errorTag == ErrorTag.REPO || vm.userLiveData.errorTag == ErrorTag.VM) ? View.VISIBLE : View.GONE}"
+                    android:text="@{vm.userLiveData.error.message}"
                     android:textColor="@color/red"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
@@ -127,6 +133,7 @@
                         android:id="@+id/loginFragmentLoginButton"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
+                        android:enabled="@{vm.userLiveData.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{() -> vm.login()}"
                         android:layout_marginTop="32dp"
                         android:text="@string/login_fragment_login_button_string"
@@ -147,7 +154,7 @@
                         android:indeterminate="true"
                         android:indeterminateTint="@color/white"
                         android:indeterminateTintMode="src_in"
-                        android:visibility="gone"
+                        android:visibility="@{vm.userLiveData.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="@+id/loginFragmentLoginButton"
                         app:layout_constraintEnd_toEndOf="@+id/loginFragmentLoginButton"
                         app:layout_constraintHorizontal_bias="0.975"

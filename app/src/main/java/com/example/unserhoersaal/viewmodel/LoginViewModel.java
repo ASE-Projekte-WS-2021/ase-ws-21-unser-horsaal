@@ -67,9 +67,14 @@ public class LoginViewModel extends ViewModel {
     this.passwordInputState.postCreate(new PasswordModel());
   }
 
+  public void setLiveDataComplete() {
+    this.userLiveData.postComplete();
+  }
+
   /** JavaDoc for this method. */
   public void login() {
-    this.userLiveData.postLoading();
+    this.userInputState.postLoading();
+    this.passwordInputState.postLoading();
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
@@ -83,28 +88,21 @@ public class LoginViewModel extends ViewModel {
     String password = passwordModel.getCurrentPassword();
 
     if (Validation.emptyString(email)) {
-      Log.d(TAG, "email is null.");
-      this.userLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-      return;
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
     } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, "email has wrong pattern.");
-      this.userLiveData.postError(
+      this.userInputState.postError(
               new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
-      return;
-    }
-    if (Validation.emptyString(password)) {
-      Log.d(TAG, "password is null.");
-      this.userLiveData.postError(
+    } else if (Validation.emptyString(password)) {
+      this.passwordInputState.postError(
               new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
-      return;
     } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, "password has wrong pattern.");
-      this.userLiveData.postError(
+      this.passwordInputState.postError(
               new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
-      return;
+    } else {
+      this.userInputState.postComplete();
+      this.passwordInputState.postComplete();
+      this.authAppRepository.login(email, password);
     }
-
-    this.authAppRepository.login(email, password);
   }
 
   /** Send reset password email.*/

@@ -2,7 +2,6 @@ package com.example.unserhoersaal.views;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentLoginBinding;
 import com.example.unserhoersaal.enums.DeepLinkEnum;
-import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.utils.DeepLinkMode;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
@@ -128,61 +126,42 @@ public class LoginFragment extends Fragment {
     this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
 
-    if (firebaseUserStateData == null) { //-> move to other method
-      Log.e(TAG, "FirebaseUser object is null");
+    if (firebaseUserStateData == null) {
       this.binding.loginFragmentGeneralErrorMessage.setText(Config.UNSPECIFIC_ERROR);
       this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
       return;
     }
-    FirebaseUser firebaseUser = firebaseUserStateData.getData();
 
+    FirebaseUser firebaseUser = firebaseUserStateData.getData();
+    this.navigateUser(firebaseUserStateData, firebaseUser);
+  }
+
+  private void resetBindings() {
+    this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.GONE);
+  }
+
+  private void navigateUser(StateData<FirebaseUser> firebaseUserStateData,
+                            FirebaseUser firebaseUser) {
     if (firebaseUser != null && (firebaseUserStateData.getStatus() == StateData.DataStatus.CREATED
             || firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE)) {
       if (firebaseUser.isEmailVerified()
               && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
-        this.coursesViewModel.setUserId(firebaseUser.getUid());
-        this.profileViewModel.setUserId();
-        this.courseHistoryViewModel.setUserId();
-        this.currentCourseViewModel.setUserId();
-        navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
+        this.setUserIds(firebaseUser);
+        this.navController.navigate(R.id.action_loginFragment_to_enterCourseFragment);
       } else if (firebaseUser.isEmailVerified()) {
-        this.coursesViewModel.setUserId(firebaseUser.getUid());
-        this.profileViewModel.setUserId();
-        this.courseHistoryViewModel.setUserId();
-        this.currentCourseViewModel.setUserId();
-        navController.navigate(R.id.action_loginFragment_to_coursesFragment);
+        this.setUserIds(firebaseUser);
+        this.navController.navigate(R.id.action_loginFragment_to_coursesFragment);
       } else if (!firebaseUser.isEmailVerified()) {
-        navController.navigate(R.id.action_loginFragment_to_verificationFragment);
-      }
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.loginFragmentProgressSpinner.setVisibility(View.VISIBLE);
-      this.binding.loginFragmentLoginButton.setEnabled(false);
-    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
-        this.binding.loginFragmentUserEmailErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.loginFragmentUserEmailErrorText.setVisibility(View.VISIBLE);
-      }
-      if (firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
-        this.binding.loginFragmentPasswordErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.loginFragmentPasswordErrorText.setVisibility(View.VISIBLE);
-      }
-      if (firebaseUserStateData.getErrorTag() == ErrorTag.REPO
-              || firebaseUserStateData.getErrorTag() == ErrorTag.VM) {
-        this.binding.loginFragmentGeneralErrorMessage
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
+        this.navController.navigate(R.id.action_loginFragment_to_verificationFragment);
       }
     }
   }
 
-  private void resetBindings() {
-    this.binding.loginFragmentUserEmailErrorText.setVisibility(View.GONE);
-    this.binding.loginFragmentPasswordErrorText.setVisibility(View.GONE);
-    this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.GONE);
-    this.binding.loginFragmentProgressSpinner.setVisibility(View.GONE);
-    this.binding.loginFragmentLoginButton.setEnabled(true);
+  private void setUserIds(FirebaseUser firebaseUser) {
+    this.coursesViewModel.setUserId(firebaseUser.getUid());
+    this.profileViewModel.setUserId();
+    this.courseHistoryViewModel.setUserId();
+    this.currentCourseViewModel.setUserId();
   }
 
   private void connectBinding() {
@@ -194,5 +173,8 @@ public class LoginFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.resetBindings();
+    this.loginViewModel.setDefaultInputState();
+    this.loginViewModel.setLiveDataComplete();
   }
+
 }
