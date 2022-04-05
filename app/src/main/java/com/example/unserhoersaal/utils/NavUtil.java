@@ -275,4 +275,16 @@ public class NavUtil {
 
   }
 
+  @BindingAdapter("openBrowser")
+  public static void shareLinkViaMessenger(View view, String codeMapping) {
+    Context context = view.getContext();
+    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+    intent.setType("text/plain");
+    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, codeMapping);
+    intent.putExtra(android.content.Intent.EXTRA_TEXT, codeMapping);
+    context.startActivity(Intent.createChooser(intent, codeMapping));
+  }
+
+
+
 }

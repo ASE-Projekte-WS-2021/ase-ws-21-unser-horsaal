@@ -339,5 +339,7 @@ public class Config {
    * ======================= */
   public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
 
-
+  /**=======================.
+   *  Impressum
+   * ======================= */
 }
