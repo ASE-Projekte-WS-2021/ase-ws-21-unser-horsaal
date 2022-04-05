@@ -76,13 +76,15 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
                 android:id="@+id/threadCardTagContainer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginEnd="8dp"
                 android:visibility="@{model.tags == null ? View.GONE : View.VISIBLE}"
+                app:chipSpacingVertical="4dp"
+                app:chipSpacingHorizontal="1dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/threadCardVoteContainer"
@@ -94,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/course_meeting_fragment_chip_subject"
                     android:visibility="@{model.tags.contains(TagEnum.SUBJECT_MATTER) ? View.VISIBLE : View.GONE}"
-                    app:chipBackgroundColor="@color/orange"
+                    app:chipBackgroundColor="@color/call_to_action_darker_orange"
                     style="@style/threadChipStyle" />
 
                 <com.google.android.material.chip.Chip
@@ -143,14 +145,7 @@
                     app:chipIcon="@drawable/ic_baseline_insert_drive_file_24"
                     style="@style/threadChipStyle" />
 
-                <!--
-                <TextView
-                    android:id="@+id/threadCardHashtagTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="#hashtag1"/>
-                -->
-            </LinearLayout>
+            </com.google.android.material.chip.ChipGroup>
 
             <TextView
                 android:id="@+id/threadCardHashtagOne"
