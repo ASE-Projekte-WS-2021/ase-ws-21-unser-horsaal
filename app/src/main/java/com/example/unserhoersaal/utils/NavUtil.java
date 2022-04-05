@@ -277,11 +277,12 @@ public class NavUtil {
 
   @BindingAdapter("openMessengers")
   public static void shareLinkViaMessenger(View view, String codeMapping) {
+    String deepLink = Config.DEEP_LINK_URL + codeMapping;
     Context context = view.getContext();
     Intent intent = new Intent(android.content.Intent.ACTION_SEND);
     intent.setType(Config.TEXT_PLAIN);
-    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, codeMapping);
-    intent.putExtra(android.content.Intent.EXTRA_TEXT, codeMapping);
-    context.startActivity(Intent.createChooser(intent, codeMapping));
+    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, deepLink);
+    intent.putExtra(android.content.Intent.EXTRA_TEXT, deepLink);
+    context.startActivity(Intent.createChooser(intent, deepLink));
   }
 }
