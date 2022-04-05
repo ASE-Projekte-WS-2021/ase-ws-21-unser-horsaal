@@ -28,6 +28,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@={vm.meeting.data.title}"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_marginEnd="8dp"
                 style="@style/toolbarTitleStyle"/>
 
         </com.google.android.material.appbar.MaterialToolbar>

@@ -37,7 +37,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,28 +46,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/createPollFragmentInfoTextView"
-                    android:layout_width="0dp"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/createPollFragmentInfoContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/create_poll_info_string"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
                     android:layout_margin="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/createPollFragmentInfoTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/create_poll_info_string"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textAlignment="center"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:text="@string/create_poll_yes_no"
                     android:layout_marginStart="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/createPollFragmentSwitch"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/createPollFragmentSwitch" />
+                    app:layout_constraintTop_toTopOf="@id/createPollFragmentSwitch"
+                    style="@style/headerTextView"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/createPollFragmentSwitch"
@@ -78,7 +95,7 @@
                     android:layout_marginEnd="16dp"
                     android:checked="true"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentInfoTextView" />
+                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentInfoContainer" />
 
                 <TextView
                     android:id="@+id/createPollFragmentQuestionTextView"
@@ -87,9 +104,9 @@
                     android:text="@string/create_poll_question"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentSwitch" />
+                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentSwitch"
+                    style="@style/headerTextView"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/createPollFragmentQuestionInputField"
@@ -99,7 +116,10 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:hint="@string/create_poll_question_hing"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100"
+                    app:endIconMode="clear_text"
+                    app:hintEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/createPollFragmentQuestionTextView">
@@ -110,7 +130,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="100"
-                        android:background="@drawable/rounded_corners" />
+                        android:background="@drawable/rounded_corners"
+                        android:hint="@string/create_poll_question_hing"
+                        android:paddingTop="12dp"/>
 
                     <TextView
                         android:id="@+id/createPollFragmentQuestionErrorText"
@@ -126,11 +148,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/create_poll_options_text"
-                    android:textStyle="bold"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="16dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentQuestionInputField" />
+                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentQuestionInputField"
+                    style="@style/headerTextView"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/createPollFragmentOption1InputField"
