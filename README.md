@@ -1,4 +1,6 @@
 # Die App "Unser Hörsaal" 
+![Logo](https://user-images.githubusercontent.com/41992838/161822182-c512fcfe-fd7d-4f16-b5dd-5198e8fb5abc.png)
+
 ###### Ein Studentenprojekt des Masterkurses Advanced Software Engineering (ASE-Projekte WS2021)
 
 ## Was ist die Zielgruppe bzw. potentielle Nutzer:innen dieser App?
