@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.views;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,14 +53,9 @@ public class CreateCourseFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
-
-    if (createCourseViewModel.getIsEditing()) {
-      changeToEditText();
-    } else {
-      changeToCreateText();
-    }
     this.connectBinding();
     this.initToolbar();
+    this.initEditable();
   }
 
   private void initViewModel() {
@@ -83,7 +77,6 @@ public class CreateCourseFragment extends Fragment {
       this.binding.createCourseFragmentCreateButton.setEnabled(false);
     } else if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
       if (courseModelStateData.getErrorTag() == ErrorTag.TITLE) {
-        System.out.println(courseModelStateData.getError().getMessage());
         this.binding.createCourseFragmentCourseTitleErrorText
                 .setText(courseModelStateData.getError().getMessage());
         this.binding.createCourseFragmentCourseTitleErrorText.setVisibility(View.VISIBLE);
@@ -130,28 +123,22 @@ public class CreateCourseFragment extends Fragment {
   public void courseCreated(CourseModel course) {
     this.courseHistoryViewModel.setCourse(course);
     this.createCourseViewModel.resetCourseModelInput();
+
     if (createCourseViewModel.getIsEditing()) {
       this.navController.navigate(R.id.action_createCourseFragment_to_courseDescriptionFragment);
     } else {
       this.navController.navigate(R.id.action_createCourseFragment_to_courseHistoryFragment);
-
     }
   }
 
-  public void changeToEditText() {
-    binding.createCourseFragmentToolbarTitle.setText(R.string.edit_course_string);
-    binding.createCourseFragmentCreateButton.setText(R.string.edit_course_button);
-  }
-
-  public void changeToCreateText() {
-    binding.createCourseFragmentToolbarTitle.setText(R.string.create_course_string);
-    binding.createCourseFragmentCreateButton.setText(R.string.create_course_create_button);
-  }
-
-
-  @Override
-  public void onResume() {
-    super.onResume();
+  private void initEditable() {
+    if (this.createCourseViewModel.getIsEditing()) {
+      this.binding.createCourseFragmentToolbarTitle.setText(R.string.edit_course_string);
+      this.binding.createCourseFragmentCreateButton.setText(R.string.edit_course_button);
+    } else {
+      this.binding.createCourseFragmentToolbarTitle.setText(R.string.create_course_string);
+      this.binding.createCourseFragmentCreateButton.setText(R.string.create_course_create_button);
+    }
   }
 
   @Override
@@ -159,6 +146,5 @@ public class CreateCourseFragment extends Fragment {
     super.onDestroy();
     this.createCourseViewModel.setIsEditing(false);
     this.createCourseViewModel.resetCourseModelInput();
-
   }
 }

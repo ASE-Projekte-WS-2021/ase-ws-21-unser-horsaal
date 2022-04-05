@@ -271,6 +271,9 @@ public class AuthAppRepository {
   private void deleteUser() {
     FirebaseUser user = this.firebaseAuth.getCurrentUser();
     this.firebaseAuth.signOut();
+    if (user == null) {
+      Log.d(TAG, "user is null");
+    }
     user.delete().addOnCompleteListener(task -> {
       if (task.isSuccessful()) {
         this.userLiveData.postUpdate(null);

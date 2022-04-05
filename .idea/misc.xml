@@ -134,7 +134,7 @@
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_second.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/answer_item.xml" value="0.1" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_all_courses.xml" value="0.15989583333333332" />
-        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description.xml" value="0.1" />
+        <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description.xml" value="0.23143115942028986" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_description_detail.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_course_thread.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/julia/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/fragment_courses.xml" value="0.1" />
@@ -179,6 +179,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.2425" />
         <entry key="app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.2425" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2425" />
+        <entry key="app/src/main/res/drawable/image_border.xml" value="0.3115" />
         <entry key="app/src/main/res/drawable/onboarding_selected_dot.xml" value="0.2825" />
         <entry key="app/src/main/res/drawable/onboarding_selector.xml" value="0.194" />
         <entry key="app/src/main/res/drawable/onboarding_tab_selected.xml" value="0.2825" />
@@ -198,18 +199,18 @@
         <entry key="app/src/main/res/layout/fragment_courses_object.xml" value="0.23596014492753623" />
         <entry key="app/src/main/res/layout/fragment_create_course.xml" value="0.21829710144927536" />
         <entry key="app/src/main/res/layout/fragment_create_course_information.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.2341485507246377" />
+        <entry key="app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_create_poll.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_create_thread.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_current_course.xml" value="0.254981884057971" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_institution.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_name.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/fragment_edit_profile_password.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile_password.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_enter_course.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_enter_course_detail.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_live_chat.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_no_course_found.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_onboarding_account.xml" value="0.22" />

@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEditProfilePasswordBinding;
 import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
@@ -62,6 +63,7 @@ public class EditProfilePasswordFragment extends Fragment {
 
   private void profileChangedCallback(StateData<Boolean> booleanStateData) {
     this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
 
     if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
       this.navController.navigate(R.id.action_editProfilePasswordFragment_to_profileFragment);
@@ -80,14 +82,14 @@ public class EditProfilePasswordFragment extends Fragment {
         this.binding.editProfilePasswordGeneralErrorText.setVisibility(View.VISIBLE);
       }
     } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.editProfilePasswordFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.editProfilePasswordSaveSpinner.setVisibility(View.VISIBLE);
     }
   }
 
   private void resetBindings() {
     this.binding.editProfilePasswordCurrentPasswordErrorText.setVisibility(View.GONE);
     this.binding.editProfilePasswordNewPasswordErrorText.setVisibility(View.GONE);
-    this.binding.editProfilePasswordFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.editProfilePasswordSaveSpinner.setVisibility(View.GONE);
     this.binding.editProfilePasswordGeneralErrorText.setVisibility(View.GONE);
   }
 

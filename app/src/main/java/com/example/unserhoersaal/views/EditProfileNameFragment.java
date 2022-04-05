@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -15,6 +14,7 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEditProfileNameBindingImpl;
 import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
@@ -63,6 +63,7 @@ public class EditProfileNameFragment extends Fragment {
 
   private void profileChangedCallback(StateData<Boolean> booleanStateData) {
     this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
 
     if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
       navController.navigate(R.id.action_editProfileNameFragment_to_profileFragment);
@@ -76,14 +77,14 @@ public class EditProfileNameFragment extends Fragment {
         this.binding.editProfileUserNameGeneralErrorText.setVisibility(View.VISIBLE);
       }
     } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.editProfileUserNameFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.binding.editProfileUserNameSaveSpinner.setVisibility(View.VISIBLE);
     }
   }
 
   private void resetBindings() {
     this.binding.editProfileUserNameGeneralErrorText.setVisibility(View.GONE);
     this.binding.editProfileUserNameErrorText.setVisibility(View.GONE);
-    this.binding.editProfileUserNameFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.editProfileUserNameSaveSpinner.setVisibility(View.GONE);
   }
 
   private void connectBinding() {

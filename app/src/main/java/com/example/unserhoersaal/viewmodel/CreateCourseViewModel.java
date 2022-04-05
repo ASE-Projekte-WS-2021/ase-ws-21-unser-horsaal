@@ -47,7 +47,7 @@ public class CreateCourseViewModel extends ViewModel {
       return;
     }
 
-    if (courseModel.getTitle() == null) {
+    if (Validation.emptyString(courseModel.getTitle())) {
       Log.d(TAG, "title is null.");
       this.courseModel.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
       return;
@@ -56,7 +56,8 @@ public class CreateCourseViewModel extends ViewModel {
       this.courseModel.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
       return;
     }
-    if (courseModel.getDescription() == null) {
+
+    if (Validation.emptyString(courseModel.getDescription())) {
       Log.d(TAG, "description is null.");
       this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
       return;
@@ -67,7 +68,8 @@ public class CreateCourseViewModel extends ViewModel {
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
       return;
     }
-    if (courseModel.getInstitution() == null) {
+
+    if (Validation.emptyString(courseModel.getInstitution())) {
       Log.d(TAG, "institution is null.");
       this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
       return;
@@ -81,8 +83,7 @@ public class CreateCourseViewModel extends ViewModel {
 
     if (isEditing) {
       this.createCourseRepository.editCourse(courseModel);
-
-    }else {
+    } else {
       courseModel.setCodeMapping(this.getCodeMapping());
 
       this.courseModelInputState.postCreate(new CourseModel());
