@@ -72,6 +72,7 @@ public class LiveChatFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
+    this.setupScrolling();
   }
 
   @SuppressLint("NotifyDataSetChanged")
@@ -148,5 +149,20 @@ public class LiveChatFragment extends Fragment {
   public void onDestroy() {
     super.onDestroy();
     KeyboardUtil.hideKeyboard(getActivity());
+  }
+
+  private void setupScrolling() {
+    View infoContainer = this.binding.liveChatFragmentInfoContainer;
+    this.binding.liveChatFragmentChatRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        if (!recyclerView.canScrollVertically(-1)) {
+          infoContainer.setVisibility(View.VISIBLE);
+        } else {
+          infoContainer.setVisibility(View.GONE);
+        }
+      }
+    });
   }
 }
