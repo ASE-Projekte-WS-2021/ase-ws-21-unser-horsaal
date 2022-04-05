@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -27,11 +30,17 @@ import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
+import com.google.zxing.WriterException;
+
+import java.io.IOException;
 
 /** Class for Navigation. */
 public class NavUtil {
+
+  private static final String TAG = "NavUtil";
 
   @BindingAdapter("navigate")
   public static void navigate(View view, int navAction) {
@@ -273,6 +282,38 @@ public class NavUtil {
   public static void openBrowser(View view, String destination) {
     Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
     view.getContext().startActivity(i);
+
+  }
+
+  /** Opens Camera App. */
+  @BindingAdapter("navigateToCameraApp")
+  public static void openCameraApp(View view, EnterCourseViewModel vm) {
+
+      Intent camera_intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
+      Context context = view.getContext();
+    try {
+      context.startActivity(camera_intent);
+    }
+    catch (android.content.ActivityNotFoundException ex) {
+      Toast.makeText(context,Config.CAMERA_INTENT_ERROR_TOAST, Toast.LENGTH_LONG).show();
+    }
+
+
+  }
+
+  /** Opens Camera App. */
+  @BindingAdapter("navigateToCameraApp")
+  public static void shareCourseCode(View view, CourseDescriptionViewModel vm) {
+
+    Intent camera_intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
+    Context context = view.getContext();
+    try {
+      context.startActivity(camera_intent);
+    }
+    catch (android.content.ActivityNotFoundException ex) {
+      Toast.makeText(context,Config.CAMERA_INTENT_ERROR_TOAST, Toast.LENGTH_LONG).show();
+    }
+
 
   }
 
