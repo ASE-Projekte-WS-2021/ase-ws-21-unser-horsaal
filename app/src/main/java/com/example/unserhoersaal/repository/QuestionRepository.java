@@ -22,27 +22,35 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Repository for the CourseMeetingViewModel. */
+/**
+ * Repository for the CourseMeetingViewModel.
+ */
 public class QuestionRepository {
 
   private static final String TAG = "QuestionRepository";
 
   private static QuestionRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private ArrayList<ThreadModel> threadModelList = new ArrayList<>();
-  private StateLiveData<List<ThreadModel>> threads = new StateLiveData<>();
-  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
-  private StateLiveData<ThreadModel> threadModelMutableLiveData = new StateLiveData<>();
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<ThreadModel> threadModelList = new ArrayList<>();
+  private final StateLiveData<List<ThreadModel>> threads = new StateLiveData<>();
+  private final StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
+  private final StateLiveData<ThreadModel> threadModelMutableLiveData = new StateLiveData<>();
 
-  /** JavaDoc. */
+  /**
+   * Constructor.
+   */
   public QuestionRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.meeting.postCreate(new MeetingsModel());
   }
 
-  /** Generate an instance of the class. */
+  /**
+   * Generate an instance of the class.
+   *
+   * @return Instance of the QuestionRepository
+   */
   public static QuestionRepository getInstance() {
     if (instance == null) {
       instance = new QuestionRepository();
@@ -50,7 +58,6 @@ public class QuestionRepository {
     return instance;
   }
 
-  /** Give back all threads of the Meeting. */
   public StateLiveData<List<ThreadModel>> getThreads() {
     this.threads.postCreate(this.threadModelList);
     return this.threads;
@@ -64,7 +71,11 @@ public class QuestionRepository {
     return this.threadModelMutableLiveData;
   }
 
-  /** Set the id of the current meeting. */
+  /**
+   * Set the id of the current meeting.
+   *
+   * @param meeting data of the new meeting
+   */
   public void setMeeting(MeetingsModel meeting) {
     String meetingId = meeting.getKey();
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
@@ -77,13 +88,12 @@ public class QuestionRepository {
       this.meeting.postUpdate(meeting);
       this.loadThreads();
     }
-
-
   }
 
-  /** Loads all threads of the current meeting from the database. */
-  //Query is not updated
-  public void loadThreads() {
+  /**
+   * Loads all threads of the current meeting from the database.
+   */
+  private void loadThreads() {
     this.meeting.postLoading();
 
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
@@ -123,7 +133,11 @@ public class QuestionRepository {
     });
   }
 
-  /** Creates a new threat in the meeting. */
+  /**
+   * Creates a new threat in the meeting.
+   *
+   * @param threadModel data of the created thread
+   */
   public void createThread(ThreadModel threadModel) {
     this.threadModelMutableLiveData.postLoading();
 
@@ -171,8 +185,12 @@ public class QuestionRepository {
             });
   }
 
-  /** get the author for each thread in the provided list. */
-  public void getAuthor(List<ThreadModel> threadList) {
+  /**
+   * Get the author for each thread in the provided list.
+   *
+   * @param threadList list with all threads of a meeting
+   */
+  private void getAuthor(List<ThreadModel> threadList) {
     this.threads.postLoading();
 
     List<Task<DataSnapshot>> authors = new ArrayList<>();
@@ -193,10 +211,15 @@ public class QuestionRepository {
     });
   }
 
-  public Task<DataSnapshot> getAuthorData(String authorId) {
+  private Task<DataSnapshot> getAuthorData(String authorId) {
     return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
   }
 
+  /**
+   * Load if a user has liked/disliked or not interacted with the thread.
+   *
+   * @param threadList list of all threads of the current meeting
+   */
   private void getLikeStatus(List<ThreadModel> threadList) {
     List<Task<DataSnapshot>> likeList = new ArrayList<>();
     for (ThreadModel thread : threadList) {

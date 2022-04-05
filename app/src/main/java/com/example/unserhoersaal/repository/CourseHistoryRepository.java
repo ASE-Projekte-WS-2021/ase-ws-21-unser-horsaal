@@ -211,7 +211,11 @@ public class CourseHistoryRepository {
             });
   }
 
-  /** Edit existing Meeting in the course. */
+  /**
+   * Edit existing Meeting in the course.
+   *
+   * @param meetingsModel new meeting data
+   */
   public void editMeeting(MeetingsModel meetingsModel) {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
@@ -237,18 +241,18 @@ public class CourseHistoryRepository {
       return;
     }
 
+    //TODO: key nicht mitspeichern
     this.databaseReference
             .child(Config.CHILD_MEETINGS)
             .child(courseObj.getKey())
             .child(meetingId)
             .setValue(meetingsModel)
-            .addOnSuccessListener(unused -> {
-              meetingsModelMutableLiveData.postUpdate(meetingsModel);
-            }).addOnFailureListener(e -> {
-      Log.e(TAG, e.getMessage());
-      meetingsModelMutableLiveData.postError(
-              new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
-    });
+            .addOnSuccessListener(unused -> meetingsModelMutableLiveData.postUpdate(meetingsModel))
+            .addOnFailureListener(e -> {
+              Log.e(TAG, e.getMessage());
+              meetingsModelMutableLiveData.postError(
+                      new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
+            });
   }
 
   public String getUid() {
