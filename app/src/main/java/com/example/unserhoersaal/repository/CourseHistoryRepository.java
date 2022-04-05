@@ -211,4 +211,47 @@ public class CourseHistoryRepository {
             });
   }
 
+  /** Edit existing Meeting in the course. */
+  public void editMeeting(MeetingsModel meetingsModel) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.meetingsModelMutableLiveData.postError(
+              new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
+    if (courseObj == null) {
+      Log.e(TAG, "userModel is null.");
+      this.meetingsModelMutableLiveData.postError(
+              new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    String meetingId = meetingsModel.getKey();
+
+    if (meetingId == null) {
+      Log.e(TAG, "meeting id is null");
+      this.meetingsModelMutableLiveData.postError(
+              new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    this.databaseReference
+            .child(Config.CHILD_MEETINGS)
+            .child(courseObj.getKey())
+            .child(meetingId)
+            .setValue(meetingsModel)
+            .addOnSuccessListener(unused -> {
+              meetingsModelMutableLiveData.postUpdate(meetingsModel);
+            }).addOnFailureListener(e -> {
+      Log.e(TAG, e.getMessage());
+      meetingsModelMutableLiveData.postError(
+              new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
+    });
+  }
+
+  public String getUid() {
+    return firebaseAuth.getCurrentUser().getUid();
+  }
 }

@@ -72,6 +72,7 @@ public class CourseHistoryFragment extends Fragment {
             this::meetingsLiveDataCallback);
 
     this.initToolbar();
+    this.setupScrolling();
   }
 
   private void initViewModel() {
@@ -107,8 +108,10 @@ public class CourseHistoryFragment extends Fragment {
     }
     if (listStateData.getData().size() == 0) {
       this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
+      this.binding.courseHistoryFragmentMeetingsTextView.setVisibility(View.GONE);
     } else {
       this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
+      this.binding.courseHistoryFragmentMeetingsTextView.setVisibility(View.VISIBLE);
     }
   }
 
@@ -118,7 +121,8 @@ public class CourseHistoryFragment extends Fragment {
 
   private void connectAdapter() {
     this.meetingAdapter =
-            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData());
+            new MeetingAdapter(this.courseHistoryViewModel.getMeetings().getValue().getData(),
+                    this.courseHistoryViewModel.getUid(), courseHistoryViewModel.getCreatorId());
 
   }
 
@@ -140,7 +144,21 @@ public class CourseHistoryFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    this.courseHistoryViewModel.resetMeetingData();
+  }
+
+  private void setupScrolling() {
+    View courseCard = this.binding.courseHistoryFragmentCourseCard;
+    this.binding.courseHistoryFragmentCoursesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        if (!recyclerView.canScrollVertically(-1)){
+          courseCard.setVisibility(View.VISIBLE);
+        } else {
+          courseCard.setVisibility(View.GONE);
+        }
+      }
+    });
   }
 
 }

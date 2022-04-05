@@ -5,13 +5,6 @@ public class MeetingsModel {
 
   private static final String TAG = "MeetingsModel";
 
-  private int yearInput;
-  private int monthInput;
-  private int dayOfMonthInput;
-  private int hourInput;
-  private int minuteInput;
-  private int hourEndInput;
-  private int minuteEndInput;
   private Long creationTime;
   private String creatorId;
   private String description;
@@ -20,65 +13,10 @@ public class MeetingsModel {
   private String title;
   private String key;
   private String meetingDate;
+  private String meetingKey;
 
   public MeetingsModel() {
     //needed for Firebase
-  }
-
-  public int getYearInput() {
-    return yearInput;
-  }
-
-  public void setYearInput(int yearInput) {
-    this.yearInput = yearInput;
-  }
-
-  public int getMonthInput() {
-    return monthInput;
-  }
-
-  public void setMonthInput(int monthInput) {
-    this.monthInput = monthInput;
-  }
-
-  public int getDayOfMonthInput() {
-    return dayOfMonthInput;
-  }
-
-  public void setDayOfMonthInput(int dayOfMonthInput) {
-    this.dayOfMonthInput = dayOfMonthInput;
-  }
-
-  public int getHourInput() {
-    return hourInput;
-  }
-
-  public void setHourInput(int hourInput) {
-    this.hourInput = hourInput;
-  }
-
-  public int getMinuteInput() {
-    return minuteInput;
-  }
-
-  public void setMinuteInput(int minuteInput) {
-    this.minuteInput = minuteInput;
-  }
-
-  public int getHourEndInput() {
-    return this.hourEndInput;
-  }
-
-  public void setHourEndInput(int hourEndInput) {
-    this.hourEndInput = hourEndInput;
-  }
-
-  public int getMinuteEndInput() {
-    return this.hourEndInput;
-  }
-
-  public void setMinuteEndInput(int minuteEndInput) {
-    this.minuteEndInput = minuteEndInput;
   }
 
   public Long getCreationTime() {
@@ -144,6 +82,10 @@ public class MeetingsModel {
   public void setMeetingDate(String meetingDate) {
     this.meetingDate = meetingDate;
   }
+
+  public void setMeetingKey(String meetingKey) { this.meetingKey = meetingKey; }
+
+  public String getMeetingKey() { return meetingKey; }
 
 }
 

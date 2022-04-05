@@ -8,6 +8,7 @@ import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 
 /**
@@ -84,12 +85,74 @@ public class CreateCourseRepository {
             });
   }
 
+
+  /**Method edits an course.**/
+  public void editCourse(CourseModel courseModel) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courseModelMutableLiveData.postError(
+              new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    String courseId = courseModel.getKey();
+
+
+    if (courseId == null) {
+      Log.e(TAG, "courseid is null");
+      this.courseModelMutableLiveData.postError(
+              new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    DatabaseReference courseDbRef = this.databaseReference.child(Config.CHILD_COURSES).child(courseId);
+
+
+    courseDbRef.child("description").setValue(courseModel.getDescription())
+            .addOnSuccessListener(unused -> {
+              courseModel.setKey(courseId);
+              courseModelMutableLiveData.postUpdate(courseModel);
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
+              courseModelMutableLiveData.postError(
+                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+            });
+
+    courseDbRef.child("institution").setValue(courseModel.getInstitution())
+            .addOnSuccessListener(unused -> {
+              courseModel.setKey(courseId);
+              courseModelMutableLiveData.postUpdate(courseModel);
+
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
+              courseModelMutableLiveData.postError(
+                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+            });
+    courseDbRef.child("title").setValue(courseModel.getTitle())
+            .addOnSuccessListener(unused -> {
+              courseModel.setKey(courseId);
+              courseModelMutableLiveData.postUpdate(courseModel);
+
+            })
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
+              courseModelMutableLiveData.postError(
+                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+            });
+
+
+  }
+
+
   /**
    * Adds a user to a course.
    *
    * @param course course the user is added
    * @param user id of the added user
    */
+
   private void addUserToCourse(CourseModel course, String user) {
     this.databaseReference
             .child(Config.CHILD_USER_COURSES)
