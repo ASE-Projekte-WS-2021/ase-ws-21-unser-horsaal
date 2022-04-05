@@ -3,6 +3,7 @@ package com.example.unserhoersaal.repository;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.LiveChatMessageModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.UserModel;
@@ -26,21 +27,23 @@ public class LiveChatRepository {
 
   private static final String TAG = "LiveChatRepository";
 
-  private static LiveChatRepository instance;
   private final FirebaseAuth firebaseAuth;
   private final DatabaseReference databaseReference;
-  private final ArrayList<LiveChatMessageModel> liveChatMessages = new ArrayList<>();
-  private final StateLiveData<List<LiveChatMessageModel>> sldLiveChatMessages
-          = new StateLiveData<>();
-  private final StateLiveData<String> sldUserId = new StateLiveData<>();
+  private static LiveChatRepository instance;
+
   private final StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
 
+  private final ArrayList<LiveChatMessageModel> liveChatMessageList = new ArrayList<>();
+  private final StateLiveData<List<LiveChatMessageModel>> liveChatMessages = new StateLiveData<>();
+
+  private final StateLiveData<String> userId = new StateLiveData<>();
+
+  /**
+   * Constructor.
+   */
   public LiveChatRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    this.sldUserId.postCreate("");
-    this.sldLiveChatMessages.postCreate(liveChatMessages);
-    setSldUserId();
   }
 
   /**
@@ -55,26 +58,34 @@ public class LiveChatRepository {
     return instance;
   }
 
+  public StateLiveData<MeetingsModel> getMeeting() {
+    return this.meeting;
+  }
+
   /**
    * Set the new meeting and load the chats of the meeting.
    *
    * @param meeting data of the meeting
    */
   public void setMeeting(MeetingsModel meeting) {
+
     if (meeting == null || meeting.getKey() == null) {
       return;
     }
     if (this.meeting.getValue() == null
             || this.meeting.getValue().getData() == null
             || this.meeting.getValue().getData().getKey() == null
-            || this.meeting.getValue().getData().getKey().equals(meeting.getKey())){
+            || !this.meeting.getValue().getData().getKey().equals(meeting.getKey())){
       this.meeting.postUpdate(meeting);
       this.loadLiveChat();
     }
   }
 
+  /**
+   * Load all chat messages for the meeting.
+   */
   private void loadLiveChat() {
-    this.sldLiveChatMessages.postLoading();
+    this.liveChatMessages.postLoading();
 
     Query query = this.databaseReference
             .child(Config.LIVE_CHAT_MESSAGES_CHILD)
@@ -82,10 +93,15 @@ public class LiveChatRepository {
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        liveChatMessages.clear();
         List<LiveChatMessageModel> messList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           LiveChatMessageModel model = snapshot.getValue(LiveChatMessageModel.class);
+          //TODO poll to livechat
+          if (model == null) {
+            Log.e(TAG, Config.POLLS_FAILED_TO_LOAD);
+            meeting.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
+            return;
+          }
 
           model.setKey(snapshot.getKey());
           messList.add(model);
@@ -111,7 +127,7 @@ public class LiveChatRepository {
       return;
     }
 
-    liveChatMessageModel.setCreatorId(this.sldUserId.getValue().getData());
+    liveChatMessageModel.setCreatorId(this.userId.getValue().getData());
     String messageId = this.databaseReference.getRoot().push().getKey();
 
     this.databaseReference.child(Config.LIVE_CHAT_MESSAGES_CHILD)
@@ -125,21 +141,25 @@ public class LiveChatRepository {
     });
   }
 
-  /** TODO. */
-  public void setSldUserId() {
+  /**
+   * This method sets the new userId after a user has logged in.
+   */
+  public void setUserId() {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       return;
     }
 
     String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.sldUserId.postCreate(uid);
+    this.userId.postCreate(uid);
   }
 
-
-
-  /** TODO. */
-  public void getAuthor(List<LiveChatMessageModel> mesList) {
+  /**
+   * Get the creator data of all polls of a meeting.
+   *
+   * @param mesList List of all chat messages of a meeting
+   */
+  private void getAuthor(List<LiveChatMessageModel> mesList) {
     List<Task<DataSnapshot>> authorModels = new ArrayList<>();
     for (LiveChatMessageModel message : mesList) {
       authorModels.add(getAuthorModel(message.getCreatorId()));
@@ -154,27 +174,24 @@ public class LiveChatRepository {
           mesList.get(i).setPhotoUrl(model.getPhotoUrl());
         }
       }
-      liveChatMessages.addAll(mesList);
-      sldLiveChatMessages.postUpdate(liveChatMessages);
+      liveChatMessageList.clear();
+      liveChatMessageList.addAll(mesList);
+      liveChatMessages.postUpdate(liveChatMessageList);
 
     });
   }
 
-  /** TODO. */
-  public Task<DataSnapshot> getAuthorModel(String authorId) {
+  private Task<DataSnapshot> getAuthorModel(String authorId) {
     return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
   }
 
-  public StateLiveData<String> getSldUserId() {
-    return this.sldUserId;
+  public StateLiveData<List<LiveChatMessageModel>> getLiveChatMessages() {
+    this.liveChatMessages.postUpdate(liveChatMessageList);
+    return this.liveChatMessages;
   }
 
-  public StateLiveData<MeetingsModel> getMeeting() {
-    return this.meeting;
-  }
-
-  public StateLiveData<List<LiveChatMessageModel>> getSldLiveChatMessages() {
-    return this.sldLiveChatMessages;
+  public StateLiveData<String> getUserId() {
+    return this.userId;
   }
 
 }

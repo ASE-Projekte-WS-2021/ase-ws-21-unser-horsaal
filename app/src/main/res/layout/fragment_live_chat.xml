@@ -116,6 +116,8 @@
             android:id="@+id/liveChatFragmentChatRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:adapter="@{adapter}"
+            app:initLayoutManager="@{R.id.liveChatFragmentChatRecycler}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/liveChatFragmentEndTime"
@@ -124,8 +126,6 @@
             app:bubbleSize="small"
             app:bubbleTextSize="16sp"
             tools:listitem="@layout/live_chat_item"
-            android:adapter="@{adapter}"
-            app:initLayoutManager="@{R.id.liveChatFragmentChatRecycler}"
             android:layout_marginBottom="16dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout

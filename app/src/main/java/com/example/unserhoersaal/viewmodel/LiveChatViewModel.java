@@ -18,25 +18,24 @@ public class LiveChatViewModel extends ViewModel {
   private static final String TAG = "LiveChatViewModel";
 
   private LiveChatRepository liveChatRepository;
-  private StateLiveData<MeetingsModel> meeting;
-  private StateLiveData<List<LiveChatMessageModel>> sldLiveChatMessages;
-  private StateLiveData<String> sldUserId;
+  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
+  private StateLiveData<List<LiveChatMessageModel>> liveChatMessages;
+  private StateLiveData<String> userId;
+  public StateLiveData<LiveChatMessageModel> sldMessageModelInputState = new StateLiveData<>();
 
-  private StateLiveData<LiveChatMessageModel> sldMessageModelInputState = new StateLiveData<>();
 
   /** Initialize the ViewModel. */
   public void init() {
-    if (this.sldLiveChatMessages != null) {
+    if (this.liveChatMessages != null) {
       return;
     }
+
     this.liveChatRepository = LiveChatRepository.getInstance();
     this.meeting = this.liveChatRepository.getMeeting();
-    this.sldLiveChatMessages = liveChatRepository.getSldLiveChatMessages();
-    //TODO set other way
-    this.sldUserId = liveChatRepository.getSldUserId();
+    this.liveChatMessages = this.liveChatRepository.getLiveChatMessages();
+    this.userId = this.liveChatRepository.getUserId();
 
     this.sldMessageModelInputState.postCreate(new LiveChatMessageModel());
-    //this.sldLiveChatMessages = liveChatRepository.getSldLiveChatMessages();
   }
 
   /** Send a new message in a thread. */
@@ -67,10 +66,20 @@ public class LiveChatViewModel extends ViewModel {
     this.liveChatRepository.setMeeting(meeting);
   }
 
-  public StateLiveData<List<LiveChatMessageModel>> getSldLiveChatMessages() { return sldLiveChatMessages; }
+  public StateLiveData<List<LiveChatMessageModel>> getLiveChatMessages() {
+    return this.liveChatMessages;
+  }
 
-  public StateLiveData<LiveChatMessageModel> getSldMessageModelInputState() { return sldMessageModelInputState; }
+  /*public StateLiveData<LiveChatMessageModel> getSldMessageModelInputState() {
+    return sldMessageModelInputState;
+  }*/
 
-  public StateLiveData<String> getSldUserId() { return sldUserId; }
+  public void setUserId() {
+    this.liveChatRepository.setUserId();
+  }
+
+  public StateLiveData<String> getUserId() {
+    return this.userId;
+  }
 
 }
