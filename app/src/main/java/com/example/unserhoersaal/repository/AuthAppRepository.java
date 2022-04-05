@@ -167,7 +167,7 @@ public class AuthAppRepository {
               .sendEmailVerification()
               .addOnSuccessListener(unused -> {
                 Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                this.emailSentLiveData.postUpdate(Boolean.TRUE); //TODO use enum
+                this.emailSentLiveData.postUpdate(Boolean.TRUE);
                 this.emailSentLiveData.postCreate(Boolean.FALSE);
               })
               .addOnFailureListener(e -> {

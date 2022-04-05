@@ -69,6 +69,7 @@ public class LoginViewModel extends ViewModel {
 
   public void setLiveDataComplete() {
     this.userLiveData.postComplete();
+    this.emailSentLiveData.postComplete();
   }
 
   /** checks login parameter before using firebase login API. */
