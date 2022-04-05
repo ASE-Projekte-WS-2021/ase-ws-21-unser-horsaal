@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
@@ -273,6 +274,15 @@ public class NavUtil {
     Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
     view.getContext().startActivity(i);
 
+  }
+
+  /** Opens Camera App. */
+  @BindingAdapter("navigateToCameraApp")
+  public static void openCameraApp(View view) {
+    Log.d("Hier", "lol");
+    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    Context context = view.getContext();
+    context.startActivity(camera_intent);
   }
 
 }
