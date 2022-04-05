@@ -143,7 +143,7 @@ public class EnterCourseRepository {
    * Checks if user is in course.
    *
    * @param course data of the course for the check
-   * */
+   */
   public void isUserInCourse(CourseModel course) {
     this.enteredCourse.postLoading();
 
