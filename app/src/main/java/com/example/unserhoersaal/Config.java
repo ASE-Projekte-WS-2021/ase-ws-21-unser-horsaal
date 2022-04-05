@@ -104,6 +104,8 @@ public class Config {
   public static final String CHILD_OPTION_COUNT_2 = "optionsCount2";
   public static final String CHILD_OPTION_COUNT_3 = "optionsCount3";
   public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
+  public static final String CHILD_DESCRIPTION = "description";
+  public static final String CHILD_TITLE = "title";
 
   /**=======================.
    * Shared Preferences Keys
@@ -150,6 +152,13 @@ public class Config {
   public static final String OPTION_YES = "Ja";
   public static final String OPTION_NO = "Nein";
   public static final String OPTION_EMPTY = "";
+
+  /**=======================.
+   * Profile
+   * ======================= */
+
+  public static final String STORAGE_USER = "users/";
+  public static final String STORAGE_FILENAME = "/profile.jpg";
 
   /**=======================.
    * Search Hint

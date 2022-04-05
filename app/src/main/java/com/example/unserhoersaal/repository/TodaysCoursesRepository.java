@@ -2,7 +2,6 @@ package com.example.unserhoersaal.repository;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
@@ -22,16 +21,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/** Repo to load all courses with a meeting today. */
+/**
+ * Repo to load all courses with a meeting today.
+ */
 public class TodaysCoursesRepository {
 
   private static final String TAG = "TodaysCoursesRepository";
 
   private static TodaysCoursesRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private ArrayList<CourseModel> todaysCoursesList = new ArrayList<>();
-  private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<CourseModel> todaysCoursesList = new ArrayList<>();
+  private final StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
   private String userId;
 
   public TodaysCoursesRepository() {
@@ -39,7 +40,11 @@ public class TodaysCoursesRepository {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
-  /** Get an instance of the repo. */
+  /**
+   * Get an instance of the repo.
+   *
+   * @return Instance of the TodaysCoursesRepository
+   */
   public static TodaysCoursesRepository getInstance() {
     if (instance == null) {
       instance = new TodaysCoursesRepository();
@@ -47,7 +52,9 @@ public class TodaysCoursesRepository {
     return instance;
   }
 
-  /** JavaDoc. */
+  /**
+   * Loads the new userId if a new user has logged in.
+   */
   public void setUserId() {
     String uid;
     if (this.firebaseAuth.getCurrentUser() == null) {
@@ -60,15 +67,15 @@ public class TodaysCoursesRepository {
     }
   }
 
-  /** Give back all courses with a meeting today. */
   public StateLiveData<List<CourseModel>> getTodaysCourses() {
     this.courses.postCreate(todaysCoursesList);
     return this.courses;
   }
 
-
-  /** Load all courses with a meeting today. */
-  public void loadTodaysCourses() {
+  /**
+   * Load all courses with a meeting today.
+   */
+  private void loadTodaysCourses() {
     this.courses.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
@@ -98,6 +105,11 @@ public class TodaysCoursesRepository {
     return Config.DATE_FORMAT.format(calendar.getTimeInMillis());
   }
 
+  /**
+   * Check if the meetings of the courses are today.
+   *
+   * @param dataSnapshot snapshot with the id of all courses of the user
+   */
   private void checkMeetingToday(DataSnapshot dataSnapshot) {
     List<String> courseIdList = new ArrayList<>();
     String date = getDate();
@@ -128,6 +140,11 @@ public class TodaysCoursesRepository {
 
   }
 
+  /**
+   * Load all courses by id, which are today.
+   *
+   * @param courseIdList list with all courseIds, which are today
+   */
   private void findCourses(List<String> courseIdList) {
     ArrayList<Task<DataSnapshot>> taskList = new ArrayList<>();
     ArrayList<CourseModel> authorList = new ArrayList<>();
@@ -144,13 +161,16 @@ public class TodaysCoursesRepository {
     });
   }
 
-  public Task<DataSnapshot> getCourseTask(String courseId) {
+  private Task<DataSnapshot> getCourseTask(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     return reference.child(Config.CHILD_COURSES).child(courseId).get();
   }
 
-  /** TODO. */
-  public void getAuthor(List<CourseModel> authorList) {
+  /** Load the data of the course creators.
+   *
+   * @param authorList list with all courses, which are today
+   */
+  private void getAuthor(List<CourseModel> authorList) {
     List<Task<DataSnapshot>> authorData = new ArrayList<>();
     for (CourseModel course : authorList) {
       authorData.add(getAuthorData(course.getCreatorId()));
@@ -171,7 +191,7 @@ public class TodaysCoursesRepository {
     });
   }
 
-  public Task<DataSnapshot> getAuthorData(String authorId) {
+  private Task<DataSnapshot> getAuthorData(String authorId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     return reference.child(Config.CHILD_USER).child(authorId).get();
   }
