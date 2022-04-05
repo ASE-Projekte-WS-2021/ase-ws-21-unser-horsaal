@@ -195,7 +195,7 @@
     <string name="edit_course_string">Kurs bearbeiten</string>
     <string name="edit_course_information_string">Hast du einen Fehler beim erstellen deines Kurses gemacht? Kein Problem! Bearbeite hier deine Einträge und behebe die Fehler.</string>
     <string name="edit_course_button">Kurs bearbeiten</string>
-    <string name="edit_course_meeting_toolbar_title">Meeting bearbeiten</string>
+    <string name="edit_course_meeting_toolbar_title">Sitzung bearbeiten</string>
     <string name="edit_course_meeting_subtitle">Bearbeite hier deine Meetings.</string>
     <string name="edit_course_meeting_button">Bearbeiten</string>
     <string name="dialog_delete_message_text">Möchtest du den Text deiner Nachricht wirklich löschen?</string>

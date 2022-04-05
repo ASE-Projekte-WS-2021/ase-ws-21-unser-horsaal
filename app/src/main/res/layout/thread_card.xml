@@ -231,7 +231,6 @@
                         android:layout_marginStart="8dp"
                         android:layout_gravity="center_vertical"
                         android:textSize="12sp"
-                        android:textColor="@color/app_blue"
                         tools:text="@{model.creatorName}" />
 
                 </LinearLayout>
