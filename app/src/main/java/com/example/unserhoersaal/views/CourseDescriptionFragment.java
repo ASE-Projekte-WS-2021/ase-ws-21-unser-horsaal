@@ -79,7 +79,7 @@ public class CourseDescriptionFragment extends Fragment {
 
               //use to navigate the user out of the fragment
               //course navigate back to course history
-              if (courseModel == null) {
+              if (courseModel.getData() == null) {
                 navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
                 //TODO: assert != null
               } else if (courseModel.getData().getKey() != null) {
@@ -94,7 +94,6 @@ public class CourseDescriptionFragment extends Fragment {
     this.binding.setVm(this.courseDescriptionViewModel);
   }
 
-
   private void initToolbar() {
     this.binding.courseDescriptionFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
@@ -104,7 +103,5 @@ public class CourseDescriptionFragment extends Fragment {
     this.binding.setIsCreator(courseDescriptionViewModel.isCreator());
 
   }
-
-
 
 }

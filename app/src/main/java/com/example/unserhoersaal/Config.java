@@ -196,7 +196,7 @@ public class Config {
   public static final String DATABINDING_CODEMAPPING_NULL =
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
-          "Der Beitrittscode enthält ungültige Charaktere.";
+          "Der Beitrittscode muss aus 9 Buchstaben bestehen.";
   public static final String DATABINDING_OPTION_NULL = "Option 1 und 2 dürfen nicht leer sein";
   public static final String DATABINDING_OPTION_WRONG_PATTERN =
           "Option 1 und/oder 2 enthalten ungültige Charaktere.";

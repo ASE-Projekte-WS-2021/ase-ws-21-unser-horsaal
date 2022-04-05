@@ -148,7 +148,8 @@ public class CourseDescriptionRepository {
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.courseModel.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      this.courseModel.postError(
+              new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
       return;
     }
 
@@ -163,7 +164,8 @@ public class CourseDescriptionRepository {
                             .child(id)
                             .child(uid)
                             .removeValue()
-                            .addOnSuccessListener(unused1 -> courseModel.postUpdate(null))
+                            .addOnSuccessListener(unused1 ->
+                                    courseModel.postUpdate(null))
                             .addOnFailureListener(e -> {
                               Log.e(TAG, "Could not unregister User from course");
                               this.courseModel.postError(
