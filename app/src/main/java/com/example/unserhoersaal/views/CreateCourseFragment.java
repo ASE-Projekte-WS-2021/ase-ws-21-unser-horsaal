@@ -142,8 +142,8 @@ public class CreateCourseFragment extends Fragment {
   }
 
   @Override
-  public void onDestroy() {
-    super.onDestroy();
+  public void onResume() {
+    super.onResume();
     this.createCourseViewModel.setIsEditing(false);
     this.createCourseViewModel.resetCourseModelInput();
   }

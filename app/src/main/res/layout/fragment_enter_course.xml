@@ -10,6 +10,7 @@
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.Config"/>
         <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
     </data>
 
@@ -177,8 +178,6 @@
             android:elevation="2dp"
             app:endIconMode="clear_text"
             app:hintEnabled="false"
-            app:counterEnabled="true"
-            app:counterMaxLength="9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentEnterCodeHeader">
@@ -191,7 +190,6 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:background="@drawable/rounded_corners"
-                android:maxLength="9"
                 android:hint="@string/enter_course_code_filler"
                 android:paddingTop="12dp"/>
 
