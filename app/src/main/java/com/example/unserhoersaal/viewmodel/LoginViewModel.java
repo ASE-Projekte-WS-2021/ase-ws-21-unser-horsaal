@@ -88,14 +88,14 @@ public class LoginViewModel extends ViewModel {
     String email = userModel.getEmail();
     String password = passwordModel.getCurrentPassword();
 
-    if (this.registrationCheckInput(email, password)) {
+    if (this.loginCheckInput(email, password)) {
       this.userInputState.postComplete();
       this.passwordInputState.postComplete();
       this.authAppRepository.login(email, password);
     }
   }
 
-  private boolean registrationCheckInput(String email, String password) {
+  private boolean loginCheckInput(String email, String password) {
     if (Validation.emptyString(email)) {
       this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
       return false;
