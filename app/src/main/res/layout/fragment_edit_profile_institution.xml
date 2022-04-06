@@ -7,7 +7,12 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.ProfileViewModel"/>
-        <import type="com.example.unserhoersaal.Config"/>
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,24 +63,13 @@
 
             <TextView
                 android:id="@+id/editProfileInstitutionFragmentInstitutionErrorText"
-                android:visibility="gone"
+                android:visibility="@{vm.profileChanged.status == StateData.DataStatus.ERROR ? View.VISIBLE : View.GONE}"
+                android:text="@{vm.profileChanged.error.message}"
                 android:textColor="@color/red"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/editProfileInstitutionFragmentGeneralErrorText"
-            android:visibility="gone"
-            android:textColor="@color/red"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="16dp"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentTextField"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/editProfileInstitutionFragmentSaveWrapper"
@@ -89,6 +83,7 @@
                 android:id="@+id/editProfileInstitutionFragmentSaveButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:enabled="@{vm.profileChanged.status != StateData.DataStatus.LOADING}"
                 android:onClick="@{(view) -> vm.changeInstitution()}"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
@@ -107,7 +102,7 @@
                 android:indeterminate="true"
                 android:indeterminateTint="@color/white"
                 android:indeterminateTintMode="src_in"
-                android:visibility="gone"
+                android:visibility="@{vm.profileChanged.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@+id/editProfileInstitutionFragmentSaveButton"
                 app:layout_constraintEnd_toEndOf="@+id/editProfileInstitutionFragmentSaveButton"
                 app:layout_constraintHorizontal_bias="0.975"

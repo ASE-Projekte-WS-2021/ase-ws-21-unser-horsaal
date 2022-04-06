@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,28 +67,17 @@ public class RegistrationFragment extends Fragment {
   }
 
   private void userLiveStateCallback(StateData<FirebaseUser> firebaseUserStateData) {
-    this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (firebaseUserStateData == null) {
-      Log.e(TAG, "FirebaseUserStateData is null");
       this.binding.registrationFragmentGeneralErrorText.setText(Config.UNSPECIFIC_ERROR);
-      this.binding.registrationFragmentGeneralErrorText.setVisibility(View.VISIBLE);
       return;
     }
 
-    this.navigateUser(firebaseUserStateData);
-  }
-
-  private void navigateUser(StateData<FirebaseUser> firebaseUserStateData) {
     if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE
             && firebaseUserStateData.getData() != null) {
       this.navController.navigate(R.id.action_registrationFragment_to_verificationFragment);
     }
-  }
-
-  private void resetBindings() {
-    this.binding.registrationFragmentGeneralErrorText.setVisibility(View.GONE);
   }
 
   private void connectBinding() {
@@ -100,7 +88,6 @@ public class RegistrationFragment extends Fragment {
   @Override
   public void onPause() {
     super.onPause();
-    this.resetBindings();
     this.registrationViewModel.setDefaultInputState();
     this.registrationViewModel.setLiveDataComplete();
   }

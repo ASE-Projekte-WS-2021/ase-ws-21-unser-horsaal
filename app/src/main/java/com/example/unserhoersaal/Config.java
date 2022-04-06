@@ -9,10 +9,12 @@ public class Config {
   /**=======================.
    * User Input Lengths
    * ======================= */
-  public static final int PASSWORD_LENGTH_MIN = 8;
+  public static final int PASSWORD_LENGTH_MIN = 6;
   public static final int PASSWORD_LENGTH_MAX = 64;
   public static final int USERNAME_LENGTH_MIN = 3;
   public static final int USERNAME_LENGTH_MAX = 15;
+  public static final int EMAIL_LENGTH_MIN = 5;
+  public static final int EMAIL_LENGTH_MAX = 64;
   public static final int INSTITUTION_LENGTH_MIN = 0; //optional
   public static final int INSTITUTION_LENGTH_MAX = 75;
 

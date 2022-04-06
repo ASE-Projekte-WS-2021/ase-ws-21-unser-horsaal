@@ -7,7 +7,12 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.ProfileViewModel"/>
-        <import type="com.example.unserhoersaal.Config"/>
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

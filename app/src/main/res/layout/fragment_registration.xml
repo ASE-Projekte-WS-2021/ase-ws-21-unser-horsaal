@@ -9,6 +9,7 @@
             type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
         <import type="com.example.unserhoersaal.Config" />
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.enums.ErrorTag"/>
@@ -54,6 +55,10 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="64dp"
                     app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.USERNAME_LENGTH_MAX}"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.USERNAME ? vm.userInputState.error.message : null}"
                     android:hint="@string/registration_fragment_user_name"
                     style="@style/inputField">
 
@@ -63,17 +68,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:background="@drawable/rounded_corners"
-                        android:maxLength="15"/>
-
-                    <TextView
-                        android:id="@+id/registrationFragmentUserErrorText"
-                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.USERNAME ? View.VISIBLE : View.GONE}"
-                        android:text="@{vm.userInputState.error.message}"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
+                        android:background="@drawable/rounded_corners"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,8 +77,12 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.EMAIL_LENGTH_MAX}"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? vm.userInputState.error.message : null}"
                     android:hint="@string/registration_fragment_user_email_hint"
                     style="@style/inputField">
 
@@ -96,15 +95,6 @@
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners"/>
 
-                    <TextView
-                        android:id="@+id/registrationFragmentUserEmailErrorText"
-                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? View.VISIBLE : View.GONE}"
-                        android:text="@{vm.userInputState.error.message}"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
-
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -112,9 +102,13 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:hint="@string/registration_fragment_password_hint"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.PASSWORD_LENGTH_MAX}"
                     app:endIconMode="password_toggle"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? vm.passwordInputState.error.message : null}"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -127,21 +121,12 @@
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners"/>
 
-                    <TextView
-                        android:id="@+id/registrationFragmentPasswordErrorText"
-                        android:visibility="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? View.VISIBLE : View.GONE}"
-                        android:text="@{vm.passwordInputState.error.message}"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
-
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/registrationFragmentGeneralErrorText"
-                    android:visibility="@{vm.userStateLiveData.status == StateData.DataStatus.ERROR &amp;&amp; (vm.userStateLiveData.errorTag == ErrorTag.REPO || vm.userStateLiveData.errorTag == ErrorTag.VM) ? View.VISIBLE : View.GONE}"
-                    android:text="@{vm.userStateLiveData.error.message}"
+                    android:visibility="visible"
+                    android:text="@{vm.userStateLiveData.status == StateData.DataStatus.ERROR &amp;&amp; (vm.userStateLiveData.errorTag == ErrorTag.REPO || vm.userStateLiveData.errorTag == ErrorTag.VM) ? vm.userStateLiveData.error.message : null}"
                     android:textColor="@color/red"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -150,7 +135,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/createCourseFragmentButtonWrapper"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
