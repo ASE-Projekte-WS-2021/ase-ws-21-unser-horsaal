@@ -89,13 +89,25 @@ public class AllCoursesRepository {
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        ArrayList<Task<DataSnapshot>> taskList = new ArrayList<>();
-        ArrayList<CourseModel> authorList = new ArrayList<>();
-
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          taskList.add(getCourseTask(snapshot.getKey()));
+          databaseReference.child(Config.CHILD_COURSES)
+                  .child(snapshot.getKey())
+                  .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                      CourseModel model = snapshot.getValue(CourseModel.class);
+                      model.setKey(snapshot.getKey());
+                      getAuthor(model);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                  });
+          //taskList.add(getCourseTask(snapshot.getKey()));
         }
-        Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
+        /*Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
           for (Task<DataSnapshot> task : taskList) {
             CourseModel model = task.getResult().getValue(CourseModel.class);
 
@@ -107,7 +119,7 @@ public class AllCoursesRepository {
             authorList.add(model);
           }
           getAuthor(authorList);
-        });
+        });*/
       }
 
       @Override
@@ -125,10 +137,28 @@ public class AllCoursesRepository {
   /**
    * Load the picture and name of the course creator.
    *
-   *  @param authorList List of all courses the user is signed in
    */
-  private void getAuthor(List<CourseModel> authorList) {
-    List<Task<DataSnapshot>> authorNames = new ArrayList<>();
+  private void getAuthor(CourseModel courseModel) {
+    this.databaseReference.child(Config.CHILD_USER).child(courseModel.getCreatorId())
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel author = snapshot.getValue(UserModel.class);
+                if (author == null) {
+                  courseModel.setCreatorName(Config.UNKNOWN_USER);
+                } else {
+                  courseModel.setCreatorName(author.getDisplayName());
+                  courseModel.setPhotoUrl(author.getPhotoUrl());
+                }
+                updateCourseList(courseModel, allCoursesList);
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+
+              }
+            });
+    /*List<Task<DataSnapshot>> authorNames = new ArrayList<>();
     for (CourseModel course : authorList) {
       authorNames.add(getAuthorData(course.getCreatorId()));
     }
@@ -146,7 +176,20 @@ public class AllCoursesRepository {
       allCoursesList.addAll(authorList);
 
       courses.postUpdate(allCoursesList);
-    });
+    });*/
+  }
+
+  private void updateCourseList(CourseModel courseModel, List<CourseModel> courseList) {
+    for (int i = 0; i < courseList.size(); i++) {
+      CourseModel model = courseList.get(i);
+      if (model.getKey().equals(courseModel.getKey())) {
+        courseList.set(i, courseModel);
+        this.courses.postUpdate(courseList);
+        return;
+      }
+    }
+    courseList.add(courseModel);
+    this.courses.postUpdate(courseList);
   }
 
   private Task<DataSnapshot> getAuthorData(String authorId) {
