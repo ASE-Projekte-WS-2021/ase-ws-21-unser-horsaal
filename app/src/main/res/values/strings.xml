@@ -278,5 +278,7 @@
     <string name="create_course_meeting_title">Einführung in die Angewandte…</string>
     <string name="create_course_meeting_title_text">Titel der Sitzung</string>
     <string name="coruse_description_participants">Teilnehmer:innen</string>
-
+    <string name="create_thread_enter_message">Nachricht eingeben</string>
+    <string name="create_thread_page">Seitenzahl</string>
+    <string name="create_thread_hashtag_hint">#...</string>
 </resources>
