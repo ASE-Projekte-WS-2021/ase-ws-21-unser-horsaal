@@ -21,7 +21,7 @@
         android:layout_margin="16dp"
         android:minHeight="100dp"
         app:cardCornerRadius="8dp"
-        android:onClick="@{(view) -> NavUtil.deleteAnswerText(view, vm, model)}">
+        android:onLongClick="@{(view) -> NavUtil.deleteAnswerText(view, vm, model)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
