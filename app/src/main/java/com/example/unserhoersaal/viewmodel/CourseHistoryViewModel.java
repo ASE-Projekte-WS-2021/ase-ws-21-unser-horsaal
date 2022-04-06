@@ -160,7 +160,6 @@ public class CourseHistoryViewModel extends ViewModel {
 
     meetingsModel.setEventTime(TimeUtil.parseEventTime(calendarModel));
     meetingsModel.setEventEndTime(TimeUtil.parseEventEndTime(meetingsModel, calendarModel));
-    meetingsModel.setMeetingDate(TimeUtil.parseMeetingDate(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
 
     this.meetingModelInputState.postCreate(new MeetingsModel());

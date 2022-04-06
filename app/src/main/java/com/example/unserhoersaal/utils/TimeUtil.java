@@ -25,11 +25,4 @@ public class TimeUtil {
             + (Long.parseLong(calendarModel.getMinuteDuration()) * Config.TIME_MINUTE_TO_MILLI);
   }
 
-
-  public static String parseMeetingDate(MeetingsModel meetingsModel) {
-    Long eventTime = meetingsModel.getEventTime();
-
-    return Config.DATE_FORMAT.format(eventTime);
-  }
-
 }

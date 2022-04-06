@@ -11,10 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseMeetingBinding;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
+import com.example.unserhoersaal.utils.Format;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
@@ -129,8 +132,8 @@ public class CreateCourseMeetingFragment extends Fragment {
     binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
     binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
 
-    binding.createCourseMeetingDatePicker.setText(courseHistoryViewModel.meetingModelInputState
-            .getValue().getData().getMeetingDate());
+    binding.createCourseMeetingDatePicker.setText(Config.DATE_FORMAT.format(courseHistoryViewModel.meetingModelInputState
+            .getValue().getData().getEventTime()));
     binding.createCourseMeetingTimePicker.setText(courseHistoryViewModel.getTimeInputForDisplay());
 
 

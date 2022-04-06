@@ -7,7 +7,6 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +28,7 @@ public class CourseDescriptionRepository {
   private static CourseDescriptionRepository instance;
   private String creatorId;
   private final StateLiveData<String> courseId = new StateLiveData<>();
-  private final StateLiveData<CourseModel> courseModel = new StateLiveData<>();
+  private final StateLiveData<CourseModel> course = new StateLiveData<>();
 
 
   /**
@@ -38,7 +37,7 @@ public class CourseDescriptionRepository {
   public CourseDescriptionRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    this.courseModel.postCreate(new CourseModel());
+    this.course.postCreate(new CourseModel());
     this.courseId.postCreate(null);
   }
 
@@ -58,15 +57,15 @@ public class CourseDescriptionRepository {
     return this.courseId;
   }
 
-  public StateLiveData<CourseModel> getCourseModel() {
-    return this.courseModel;
+  public StateLiveData<CourseModel> getCourse() {
+    return this.course;
   }
 
   /**
    * Loads the description of a course.
    */
   public void loadDescription() {
-    this.courseModel.postLoading();
+    this.course.postLoading();
 
 
     Query query = this.databaseReference.child(Config.CHILD_COURSES)
@@ -78,19 +77,19 @@ public class CourseDescriptionRepository {
 
         if (model == null) {
           Log.e(TAG, "model is null");
-          courseModel.postError(
+          course.postError(
                   new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
           return;
         }
 
         model.setKey(snapshot.getKey());
-        getAuthorData(model);
+        getAuthor(model);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.e(TAG, "setCourseId task failed.");
-        courseModel.postError(
+        course.postError(
                 new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
     });
@@ -114,29 +113,32 @@ public class CourseDescriptionRepository {
   }
 
   /**
-   * Load the name and profile picture of the course creator.
+   /**
+   * Load the picture and name of the course creator.
    *
-   * @param course course data with the courseId to load the creator data
+   * @param courseModel data of the course for loading the author
    */
-  private void getAuthorData(CourseModel course) {
-    Task<DataSnapshot> task = this.databaseReference
-            .child(Config.CHILD_USER)
-            .child(course.getCreatorId())
-            .get();
+  private void getAuthor(CourseModel courseModel) {
+    this.databaseReference.child(Config.CHILD_USER).child(courseModel.getCreatorId())
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel author = snapshot.getValue(UserModel.class);
+                if (author == null) {
+                  courseModel.setCreatorName(Config.UNKNOWN_USER);
+                } else {
+                  courseModel.setCreatorName(author.getDisplayName());
+                  courseModel.setPhotoUrl(author.getPhotoUrl());
+                }
+                course.postCreate(courseModel);
+              }
 
-    task.addOnSuccessListener(dataSnapshot -> {
-      if (dataSnapshot.exists()) {
-        course.setCreatorName(dataSnapshot.getValue(UserModel.class).getDisplayName());
-        course.setPhotoUrl(dataSnapshot.getValue(UserModel.class).getPhotoUrl());
-      } else {
-        course.setCreatorName(Config.UNKNOWN_USER);
-      }
-      this.courseModel.postUpdate(course);
-    }).addOnFailureListener(e -> {
-      Log.e(TAG, e.getMessage());
-      this.courseModel.postError(
-              new Error(Config.COURSE_DESCRIPTION_COULD_NOT_LOAD_USER), ErrorTag.REPO);
-    });
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                course.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
   }
 
   /**
@@ -145,11 +147,11 @@ public class CourseDescriptionRepository {
    * @param id id of the course
    */
   public void unregisterFromCourse(String id) {
-    this.courseModel.postLoading();
+    this.course.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.courseModel.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      this.course.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
       return;
     }
 
@@ -166,17 +168,17 @@ public class CourseDescriptionRepository {
                             .removeValue()
                             .addOnSuccessListener(unused1 -> {
                               this.decreaseMemberCount(id);
-                              courseModel.postUpdate(null);
+                              course.postUpdate(null);
                             })
                             .addOnFailureListener(e -> {
                               Log.e(TAG, "Could not unregister User from course");
-                              this.courseModel.postError(
+                              this.course.postError(
                                       new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED),
                                       ErrorTag.REPO);
                             })
             ).addOnFailureListener(e -> {
               Log.e(TAG, "Could not unregister User from course");
-              this.courseModel.postError(
+              this.course.postError(
                       new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
             });
   }
