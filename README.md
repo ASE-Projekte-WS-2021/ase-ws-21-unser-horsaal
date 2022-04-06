@@ -49,11 +49,11 @@ Worksheet zu finden unter: https://github.com/ASE-Projekte-WS-2021/ase-ws-21-uns
 
 ## Entwicklerteam:
 
-- Asabidi Ruslan
-- Bierschneider Michael
-- Gottschalk Philipp
-- Höpfinger Julian
-- Rolny Laurin
+- Asabidi Ruslan (Rusi91)
+- Bierschneider Michael (vairasza)
+- Gottschalk Philipp (myPhilie)
+- Höpfinger Julian (julian1198)
+- Rolny Laurin (Kroellinger)
 
 ## Kontakt:
 Bei Rückfragen oder Anmerkungen können Sie uns unter "Ruslan.Asabidi@stud.uni-regensburg.de" erreichen.
