@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <RelativeLayout
@@ -17,7 +24,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/app_background">
 
                 <ImageView
@@ -78,6 +85,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="25dp"
                     android:layout_below="@+id/onboardingUsernameFragmentText4"
+                    app:endIconMode="clear_text"
                     android:hint="@string/registration_fragment_user_name"
                     style="@style/inputField">
 
@@ -92,7 +100,8 @@
 
                     <TextView
                         android:id="@+id/onboardingUsernameFragmentUserErrorText"
-                        android:visibility="gone"
+                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.USERNAME ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.userInputState.error.message}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
