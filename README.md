@@ -35,7 +35,7 @@
 
 
 ## Wie installiere ich die App auf meinem Smartphone?
-1. Schritt: Im Gerät in **Einstellungen** gehen -> **Allgemein** -> **Sicherheit** -> **Unbekannte Herkunft/Quellen" -> **aktivieren**
+1. Schritt: Im Gerät in **Einstellungen** gehen -> **Allgemein** -> **Sicherheit** -> **Unbekannte Herkunft/Quellen"** -> **aktivieren**
 2. APK Datei runterladen (z.B. via USB-Kabel)
 3. APK Datei im Gerät suchen, ausführen und Installation bestätigen
 
