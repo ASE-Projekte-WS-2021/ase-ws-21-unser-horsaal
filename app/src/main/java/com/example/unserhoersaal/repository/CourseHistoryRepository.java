@@ -241,7 +241,8 @@ public class CourseHistoryRepository {
       return;
     }
 
-    //TODO: key nicht mitspeichern
+    //reset meeting key thus it is not saved twice in the database
+    meetingsModel.setKey(null);
     this.databaseReference
             .child(Config.CHILD_MEETINGS)
             .child(courseObj.getKey())
