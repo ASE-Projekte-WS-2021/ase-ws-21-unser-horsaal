@@ -45,51 +45,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{vm.meeting.data.title}"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_marginEnd="8dp"
                     style="@style/toolbarTitleStyle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </com.google.android.material.appbar.MaterialToolbar>
-
-            <TextView
-                android:id="@+id/currentCourseFragmentSubtitle"
-                style="@style/toolbarSubtitleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{vm.thread.data.title}"
-                android:background="@color/app_blue"
-                android:padding="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar" />
-
-            <LinearLayout
-                android:id="@+id/currentCourseFragmentLinearLayoutEnterNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/current_course_textview_enter_number"
-                    android:gravity="center|end"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/courseKeyTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center|start"
-                    tools:text="123456789" />
-
-            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -98,7 +62,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/courseThreadFragmentSendMessageContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentSubtitle">
+                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar">
 
                 <LinearLayout
                     android:id="@+id/currentCourseFragmentContainer"
@@ -115,7 +79,7 @@
                         android:minHeight="100dp"
                         app:cardCornerRadius="8dp"
                         setBorder="@{vm.thread.data.answered}"
-                        android:onClick="@{(view) -> NavUtil.deleteMessageText(view, vm, vm.thread.data)}">
+                        android:onLongClick="@{(view) -> NavUtil.deleteMessageText(view, vm, vm.thread.data)}">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"

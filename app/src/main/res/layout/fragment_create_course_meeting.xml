@@ -220,7 +220,7 @@
                     app:hintEnabled="false"
                     android:layout_gravity="center"
                     app:counterEnabled="true"
-                    app:counterMaxLength="3"
+                    app:counterMaxLength="2"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -230,7 +230,7 @@
                         android:inputType="number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="3"
+                        android:maxLength="2"
                         android:singleLine="true"
                         android:paddingTop="12dp"
                         android:background="@drawable/rounded_corners" />
@@ -260,7 +260,7 @@
                     app:hintEnabled="false"
                     android:layout_gravity="center"
                     app:counterEnabled="true"
-                    app:counterMaxLength="3"
+                    app:counterMaxLength="2"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -270,7 +270,7 @@
                         android:inputType="number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="3"
+                        android:maxLength="2"
                         android:singleLine="true"
                         android:paddingTop="12dp"
                         android:background="@drawable/rounded_corners" />

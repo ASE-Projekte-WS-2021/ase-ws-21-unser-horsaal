@@ -278,8 +278,12 @@ public class Config {
 
   public static final String CREATE_MEETING_DATE_WRONG = "Es wurde kein Datum gewählt!";
   public static final String CREATE_MEETING_TIME_WRONG = "Es wurde kein Startzeitpunkt gewählt!";
-  public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Es wurde kein Dauer in Stunden gewählt!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Es wurde kein Dauer in Minuten gewählt!";
+  public static final String CREATE_MEETING_HOUR_DURATION_WRONG =
+          "Es wurde kein Dauer in Stunden gewählt!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG =
+          "Es wurde kein Dauer in Minuten gewählt!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_TOO_LONG
+          = "Werte über 59 Minuten sind nicht möglich";
 
   /**=======================.
    *  Avatar Placeholder Ids
@@ -337,6 +341,17 @@ public class Config {
    *  Impressum
    * ======================= */
   public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
+
+  /**=======================.
+   *  NavUtil
+   * ======================= */
+
+  public static final String TEXT_PLAIN = "text/plain";
+
+   /**=======================.
+   *  Camera-Intent
+   * ======================= */
+  public static final String CAMERA_INTENT_ERROR_TOAST = "Es konnte keine Kamera App auf deinem Smartphone gefunden werden";
 
 
 }

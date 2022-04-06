@@ -213,8 +213,7 @@
                             android:id="@+id/courseDescriptionShareContainer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/custom_ripple"
-                            android:onClick="@{(view) -> Clipboard.copyToClipboard(view, vm.courseModel.data.codeMapping)}"
+                            android:onClick="@{(view) -> NavUtil.shareLinkViaMessenger(view, vm.courseModel.data.codeMapping)}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
