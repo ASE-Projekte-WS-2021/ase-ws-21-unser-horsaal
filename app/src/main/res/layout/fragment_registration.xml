@@ -126,10 +126,10 @@
                 <TextView
                     android:id="@+id/registrationFragmentGeneralErrorText"
                     android:visibility="visible"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
                     android:text="@{vm.userStateLiveData.status == StateData.DataStatus.ERROR &amp;&amp; (vm.userStateLiveData.errorTag == ErrorTag.REPO || vm.userStateLiveData.errorTag == ErrorTag.VM) ? vm.userStateLiveData.error.message : null}"
                     android:textColor="@color/red"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:layout_gravity="center"/>
 

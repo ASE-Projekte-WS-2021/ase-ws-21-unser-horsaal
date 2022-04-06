@@ -64,6 +64,11 @@ public class ProfileViewModel extends ViewModel {
     this.passwordInputState.postCreate(new PasswordModel());
   }
 
+  public void setLiveDataComplete() {
+    this.userLiveData.postComplete();
+    this.profileChanged.postComplete();
+  }
+
   public void logout() {
     this.authAppRepository.logOut();
   }

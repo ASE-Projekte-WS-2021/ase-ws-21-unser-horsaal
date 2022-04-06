@@ -60,12 +60,10 @@ public class ResetPasswordFragment extends Fragment {
 
 
   private void userLiveDataCallback(StateData<Boolean> booleanStateData) {
-    this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (booleanStateData == null) {
-      this.binding.resetPasswordErrorText.setText(Config.UNSPECIFIC_ERROR);
-      this.binding.resetPasswordErrorText.setVisibility(View.VISIBLE);
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
       return;
     }
 
@@ -77,10 +75,6 @@ public class ResetPasswordFragment extends Fragment {
     }
   }
 
-  private void resetBindings() {
-    this.binding.resetPasswordErrorText.setVisibility(View.GONE);
-  }
-
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.loginViewModel);
@@ -89,8 +83,8 @@ public class ResetPasswordFragment extends Fragment {
   @Override
   public void onPause() {
     super.onPause();
-    this.resetBindings();
     this.loginViewModel.setDefaultInputState();
     this.loginViewModel.setLiveDataComplete();
   }
+
 }

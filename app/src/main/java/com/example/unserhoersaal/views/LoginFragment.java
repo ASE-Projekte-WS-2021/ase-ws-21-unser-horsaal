@@ -123,21 +123,15 @@ public class LoginFragment extends Fragment {
   }
 
   private void userLiveDataCallback(StateData<FirebaseUser> firebaseUserStateData) {
-    this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (firebaseUserStateData == null) {
       this.binding.loginFragmentGeneralErrorMessage.setText(Config.UNSPECIFIC_ERROR);
-      this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.VISIBLE);
       return;
     }
 
     FirebaseUser firebaseUser = firebaseUserStateData.getData();
     this.navigateUser(firebaseUserStateData, firebaseUser);
-  }
-
-  private void resetBindings() {
-    this.binding.loginFragmentGeneralErrorMessage.setVisibility(View.GONE);
   }
 
   private void navigateUser(StateData<FirebaseUser> firebaseUserStateData,
@@ -172,7 +166,6 @@ public class LoginFragment extends Fragment {
   @Override
   public void onPause() {
     super.onPause();
-    this.resetBindings();
     this.loginViewModel.setDefaultInputState();
     this.loginViewModel.setLiveDataComplete();
   }

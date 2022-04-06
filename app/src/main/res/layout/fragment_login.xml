@@ -13,6 +13,7 @@
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.enums.ErrorTag"/>
         <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,10 +58,12 @@
                     android:id="@+id/loginFragmentUserEmailTextField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:hint="@string/login_fragment_user_email_hint"
                     android:layout_gravity="center"
                     app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? vm.userInputState.error.message : null}"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -72,25 +75,18 @@
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners" />
 
-                    <TextView
-                        android:id="@+id/loginFragmentUserEmailErrorText"
-                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? View.VISIBLE : View.GONE}"
-                        android:text="@{vm.userInputState.error.message}"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
-
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginFragmentPasswordTextField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:hint="@string/login_fragment_password_hint"
                     app:endIconMode="password_toggle"
                     android:layout_gravity="center"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? vm.passwordInputState.error.message : null}"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -102,21 +98,12 @@
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners"/>
 
-                    <TextView
-                        android:id="@+id/loginFragmentPasswordErrorText"
-                        android:visibility="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? View.VISIBLE : View.GONE}"
-                        android:text="@{vm.passwordInputState.error.message}"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
-
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/loginFragmentGeneralErrorMessage"
-                    android:visibility="@{vm.userLiveData.status == StateData.DataStatus.ERROR &amp;&amp; (vm.userLiveData.errorTag == ErrorTag.REPO || vm.userLiveData.errorTag == ErrorTag.VM) ? View.VISIBLE : View.GONE}"
-                    android:text="@{vm.userLiveData.error.message}"
+                    android:visibility="visible"
+                    android:text="@{vm.userLiveData.status == StateData.DataStatus.ERROR &amp;&amp; (vm.userLiveData.errorTag == ErrorTag.REPO || vm.userLiveData.errorTag == ErrorTag.VM) ? vm.userLiveData.error.message : null}"
                     android:textColor="@color/red"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
@@ -124,7 +111,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/loginFragmentButtonWrapper"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 

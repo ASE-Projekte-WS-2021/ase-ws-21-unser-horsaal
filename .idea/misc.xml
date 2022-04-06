@@ -226,7 +226,7 @@
         <entry key="app/src/main/res/layout/fragment_poll.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_questions.xml" value="0.26222826086956524" />
-        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.2128623188405797" />
+        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_todays_courses.xml" value="0.26222826086956524" />
         <entry key="app/src/main/res/layout/fragment_verification.xml" value="0.38958333333333334" />

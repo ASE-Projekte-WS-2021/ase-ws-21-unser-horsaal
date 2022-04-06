@@ -106,7 +106,6 @@ public class VerificationFragment extends Fragment {
 
   private void emailSentCallback(StateData<Boolean> booleanStateData) {
     if (booleanStateData == null) {
-      Log.e(TAG, "FirebaseUser object is null");
       this.navController.navigate(R.id.action_verificationFragment_to_loginFragment);
     } else if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
       Toast.makeText(getContext(), Config.AUTH_VERIFICATION_EMAIL_SENT, Toast.LENGTH_SHORT).show();
@@ -115,7 +114,6 @@ public class VerificationFragment extends Fragment {
 
   private void userLiveStateCallback(StateData<FirebaseUser> firebaseUserStateData) {
     if (firebaseUserStateData == null) {
-      Log.e(TAG, "FirebaseUser object is null");
       this.navController.navigate(R.id.action_verificationFragment_to_loginFragment);
     } else {
       this.navigateUser(firebaseUserStateData);
