@@ -7,6 +7,7 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.ProfileViewModel"/>
+        <import type="com.example.unserhoersaal.Config"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,8 +38,9 @@
             android:id="@+id/editProfileNameFragmentTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_profile_name_hint"
             android:layout_margin="8dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="@{Config.USERNAME_LENGTH_MAX}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentToolbar"
@@ -47,11 +49,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editProfileNameFragmentEditText"
                 android:text="@={vm.userInputState.data.displayName}"
+                android:hint="@{vm.profileLiveData.data.displayName}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:background="@drawable/rounded_corners"
-                android:maxLength="15"/>
+                android:maxLength="@{Config.USERNAME_LENGTH_MAX}"/>
 
             <TextView
                 android:id="@+id/editProfileUserNameErrorText"
@@ -74,32 +77,44 @@
             android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentTextInput"/>
 
-        <ProgressBar
-            android:id="@+id/editProfileUserNameFragmentProgressSpinner"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/editProfileUserNameSaveWrapper"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="32dp"
-            android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentTextInput"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentTextInput">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/editProfileNameFragmentSaveFab"
-            android:onClick="@{(view) -> vm.changeDisplayName()}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/green"
-            android:src="@drawable/ic_baseline_save_24"
-            app:tint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/fabStyle"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editProfileUserNameSaveButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:onClick="@{(view) -> vm.changeDisplayName()}"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:text="@string/edit_profile_save_changes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/wideOrangeButton"/>
+
+            <ProgressBar
+                android:id="@+id/editProfileUserNameSaveSpinner"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:elevation="8dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/white"
+                android:indeterminateTintMode="src_in"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/editProfileUserNameSaveButton"
+                app:layout_constraintEnd_toEndOf="@+id/editProfileUserNameSaveButton"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toStartOf="@+id/editProfileUserNameSaveButton"
+                app:layout_constraintTop_toTopOf="@+id/editProfileUserNameSaveButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

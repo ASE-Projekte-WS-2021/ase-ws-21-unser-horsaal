@@ -65,6 +65,7 @@
     <string name="edit_profile_fragment_current_password">Aktuelles Passwort</string>
     <string name="edit_profile_fragment_new_password">Neues Passwort</string>
     <string name="edit_profile_toolbar_save">Speichern</string>
+    <string name="edit_profile_save_changes">Änderungen speichern</string>
     <string name="enter_course_fragment_or_string">Oder</string>
     <string name="enter_course_fragment_enter_via_qr_code">Via Qr-Code beitreten</string>
     <string name="enter_course_fragment_course_titel">Kurstitel</string>

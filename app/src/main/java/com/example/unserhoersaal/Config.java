@@ -1,5 +1,7 @@
 package com.example.unserhoersaal;
 
+import androidx.databinding.Bindable;
+
 import java.text.SimpleDateFormat;
 
 /** Config Class. */
@@ -51,12 +53,10 @@ public class Config {
   /**=======================.
    *  Regex Patterns
    * ======================= */
-  // reference: https://ihateregex.io/expr/username/
   public static final String REGEX_PATTERN_USERNAME =
           String.format("^[a-zA-Z0-9_-]{%s,%s}$", USERNAME_LENGTH_MIN, USERNAME_LENGTH_MAX);
-  // reference: https://ihateregex.io/expr/password/
   public static final String REGEX_PATTERN_PASSWORD =
-          String.format("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{%s,%s}$",
+          String.format("^(?=.*[0-9a-zA-Z]).{%s,%s}$",
                   PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
   public static final String REGEX_PATTERN_TITLE = ".*";
   public static final String REGEX_PATTERN_INSTITUTION = ".*";
@@ -196,7 +196,7 @@ public class Config {
   public static final String DATABINDING_CODEMAPPING_NULL =
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
-          "Der Beitrittscode enthält ungültige Charaktere.";
+          "Der Beitrittscode muss aus 9 Buchstaben bestehen.";
   public static final String DATABINDING_OPTION_NULL = "Option 1 und 2 dürfen nicht leer sein";
   public static final String DATABINDING_OPTION_WRONG_PATTERN =
           "Option 1 und/oder 2 enthalten ungültige Charaktere.";
@@ -209,8 +209,7 @@ public class Config {
   public static final String AUTH_EMAIL_WRONG_PATTERN_LOGIN = "Ungültige Email-Adresse!";
   public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
   public static final String AUTH_PASSWORD_WRONG_PATTERN =
-          "Das Passwort muss aus Groß- und Kleinbuchstaben, sowie mindestens einer Zahl bestehen! "
-                  + "Zudem muss es mindestens 8 Zeichen lang sein!";
+          "Das Passwort muss aus mindestens 6 Zeichen bestehen!";
   public static final String AUTH_USERNAME_EMPTY = "Bitte gib einen Nutzernamen ein!";
   public static final String AUTH_USERNAME_WRONG_PATTERN =
           "Nutzername ist ungültig oder bereits vergeben!";

@@ -100,7 +100,6 @@ public class CreateCourseRepository {
 
     String courseId = courseModel.getKey();
 
-
     if (courseId == null) {
       Log.e(TAG, "courseid is null");
       this.courseModelMutableLiveData.postError(
@@ -111,34 +110,11 @@ public class CreateCourseRepository {
     DatabaseReference courseDbRef =
             this.databaseReference.child(Config.CHILD_COURSES).child(courseId);
 
-
-    courseDbRef.child(Config.CHILD_DESCRIPTION).setValue(courseModel.getDescription())
+    courseDbRef.setValue(courseModel)
             .addOnSuccessListener(unused -> {
               courseModel.setKey(courseId);
               courseModelMutableLiveData.postUpdate(courseModel);
-            })
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
-
-    courseDbRef.child(Config.CHILD_INSTITUTION).setValue(courseModel.getInstitution())
-            .addOnSuccessListener(unused -> {
-              courseModel.setKey(courseId);
-              courseModelMutableLiveData.postUpdate(courseModel);
-
-            })
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
-    courseDbRef.child(Config.CHILD_TITLE).setValue(courseModel.getTitle())
-            .addOnSuccessListener(unused -> {
-              courseModel.setKey(courseId);
-              courseModelMutableLiveData.postUpdate(courseModel);
-
+              Log.d(TAG, courseModel.getKey());
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());

@@ -9,14 +9,14 @@
 
     <style name="wideOrangeButton" parent="TextAppearance.MaterialComponents.Button">
         <item name="cornerRadius">8dp</item>
-        <item name="backgroundTint">@color/call_to_action_orange</item>
+        <item name="backgroundTint">@color/button_orange_state</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="wideRedButton" parent="TextAppearance.MaterialComponents.Button">
         <item name="cornerRadius">8dp</item>
-        <item name="backgroundTint">@color/red</item>
+        <item name="backgroundTint">@color/button_red_state</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
