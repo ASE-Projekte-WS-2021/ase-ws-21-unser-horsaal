@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -106,7 +107,7 @@ public class EnterCourseRepository {
         }
 
         course.setKey(snapshot.getKey());
-        getAuthorName(course);
+        getCreator(course);
       }
 
       @Override
@@ -121,14 +122,15 @@ public class EnterCourseRepository {
    *
    * @param course data of the course with the creatorId
    */
-  private void getAuthorName(CourseModel course) {
+  private void getCreator(CourseModel course) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    Task<DataSnapshot> task = reference.child(Config.CHILD_USER).child(course.getCreatorId())
-            .child(Config.CHILD_USER_NAME).get();
+    Task<DataSnapshot> task = reference.child(Config.CHILD_USER).child(course.getCreatorId()).get();
 
     task.addOnSuccessListener(dataSnapshot -> {
-      if (dataSnapshot.exists()) {
-        course.setCreatorName(dataSnapshot.getValue(String.class));
+      UserModel creator = dataSnapshot.getValue(UserModel.class);
+      if (creator != null) {
+        course.setCreatorName(creator.getDisplayName());
+        course.setPhotoUrl(creator.getPhotoUrl());
       } else {
         course.setCreatorName(Config.UNKNOWN_USER);
       }
