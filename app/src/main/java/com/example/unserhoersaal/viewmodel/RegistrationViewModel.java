@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 //source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/blob/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/view/LoginRegisterFragment.java [30.12.2021]
 
-/** Class Description. */
+/** checks input for registration. */
 public class RegistrationViewModel extends ViewModel {
 
   private static final String TAG = "LoginRegisterViewModel";
@@ -25,7 +25,7 @@ public class RegistrationViewModel extends ViewModel {
   public StateLiveData<PasswordModel> passwordInputState;
 
   /**
-   * Initialize the LoginRegisterViewModel.
+   * Initialize the RegisterViewModel.
    */
   public void init() {
     if (this.userLiveData != null) {
