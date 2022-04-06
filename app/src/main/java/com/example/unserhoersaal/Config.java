@@ -41,8 +41,14 @@ public class Config {
 
   public static final int THREAD_OPTIONS_LENGTH_MAX = 100;
 
+  public static final int MEETING_HOUR_DURATION_MAX = 3;
+  public static final int MEETING_MINUTE_DURATION_MAX = 2;
+
   public static final int TIME_HOUR_TO_MILLI = 3600000;
   public static final int TIME_MINUTE_TO_MILLI = 60000;
+  public static final int TIME_HOUR_PER_DAY = 24;
+  public static final int TIME_MINUTE_PER_HOUR = 60;
+
 
   public static final int CODE_MAPPING_LENGTH = 9;
 
@@ -284,8 +290,8 @@ public class Config {
 
   public static final String CREATE_MEETING_DATE_WRONG = "Es wurde kein Datum gewählt!";
   public static final String CREATE_MEETING_TIME_WRONG = "Es wurde kein Startzeitpunkt gewählt!";
-  public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Es wurde kein Dauer in Stunden gewählt!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Es wurde kein Dauer in Minuten gewählt!";
+  public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Bitte Dauer in Stunden wählen!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Bitte Dauer in Minuten wählen!";
 
   /**=======================.
    *  Avatar Placeholder Ids
