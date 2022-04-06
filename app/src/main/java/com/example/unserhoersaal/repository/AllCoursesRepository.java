@@ -60,6 +60,7 @@ public class AllCoursesRepository {
     }
     uid = this.firebaseAuth.getCurrentUser().getUid();
     if (this.userId == null || !this.userId.equals(uid)) {
+      this.allCoursesList.clear();
       this.userId = uid;
       this.loadAllCourses();
     }
