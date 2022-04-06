@@ -163,7 +163,7 @@ public class AuthAppRepository {
               .sendEmailVerification()
               .addOnSuccessListener(unused -> {
                 Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                this.emailSentLiveData.postUpdate(Boolean.TRUE); //TODO use enum
+                this.emailSentLiveData.postUpdate(Boolean.TRUE);
                 this.emailSentLiveData.postCreate(Boolean.FALSE);
               })
               .addOnFailureListener(e -> {
@@ -215,14 +215,16 @@ public class AuthAppRepository {
    * Method to delete an user account.
    */
   public void deleteAccount() {
-    //TODO: maybe replace argument for this.firebaseAuth.getCurrentUser(); see logout method
     this.userLiveData.postLoading();
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      //TODO error
+      return;
+    }
     String uid = this.firebaseAuth.getCurrentUser().getUid();
     this.databaseReference.child(Config.CHILD_USER)
             .child(uid)
             .removeValue()
             .addOnSuccessListener(unused -> removeCourses(uid));
-    //TODO: maybe remove user data in likes and blocked
   }
 
   /**
@@ -261,7 +263,6 @@ public class AuthAppRepository {
               .child(uid)
               .removeValue();
     }
-    //TODO wait for removing the user from courses
     deleteUser();
   }
 
@@ -270,12 +271,13 @@ public class AuthAppRepository {
    */
   private void deleteUser() {
     FirebaseUser user = this.firebaseAuth.getCurrentUser();
-    this.firebaseAuth.signOut();
-    user.delete().addOnCompleteListener(task -> {
-      if (task.isSuccessful()) {
-        this.userLiveData.postUpdate(null);
-      }
-    });
+    if (user != null) {
+      user.delete().addOnCompleteListener(task -> {
+        if (task.isSuccessful()) {
+          this.userLiveData.postUpdate(null);
+        }
+      });
+    }
   }
 
   /**
