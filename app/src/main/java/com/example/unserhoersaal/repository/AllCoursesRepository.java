@@ -56,6 +56,8 @@ public class AllCoursesRepository {
   public void setUserId() {
     String uid;
     if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courses.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
       return;
     }
     uid = this.firebaseAuth.getCurrentUser().getUid();
@@ -124,7 +126,7 @@ public class AllCoursesRepository {
    * @param courseId id of the course
    */
   private void loadCourse(String courseId) {
-    databaseReference.child(Config.CHILD_COURSES)
+    this.databaseReference.child(Config.CHILD_COURSES)
             .child(courseId)
             .addValueEventListener(new ValueEventListener() {
               @Override
