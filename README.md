@@ -7,12 +7,9 @@
 Die App wurde in Hinblick auf Student°innen und Dozent°innen im Vorlesungskontext entwickelt. 
 
 ## Was bietet die App?
-Die App schafft einen weiteren Interaktionskanal für Vorlesungen. Nach der Registrierung haben Nutzer°innen die Möglichkeit, innerhalb der App Kurse und dazugehörige Meetings (Vorlesungseinheiten) mit zeitlicher Einordnung zu erstellen bzw. beizutretten. Nutzer°innen finden aktuelle ("heute stattfindende") Meetings (Vorlesungseinheinheiten) in einer gesonderten Rubrik.
+Die App schafft einen weiteren Interaktionskanal für Vorlesungen. Nach der Registrierung haben Nutzer°innen die Möglichkeit, innerhalb der App Kurse und dazugehörige Sitzungen (Vorlesungseinheiten) mit zeitlicher Einordnung zu erstellen bzw. beizutretten. Nutzer°innen finden aktuelle ("heute stattfindende") Sitzungen (Vorlesungseinheinheiten) in einer gesonderten Rubrik.
 
-![course_meeting_overview](https://user-images.githubusercontent.com/41992838/161818628-54b5f658-5121-41cd-9921-7e65bb2aa621.png)
-
-
-Innerhalb von Vorlesungseinheiten haben Nutzer°innen die Möglichkeit in der App...
+Innerhalb von Sitzungen haben Nutzer°innen die Möglichkeit in der App...
 
 - **...Fragen zu stellen bzw. darauf zu antworten.** Fragen können dabei anhand von Kriterien wie *Tags*, *Hashtags* und *Skriptseitenverweis* genauer spezifiziert und mittels umfangreicher Sortier- und Filteroptionen angezeigt werden. Ein Bewertungssystem mittels *"Likes"* und Beantwortungsstatus ergänzt die Übersichtlichkeit.
 
@@ -20,11 +17,17 @@ Innerhalb von Vorlesungseinheiten haben Nutzer°innen die Möglichkeit in der Ap
 
 - **...mittels LIVE-CHAT zu kommunizieren.**
 
+Zum Beitretten eines Kurses haben Nutzer°innen drei Optionen:
+
+1) Beitrittscode
+2) QR-Code
+3) Beitritts-Link
+
 ## Was ist das Ziel der App?
-Das Ziel der App ist es, die Vorteile von digitalen Vorlesungsplattformen wie Zoom oder Twitch in den Präsenzbetrieb zu integrieren. 
+Während der Umschaltung auf den rein digitalen Vorlesungsbetrieb wurden Plattformen wie Zoom oder Twitch genutzt. Diese boten unter anderem durch den Chat, Reaktionsemotes und Abstimmungsfeatures wertvolle neue Interaktionsmöglichkeiten sowohl für Dozent°innen, als auch für Student°innen. Das Ziel der App ist es, einige dieser digitalen Interaktionsmöglichkeiten in den Präsenzbetrieb zu integrieren. 
 
 ## Was ist der Mehrwert der App?
-Im Gegensatz zu digitalen Plattformen wie Zoom oder Twitch, die bei Nutzung für den Vorlesungskontext einen großen Teil der Aufmerksamkeit der Nutzer°innen beanspruchen, hat die "Unser Hörsaal" App den Anspruch den Vorlesungsbetrieb in Präsenz nicht zu stören sondern zu unterstützen.
+*Bei der Integrierung von Plattformen wie Zoom oder Twitch in den regulären Präsenzbetrieb bieten die Features wie Chats oder Abstimmungen zwar mehr Interaktionsmöglichkeiten, machen die Konservierung dieser Interaktionen jedoch sehr schwer. Digitale Sitzungen werden nicht immer aufgezeichnet oder sind nicht immer leicht zu finden. Zudem beinhalten diese Aufzeichnungen nicht immer den Chat. Erschwerend kommt hinzu, dass viele Fragen im Chat untergehen können und im Nachhinein schwer wiederzufinden sind. Hier liegt der große Mehrwert der "Unser Hörsaal" App. Die Bereiche Fragen/Antworten, Live-Chat und Abstimmungen sind klar von einander abgegrenzt und sind auch nach Ende der Vorlesung ohne großen Aufwand verfügbar. In nur wenigen Klicks lassen sich wichtige Kurse, Vorlesungen, Fragen und zugehörige Antworten mithilfe von Such-, Sortier- und Filterfunktionen wiederfinden. Diese verbesserte Übersichtlichkeit und Verfügbarkeit von Informationen ermöglicht es Dozent:innen und Student:innen sowohl während der Vorlesung einen besseren Überblick zu behalten als auch diese Informationen für später strukturierter und einfach zu konservieren.*
 
 ## Installation
 physikalisches Endgerät
@@ -33,6 +36,8 @@ Entwicklungsumgebung
 ## Teamorganisation
 
 ## Aufgabenverteilung und Zuständigkeitsbereiche
+
+## Entwicklerteam:
 
 Asabidi Ruslan
 Bierschneider Michael
