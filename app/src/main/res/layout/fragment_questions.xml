@@ -38,16 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <SearchView
-                    android:id="@+id/questionsFragmentSearchView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/app_blue"
-                    android:iconifiedByDefault="false"
-                    android:queryHint="@string/threads_search_string"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/questionsFragmentInfoContainer"
@@ -59,7 +50,7 @@
                     app:cardCornerRadius="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/questionsFragmentSearchView">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -91,6 +82,20 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <SearchView
+                    android:id="@+id/questionsFragmentSearchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="@string/threads_search_string"
+                    android:layout_margin="16dp"
+                    android:searchIcon="@drawable/ic_baseline_search_black_24"
+                    android:elevation="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/questionsFragmentInfoContainer"/>
+
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/questionFragmentActivatedChipsContainer"
                     android:layout_width="match_parent"
@@ -100,7 +105,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/questionsFragmentInfoContainer">
+                    app:layout_constraintTop_toBottomOf="@id/questionsFragmentSearchView">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/questionChipNewestActivated"
