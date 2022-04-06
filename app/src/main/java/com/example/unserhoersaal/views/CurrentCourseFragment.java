@@ -68,8 +68,8 @@ public class CurrentCourseFragment extends Fragment {
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
     this.currentCourseViewModel.init();
-    this.currentCourseViewModel.getThreadId().observe(getViewLifecycleOwner(), id -> {
-      this.courseKeyTextView.setText(id.getData());
+    this.currentCourseViewModel.getThread().observe(getViewLifecycleOwner(), threadModelStateData -> {
+      this.courseKeyTextView.setText(threadModelStateData.getData().getKey());
     });
     this.currentCourseViewModel.getMessages()
             .observe(getViewLifecycleOwner(),

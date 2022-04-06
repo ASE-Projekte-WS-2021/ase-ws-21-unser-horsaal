@@ -65,7 +65,7 @@ public class CreateThreadFragment extends Fragment {
     this.questionsViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
       if (threadModel.getData() != null) {
         KeyboardUtil.hideKeyboard(getActivity());
-        this.currentCourseViewModel.setThreadId(threadModel.getData().getKey());
+        this.currentCourseViewModel.setThread(threadModel.getData());
         this.questionsViewModel.resetThreadModelInput();
         this.navController.navigate(R.id.action_createThreadFragment_to_courseThreadFragment);
       }

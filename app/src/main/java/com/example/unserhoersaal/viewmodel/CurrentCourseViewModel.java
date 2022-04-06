@@ -21,7 +21,6 @@ public class CurrentCourseViewModel extends ViewModel {
 
   private CurrentCourseRepository currentCourseRepository;
   private StateLiveData<List<MessageModel>> messages;
-  private StateLiveData<String> threadId = new StateLiveData<>();
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<ThreadModel> thread = new StateLiveData<>();
   private ArrayListUtil arrayListUtil = new ArrayListUtil();
@@ -34,18 +33,12 @@ public class CurrentCourseViewModel extends ViewModel {
       return;
     }
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
-    this.threadId = this.currentCourseRepository.getThreadId();
     this.meeting = this.currentCourseRepository.getMeeting();
     this.thread = this.currentCourseRepository.getThread();
     this.userId = this.currentCourseRepository.getUserId();
     this.messageModelInputState.postCreate(new MessageModel());
 
-    // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
-    // the messages and only set the courseId can init the CurrentCourseViewModel
-    if (this.threadId.getValue() != null) {
-      Log.d(TAG, "threadId: " + this.threadId.getValue().getData());
-      this.messages = this.currentCourseRepository.getMessages();
-    }
+    this.messages = this.currentCourseRepository.getMessages();
   }
 
   public StateLiveData<List<MessageModel>> getMessages() {
@@ -55,10 +48,6 @@ public class CurrentCourseViewModel extends ViewModel {
   /** Sort the messages list by likes. */
   public void sortAnswersByLikes(List<MessageModel> messageModelList) {
     this.arrayListUtil.sortAnswersByLikes(messageModelList);
-  }
-
-  public StateLiveData<String> getThreadId() {
-    return this.threadId;
   }
 
   public StateLiveData<MeetingsModel> getMeeting() {
@@ -101,12 +90,7 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
-  public void setThreadId(String threadId) {
-    this.currentCourseRepository.setThreadId(threadId);
-  }
-
   public void setThread(ThreadModel threadModel) {
-    this.thread.postCreate(threadModel);
     this.currentCourseRepository.setThread(threadModel);
   }
 

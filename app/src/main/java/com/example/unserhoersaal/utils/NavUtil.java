@@ -91,7 +91,6 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CurrentCourseViewModel.class);
     currentCourseViewModel.init();
-    currentCourseViewModel.setThreadId(model.getKey());
     currentCourseViewModel.setThread(model);
 
     NavController navController = Navigation.findNavController(view);

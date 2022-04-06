@@ -106,7 +106,7 @@ public class QuestionsFragment extends Fragment {
 
     if (threadModelStateData.getData() != null) {
       KeyboardUtil.hideKeyboard(getActivity());
-      this.currentCourseViewModel.setThreadId(threadModelStateData.getData().getKey());
+      this.currentCourseViewModel.setThread(threadModelStateData.getData());
       this.questionsViewModel.resetThreadModelInput();
       this.binding.questionFragmentFab.setVisibility(View.VISIBLE);
       //this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
