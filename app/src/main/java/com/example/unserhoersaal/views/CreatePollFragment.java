@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreatePollBinding;
 import com.example.unserhoersaal.model.PollModel;
@@ -47,7 +49,9 @@ public class CreatePollFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+
     this.navController = Navigation.findNavController(view);
+
     this.initViewModel();
     this.connectBinding();
     this.initToolbar();
@@ -62,24 +66,18 @@ public class CreatePollFragment extends Fragment {
   }
 
   private void pollLiveDataCallback(StateData<PollModel> pollModelStateData) {
-    this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
 
-    if (pollModelStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.createPollFragmentProgressSpinner.setVisibility(View.VISIBLE);
-      this.binding.createPollFragmentCreateButton.setEnabled(Boolean.FALSE);
-    } else if (pollModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      Toast.makeText(getContext(), pollModelStateData.getError().getMessage(), Toast.LENGTH_SHORT)
-              .show();
-    } else if (pollModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
+    if (pollModelStateData == null) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    if (pollModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       this.navController.navigateUp();
     }
   }
 
-  private void resetBindings() {
-    this.binding.createPollFragmentProgressSpinner.setVisibility(View.GONE);
-    this.binding.createPollFragmentCreateButton.setEnabled(Boolean.TRUE);
-  }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -168,5 +166,12 @@ public class CreatePollFragment extends Fragment {
     this.binding.createPollFragmentAddOptionButton.setEnabled(true);
     this.binding.createPollFragmentAddOptionButton.setBackgroundTintList(ColorStateList
             .valueOf(getResources().getColor(R.color.app_blue, null)));
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.pollViewModel.resetPollData();
+    this.pollViewModel.setLiveDataComplete();
   }
 }

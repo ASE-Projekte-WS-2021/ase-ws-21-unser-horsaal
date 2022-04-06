@@ -39,6 +39,8 @@ public class Config {
   public static final int MEETING_DESCRIPTION_LENGTH_MIN = 0; //optional
   public static final int MEETING_DESCRIPTION_LENGTH_MAX = 500;
 
+  public static final int THREAD_OPTIONS_LENGTH_MAX = 100;
+
   public static final int TIME_HOUR_TO_MILLI = 3600000;
   public static final int TIME_MINUTE_TO_MILLI = 60000;
 
@@ -63,6 +65,8 @@ public class Config {
   public static final String REGEX_PATTERN_TITLE = ".*";
   public static final String REGEX_PATTERN_INSTITUTION = ".*";
   public static final String REGEX_PATTERN_TEXT = ".*";
+  public static final String REGEX_PATTERN_OPTIONS = String.format(".*{0,%S}",
+          THREAD_OPTIONS_LENGTH_MAX);
   public static final String REGEX_PATTERN_CODE_MAPPING =
           "^([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})$";
 

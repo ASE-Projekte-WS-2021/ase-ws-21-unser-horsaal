@@ -7,6 +7,13 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.CreateCourseViewModel" />
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -130,7 +137,9 @@
                     android:layout_marginTop="8dp"
                     app:endIconMode="clear_text"
                     app:counterEnabled="true"
-                    app:counterMaxLength="100"
+                    app:counterMaxLength="@{Config.COURSE_TITLE_LENGTH_MAX}"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.courseModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.courseModelInputState.errorTag == ErrorTag.TITLE ? vm.courseModelInputState.error.message : null}"
                     app:hintEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -143,17 +152,8 @@
                         android:layout_height="wrap_content"
                         android:singleLine="false"
                         android:background="@drawable/rounded_corners"
-                        android:maxLength="100"
                         android:hint="@string/create_course_title_hint"
                         android:paddingTop="12dp"/>
-
-                    <TextView
-                        android:id="@+id/createCourseFragmentCourseTitleErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,7 +177,9 @@
                     app:hintEnabled="false"
                     app:endIconMode="clear_text"
                     app:counterEnabled="true"
-                    app:counterMaxLength="500"
+                    app:counterMaxLength="@{Config.COURSE_DESCRIPTION_LENGTH_MAX}"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.courseModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.courseModelInputState.errorTag == ErrorTag.DESCRIPTION ? vm.courseModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/createCourseFragmentDescriptionTextView">
@@ -190,16 +192,8 @@
                         android:imeOptions="actionDone"
                         android:singleLine="false"
                         android:background="@drawable/rounded_corners"
-                        android:maxLength="500"
                         android:hint="@string/create_course_description_hint"
                         android:paddingTop="12dp"/>
-
-                    <TextView
-                        android:id="@+id/createCourseFragmentCourseDescriptionErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -223,7 +217,9 @@
                     app:hintEnabled="false"
                     app:endIconMode="clear_text"
                     app:counterEnabled="true"
-                    app:counterMaxLength="75"
+                    app:counterMaxLength="@{Config.COURSE_TEXT_LENGTH_MAX}"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.courseModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.courseModelInputState.errorTag == ErrorTag.INSTITUTION ? vm.courseModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/createCourseFragmentInstitutionHeader">
@@ -236,22 +232,15 @@
                         android:imeOptions="actionDone"
                         android:singleLine="false"
                         android:background="@drawable/rounded_corners"
-                        android:maxLength="75"
                         android:paddingTop="12dp"
                         android:hint="@string/create_course_institution_hint" />
-
-                    <TextView
-                        android:id="@+id/createCourseFragmentCourseInstitutionErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/createCourseFragmentCourseGeneralErrorText"
-                    android:visibility="gone"
+                    android:visibility="visible"
+                    android:text="@{vm.courseModel.status == StateData.DataStatus.ERROR &amp;&amp; (vm.courseModel.errorTag == ErrorTag.REPO || vm.courseModel.errorTag == ErrorTag.VM) ? vm.courseModel.error.message : null}"
                     android:textColor="@color/red"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -273,6 +262,7 @@
                         style="@style/wideOrangeButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:enabled="@{vm.courseModelInputState.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{(view) -> vm.createCourse()}"
                         android:text="@string/create_course_create_button"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -288,7 +278,7 @@
                         android:indeterminate="true"
                         android:indeterminateTint="@color/white"
                         android:indeterminateTintMode="src_in"
-                        android:visibility="gone"
+                        android:visibility="@{vm.courseModelInputState.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="@+id/createCourseFragmentCreateButtonWrapper"
                         app:layout_constraintEnd_toEndOf="@+id/createCourseFragmentCreateButtonWrapper"
                         app:layout_constraintHorizontal_bias="0.975"

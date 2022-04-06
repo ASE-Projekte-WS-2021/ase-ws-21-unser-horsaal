@@ -199,7 +199,7 @@
         <entry key="app/src/main/res/layout/fragment_course_thread.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_courses.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_courses_object.xml" value="0.23596014492753623" />
-        <entry key="app/src/main/res/layout/fragment_create_course.xml" value="0.21829710144927536" />
+        <entry key="app/src/main/res/layout/fragment_create_course.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_create_course_information.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/fragment_create_course_meeting.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_create_poll.xml" value="0.35260416666666666" />

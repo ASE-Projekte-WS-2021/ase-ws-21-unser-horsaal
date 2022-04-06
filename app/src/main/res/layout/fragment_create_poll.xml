@@ -7,9 +7,13 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.PollViewModel" />
-        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/create_poll_toolbar_title"
                 style="@style/toolbarTitleStyle"/>
+
         </com.google.android.material.appbar.MaterialToolbar>
 
         <ScrollView
@@ -100,6 +105,11 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:hint="@string/create_poll_question_hing"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.THREAD_TEXT_LENGTH_MAX}"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.pollModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.pollModelInputState.errorTag == ErrorTag.TEXT ? vm.pollModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/createPollFragmentQuestionTextView">
@@ -111,13 +121,6 @@
                         android:layout_height="wrap_content"
                         android:maxLength="100"
                         android:background="@drawable/rounded_corners" />
-
-                    <TextView
-                        android:id="@+id/createPollFragmentQuestionErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,6 +145,11 @@
                     android:layout_marginEnd="16dp"
                     android:hint="@string/create_poll_yes"
                     android:enabled="false"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.THREAD_OPTIONS_LENGTH_MAX}"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.pollModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.pollModelInputState.errorTag == ErrorTag.OPTION1 ? vm.pollModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/createPollFragmentOptionsTextView">
@@ -150,16 +158,8 @@
                         android:id="@+id/createPollFragmentOption1EditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="100"
                         android:background="@drawable/rounded_corners"
                         android:text="@={vm.pollModelInputState.data.optionsText1}"/>
-
-                    <TextView
-                        android:id="@+id/createPollFragmentOption1ErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,6 +173,11 @@
                     android:layout_marginEnd="16dp"
                     android:hint="@string/create_poll_no"
                     android:enabled="false"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.THREAD_OPTIONS_LENGTH_MAX}"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.pollModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.pollModelInputState.errorTag == ErrorTag.OPTION2 ? vm.pollModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/createPollFragmentOption1InputField">
@@ -181,16 +186,8 @@
                         android:id="@+id/createPollFragmentOption2EditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="100"
                         android:text="@={vm.pollModelInputState.data.optionsText2}"
                         android:background="@drawable/rounded_corners" />
-
-                    <TextView
-                        android:id="@+id/createPollFragmentOption2ErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -204,6 +201,11 @@
                     android:layout_marginEnd="16dp"
                     android:hint="@string/create_poll_option_3_hint"
                     android:visibility="gone"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.THREAD_OPTIONS_LENGTH_MAX}"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.pollModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.pollModelInputState.errorTag == ErrorTag.OPTION3 ? vm.pollModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/createPollFragmentOption2InputField">
@@ -212,16 +214,8 @@
                         android:id="@+id/createPollFragmentOption3EditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="100"
                         android:text="@={vm.pollModelInputState.data.optionsText3}"
                         android:background="@drawable/rounded_corners" />
-
-                    <TextView
-                        android:id="@+id/createPollFragmentOption3ErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -235,6 +229,11 @@
                     android:layout_marginEnd="16dp"
                     android:hint="@string/create_poll_option_4_hint"
                     android:visibility="gone"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.THREAD_OPTIONS_LENGTH_MAX}"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.pollModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.pollModelInputState.errorTag == ErrorTag.OPTION4 ? vm.pollModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/createPollFragmentOption3InputField">
@@ -243,16 +242,8 @@
                         android:id="@+id/createPollFragmentOption4EditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="100"
                         android:text="@={vm.pollModelInputState.data.optionsText4}"
                         android:background="@drawable/rounded_corners" />
-
-                    <TextView
-                        android:id="@+id/createPollFragmentOption4ErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -282,22 +273,33 @@
                     app:fabSize="mini"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentRemoveOptionButton"
-                     />
+                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentRemoveOptionButton"/>
+
+                <TextView
+                    android:id="@+id/createPollFragmentGeneralErrorMessage"
+                    android:visibility="visible"
+                    android:text="@{vm.pollModel.status == StateData.DataStatus.ERROR &amp;&amp; (vm.pollModel.errorTag == ErrorTag.REPO || vm.pollModel.errorTag == ErrorTag.VM) ? vm.pollModel.error.message : null}"
+                    android:textColor="@color/red"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentAddOptionButton" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/createPollFragmentCreateButtonWrapper"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="64dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentAddOptionButton" >
+                    app:layout_constraintTop_toBottomOf="@id/createPollFragmentGeneralErrorMessage" >
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/createPollFragmentCreateButton"
                         style="@style/wideOrangeButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:enabled="@{vm.pollModel.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{(view) -> vm.createPoll(createPollFragmentSwitch.isChecked())}"
                         android:text="@string/create_poll_create_button"
                         android:layout_margin="16dp"
@@ -314,12 +316,13 @@
                         android:indeterminate="true"
                         android:indeterminateTint="@color/white"
                         android:indeterminateTintMode="src_in"
-                        android:visibility="gone"
+                        android:visibility="@{vm.pollModel.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="@+id/createPollFragmentCreateButtonWrapper"
                         app:layout_constraintEnd_toEndOf="@+id/createPollFragmentCreateButtonWrapper"
                         app:layout_constraintHorizontal_bias="0.975"
                         app:layout_constraintStart_toStartOf="@+id/createPollFragmentCreateButtonWrapper"
                         app:layout_constraintTop_toTopOf="@+id/createPollFragmentCreateButtonWrapper" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

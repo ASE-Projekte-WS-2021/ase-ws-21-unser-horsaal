@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -70,7 +72,7 @@ public class RegistrationFragment extends Fragment {
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (firebaseUserStateData == null) {
-      this.binding.registrationFragmentGeneralErrorText.setText(Config.UNSPECIFIC_ERROR);
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
       return;
     }
 
