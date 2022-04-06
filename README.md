@@ -31,6 +31,8 @@
 
 ## Wie sieht ein typisches Nutzerszenario für diese App aus?
 
+[Nutzerszenarien](https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/wiki/Nutzerszenarien)
+
 ## Wo finde ich eine Präsentation bzw. Einblick für die App?
 
 
