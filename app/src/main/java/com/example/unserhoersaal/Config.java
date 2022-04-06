@@ -345,4 +345,10 @@ public class Config {
 
   public static final String TEXT_PLAIN = "text/plain";
 
+   /**=======================.
+   *  Camera-Intent
+   * ======================= */
+  public static final String CAMERA_INTENT_ERROR_TOAST = "Es konnte keine Kamera App auf deinem Smartphone gefunden werden";
+
+
 }
