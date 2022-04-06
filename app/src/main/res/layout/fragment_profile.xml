@@ -70,18 +70,28 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/selectPhotoButton"
+                style="@style/wideBlueButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:onClick="@{(view) -> selectPhotoLifeCycleObs.selectImage()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.63"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0"
-                app:srcCompat="@drawable/ic_baseline_camera_alt_24"
-                style="@style/wideBlueButton"
-                android:onClick="@{(view) -> selectPhotoLifeCycleObs.selectImage()}"/>
+                app:srcCompat="@drawable/ic_baseline_camera_alt_24" />
+
+            <ProgressBar
+                android:id="@+id/FragmentProfileProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

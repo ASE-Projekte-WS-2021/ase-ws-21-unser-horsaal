@@ -24,9 +24,10 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -36,11 +37,11 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:src="@drawable/app_transparent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="64dp"/>
+                    android:layout_marginTop="32dp" />
 
                 <TextView
                     android:id="@+id/loginFragmentTitleTextView"
@@ -56,6 +57,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginFragmentUserEmailTextField"
+                    style="@style/inputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -79,11 +81,11 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginFragmentPasswordTextField"
+                    style="@style/inputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:hint="@string/login_fragment_password_hint"
-                    app:endIconMode="password_toggle"
                     android:layout_gravity="center"
                     app:errorEnabled="true"
                     app:setError="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? vm.passwordInputState.error.message : null}"
@@ -96,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        android:background="@drawable/rounded_corners"/>
+                        android:background="@drawable/rounded_corners" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,20 +119,20 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/loginFragmentLoginButton"
+                        style="@style/wideOrangeButton"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:enabled="@{vm.userLiveData.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{() -> vm.login()}"
 
                         android:text="@string/login_fragment_login_button_string"
+                        android:layout_gravity="center"
                         app:icon="@drawable/ic_baseline_login_24"
                         app:iconGravity="textStart"
-                        android:layout_gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        style="@style/wideBlueButton"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ProgressBar
                         android:id="@+id/loginFragmentProgressSpinner"

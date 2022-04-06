@@ -17,6 +17,8 @@ import androidx.navigation.Navigation;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentProfileBinding;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.SelectPhotoLifeCycleObs;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;

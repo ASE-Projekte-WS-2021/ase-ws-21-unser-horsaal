@@ -187,6 +187,10 @@ public class CourseHistoryViewModel extends ViewModel {
       this.meetingModelInputState.postError(
               new Error(Config.CREATE_MEETING_MINUTE_DURATION_WRONG),
               ErrorTag.TIME_PICKER_MINUTE_DURATION);
+    } else if (calendarModel.getMinuteInput() > Config.TIME_MAX_MINUTES_PER_HOUR) {
+      this.meetingModelInputState.postError(
+              new Error(Config.CREATE_MEETING_MINUTE_DURATION_TOO_LONG),
+              ErrorTag.TIME_PICKER_MINUTE_DURATION);
     } else {
       this.passInputToRepo(meetingsModel, calendarModel);
     }

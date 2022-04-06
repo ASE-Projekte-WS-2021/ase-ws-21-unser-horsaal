@@ -60,6 +60,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="500"
                     app:hintEnabled="false"
                     app:endIconMode="clear_text"
                     app:counterEnabled="true"
@@ -143,6 +146,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_other"
                         android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.OTHER)}"
+                        app:checkedIconTint="@color/white"
                         app:chipBackgroundColor="@color/black"
                         style="@style/createThreadChipStyle"/>
 
@@ -186,6 +190,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="30"
                     app:hintEnabled="false"
                     android:visibility="gone"
                     style="@style/inputField">
@@ -306,8 +313,8 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             </LinearLayout>
+          
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
