@@ -234,7 +234,6 @@ public class PollRepository {
   }
 
   //TODO ifs
-  //TODO pipeline?
   /**
    * Save a vote of the user in the database.
    *
@@ -268,7 +267,6 @@ public class PollRepository {
   }
 
   //TODO ifs
-  //TODO pipeline?
   /**
    * Change a user vote from one option to another.
    *
@@ -305,7 +303,6 @@ public class PollRepository {
   }
 
   //TODO ifs
-  //TODO pipeline?
   /**
    * Remove a vote from the user in the database.
    *

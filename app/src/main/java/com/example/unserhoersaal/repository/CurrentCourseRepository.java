@@ -3,7 +3,6 @@ package com.example.unserhoersaal.repository;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
-import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
@@ -519,7 +518,7 @@ public class CurrentCourseRepository {
   }
 
   /**
-   * Deletes the message of the current thread
+   * Deletes the message of the current thread.
    */
   public void deleteThreadText() {
     DatabaseReference databaseRefDelThread =
@@ -538,7 +537,7 @@ public class CurrentCourseRepository {
   }
 
   /**
-   * Deletes the text of an answer for the current thread
+   * Deletes the text of an answer for the current thread.
    *
    * @param messageModel data of the chosen method
    */

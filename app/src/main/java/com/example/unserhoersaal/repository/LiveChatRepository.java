@@ -75,7 +75,7 @@ public class LiveChatRepository {
     if (this.meeting.getValue() == null
             || this.meeting.getValue().getData() == null
             || this.meeting.getValue().getData().getKey() == null
-            || !this.meeting.getValue().getData().getKey().equals(meeting.getKey())){
+            || !this.meeting.getValue().getData().getKey().equals(meeting.getKey())) {
       this.meeting.postUpdate(meeting);
       this.loadLiveChat();
     }
@@ -137,8 +137,8 @@ public class LiveChatRepository {
             .addOnSuccessListener(unused -> {
               liveChatMessageModel.setKey(messageId);
             }).addOnFailureListener(e -> {
-      Log.e(TAG, "Nachricht konnte nicht versandt werden: " + e.getMessage());
-    });
+              Log.e(TAG, "Nachricht konnte nicht versandt werden: " + e.getMessage());
+            });
   }
 
   /**
