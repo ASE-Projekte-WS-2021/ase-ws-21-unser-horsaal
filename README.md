@@ -31,7 +31,7 @@
 
 ## Wie sieht ein typisches Nutzerszenario für diese App aus?
 
-Unter [Nutzerszenarien](https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/wiki/Nutzerszenarien) ist jeweils ein Nutzerszenario für die Rolle Dozent°in und die Rolle Student°in zu finden.
+*Unter* [Nutzerszenarien](https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/wiki/Nutzerszenarien) *ist jeweils ein Nutzerszenario für die Rolle Dozent°in und die Rolle Student°in zu finden.*
 
 ## Wo finde ich eine Präsentation bzw. Einblick für die App?
 
