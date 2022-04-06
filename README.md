@@ -47,11 +47,11 @@
 
 ## Entwicklerteam:
 
-Asabidi Ruslan
-Bierschneider Michael
-Gottschalk Philipp
-Höpfinger Julian
-Rolny Laurin
+- Asabidi Ruslan
+- Bierschneider Michael
+- Gottschalk Philipp
+- Höpfinger Julian
+- Rolny Laurin
 
 ## Kontakt:
 Bei Rückfragen oder Anmerkungen können Sie uns unter "Ruslan.Asabidi@stud.uni-regensburg.de" erreichen.
