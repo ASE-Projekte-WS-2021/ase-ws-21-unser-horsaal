@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">unser_hoersaal</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_fragment_forgot_password">Passwort vergessen</string>
     <string name="login_fragment_login_button_string">Einloggen</string>
@@ -120,6 +119,10 @@
     <string name="dialog_password_reset_reset_button">"Passwort zurücksetzen"</string>
     <string name="dialog_password_reset_message">Du erhältst eine Mail zum Zurücksetzen des Passworts. Bitte gib die zum Account zugehörige Email an: "</string>
     <string name="dialog_password_reset_hint">Email eingeben</string>
+    <string name="dialog_impressum_title">Browser öffnen</string>
+    <string name="dialog_impressum_message">Unser Impressum ist auf unserer Webseite zu lesen. Möchtest du die Anwendung dafür verlassen?</string>
+    <string name="dialog_impressum_ok">OK</string>
+    <string name="dialog_impressum_cancel">Abbrechen</string>
     <string name="edit_profile_name_hint">Nutzername</string>
     <string name="current_course_fragment_question_title">Dies ist ein beispielhafter Titel für eine Frage</string>
     <string name="kurs_beitreten">Kurs beitreten</string>

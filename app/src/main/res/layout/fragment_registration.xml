@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="64dp"
+                    app:endIconMode="clear_text"
                     android:hint="@string/registration_fragment_user_name"
                     style="@style/inputField">
 
@@ -82,6 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="32dp"
+                    app:endIconMode="clear_text"
                     android:hint="@string/registration_fragment_user_email_hint"
                     style="@style/inputField">
 
@@ -142,13 +144,12 @@
                     android:textColor="@color/red"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:textAlignment="center"
                     android:layout_gravity="center"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/createCourseFragmentButtonWrapper"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -159,7 +160,6 @@
                         android:enabled="@{vm.userStateLiveData.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{() -> vm.register()}"
                         android:layout_gravity="center"
-                        android:layout_marginTop="32dp"
                         android:text="@string/registration_fragment_registrate_button_string"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
