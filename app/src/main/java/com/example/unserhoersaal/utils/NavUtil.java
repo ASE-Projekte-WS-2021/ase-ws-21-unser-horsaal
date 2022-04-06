@@ -285,6 +285,18 @@ public class NavUtil {
 
   }
 
+
+  @BindingAdapter("openMessengers")
+  public static void shareLinkViaMessenger(View view, String codeMapping) {
+    String deepLink = Config.DEEP_LINK_URL + codeMapping;
+    Context context = view.getContext();
+    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+    intent.setType(Config.TEXT_PLAIN);
+    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, deepLink);
+    intent.putExtra(android.content.Intent.EXTRA_TEXT, deepLink);
+    context.startActivity(Intent.createChooser(intent, deepLink));
+  }
+
   /** Opens Camera App. */
   @BindingAdapter("navigateToCameraApp")
   public static void openCameraApp(View view, EnterCourseViewModel vm) {
@@ -316,5 +328,6 @@ public class NavUtil {
 
 
   }
+
 
 }
