@@ -7,6 +7,7 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,19 +65,24 @@ public class CourseDescriptionRepository {
   /**
    * Loads the description of a course.
    */
-  public void loadDescription() {
+  private void loadDescription() {
     this.course.postLoading();
 
+    String courseKey = Validation.checkStateLiveData(this.courseId, TAG);
+    if (courseKey == null) {
+      course.postError(
+              new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
 
     Query query = this.databaseReference.child(Config.CHILD_COURSES)
-            .child(this.courseId.getValue().getData());
+            .child(courseKey);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
 
         if (model == null) {
-          Log.e(TAG, "model is null");
           course.postError(
                   new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
           return;
@@ -88,7 +94,6 @@ public class CourseDescriptionRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "setCourseId task failed.");
         course.postError(
                 new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
@@ -112,12 +117,12 @@ public class CourseDescriptionRepository {
     }
   }
 
+
   /**
-   /**
-   * Load the picture and name of the course creator.
-   *
-   * @param courseModel data of the course for loading the author
-   */
+  * Load the picture and name of the course creator.
+  *
+  * @param courseModel data of the course for loading the author
+  */
   private void getAuthor(CourseModel courseModel) {
     this.databaseReference.child(Config.CHILD_USER).child(courseModel.getCreatorId())
             .addValueEventListener(new ValueEventListener() {
@@ -170,21 +175,15 @@ public class CourseDescriptionRepository {
                               this.decreaseMemberCount(id);
                               course.postUpdate(null);
                             })
-                            .addOnFailureListener(e -> {
-                              Log.e(TAG, "Could not unregister User from course");
-                              this.course.postError(
-                                      new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED),
-                                      ErrorTag.REPO);
-                            })
-            ).addOnFailureListener(e -> {
-              Log.e(TAG, "Could not unregister User from course");
-              this.course.postError(
-                      new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
-            });
+                            .addOnFailureListener(e -> this.course.postError(
+                                    new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED),
+                                    ErrorTag.REPO))
+            ).addOnFailureListener(e -> this.course.postError(
+                    new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO));
   }
 
   /**
-   * Decrease the number of course member after a user designed from a course
+   * Decrease the number of course member after a user designed from a course.
    *
    * @param courseId id of the course that the user left
    */

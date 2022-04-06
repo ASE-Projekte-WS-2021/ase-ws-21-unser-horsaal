@@ -79,7 +79,6 @@ public class EnterCourseRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.d(TAG, "onCancelled: " + error.getMessage());
         courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
@@ -112,7 +111,6 @@ public class EnterCourseRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "Loading Course failed: " + error.getMessage());
         courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
@@ -135,10 +133,8 @@ public class EnterCourseRepository {
         course.setCreatorName(Config.UNKNOWN_USER);
       }
       courseModel.postUpdate(course);
-    }).addOnFailureListener(e -> {
-      Log.e(TAG, "Loading Course failed: " + e.getMessage());
-      courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
-    });
+    }).addOnFailureListener(e ->
+            courseModel.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO));
   }
 
   /**
@@ -161,8 +157,7 @@ public class EnterCourseRepository {
       }
 
       @Override
-      public void onCancelled(DatabaseError databaseError) {
-        Log.d(TAG, "onCancelled: " + databaseError.getMessage());
+      public void onCancelled(@NonNull DatabaseError databaseError) {
         enteredCourse.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       }
     };

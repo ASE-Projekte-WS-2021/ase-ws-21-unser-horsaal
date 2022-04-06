@@ -6,6 +6,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,9 +30,6 @@ public class CourseParticipantsRepository {
   private final StateLiveData<List<UserModel>> users = new StateLiveData<>();
   private final HashSet<String> allUsers = new HashSet<>();
 
-  /**
-   * Constructor.
-   */
   public CourseParticipantsRepository() {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.users.postCreate(new ArrayList<>());
@@ -61,9 +59,14 @@ public class CourseParticipantsRepository {
    * Loads all users of a course.
    */
   private void loadUsers() {
+    String courseKey = Validation.checkStateLiveData(this.courseId, TAG);
+    if (courseKey == null) {
+      return;
+    }
+
     this.databaseReference
             .child(Config.CHILD_COURSES_USER)
-            .child(this.courseId.getValue().getData())
+            .child(courseKey)
             .addValueEventListener(new ValueEventListener() {
               @Override
               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -100,7 +100,6 @@ public class ProfileRepository {
         UserModel userModel = snapshot.getValue(UserModel.class);
 
         if (userModel == null) {
-          Log.e(TAG, "user model null");
           user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
           return;
         }
@@ -110,7 +109,6 @@ public class ProfileRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.d(TAG, "onCancelled: " + error.getMessage());
         user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
       }
     });
@@ -233,14 +231,12 @@ public class ProfileRepository {
                             profileChanged.postUpdate(Boolean.TRUE);
                             profileChanged.postCreate(Boolean.FALSE);
                           } else {
-                            Log.e(TAG, "onComplete: " + "reset failed");
                             profileChanged.postError(
                                     new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED),
                                     ErrorTag.REPO);
                           }
                         });
               } else {
-                Log.e(TAG, "onComplete: " + "old password wrong");
                 profileChanged.postError(
                         new Error(Config.AUTH_EDIT_PASSWORD_CHANGE_FAILED), ErrorTag.REPO);
               }

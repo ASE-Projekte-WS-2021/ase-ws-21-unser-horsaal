@@ -76,14 +76,11 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 if (this.firebaseAuth.getCurrentUser() == null) {
-                  Log.e(TAG, "firebase did not authenticated a user.");
                   this.userLiveData.postError(new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
                 } else {
-                  Log.d(TAG, "Login with firebase auth was successful");
                   this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
                 }
               } else {
-                Log.e(TAG, "authentication failed.");
                 this.userLiveData.postError(new Error(Config.AUTH_LOGIN_FAILED), ErrorTag.REPO);
               }
             });
@@ -102,21 +99,19 @@ public class AuthAppRepository {
               if (task.isSuccessful()) {
                 this.firebaseUser = this.firebaseAuth.getCurrentUser();
                 if (this.firebaseUser == null) {
-                  Log.e(TAG, "firebase did not authenticated a user.");
+                  this.userLiveData.postError(
+                          new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
+                  return;
                 }
-                Log.d(TAG, "Successfully registered with firebase auth.");
                 this.createNewUser(username, email, this.firebaseUser.getUid());
               } else {
                 if (task.getException() instanceof FirebaseTooManyRequestsException) {
-                  Log.e(TAG, Config.INTERNAL_AUTH_TOO_MANY_REQUESTS);
                   this.userLiveData.postError(
                           new Error(Config.AUTH_VERIFICATION_TOO_MANY_REQUESTS), ErrorTag.REPO);
                 } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                  Log.e(TAG, "email is already existing");
                   this.userLiveData.postError(
                           new Error(Config.AUTH_EMAIL_EXISTS), ErrorTag.REPO);
                 } else {
-                  Log.e(TAG, "user registration failed.");
                   this.userLiveData.postError(
                           new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
                 }
@@ -140,15 +135,11 @@ public class AuthAppRepository {
             .child(uid)
             .setValue(newUser)
             .addOnSuccessListener(unused -> {
-              Log.d(TAG, "A new user was created in the database");
               this.sendVerificationEmail();
               this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
             })
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Could not create a new user!");
-              this.userLiveData.postError(
-                      new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO);
-            });
+            .addOnFailureListener(e -> this.userLiveData.postError(
+                    new Error(Config.AUTH_REGISTRATION_FAILED), ErrorTag.REPO));
   }
 
   /**
@@ -168,7 +159,6 @@ public class AuthAppRepository {
               })
               .addOnFailureListener(e -> {
                 if (e instanceof FirebaseTooManyRequestsException) {
-                  Log.d(TAG, "too many requests");
                   this.emailSentLiveData.postError(
                           new Error(Config.AUTH_VERIFICATION_TOO_MANY_REQUESTS), ErrorTag.REPO);
                 } else {
@@ -192,7 +182,6 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_PASSWORD_RESET_MAIL_SENT);
-
                 this.emailSentLiveData.postUpdate(Boolean.TRUE);
                 this.emailSentLiveData.postCreate(Boolean.FALSE);
               } else {
@@ -217,7 +206,7 @@ public class AuthAppRepository {
   public void deleteAccount() {
     this.userLiveData.postLoading();
     if (this.firebaseAuth.getCurrentUser() == null) {
-      //TODO error
+      this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL), ErrorTag.REPO);
       return;
     }
     String uid = this.firebaseAuth.getCurrentUser().getUid();
@@ -287,7 +276,6 @@ public class AuthAppRepository {
     if (this.firebaseAuth.getCurrentUser() !=  null) {
       this.firebaseAuth.getCurrentUser().reload();
       if (this.firebaseAuth.getCurrentUser().isEmailVerified()) {
-        Log.d(TAG, "user has verified his email");
         this.userLiveData.postUpdate(this.firebaseAuth.getCurrentUser());
       }
     }

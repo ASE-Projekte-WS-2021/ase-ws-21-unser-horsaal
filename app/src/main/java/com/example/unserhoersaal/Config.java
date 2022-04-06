@@ -245,6 +245,8 @@ public class Config {
           "Email zur Passwortzurücksetzung versandt.";
   public static final String AUTH_PASSWORD_RESET_MAIL_NOT_SENT =
           "Die Email zur Passwortzurücksetzung konnte nicht versandt werden!";
+  public static final String AUTH_ACCOUNT_DELETE_FAIL =
+          "Der Account konnte nicht gelöscht werden!";
 
   public static final String COURSES_COURSE_CREATION_FAILURE =
           "Der Kurs konnte nicht erstellt werden!";
