@@ -112,7 +112,7 @@ public class AllCoursesRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "onCancelled: " + error.getMessage());
+        Log.e(TAG, error.getMessage());
         courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });

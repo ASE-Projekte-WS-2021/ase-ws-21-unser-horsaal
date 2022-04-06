@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.os.Message;
 import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
@@ -112,7 +111,7 @@ public class CurrentCourseViewModel extends ViewModel {
   }
 
   public void setMeeting(MeetingsModel meeting) {
-    this.currentCourseRepository.setMeetingId(meeting);
+    this.currentCourseRepository.setMeeting(meeting);
   }
 
   public void setUserId() {
@@ -200,8 +199,8 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository.solved(messageId);
   }
 
-  public void deleteThreadText(ThreadModel threadModel) {
-    currentCourseRepository.deleteThreadText(threadModel);
+  public void deleteThreadText() {
+    currentCourseRepository.deleteThreadText();
   }
 
   public void deleteAnswerText(MessageModel messageModel) {

@@ -155,10 +155,9 @@ public class NavUtil {
 
   /** Shows Confirmation Dialog when User deletes a Thread Message. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
-  @BindingAdapter({"viewmodel", "model"})
+  @BindingAdapter({"viewmodel"})
   public static void deleteMessageText(View view,
-                                       CurrentCourseViewModel vm,
-                                       ThreadModel model) {
+                                       CurrentCourseViewModel vm) {
 
     String creatorId = vm.getThread().getValue().getData().getCreatorId();
     String uid = vm.getUserId().getValue().getData();
@@ -169,7 +168,7 @@ public class NavUtil {
               .setTitle(R.string.dialog_delete_message_title)
               .setPositiveButton(R.string.dialog_delete_account_true,
                       (dialog, which) -> {
-                        vm.deleteThreadText(model);
+                        vm.deleteThreadText();
                         dialog.dismiss();
                       })
               .setNegativeButton(R.string.dialog_delete_account_false,

@@ -254,7 +254,7 @@ public class CurrentCourseRepository {
     this.userId.postCreate(uid);
   }
 
-  public void setMeetingId(MeetingsModel meeting) {
+  public void setMeeting(MeetingsModel meeting) {
     this.meeting.postCreate(meeting);
   }
 
@@ -518,41 +518,43 @@ public class CurrentCourseRepository {
     }
   }
 
-  /** TODO. */
-  public void deleteThreadText(ThreadModel threadModel) {
-
-    Log.d("Hier", "msg: Key of thread: " + threadModel.key);
+  /**
+   * Deletes the message of the current thread
+   */
+  public void deleteThreadText() {
     DatabaseReference databaseRefDelThread =
             this.databaseReference.child(Config.CHILD_THREADS)
             .child(meeting.getValue().getData().getKey())
             .child(threadId.getValue().getData());
 
     databaseRefDelThread
-            .child("isTextDeleted")
-            .setValue(true);
+            .child(Config.CHILD_TEXT_DELETED)
+            .setValue(Boolean.TRUE);
 
     databaseRefDelThread
-            .child("text")
-            .setValue("");
+            .child(Config.CHILD_TEXT)
+            .setValue(Config.OPTION_EMPTY);
 
   }
 
-  /** TODO. */
+  /**
+   * Deletes the text of an answer for the current thread
+   *
+   * @param messageModel data of the chosen method
+   */
   public void deleteAnswerText(MessageModel messageModel) {
-
-    Log.d("Hier", "msg: Key of thread: " + messageModel.getKey());
     DatabaseReference databaseRefDelThread =
             this.databaseReference.child(Config.CHILD_MESSAGES)
                     .child(threadId.getValue().getData())
                     .child(messageModel.getKey());
 
     databaseRefDelThread
-            .child("text")
-            .setValue("");
+            .child(Config.CHILD_TEXT)
+            .setValue(Config.OPTION_EMPTY);
 
     databaseRefDelThread
-            .child("isTextDeleted")
-            .setValue(true);
+            .child(Config.CHILD_TEXT_DELETED)
+            .setValue(Boolean.TRUE);
 
   }
 

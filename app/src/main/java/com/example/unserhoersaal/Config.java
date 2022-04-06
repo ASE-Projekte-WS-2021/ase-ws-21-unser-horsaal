@@ -106,6 +106,8 @@ public class Config {
   public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
   public static final String CHILD_DESCRIPTION = "description";
   public static final String CHILD_TITLE = "title";
+  public static final String CHILD_TEXT = "text";
+  public static final String CHILD_TEXT_DELETED = "isTextDeleted";
 
   /**=======================.
    * Shared Preferences Keys
