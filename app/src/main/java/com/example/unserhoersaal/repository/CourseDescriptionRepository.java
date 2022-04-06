@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 /**
@@ -163,7 +164,10 @@ public class CourseDescriptionRepository {
                             .child(id)
                             .child(uid)
                             .removeValue()
-                            .addOnSuccessListener(unused1 -> courseModel.postUpdate(null))
+                            .addOnSuccessListener(unused1 -> {
+                              this.decreaseMemberCount(id);
+                              courseModel.postUpdate(null);
+                            })
                             .addOnFailureListener(e -> {
                               Log.e(TAG, "Could not unregister User from course");
                               this.courseModel.postError(
@@ -175,6 +179,18 @@ public class CourseDescriptionRepository {
               this.courseModel.postError(
                       new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
             });
+  }
+
+  /**
+   * Decrease the number of course member after a user designed from a course
+   *
+   * @param courseId id of the course that the user left
+   */
+  private void decreaseMemberCount(String courseId) {
+    this.databaseReference.child(Config.CHILD_COURSES)
+            .child(courseId)
+            .child(Config.CHILD_MEMBER_COUNT)
+            .setValue(ServerValue.increment(-1));
   }
 
   public String getUid() {

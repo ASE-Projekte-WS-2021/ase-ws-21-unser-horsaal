@@ -76,12 +76,8 @@ public class CourseDescriptionFragment extends Fragment {
     this.courseParticipantsViewModel.init();
     this.courseDescriptionViewModel.getCourseModel()
             .observe(getViewLifecycleOwner(), courseModel -> {
-
-              //use to navigate the user out of the fragment
-              //course navigate back to course history
-              if (courseModel == null) {
+              if (courseModel.getData() == null || courseModel.getData().getKey() == null) {
                 navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
-                //TODO: assert != null
               } else if (courseModel.getData().getKey() != null) {
                 courseParticipantsViewModel.setCourseId(courseModel.getData().getKey());
               }
