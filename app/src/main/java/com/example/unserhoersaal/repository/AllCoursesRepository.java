@@ -7,8 +7,6 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -32,6 +31,7 @@ public class AllCoursesRepository {
   private final ArrayList<CourseModel> allCoursesList = new ArrayList<>();
   private final StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
   private String userId;
+  private final HashSet<String> joinedCourses = new HashSet<>();
 
   public AllCoursesRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
@@ -89,37 +89,10 @@ public class AllCoursesRepository {
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        updateJoinedCourses(dataSnapshot);
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          databaseReference.child(Config.CHILD_COURSES)
-                  .child(snapshot.getKey())
-                  .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      CourseModel model = snapshot.getValue(CourseModel.class);
-                      model.setKey(snapshot.getKey());
-                      getAuthor(model);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                  });
-          //taskList.add(getCourseTask(snapshot.getKey()));
+          loadCourse(snapshot.getKey());
         }
-        /*Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
-          for (Task<DataSnapshot> task : taskList) {
-            CourseModel model = task.getResult().getValue(CourseModel.class);
-
-            if (model == null) {
-              courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
-              return;
-            }
-            model.setKey(task.getResult().getKey());
-            authorList.add(model);
-          }
-          getAuthor(authorList);
-        });*/
       }
 
       @Override
@@ -130,13 +103,51 @@ public class AllCoursesRepository {
     });
   }
 
-  private Task<DataSnapshot> getCourseTask(String courseId) {
-    return this.databaseReference.child(Config.CHILD_COURSES).child(courseId).get();
+  /**
+   * Update the list of joined courses if the user enters or leaves a course.
+   *
+   * @param dataSnapshot Snapshot with all entered courses
+   */
+  private void updateJoinedCourses(DataSnapshot dataSnapshot) {
+    HashSet<String> courseIds = new HashSet<>();
+    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+      courseIds.add(snapshot.getKey());
+    }
+    joinedCourses.clear();
+    joinedCourses.addAll(courseIds);
+  }
+
+  /**
+   * Load the data of a course from the database.
+   *
+   * @param courseId id of the course
+   */
+  private void loadCourse(String courseId) {
+    databaseReference.child(Config.CHILD_COURSES)
+            .child(courseId)
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                CourseModel model = snapshot.getValue(CourseModel.class);
+                if (model == null) {
+                  return;
+                }
+                model.setKey(snapshot.getKey());
+                getAuthor(model);
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
   }
 
   /**
    * Load the picture and name of the course creator.
    *
+   * @param courseModel data of the course for loading the author
    */
   private void getAuthor(CourseModel courseModel) {
     this.databaseReference.child(Config.CHILD_USER).child(courseModel.getCreatorId())
@@ -155,45 +166,39 @@ public class AllCoursesRepository {
 
               @Override
               public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e(TAG, error.getMessage());
+                courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
               }
             });
-    /*List<Task<DataSnapshot>> authorNames = new ArrayList<>();
-    for (CourseModel course : authorList) {
-      authorNames.add(getAuthorData(course.getCreatorId()));
-    }
-    Tasks.whenAll(authorNames).addOnSuccessListener(unused -> {
-      for (int i = 0; i < authorList.size(); i++) {
-        UserModel author = authorNames.get(i).getResult().getValue(UserModel.class);
-        if (author == null) {
-          authorList.get(i).setCreatorName(Config.UNKNOWN_USER);
-        } else {
-          authorList.get(i).setCreatorName(author.getDisplayName());
-          authorList.get(i).setPhotoUrl(author.getPhotoUrl());
-        }
-      }
-      allCoursesList.clear();
-      allCoursesList.addAll(authorList);
-
-      courses.postUpdate(allCoursesList);
-    });*/
   }
 
+  /**
+   * Update all courses when a course has changed. Add it, if the user joined a course.
+   * Remove the course if the user left it or update the course data if they changed.
+   *
+   * @param courseModel data of the changed course
+   * @param courseList all courses
+   */
   private void updateCourseList(CourseModel courseModel, List<CourseModel> courseList) {
     for (int i = 0; i < courseList.size(); i++) {
       CourseModel model = courseList.get(i);
       if (model.getKey().equals(courseModel.getKey())) {
-        courseList.set(i, courseModel);
+        if (this.joinedCourses.contains(courseModel.getKey())) {
+          //update course
+          courseList.set(i, courseModel);
+        } else {
+          //remove course
+          courseList.remove(i);
+        }
         this.courses.postUpdate(courseList);
         return;
       }
     }
-    courseList.add(courseModel);
-    this.courses.postUpdate(courseList);
-  }
-
-  private Task<DataSnapshot> getAuthorData(String authorId) {
-    return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
+    //add course
+    if (this.joinedCourses.contains(courseModel.getKey())) {
+      courseList.add(courseModel);
+      this.courses.postUpdate(courseList);
+    }
   }
 
 }
