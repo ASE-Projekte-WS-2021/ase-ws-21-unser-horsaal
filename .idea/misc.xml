@@ -47,6 +47,7 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.134" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/ic_baseline_close_24_black.xml" value="0.134" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/ic_baseline_qr_code_scanner_24_black.xml" value="0.134" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/ic_launcher_background.xml" value="0.257" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/launch_screen.xml" value="0.176" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/message_corners.xml" value="0.235" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/drawable/rounded_bottom_corners.xml" value="0.235" />
@@ -127,8 +128,11 @@
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/menu/edit_profile_fragment_toolbar.xml" value="0.25" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/menu/profile_fragment_toolbar.xml" value="0.25" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/menu/simple_back_button_and_title_toolbar.xml" value="0.25" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.261" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/mipmap-anydpi-v26/ic_launcher_new.xml" value="0.102" />
         <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/mipmap-anydpi-v26/ic_launcher_new_2.xml" value="0.102" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/mipmap-anydpi-v26/ic_launcher_new_2_round.xml" value="0.261" />
+        <entry key="..\:/Users/Phili/Desktop/ase-ws-21-unser-horsaal/app/src/main/res/mipmap-anydpi-v26/ic_launcher_new_round.xml" value="0.1935" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_main.xml" value="0.2554347826086957" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_registration.xml" value="0.2554347826086957" />
         <entry key="..\:/Users/Ruslan/Documents/GitHub/ase-ws-21-unser-horsaal/app/src/main/res/layout/activity_second.xml" value="0.24094202898550723" />

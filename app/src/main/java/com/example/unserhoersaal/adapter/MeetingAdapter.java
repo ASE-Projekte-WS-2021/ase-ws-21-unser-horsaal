@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.MeetingCardBinding;
-import com.example.unserhoersaal.databinding.SimpleCourseMeetingBinding;
 import com.example.unserhoersaal.model.MeetingsModel;
 import java.util.List;
 
