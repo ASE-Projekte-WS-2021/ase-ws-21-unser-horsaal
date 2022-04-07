@@ -1,5 +1,7 @@
 package com.example.unserhoersaal.utils;
 
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.enums.TagEnum;
@@ -34,10 +36,10 @@ public class ArrayListUtil {
         sortThreadListByAnswersDesc(threadsModelList);
         break;
       case PAGE_COUNT_UP:
-        sortThreadListByPageNumber(threadsModelList, "ascending");
+        sortThreadListByPageNumber(threadsModelList, Config.ASCENDING);
         break;
       case PAGE_COUNT_DOWN:
-        sortThreadListByPageNumber(threadsModelList, "descending");
+        sortThreadListByPageNumber(threadsModelList, Config.DESCENDING);
         break;
       default:
         break;
@@ -128,16 +130,19 @@ public class ArrayListUtil {
 
   /** Sort threads by the page number. */
   private void sortThreadListByPageNumber(List<ThreadModel> threadsModelList, String order) {
-    threadsModelList.sort((threadModel, t1) -> {
-      if (threadModel.getPageNumber() == null || t1.getPageNumber() == null) {
-        return 0;
-      }
-      if (order.equals("ascending")) {
-        return Integer.parseInt(threadModel.getPageNumber())
-                - Integer.parseInt(t1.getPageNumber());
-      } else {
-        return Integer.parseInt(t1.getPageNumber())
-                - Integer.parseInt(threadModel.getPageNumber());
+    threadsModelList.sort(new Comparator<ThreadModel>() {
+      @Override
+      public int compare(ThreadModel threadModel, ThreadModel t1) {
+        if (threadModel.getPageNumber() == null || t1.getPageNumber() == null) {
+          return 0;
+        }
+        if (order.equals(Config.ASCENDING)) {
+          return Integer.parseInt(threadModel.getPageNumber()) -
+                  Integer.parseInt(t1.getPageNumber());
+        } else {
+          return Integer.parseInt(t1.getPageNumber()) -
+                  Integer.parseInt(threadModel.getPageNumber());
+        }
       }
     });
   }

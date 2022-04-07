@@ -9,10 +9,12 @@ public class Config {
   /**=======================.
    * User Input Lengths
    * ======================= */
-  public static final int PASSWORD_LENGTH_MIN = 8;
+  public static final int PASSWORD_LENGTH_MIN = 6;
   public static final int PASSWORD_LENGTH_MAX = 64;
   public static final int USERNAME_LENGTH_MIN = 3;
   public static final int USERNAME_LENGTH_MAX = 15;
+  public static final int EMAIL_LENGTH_MIN = 5;
+  public static final int EMAIL_LENGTH_MAX = 64;
   public static final int INSTITUTION_LENGTH_MIN = 0; //optional
   public static final int INSTITUTION_LENGTH_MAX = 75;
 
@@ -37,8 +39,16 @@ public class Config {
   public static final int MEETING_DESCRIPTION_LENGTH_MIN = 0; //optional
   public static final int MEETING_DESCRIPTION_LENGTH_MAX = 500;
 
+  public static final int THREAD_OPTIONS_LENGTH_MAX = 100;
+
+  public static final int MEETING_HOUR_DURATION_MAX = 3;
+  public static final int MEETING_MINUTE_DURATION_MAX = 2;
+
   public static final int TIME_HOUR_TO_MILLI = 3600000;
   public static final int TIME_MINUTE_TO_MILLI = 60000;
+  public static final int TIME_HOUR_PER_DAY = 24;
+  public static final int TIME_MINUTE_PER_HOUR = 60;
+  public static final int TIME_MAX_MINUTES_PER_HOUR = 59;
 
   public static final int CODE_MAPPING_LENGTH = 9;
 
@@ -61,6 +71,8 @@ public class Config {
   public static final String REGEX_PATTERN_TITLE = ".*";
   public static final String REGEX_PATTERN_INSTITUTION = ".*";
   public static final String REGEX_PATTERN_TEXT = ".*";
+  public static final String REGEX_PATTERN_OPTIONS = String.format(".*{0,%S}",
+          THREAD_OPTIONS_LENGTH_MAX);
   public static final String REGEX_PATTERN_CODE_MAPPING =
           "^([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})$";
 
@@ -278,10 +290,8 @@ public class Config {
 
   public static final String CREATE_MEETING_DATE_WRONG = "Es wurde kein Datum gewählt!";
   public static final String CREATE_MEETING_TIME_WRONG = "Es wurde kein Startzeitpunkt gewählt!";
-  public static final String CREATE_MEETING_HOUR_DURATION_WRONG =
-          "Es wurde kein Dauer in Stunden gewählt!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG =
-          "Es wurde kein Dauer in Minuten gewählt!";
+  public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Bitte Dauer in Stunden wählen!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Bitte Dauer in Minuten wählen!";
   public static final String CREATE_MEETING_MINUTE_DURATION_TOO_LONG
           = "Werte über 59 Minuten sind nicht möglich";
 
@@ -331,6 +341,12 @@ public class Config {
    * ======================= */
   public static final int CARD_STROKE_WIDTH = 2;
   public static final int NO_STROKE = 0;
+
+  /**=======================.
+   *  Thread-Sort-Algorithm
+   * ======================= */
+  public static final String ASCENDING = "ascending";
+  public static final String DESCENDING = "descending";
 
   /**=======================.
    *  Live-Chat

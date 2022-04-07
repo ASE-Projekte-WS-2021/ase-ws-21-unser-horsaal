@@ -7,7 +7,13 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.ProfileViewModel"/>
-        <import type="com.example.unserhoersaal.Config"/>
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,8 +45,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:endIconMode="clear_text"
             app:counterEnabled="true"
             app:counterMaxLength="@{Config.USERNAME_LENGTH_MAX}"
+            app:errorEnabled="true"
+            app:setError="@{vm.profileChanged.status == StateData.DataStatus.ERROR &amp;&amp; vm.profileChanged.errorTag == ErrorTag.USERNAME ? vm.profileChanged.error.message : null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editProfileNameFragmentToolbar"
@@ -53,15 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:background="@drawable/rounded_corners"
-                android:maxLength="@{Config.USERNAME_LENGTH_MAX}"/>
-
-            <TextView
-                android:id="@+id/editProfileUserNameErrorText"
-                android:visibility="gone"
-                android:textColor="@color/red"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:background="@drawable/rounded_corners"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,9 +90,10 @@
                 android:id="@+id/editProfileUserNameSaveButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:enabled="@{vm.profileChanged.status != StateData.DataStatus.LOADING}"
                 android:onClick="@{(view) -> vm.changeDisplayName()}"
                 android:layout_gravity="center"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/edit_profile_save_changes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +109,7 @@
                 android:indeterminate="true"
                 android:indeterminateTint="@color/white"
                 android:indeterminateTintMode="src_in"
-                android:visibility="gone"
+                android:visibility="@{vm.profileChanged.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@+id/editProfileUserNameSaveButton"
                 app:layout_constraintEnd_toEndOf="@+id/editProfileUserNameSaveButton"
                 app:layout_constraintHorizontal_bias="0.975"

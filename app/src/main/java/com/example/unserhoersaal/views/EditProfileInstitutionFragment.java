@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -11,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEditProfileInstitutionBinding;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -57,35 +61,21 @@ public class EditProfileInstitutionFragment extends Fragment {
     this.profileViewModel
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
-    this.profileViewModel.profileChanged.observe(getViewLifecycleOwner(),
+    this.profileViewModel.getProfileChanged().observe(getViewLifecycleOwner(),
             this::profileChangedCallback);
   }
 
   private void profileChangedCallback(StateData<Boolean> booleanStateData) {
-    this.resetBindings();
     KeyboardUtil.hideKeyboard(getActivity());
+
+    if (booleanStateData == null) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+      return;
+    }
 
     if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
       this.navController.navigate(R.id.action_editProfileInstitutionFragment_to_profileFragment);
-    } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (booleanStateData.getErrorTag() == ErrorTag.INSTITUTION) {
-        this.binding.editProfileInstitutionFragmentInstitutionErrorText
-                .setText(booleanStateData.getError().getMessage());
-        this.binding.editProfileInstitutionFragmentInstitutionErrorText.setVisibility(View.VISIBLE);
-      } else {
-        this.binding.editProfileInstitutionFragmentGeneralErrorText
-                .setText(booleanStateData.getError().getMessage());
-        this.binding.editProfileInstitutionFragmentGeneralErrorText.setVisibility(View.VISIBLE);
-      }
-    } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.editProfileInstitutionFragmentSaveSpinner.setVisibility(View.VISIBLE);
     }
-  }
-
-  private void resetBindings() {
-    this.binding.editProfileInstitutionFragmentGeneralErrorText.setVisibility(View.GONE);
-    this.binding.editProfileInstitutionFragmentInstitutionErrorText.setVisibility(View.GONE);
-    this.binding.editProfileInstitutionFragmentSaveSpinner.setVisibility(View.GONE);
   }
 
   private void connectBinding() {
@@ -104,6 +94,7 @@ public class EditProfileInstitutionFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.profileViewModel.resetProfileInput();
+    this.profileViewModel.setLiveDataComplete();
   }
 
 }

@@ -10,8 +10,12 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
-        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <RelativeLayout
@@ -60,20 +64,6 @@
                 app:tabBackground="@drawable/onboarding_tab_selector"
                 android:background="@color/app_background"/>
 
-            <Button
-                android:id="@+id/onboardingFragmentNextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:drawableTint="@color/grey"
-                android:visibility="visible"
-                android:text="@string/onboarding_next"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/app_blue"
-                android:layout_marginEnd="10dp"
-                android:layout_alignParentEnd="true"/>
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/onboardingFragmentFinishButtonWrapper"
                 android:layout_marginEnd="10dp"
@@ -84,11 +74,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/onboardingFragmentFinishButton"
-                    android:enabled="true"
                     style="@style/wideBlueButton"
                     android:visibility="gone"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
+                    android:enabled="@{vm.userStateLiveData.status != StateData.DataStatus.LOADING}"
                     android:onClick="@{() -> vm.register()}"
                     android:text="@string/onboarding_finish"
                     app:flow_horizontalBias="0.1"
@@ -105,7 +95,7 @@
                     android:indeterminate="true"
                     android:indeterminateTint="@color/white"
                     android:indeterminateTintMode="src_in"
-                    android:visibility="gone"
+                    android:visibility="@{vm.userStateLiveData.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="@+id/onboardingFragmentFinishButtonWrapper"
                     app:layout_constraintEnd_toEndOf="@+id/onboardingFragmentFinishButtonWrapper"
                     app:layout_constraintHorizontal_bias="0.975"

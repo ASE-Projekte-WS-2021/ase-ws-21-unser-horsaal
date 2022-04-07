@@ -54,36 +54,6 @@ public class OnBoardingAccountFragment extends Fragment {
     this.registrationViewModel = new ViewModelProvider(requireActivity())
             .get(RegistrationViewModel.class);
     this.registrationViewModel.init();
-    this.registrationViewModel.getUserStateLiveData().observe(getViewLifecycleOwner(),
-            this::userLiveStateCallback);
-  }
-
-  private void userLiveStateCallback(StateData<FirebaseUser> firebaseUserStateData) {
-    this.resetBindings();
-    KeyboardUtil.hideKeyboard(getActivity());
-
-    if (firebaseUserStateData == null) { //-> move to other method
-      Log.e(TAG, "FirebaseUserStateData is null");
-      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
-      return;
-    }
-
-    if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (firebaseUserStateData.getErrorTag() == ErrorTag.EMAIL) {
-        this.binding.onboardingAccountFragmentUserErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.onboardingAccountFragmentUserErrorText.setVisibility(View.VISIBLE);
-      } else if (firebaseUserStateData.getErrorTag() == ErrorTag.CURRENT_PASSWORD) {
-        this.binding.onboardingAccountFragmentPasswordErrorText
-                .setText(firebaseUserStateData.getError().getMessage());
-        this.binding.onboardingAccountFragmentPasswordErrorText.setVisibility(View.VISIBLE);
-      }
-    }
-  }
-
-  private void resetBindings() {
-    this.binding.onboardingAccountFragmentUserErrorText.setVisibility(View.GONE);
-    this.binding.onboardingAccountFragmentPasswordErrorText.setVisibility(View.GONE);
   }
 
   private void connectBinding() {

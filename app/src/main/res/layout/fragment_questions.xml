@@ -21,261 +21,221 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".views.QuestionsFragment">
 
-        <ScrollView
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/questionsFragmentInfoContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="8dp"
+            android:elevation="2dp"
+            android:backgroundTint="@color/transparent"
+            app:cardCornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <SearchView
-                    android:id="@+id/questionsFragmentSearchView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/app_blue"
-                    android:iconifiedByDefault="false"
-                    android:queryHint="@string/threads_search_string"
-                    app:layout_constraintEnd_toEndOf="parent"
+                <ImageView
+                    android:id="@+id/questionsFragmentInfoImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/questions_image"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/questionsFragmentInfoContainer"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:elevation="2dp"
-                    android:backgroundTint="@color/transparent"
-                    app:cardCornerRadius="8dp"
+                    android:text="@string/questions_info"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_margin="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/questionsFragmentInfoImage"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/questionsFragmentSearchView">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/questionsFragmentInfoImage"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:src="@drawable/questions_image"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/questions_info"
-                            android:textStyle="bold"
-                            android:textSize="16sp"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            app:layout_constraintStart_toEndOf="@+id/questionsFragmentInfoImage"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/questionFragmentActivatedChipsContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:visibility="visible"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/questionsFragmentInfoContainer">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipNewestActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_new"
-                        android:onClick="@{() -> FilterSortUtil.removeSort(questionChipNewest, questionChipNewestActivated, vm, SortEnum.NEWEST)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipMostLikedActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_most_likes"
-                        android:onClick="@{() -> FilterSortUtil.removeSort(questionChipMostLiked, questionChipMostLikedActivated, vm, SortEnum.MOST_LIKES)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipMostCommentedActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_most_comments"
-                        android:onClick="@{() -> FilterSortUtil.removeSort(questionChipMostCommented, questionChipMostCommentedActivated, vm, SortEnum.MOST_COMMENTED)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipAnsweredActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_solved"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipAnswered, questionChipAnsweredActivated, vm, FilterEnum.SOLVED)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipUnansweredActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_unsolved"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipUnanswered, questionChipUnansweredActivated, vm, FilterEnum.UNSOLVED)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipPageCountUpActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:text="@string/course_meeting_fragment_chip_page_number"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        app:chipIcon="@drawable/ic_baseline_arrow_drop_up_24"
-                        android:onClick="@{() -> FilterSortUtil.removeSort(questionChipPageCountUp, questionChipPageCountUpActivated, vm, SortEnum.PAGE_COUNT_UP)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipPageCountDownActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_page_number"
-                        app:chipIcon="@drawable/ic_baseline_arrow_drop_down_24"
-                        android:onClick="@{() -> FilterSortUtil.removeSort(questionChipPageCountDown, questionChipPageCountDownActivated, vm, SortEnum.PAGE_COUNT_DOWN)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipOwnActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_own"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOwn, questionChipOwnActivated, vm, FilterEnum.OWN)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipCreatorActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_course_creator"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipCreator, questionChipCreatorActivated, vm, FilterEnum.CREATOR)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipLecturePeriodActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_lecture_period"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipLecturePeriod, questionChipLecturePeriodActivated, vm, FilterEnum.LECTURE_PERIOD)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipSubjectMatterActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_subject"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipSubjectMatter, questionChipSubjectMatterActivated, vm, FilterEnum.SUBJECT_MATTER)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipOrganisationActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_organizational"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOrganisation, questionChipOrganisationActivated, vm, FilterEnum.ORGANISATION)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipMistakeActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_mistake"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipMistake, questionChipMistakeActivated, vm, FilterEnum.MISTAKE)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipExaminationActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_exam"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipExamination, questionChipExaminationActivated, vm, FilterEnum.EXAMINATION)}"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/questionChipOtherActivated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:backgroundTint="@color/call_to_action_orange"
-                        android:textColor="@color/white"
-                        android:text="@string/course_meeting_fragment_chip_other"
-                        android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOther, questionChipOtherActivated, vm, FilterEnum.OTHER)}"/>
-
-                </com.google.android.material.chip.ChipGroup>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/questionFragmentActivatedChipsContainer">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/questionFragmentThreadRecycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:adapter="@{adapter}"
-                        app:initLayoutManager="@{R.id.questionFragmentThreadRecycler}"
-                        tools:listitem="@layout/thread_card" />
-
-                </RelativeLayout>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <SearchView
+            android:id="@+id/questionsFragmentSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners_ripple"
+            android:iconifiedByDefault="false"
+            android:searchIcon="@drawable/ic_baseline_search_black_24"
+            android:queryHint="@string/threads_search_string"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/questionsFragmentInfoContainer"/>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/questionFragmentActivatedChipsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:visibility="visible"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/questionsFragmentSearchView">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipNewestActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_new"
+                android:onClick="@{() -> FilterSortUtil.removeSort(questionChipNewest, questionChipNewestActivated, vm, SortEnum.NEWEST)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipMostLikedActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_most_likes"
+                android:onClick="@{() -> FilterSortUtil.removeSort(questionChipMostLiked, questionChipMostLikedActivated, vm, SortEnum.MOST_LIKES)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipMostCommentedActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_most_comments"
+                android:onClick="@{() -> FilterSortUtil.removeSort(questionChipMostCommented, questionChipMostCommentedActivated, vm, SortEnum.MOST_COMMENTED)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipAnsweredActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_solved"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipAnswered, questionChipAnsweredActivated, vm, FilterEnum.SOLVED)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipUnansweredActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_unsolved"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipUnanswered, questionChipUnansweredActivated, vm, FilterEnum.UNSOLVED)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipPageCountUpActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_page_number"
+                app:chipIcon="@drawable/ic_baseline_arrow_drop_up_24"
+                android:onClick="@{() -> FilterSortUtil.removeSort(questionChipPageCountUp, questionChipPageCountUpActivated, vm, SortEnum.PAGE_COUNT_UP)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipPageCountDownActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_page_number"
+                app:chipIcon="@drawable/ic_baseline_arrow_drop_down_24"
+                android:onClick="@{() -> FilterSortUtil.removeSort(questionChipPageCountDown, questionChipPageCountDownActivated, vm, SortEnum.PAGE_COUNT_DOWN)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipOwnActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_own"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOwn, questionChipOwnActivated, vm, FilterEnum.OWN)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipCreatorActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_course_creator"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipCreator, questionChipCreatorActivated, vm, FilterEnum.CREATOR)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipLecturePeriodActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_lecture_period"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipLecturePeriod, questionChipLecturePeriodActivated, vm, FilterEnum.LECTURE_PERIOD)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipSubjectMatterActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_subject"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipSubjectMatter, questionChipSubjectMatterActivated, vm, FilterEnum.SUBJECT_MATTER)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipOrganisationActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_organizational"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOrganisation, questionChipOrganisationActivated, vm, FilterEnum.ORGANISATION)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipMistakeActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_mistake"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipMistake, questionChipMistakeActivated, vm, FilterEnum.MISTAKE)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipExaminationActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_exam"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipExamination, questionChipExaminationActivated, vm, FilterEnum.EXAMINATION)}"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/questionChipOtherActivated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/course_meeting_fragment_chip_other"
+                android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOther, questionChipOtherActivated, vm, FilterEnum.OTHER)}"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.l4digital.fastscroll.FastScrollRecyclerView
+            android:id="@+id/questionFragmentThreadRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adapter="@{adapter}"
+            app:initLayoutManager="@{R.id.questionFragmentThreadRecycler}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/questionFragmentActivatedChipsContainer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:bubbleSize="small"
+            app:bubbleTextSize="24sp"
+            app:bubbleColor="@color/app_blue"
+            tools:listitem="@layout/thread_card" />
 
         <LinearLayout
             android:id="@+id/questionFragmentAvailableChipsContainer"
@@ -285,6 +245,7 @@
             android:padding="8dp"
             android:visibility="gone"
             android:background="@color/app_blue"
+            android:elevation="45dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -491,6 +452,7 @@
             android:onClick="@{() -> questionFragmentAvailableChipsContainer.getVisibility() == View.GONE ? questionFragmentAvailableChipsContainer.setVisibility(View.VISIBLE) : questionFragmentAvailableChipsContainer.setVisibility(View.GONE)}"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
+            android:elevation="90dp"
             app:tint="@color/white"
             app:layout_constraintBottom_toTopOf="@id/questionFragmentFab"
             app:layout_constraintEnd_toEndOf="parent"

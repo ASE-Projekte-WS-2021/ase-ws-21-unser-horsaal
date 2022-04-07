@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.PollItemBinding;
@@ -19,10 +19,13 @@ import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.viewmodel.PollViewModel;
+import com.l4digital.fastscroll.FastScroller;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /** Adapter for pollItems. */
-public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
+public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> implements
+        FastScroller.SectionIndexer{
 
   private static final String TAG = "PollAdapter";
 
@@ -30,6 +33,8 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
   private final PollViewModel pollViewModel;
   private StateLiveData<PollModel> pollModelStateLiveData;
   public Boolean isEnabled = true;
+  private PollModel visibleItem;
+
 
   public PollAdapter(List<PollModel> localDataSet, PollViewModel pollViewModel,
                      LifecycleOwner lifecycleOwner) {
@@ -73,6 +78,38 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
   @Override
   public int getItemCount() {
     return this.localDataSet.size();
+  }
+
+  /**Source: https://stackoverflow.com/questions/24989218/get-visible-items-in-recyclerview.*/
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+    if (manager instanceof LinearLayoutManager && getItemCount() > 0) {
+      LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
+      recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+          super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+          super.onScrolled(recyclerView, dx, dy);
+          int visiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+          if (visiblePosition > -1) {
+            visibleItem = localDataSet.get(visiblePosition);
+          }
+        }
+      });
+    }
+  }
+
+  @Override
+  public CharSequence getSectionText(int position) {
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+    return sdf.format(this.visibleItem.getCreationTime());
+
   }
 
   /** ViewHolder for pollItmes. */

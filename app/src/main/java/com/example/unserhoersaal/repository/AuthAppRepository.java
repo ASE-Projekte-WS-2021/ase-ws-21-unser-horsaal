@@ -72,6 +72,8 @@ public class AuthAppRepository {
    * @param password Entered password from the user
    */
   public void login(String email, String password) {
+    this.userLiveData.postLoading();
+
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
@@ -97,6 +99,8 @@ public class AuthAppRepository {
    * @param password chosen password from the user
    */
   public void register(String username, String email, String password) {
+    this.userLiveData.postLoading();
+
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
@@ -163,7 +167,7 @@ public class AuthAppRepository {
               .sendEmailVerification()
               .addOnSuccessListener(unused -> {
                 Log.d(TAG, Config.AUTH_VERIFICATION_EMAIL_SENT);
-                this.emailSentLiveData.postUpdate(Boolean.TRUE); //TODO use enum
+                this.emailSentLiveData.postUpdate(Boolean.TRUE);
                 this.emailSentLiveData.postCreate(Boolean.FALSE);
               })
               .addOnFailureListener(e -> {
@@ -192,7 +196,6 @@ public class AuthAppRepository {
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
                 Log.d(TAG, Config.AUTH_PASSWORD_RESET_MAIL_SENT);
-
                 this.emailSentLiveData.postUpdate(Boolean.TRUE);
                 this.emailSentLiveData.postCreate(Boolean.FALSE);
               } else {

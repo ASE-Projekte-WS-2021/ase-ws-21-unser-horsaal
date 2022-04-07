@@ -65,6 +65,8 @@ public class EnterCourseRepository {
    * @param code mapping code for the course
    */
   public void checkCode(String code) {
+    this.courseModel.postLoading();
+
     Query query = this.databaseReference.child(Config.CHILD_CODE_MAPPING).child(code);
     query.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
@@ -72,7 +74,7 @@ public class EnterCourseRepository {
         if (dataSnapshot.exists()) {
           loadCourse((String) dataSnapshot.getValue());
         } else {
-          courseModel.postCreate(new CourseModel());
+          courseModel.postUpdate(new CourseModel());
         }
       }
 
@@ -145,8 +147,6 @@ public class EnterCourseRepository {
    * @param course data of the course for the check
    */
   public void isUserInCourse(CourseModel course) {
-    this.enteredCourse.postLoading();
-
     ValueEventListener eventListener = new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {

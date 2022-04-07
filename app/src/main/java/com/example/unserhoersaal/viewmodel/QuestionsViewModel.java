@@ -132,30 +132,33 @@ public class QuestionsViewModel extends ViewModel {
     this.threadModelMutableLiveData.postCreate(null);
   }
 
+  public void setLiveDataComplete() {
+    this.threadModelMutableLiveData.postComplete();
+    this.threadModelInputState.postComplete();
+  }
+
   public void setMeeting(MeetingsModel meeting) {
     this.questionRepository.setMeeting(meeting);
   }
 
   /** Create a new Thread. */
   public void createThread() {
+    this.threadModelInputState.postLoading();
+
     ThreadModel threadModel = Validation.checkStateLiveData(this.threadModelInputState, TAG);
     if (threadModel == null) {
-      Log.e(TAG, "threadModel is null.");
+      this.threadModelInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (threadModel.getText() == null) {
-      Log.d(TAG, "text is null.");
       this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-      return;
     } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "text wrong pattern.");
       this.threadModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
-      return;
+    } else {
+      this.threadModelInputState.postComplete();
+      this.questionRepository.createThread(threadModel);
     }
-
-    this.threadModelInputState.postCreate(new ThreadModel());
-    this.questionRepository.createThread(threadModel);
   }
 }

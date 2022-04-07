@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentQuestionsBinding;
@@ -60,6 +62,7 @@ public class QuestionsFragment extends Fragment {
     this.connectAdapter();
     this.connectBinding();
     this.initSearchView();
+    this.setupScrolling();
   }
 
   private void initViewModel() {
@@ -162,6 +165,49 @@ public class QuestionsFragment extends Fragment {
     this.binding.questionFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
+  private void resetFilterChips() {
+    if (this.binding.questionChipAnswered.isChecked()) {
+      this.binding.questionChipAnswered.setChecked(Boolean.FALSE);
+      this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipUnanswered.isChecked()) {
+      this.binding.questionChipUnanswered.setChecked(Boolean.FALSE);
+      this.binding.questionChipUnansweredActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipOwn.isChecked()) {
+      this.binding.questionChipOwn.setChecked(Boolean.FALSE);
+      this.binding.questionChipOwnActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipCreator.isChecked()) {
+      this.binding.questionChipCreator.setChecked(Boolean.FALSE);
+      this.binding.questionChipCreatorActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipLecturePeriod.isChecked()) {
+      this.binding.questionChipLecturePeriod.setChecked(Boolean.FALSE);
+      this.binding.questionChipLecturePeriodActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipSubjectMatter.isChecked()) {
+      this.binding.questionChipSubjectMatter.setChecked(Boolean.FALSE);
+      this.binding.questionChipSubjectMatterActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipOrganisation.isChecked()) {
+      this.binding.questionChipOrganisation.setChecked(Boolean.FALSE);
+      this.binding.questionChipOrganisationActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipMistake.isChecked()) {
+      this.binding.questionChipMistake.setChecked(Boolean.FALSE);
+      this.binding.questionChipMistakeActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipExamination.isChecked()) {
+      this.binding.questionChipExamination.setChecked(Boolean.FALSE);
+      this.binding.questionChipExaminationActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipOther.isChecked()) {
+      this.binding.questionChipOther.setChecked(Boolean.FALSE);
+      this.binding.questionChipOtherActivated.setVisibility(View.GONE);
+    }
+  }
+
   private void connectAdapter() {
     this.threadAdapter =
             new ThreadAdapter(this.questionsViewModel.getThreads().getValue().getData(),
@@ -202,5 +248,21 @@ public class QuestionsFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.questionsViewModel.resetFilters();
+    this.resetFilterChips();
+  }
+
+  private void setupScrolling() {
+    View infoContainer = this.binding.questionsFragmentInfoContainer;
+    this.binding.questionFragmentThreadRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        if (!recyclerView.canScrollVertically(-1)) {
+          infoContainer.setVisibility(View.VISIBLE);
+        } else {
+          infoContainer.setVisibility(View.GONE);
+        }
+      }
+    });
   }
 }

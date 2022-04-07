@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -11,9 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseMeetingBinding;
-import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
@@ -50,12 +51,7 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
-
-    if (courseHistoryViewModel.getIsEditing()) {
-      changeTextToEdit();
-    } else {
-      changeTextToCreate();
-    }
+    this.initEditing();
     this.connectBinding();
     this.initToolbar();
   }
@@ -68,49 +64,26 @@ public class CreateCourseMeetingFragment extends Fragment {
             .observe(getViewLifecycleOwner(), this::meetingModelLiveDataCallback);
   }
 
-  private void meetingModelLiveDataCallback(StateData<MeetingsModel> meetingsModelStateData) {
-    this.resetBindings();
-    KeyboardUtil.hideKeyboard(getActivity());
 
-    if (meetingsModelStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.VISIBLE);
-      this.binding.createCourseMeetingFragmentButton.setEnabled(false);
-    } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (meetingsModelStateData.getErrorTag() == ErrorTag.TITLE) {
-        this.binding.createCourseMeetingFragmentTitleErrorText
-                .setText(meetingsModelStateData.getError().getMessage());
-        this.binding.createCourseMeetingFragmentTitleErrorText.setVisibility(View.VISIBLE);
-      } else if (meetingsModelStateData.getErrorTag() == ErrorTag.TIME_PICKER_DATE) {
-        this.binding.createCourseMeetingFragmentDatePickerErrorText
-                .setText(meetingsModelStateData.getError().getMessage());
-        this.binding.createCourseMeetingFragmentDatePickerErrorText.setVisibility(View.VISIBLE);
-      } else if (meetingsModelStateData.getErrorTag() == ErrorTag.TIME_PICKER_TIME) {
-        this.binding.createCourseMeetingTimePickerStartTimeErrorText
-                .setText(meetingsModelStateData.getError().getMessage());
-        this.binding.createCourseMeetingTimePickerStartTimeErrorText.setVisibility(View.VISIBLE);
-      } else if (meetingsModelStateData.getErrorTag() == ErrorTag.TIME_PICKER_HOUR_DURATION) {
-        this.binding.createCourseMeetingTimePickerDurationHourErrorText
-                .setText(meetingsModelStateData.getError().getMessage());
-        this.binding.createCourseMeetingTimePickerDurationHourErrorText.setVisibility(View.VISIBLE);
-      } else if (meetingsModelStateData.getErrorTag() == ErrorTag.TIME_PICKER_MINUTE_DURATION) {
-        this.binding.createCourseMeetingTimePickerDurationMinuteErrorText
-                .setText(meetingsModelStateData.getError().getMessage());
-        this.binding.createCourseMeetingTimePickerDurationMinuteErrorText.setVisibility(View.VISIBLE);
-      }
-    } else if (meetingsModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
-      this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
+  private void initEditing() {
+    if (courseHistoryViewModel.getIsEditing()) {
+      this.changeTextToEdit();
+    } else {
+      this.changeTextToCreate();
     }
   }
 
-  private void resetBindings() {
-    this.binding.createCourseMeetingFragmentTitleErrorText.setVisibility(View.GONE);
-    this.binding.createCourseMeetingFragmentDatePickerErrorText.setVisibility(View.GONE);
-    this.binding.createCourseMeetingTimePickerStartTimeErrorText.setVisibility(View.GONE);
-    this.binding.createCourseMeetingTimePickerDurationHourErrorText.setVisibility(View.GONE);
-    this.binding.createCourseMeetingTimePickerDurationMinuteErrorText.setVisibility(View.GONE);
-    this.binding.createCourseMeetingFragmentGeneralErrorText.setVisibility(View.GONE);
-    this.binding.createCourseMeetingFragmentProgressSpinner.setVisibility(View.GONE);
-    this.binding.createCourseMeetingFragmentButton.setEnabled(true);
+  private void meetingModelLiveDataCallback(StateData<MeetingsModel> meetingsModelStateData) {
+    KeyboardUtil.hideKeyboard(getActivity());
+
+    if (meetingsModelStateData == null) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+   if (meetingsModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
+      this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
+    }
   }
 
   private void connectBinding() {
@@ -126,30 +99,30 @@ public class CreateCourseMeetingFragment extends Fragment {
   }
 
   private void changeTextToEdit() {
-    binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
-    binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
+    this.binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
+    this.binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
 
-    binding.createCourseMeetingDatePicker.setText(courseHistoryViewModel.meetingModelInputState
+    this.binding.createCourseMeetingDatePicker
+            .setText(courseHistoryViewModel.meetingModelInputState
             .getValue().getData().getMeetingDate());
-    binding.createCourseMeetingTimePicker.setText(courseHistoryViewModel.getTimeInputForDisplay());
-
-
-
+    this.binding.createCourseMeetingTimePicker
+            .setText(courseHistoryViewModel.getTimeInputForDisplay());
   }
 
   private void changeTextToCreate() {
-    binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_toolbar_title);
-    binding.createCourseMeetingFragmentButton.setText(R.string.create_course_meeting_meeting_button);
+    this.binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_toolbar_title);
+    this.binding.createCourseMeetingFragmentButton.setText(R.string.create_course_meeting_meeting_button);
 
-    binding.createCourseMeetingDatePicker.setText(R.string.current_date_placeholder);
-    binding.createCourseMeetingTimePicker.setText(R.string.startzeit);
+    this.binding.createCourseMeetingDatePicker.setText(R.string.current_date_placeholder);
+    this.binding.createCourseMeetingTimePicker.setText(R.string.startzeit);
   }
 
   @Override
-  public void onDestroy() {
-    super.onDestroy();
+  public void onPause() {
+    super.onPause();
     this.courseHistoryViewModel.resetMeetingData();
     this.courseHistoryViewModel.setIsEditing(false);
+    this.courseHistoryViewModel.setLiveDataComplete();
   }
 
 }
