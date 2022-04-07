@@ -8,23 +8,17 @@ import android.widget.Toast;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.Config;
 
-/** JavaDoc for this class. */
+/**
+ * Class to save CodeKey in Clipboard.
+ */
 public class Clipboard {
 
-  /** JavaDoc for this method. */
-  @BindingAdapter("copyToClipboard")
-  public static void copyToClipboard(View view, String text) {
-    ClipboardManager clipboardManager = (ClipboardManager) view.getContext()
-            .getSystemService(Context.CLIPBOARD_SERVICE);
-    String deepLink = Config.DEEP_LINK_URL + text;
-    ClipData clipData = ClipData.newPlainText(Config.COURSE_CODE_MAPPING_CLIPBOARD, deepLink);
-    clipboardManager.setPrimaryClip(clipData);
-
-    Toast.makeText(view.getContext(),
-            Config.COURSE_CODE_MAPPING_CLIPBOARD_TOAST_TEXT, Toast.LENGTH_SHORT).show();
-  }
-
-  /** Copy enter code for course. */
+  /**
+   * Copy enter code for course.
+   *
+   * @param view The Button that got clicked.
+   * @param text The String that is copied to the Clipboard.
+   */
   @BindingAdapter("copyCodeToClipboard")
   public static void copyCodeToClipboard(View view, String text) {
     ClipboardManager clipboardManager = (ClipboardManager) view.getContext()
