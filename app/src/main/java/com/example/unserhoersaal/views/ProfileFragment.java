@@ -13,7 +13,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentProfileBinding;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.SelectPhotoLifeCycleObs;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
 /** Profile page. */
@@ -67,6 +70,22 @@ public class ProfileFragment extends Fragment {
                 navController.navigate(R.id.action_profileFragment_to_loginFragment);
               }
             });
+    this.profileViewModel
+            .getProfileChanged().observe(getViewLifecycleOwner(), this::courseLiveDataCallback);
+  }
+
+  private void courseLiveDataCallback(StateData<Boolean> courseModelStateData) {
+    if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.FragmentProfileProgressBar.setVisibility(View.VISIBLE);
+      this.binding.selectPhotoButton.setEnabled(false);
+    }else {
+      resetBindings();
+    }
+  }
+
+  private void resetBindings() {
+    this.binding.FragmentProfileProgressBar.setVisibility(View.GONE);
+    this.binding.selectPhotoButton.setEnabled(true);
   }
 
   private void connectBinding() {

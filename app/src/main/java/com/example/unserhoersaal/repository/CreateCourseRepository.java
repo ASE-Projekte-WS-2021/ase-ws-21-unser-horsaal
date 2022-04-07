@@ -8,7 +8,6 @@ import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 
 /**
@@ -86,7 +85,11 @@ public class CreateCourseRepository {
   }
 
 
-  /**Method edits an course.**/
+  /**
+   * Method edits th current course.
+   *
+   * @param courseModel model with the changed course data
+   */
   public void editCourse(CourseModel courseModel) {
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
@@ -97,7 +100,6 @@ public class CreateCourseRepository {
 
     String courseId = courseModel.getKey();
 
-
     if (courseId == null) {
       Log.e(TAG, "courseid is null");
       this.courseModelMutableLiveData.postError(
@@ -105,44 +107,20 @@ public class CreateCourseRepository {
       return;
     }
 
-    DatabaseReference courseDbRef = this.databaseReference.child(Config.CHILD_COURSES).child(courseId);
+    DatabaseReference courseDbRef =
+            this.databaseReference.child(Config.CHILD_COURSES).child(courseId);
 
-
-    courseDbRef.child("description").setValue(courseModel.getDescription())
+    courseDbRef.setValue(courseModel)
             .addOnSuccessListener(unused -> {
               courseModel.setKey(courseId);
               courseModelMutableLiveData.postUpdate(courseModel);
+              Log.d(TAG, courseModel.getKey());
             })
             .addOnFailureListener(e -> {
               Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
               courseModelMutableLiveData.postError(
                       new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
             });
-
-    courseDbRef.child("institution").setValue(courseModel.getInstitution())
-            .addOnSuccessListener(unused -> {
-              courseModel.setKey(courseId);
-              courseModelMutableLiveData.postUpdate(courseModel);
-
-            })
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
-    courseDbRef.child("title").setValue(courseModel.getTitle())
-            .addOnSuccessListener(unused -> {
-              courseModel.setKey(courseId);
-              courseModelMutableLiveData.postUpdate(courseModel);
-
-            })
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
-
-
   }
 
 

@@ -49,12 +49,9 @@ public class CourseDescriptionViewModel extends ViewModel {
     String courseKey = Validation.checkStateLiveData(this.courseId, TAG);
 
     if (courseKey == null) {
-      Log.d(TAG, "title is null.");
-      this.courseId.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.VM);
-      return;
-    } else if (!Validation.stringHasPattern(courseKey, Config.REGEX_PATTERN_CODE_MAPPING)) {
-      Log.d(TAG, "title has wrong pattern.");
-      this.courseId.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.VM);
+      Log.d(TAG, "courseKey is null.");
+      this.courseId.postError(
+              new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.VM);
       return;
     }
 

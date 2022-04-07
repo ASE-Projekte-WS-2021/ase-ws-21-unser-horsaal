@@ -55,6 +55,16 @@ public class CourseHistoryViewModel extends ViewModel {
     this.arrayListUtil = new ArrayListUtil();
   }
 
+  public void makeEditable(MeetingsModel meetingsModel) {
+    this.isEditing = true;
+
+    MeetingsModel m = new MeetingsModel();
+    m.setKey(meetingsModel.getKey());
+    m.setTitle(meetingsModel.getTitle());
+
+    this.meetingModelInputState.postCreate(m);
+  }
+
   public void resetMeetingData() {
     this.meetingModelInputState.postCreate(new MeetingsModel());
     this.calendarModelStateLiveData.postCreate(new CalendarModel());
@@ -154,6 +164,12 @@ public class CourseHistoryViewModel extends ViewModel {
       Log.d(TAG, "user did not pick minute duration");
       this.meetingsModelMutableLiveData.postError(
               new Error(Config.CREATE_MEETING_MINUTE_DURATION_WRONG),
+              ErrorTag.TIME_PICKER_MINUTE_DURATION);
+      return;
+    } else if (calendarModel.getMinuteInput() > 59) {
+      Log.d(TAG, "user picked minute duration greater than 59");
+      this.meetingsModelMutableLiveData.postError(
+              new Error(Config.CREATE_MEETING_MINUTE_DURATION_TOO_LONG),
               ErrorTag.TIME_PICKER_MINUTE_DURATION);
       return;
     }

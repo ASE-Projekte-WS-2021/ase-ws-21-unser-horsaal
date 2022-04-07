@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
+import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,7 +83,7 @@ public class CourseDescriptionRepository {
         }
 
         model.setKey(snapshot.getKey());
-        getAuthorName(model);
+        getAuthorData(model);
       }
 
       @Override
@@ -111,16 +112,21 @@ public class CourseDescriptionRepository {
     }
   }
 
-  private void getAuthorName(CourseModel course) {
+  /**
+   * Load the name and profile picture of the course creator.
+   *
+   * @param course course data with the courseId to load the creator data
+   */
+  private void getAuthorData(CourseModel course) {
     Task<DataSnapshot> task = this.databaseReference
             .child(Config.CHILD_USER)
             .child(course.getCreatorId())
-            .child(Config.CHILD_USER_NAME)
             .get();
 
     task.addOnSuccessListener(dataSnapshot -> {
       if (dataSnapshot.exists()) {
-        course.setCreatorName(dataSnapshot.getValue(String.class));
+        course.setCreatorName(dataSnapshot.getValue(UserModel.class).getDisplayName());
+        course.setPhotoUrl(dataSnapshot.getValue(UserModel.class).getPhotoUrl());
       } else {
         course.setCreatorName(Config.UNKNOWN_USER);
       }
@@ -142,7 +148,8 @@ public class CourseDescriptionRepository {
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.courseModel.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      this.courseModel.postError(
+              new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
       return;
     }
 
@@ -157,7 +164,8 @@ public class CourseDescriptionRepository {
                             .child(id)
                             .child(uid)
                             .removeValue()
-                            .addOnSuccessListener(unused1 -> courseModel.postUpdate(null))
+                            .addOnSuccessListener(unused1 ->
+                                    courseModel.postUpdate(null))
                             .addOnFailureListener(e -> {
                               Log.e(TAG, "Could not unregister User from course");
                               this.courseModel.postError(

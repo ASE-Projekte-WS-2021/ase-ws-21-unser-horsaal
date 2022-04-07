@@ -23,28 +23,36 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Repo for the polls. */
+/**
+ * Repo for the polls.
+ */
 public class PollRepository {
 
   private static final String TAG = "PollRepository";
 
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
   private static PollRepository instance;
-  private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
-  private StateLiveData<PollModel> pollModelStateLiveData = new StateLiveData<>();
+  private final StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
+  private final StateLiveData<PollModel> pollModelStateLiveData = new StateLiveData<>();
 
-  private ArrayList<PollModel> pollList = new ArrayList<>();
-  private StateLiveData<List<PollModel>> polls = new StateLiveData<>();
+  private final ArrayList<PollModel> pollList = new ArrayList<>();
+  private final StateLiveData<List<PollModel>> polls = new StateLiveData<>();
 
-  /** Constructor. */
+  /**
+   * Constructor.
+   */
   public PollRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.meeting.postCreate(new MeetingsModel());
   }
 
-  /** Give back an instance of the class. */
+  /**
+   * Give back an instance of the class.
+   *
+   * @return Instance of the PollRepository
+   * */
   public static PollRepository getInstance() {
     if (instance == null) {
       instance = new PollRepository();
@@ -56,7 +64,11 @@ public class PollRepository {
     return this.meeting;
   }
 
-  /** Set the new meeting and load the polls. */
+  /**
+   * Set the new meeting and load the polls of the meeting.
+   *
+   * @param meeting data of the meeting
+   */
   public void setMeeting(MeetingsModel meeting) {
     if (meeting == null || meeting.getKey() == null) {
       return;
@@ -74,7 +86,11 @@ public class PollRepository {
     return this.pollModelStateLiveData;
   }
 
-  /** Save the data for a new poll in the database. */
+  /**
+   * Save the data of a new poll in the database.
+   *
+   * @param pollModel data of the new poll
+   */
   public void createNewPoll(PollModel pollModel) {
     this.pollModelStateLiveData.postLoading();
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
@@ -120,13 +136,14 @@ public class PollRepository {
             });
   }
 
-  /** Give back a list of polls for the current meeting. */
   public StateLiveData<List<PollModel>> getPolls() {
     this.polls.postUpdate(pollList);
     return this.polls;
   }
 
-  /** Load all polls for the current meeting. */
+  /**
+   * Load all polls for the current meeting.
+   */
   private void loadPolls() {
     this.polls.postLoading();
 
@@ -158,6 +175,11 @@ public class PollRepository {
     });
   }
 
+  /**
+   * Get the creator data of all polls of a meeting.
+   *
+   * @param pollModelList list of all polls of a meeting
+   */
   private void getAuthor(List<PollModel> pollModelList) {
     List<Task<DataSnapshot>> authors = new ArrayList<>();
     for (PollModel poll : pollModelList) {
@@ -181,6 +203,11 @@ public class PollRepository {
     return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
   }
 
+  /**
+   * Loads if the users has voted in a poll and which option.
+   *
+   * @param pollModelList list of all polls of a meeting
+   */
   private void getPollStatus(List<PollModel> pollModelList) {
     List<Task<DataSnapshot>> taskList = new ArrayList<>();
     for (PollModel poll : pollModelList) {
@@ -208,7 +235,13 @@ public class PollRepository {
 
   //TODO ifs
   //TODO pipeline?
-  /** Save a vote of the user in the database. */
+  /**
+   * Save a vote of the user in the database.
+   *
+   * @param checkedOptionEnum Indicator which option was chekced by the user
+   * @param optionPath database path for the option
+   * @param pollId id of the voted poll
+   */
   public void vote(CheckedOptionEnum checkedOptionEnum, String optionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
     //increase OptionCount
@@ -236,7 +269,14 @@ public class PollRepository {
 
   //TODO ifs
   //TODO pipeline?
-  /** Change a user vote from one option to another. */
+  /**
+   * Change a user vote from one option to another.
+   *
+   * @param pollId id of the checked poll
+   * @param checkedOption new option the user has chosen
+   * @param checkedOptionPath database path for the new option
+   * @param oldOptionPath database path for the old option
+   */
   public void changeVote(CheckedOptionEnum checkedOption, String checkedOptionPath,
                          String oldOptionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
@@ -266,7 +306,12 @@ public class PollRepository {
 
   //TODO ifs
   //TODO pipeline?
-  /** Remove a vote from the user in the database. */
+  /**
+   * Remove a vote from the user in the database.
+   *
+   * @param pollId id of the poll with the removed vote
+   * @param optionPath database path for the removed option
+   */
   public void removeVote(String optionPath, String pollId) {
     String uid = this.firebaseAuth.getCurrentUser().getUid();
     //remove userPoll

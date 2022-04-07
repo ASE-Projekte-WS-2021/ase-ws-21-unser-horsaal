@@ -1,5 +1,7 @@
 package com.example.unserhoersaal;
 
+import androidx.databinding.Bindable;
+
 import java.text.SimpleDateFormat;
 
 /** Config Class. */
@@ -51,12 +53,10 @@ public class Config {
   /**=======================.
    *  Regex Patterns
    * ======================= */
-  // reference: https://ihateregex.io/expr/username/
   public static final String REGEX_PATTERN_USERNAME =
           String.format("^[a-zA-Z0-9_-]{%s,%s}$", USERNAME_LENGTH_MIN, USERNAME_LENGTH_MAX);
-  // reference: https://ihateregex.io/expr/password/
   public static final String REGEX_PATTERN_PASSWORD =
-          String.format("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{%s,%s}$",
+          String.format("^(?=.*[0-9a-zA-Z]).{%s,%s}$",
                   PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
   public static final String REGEX_PATTERN_TITLE = ".*";
   public static final String REGEX_PATTERN_INSTITUTION = ".*";
@@ -104,6 +104,8 @@ public class Config {
   public static final String CHILD_OPTION_COUNT_2 = "optionsCount2";
   public static final String CHILD_OPTION_COUNT_3 = "optionsCount3";
   public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
+  public static final String CHILD_DESCRIPTION = "description";
+  public static final String CHILD_TITLE = "title";
 
   /**=======================.
    * Shared Preferences Keys
@@ -152,6 +154,13 @@ public class Config {
   public static final String OPTION_EMPTY = "";
 
   /**=======================.
+   * Profile
+   * ======================= */
+
+  public static final String STORAGE_USER = "users/";
+  public static final String STORAGE_FILENAME = "/profile.jpg";
+
+  /**=======================.
    * Search Hint
    * ======================= */
   public static final String SEARCH_VIEW_HINT = "Deine Suche ...";
@@ -187,7 +196,7 @@ public class Config {
   public static final String DATABINDING_CODEMAPPING_NULL =
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
-          "Der Beitrittscode enthält ungültige Charaktere.";
+          "Der Beitrittscode muss aus 9 Buchstaben bestehen.";
   public static final String DATABINDING_OPTION_NULL = "Option 1 und 2 dürfen nicht leer sein";
   public static final String DATABINDING_OPTION_WRONG_PATTERN =
           "Option 1 und/oder 2 enthalten ungültige Charaktere.";
@@ -200,8 +209,7 @@ public class Config {
   public static final String AUTH_EMAIL_WRONG_PATTERN_LOGIN = "Ungültige Email-Adresse!";
   public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
   public static final String AUTH_PASSWORD_WRONG_PATTERN =
-          "Das Passwort muss aus Groß- und Kleinbuchstaben, sowie mindestens einer Zahl bestehen! "
-                  + "Zudem muss es mindestens 8 Zeichen lang sein!";
+          "Das Passwort muss aus mindestens 6 Zeichen bestehen!";
   public static final String AUTH_USERNAME_EMPTY = "Bitte gib einen Nutzernamen ein!";
   public static final String AUTH_USERNAME_WRONG_PATTERN =
           "Nutzername ist ungültig oder bereits vergeben!";
@@ -270,8 +278,12 @@ public class Config {
 
   public static final String CREATE_MEETING_DATE_WRONG = "Es wurde kein Datum gewählt!";
   public static final String CREATE_MEETING_TIME_WRONG = "Es wurde kein Startzeitpunkt gewählt!";
-  public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Es wurde kein Dauer in Stunden gewählt!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Es wurde kein Dauer in Minuten gewählt!";
+  public static final String CREATE_MEETING_HOUR_DURATION_WRONG =
+          "Es wurde kein Dauer in Stunden gewählt!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG =
+          "Es wurde kein Dauer in Minuten gewählt!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_TOO_LONG
+          = "Werte über 59 Minuten sind nicht möglich";
 
   /**=======================.
    *  Avatar Placeholder Ids
@@ -329,6 +341,17 @@ public class Config {
    *  Impressum
    * ======================= */
   public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
+
+  /**=======================.
+   *  NavUtil
+   * ======================= */
+
+  public static final String TEXT_PLAIN = "text/plain";
+
+   /**=======================.
+   *  Camera-Intent
+   * ======================= */
+  public static final String CAMERA_INTENT_ERROR_TOAST = "Es konnte keine Kamera App auf deinem Smartphone gefunden werden";
 
 
 }

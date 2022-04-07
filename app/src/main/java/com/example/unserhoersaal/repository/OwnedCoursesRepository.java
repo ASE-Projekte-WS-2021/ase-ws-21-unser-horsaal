@@ -2,13 +2,11 @@ package com.example.unserhoersaal.repository;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.example.unserhoersaal.viewmodel.OwnedCoursesViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,16 +19,18 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Repo to get the owned courses. */
+/**
+ * Repo to get the owned courses.
+ */
 public class OwnedCoursesRepository {
 
   private static final String TAG = "OwnedCoursesRepo";
 
   private static OwnedCoursesRepository instance;
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private ArrayList<CourseModel> ownedCoursesList = new ArrayList<>();
-  private StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<CourseModel> ownedCoursesList = new ArrayList<>();
+  private final StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
   private String userId;
 
   public OwnedCoursesRepository() {
@@ -38,7 +38,11 @@ public class OwnedCoursesRepository {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
   }
 
-  /** Generate an instance of the repo. */
+  /**
+   * Generate an instance of the repo.
+   *
+   * @return Instance of the OwnedCoursesRepository
+   */
   public static OwnedCoursesRepository getInstance() {
     if (instance == null) {
       instance = new OwnedCoursesRepository();
@@ -46,7 +50,9 @@ public class OwnedCoursesRepository {
     return instance;
   }
 
-  /** JavaDoc. */
+  /**
+   * This method sets the new userId after a user has logged in.
+   */
   public void setUserId() {
     String uid;
     if (this.firebaseAuth.getCurrentUser() == null) {
@@ -59,14 +65,15 @@ public class OwnedCoursesRepository {
     }
   }
 
-  /** Give back the owned courses of the user. */
   public StateLiveData<List<CourseModel>> getOwnedCourses() {
     this.courses.postCreate(ownedCoursesList);
     return this.courses;
   }
 
-  /** Load all owned courses. */
-  public void loadOwnedCourses() {
+  /**
+   * Load all owned courses.
+   */
+  private void loadOwnedCourses() {
     this.courses.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
@@ -106,13 +113,17 @@ public class OwnedCoursesRepository {
     });
   }
 
-  public Task<DataSnapshot> getCourseTask(String courseId) {
+  private Task<DataSnapshot> getCourseTask(String courseId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     return reference.child(Config.CHILD_COURSES).child(courseId).get();
   }
 
-  /** TODO. */
-  public void getAuthor(List<CourseModel> authorList) {
+  /**
+   * Load the data of the creators of all owned courses.
+   *
+   * @param authorList List with the data of all courses
+   */
+  private void getAuthor(List<CourseModel> authorList) {
     List<Task<DataSnapshot>> authorData = new ArrayList<>();
     for (CourseModel course : authorList) {
       authorData.add(getAuthorData(course.getCreatorId()));
@@ -133,7 +144,7 @@ public class OwnedCoursesRepository {
     });
   }
 
-  public Task<DataSnapshot> getAuthorData(String authorId) {
+  private Task<DataSnapshot> getAuthorData(String authorId) {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     return reference.child(Config.CHILD_USER).child(authorId).get();
   }
