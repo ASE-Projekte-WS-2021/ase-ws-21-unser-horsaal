@@ -6,10 +6,9 @@ import com.example.unserhoersaal.repository.CourseParticipantsRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
 import java.util.List;
 
-/** JavaDoc for this ViewModel. */
+/** Used in CourseParticipantsFragment. Connects to userlist in a set course.
+ * provides statuslive data with course pariticipants. */
 public class CourseParticipantsViewModel extends ViewModel {
-
-  private static final String TAG = "courseParticipantsViewModel";
 
   private CourseParticipantsRepository courseParticipantsRepository;
   private StateLiveData<String> courseId = new StateLiveData<>();

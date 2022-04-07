@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -27,11 +26,11 @@ public class QuestionsViewModel extends ViewModel {
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<List<ThreadModel>> threads;
   private StateLiveData<ThreadModel> threadModelMutableLiveData;
-  private StateLiveData<List<ThreadModel>> outFilteredThreads = new StateLiveData<>();
+  private final StateLiveData<List<ThreadModel>> outFilteredThreads = new StateLiveData<>();
   public StateLiveData<ThreadModel> threadModelInputState = new StateLiveData<>();
   private final StateLiveData<SortEnum> sortEnum = new StateLiveData<>();
-  private StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
-  private ArrayList<FilterEnum> enumArray = new ArrayList<>();
+  private final StateLiveData<FilterEnum> filterEnum = new StateLiveData<>();
+  private final ArrayList<FilterEnum> enumArray = new ArrayList<>();
   private ArrayListUtil arrayListUtil;
 
   /** Initialise the ViewModel. */
@@ -93,7 +92,9 @@ public class QuestionsViewModel extends ViewModel {
     this.sortEnum.postUpdate(sortEnum);
   }
 
-  /** JavaDoc. */
+  /** Sets the filter enum for arraylistutil class.
+   *
+   * @param filterEnum enum that indicates which filterChip was selected.*/
   public void setFilterEnum(FilterEnum filterEnum) {
     if (!enumArray.contains(filterEnum)) {
       this.enumArray.add(filterEnum);
@@ -104,7 +105,7 @@ public class QuestionsViewModel extends ViewModel {
     }
   }
 
-  /** JavaDoc. */
+  /** Reset the filter enum for arraylistutil class. */
   public void resetFilters() {
     this.enumArray.clear();
     this.filterEnum.postUpdate(FilterEnum.NONE);
@@ -161,4 +162,5 @@ public class QuestionsViewModel extends ViewModel {
       this.questionRepository.createThread(threadModel);
     }
   }
+
 }

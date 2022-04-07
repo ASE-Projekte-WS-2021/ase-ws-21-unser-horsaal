@@ -9,8 +9,6 @@ import java.util.List;
 /** ViewModel for the OwnedCoursesFragment. */
 public class OwnedCoursesViewModel extends ViewModel {
 
-  private static final String TAG = "OwnedCoursesViewModel";
-
   private OwnedCoursesRepository ownedCoursesRepository;
   private StateLiveData<List<CourseModel>> ownedCourses;
 
