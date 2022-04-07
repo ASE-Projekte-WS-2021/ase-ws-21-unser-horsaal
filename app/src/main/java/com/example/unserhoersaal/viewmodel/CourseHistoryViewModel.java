@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -10,16 +9,15 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 import com.example.unserhoersaal.utils.DateTimePicker;
-import com.example.unserhoersaal.utils.NavUtil;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.TimeUtil;
 import com.example.unserhoersaal.utils.Validation;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/** ViewModel for the CourseHistoryFragment. */
+/** ViewModel for the CourseHistoryFragment. Used to create and edit meeting - only accessible for
+ * the creator of the course.*/
 public class CourseHistoryViewModel extends ViewModel {
 
   private static final String TAG = "CourseHistoryViewModel";
@@ -33,8 +31,6 @@ public class CourseHistoryViewModel extends ViewModel {
   public StateLiveData<String> userId;
   private ArrayListUtil arrayListUtil;
   private Boolean isEditing = false;
-  private String timeInputForDisplay;
-  private String endTimeInputForDisplay;
 
   /** Initialise the ViewModel. */
   public void init() {
@@ -57,6 +53,10 @@ public class CourseHistoryViewModel extends ViewModel {
     this.arrayListUtil = new ArrayListUtil();
   }
 
+  /** Makes the values in CreateMeetingFragment editable.
+   *
+   * @param meetingsModel set this meetingModel to load into CreateMeetingFragment
+   *                      and make it editable. */
   public void makeEditable(MeetingsModel meetingsModel) {
     this.isEditing = true;
 
@@ -72,7 +72,13 @@ public class CourseHistoryViewModel extends ViewModel {
     this.calendarModelStateLiveData.postCreate(c);
   }
 
-  /** Converts start and end timestamps to year, month, day, hour, minute and duration for edit. */
+  /** Converts start and end timestamps to year, month, day, hour, minute and duration for edit.
+   *
+   * @param meetingsModel contains eventStartTime and eventEndTime that are used
+   *                      to convert to CalendarModel
+   * @return returns a CalendarModel that has the converted values for a Date and TimePicker
+   * @see DateTimePicker
+   */
   private CalendarModel getTimeInputs(MeetingsModel meetingsModel) {
     CalendarModel c = new CalendarModel();
     Calendar calendar = Calendar.getInstance();
@@ -93,12 +99,15 @@ public class CourseHistoryViewModel extends ViewModel {
     return c;
   }
 
+  /** Reset the input data and live data with postCreate onPause lifecylce method. */
   public void resetMeetingData() {
     this.meetingModelInputState.postCreate(new MeetingsModel());
     this.calendarModelStateLiveData.postCreate(new CalendarModel());
     this.meetingsModelMutableLiveData.postCreate(new MeetingsModel());
   }
 
+  /** Sets the input data and live data to status complete to reset datastatus onPause
+   * lifecycle if there is still a running status. */
   public void setLiveDataComplete() {
     this.meetingModelInputState.postComplete();
     this.calendarModelStateLiveData.postComplete();
@@ -212,34 +221,11 @@ public class CourseHistoryViewModel extends ViewModel {
   }
 
   public String  getCreatorId() {
-    return courseHistoryRepository.
-            getCourse().getValue().getData().getCreatorId();
-  }
-
-  public void setTimeInputForDisplay(int hour, int minute) {
-    String timeInputForDisplay = DateTimePicker.formatTime(hour, minute);
-    this.timeInputForDisplay = timeInputForDisplay;
-  }
-
-  public void setEndTimeInputForDisplay(int hour, int minute) {
-    String endTimeInputForDisplay = DateTimePicker.formatTime(hour, minute);
-    this.endTimeInputForDisplay = endTimeInputForDisplay;
-  }
-
-  public String getTimeInputForDisplay() {
-    return timeInputForDisplay;
-  }
-
-  public String getEndTimeInputForDisplay() {
-    return endTimeInputForDisplay;
+    return courseHistoryRepository.getCourse().getValue().getData().getCreatorId();
   }
 
   public String getUid() {
     return courseHistoryRepository.getUid();
-  }
-
-  public void setMeetingModelInputState(StateLiveData<MeetingsModel> meetingModelInputState) {
-    this.meetingModelInputState = meetingModelInputState;
   }
 
   public void setIsEditing(Boolean isEditing) {
