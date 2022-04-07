@@ -50,8 +50,7 @@
                     android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/threadCardLikes"
-                    />
+                    app:layout_constraintBottom_toTopOf="@id/threadCardLikes" />
 
                 <TextView
                     android:id="@+id/threadCardLikes"

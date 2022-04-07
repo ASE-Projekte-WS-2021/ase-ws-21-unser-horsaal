@@ -11,6 +11,7 @@ import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.List;
@@ -121,6 +122,9 @@ public class CurrentCourseViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void like(MessageModel message) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String messageId = message.getKey();
     LikeStatus likeStatus = message.getLikeStatus();
     switch (likeStatus) {
@@ -140,6 +144,9 @@ public class CurrentCourseViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void dislike(MessageModel message) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String messageId = message.getKey();
     LikeStatus likeStatus = message.getLikeStatus();
     switch (likeStatus) {
@@ -160,6 +167,9 @@ public class CurrentCourseViewModel extends ViewModel {
   //TODO do this in meetingsViewModel
   /** JavaDoc for this method. */
   public void likeThread(ThreadModel threadModel) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String threadId  = threadModel.getKey();
     LikeStatus likeStatus = threadModel.getLikeStatus();
     switch (likeStatus) {
@@ -179,6 +189,9 @@ public class CurrentCourseViewModel extends ViewModel {
 
   /** JavaDoc for this method. */
   public void dislikeThread(ThreadModel threadModel) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String threadId = threadModel.getKey();
     LikeStatus likeStatus = threadModel.getLikeStatus();
     switch (likeStatus) {
