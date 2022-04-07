@@ -119,7 +119,7 @@
                 android:id="@+id/courseItemCardParticipantsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Teilnehmer"
+                android:text="@string/course_item_participants"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/courseItemCardNumberParticipants" />
 
