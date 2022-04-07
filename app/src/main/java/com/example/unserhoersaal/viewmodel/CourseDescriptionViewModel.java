@@ -1,9 +1,7 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
-import com.example.unserhoersaal.Config;
-import com.example.unserhoersaal.enums.ErrorTag;
+
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.CourseDescriptionRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
@@ -25,7 +23,7 @@ public class CourseDescriptionViewModel extends ViewModel {
 
     this.courseDescriptionRepository = CourseDescriptionRepository.getInstance();
     this.courseId = this.courseDescriptionRepository.getCourseId();
-    this.courseModelInputState = this.courseDescriptionRepository.getCourseModel();
+    this.courseModelInputState = this.courseDescriptionRepository.getCourse();
   }
 
   public StateLiveData<String> getCourseId() {
@@ -47,13 +45,6 @@ public class CourseDescriptionViewModel extends ViewModel {
   /** JavaDoc. */
   public void unregisterFromCourse() {
     String courseKey = Validation.checkStateLiveData(this.courseId, TAG);
-
-    if (courseKey == null) {
-      Log.d(TAG, "courseKey is null.");
-      this.courseId.postError(
-              new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.VM);
-      return;
-    }
 
     this.courseId.postUpdate(null);
     this.courseDescriptionRepository.unregisterFromCourse(courseKey);

@@ -3,7 +3,6 @@ package com.example.unserhoersaal.repository;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.unserhoersaal.Config;
-import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.MeetingsModel;
@@ -35,7 +34,6 @@ public class CurrentCourseRepository {
   private final DatabaseReference databaseReference;
   private final ArrayList<MessageModel> messagesList = new ArrayList<>();
   private final StateLiveData<List<MessageModel>> messages = new StateLiveData<>();
-  private final StateLiveData<String> threadId = new StateLiveData<>();
   private final StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private final StateLiveData<ThreadModel> thread = new StateLiveData<>();
   private final StateLiveData<String> userId = new StateLiveData<>();
@@ -68,10 +66,6 @@ public class CurrentCourseRepository {
     return this.messages;
   }
 
-  public StateLiveData<String> getThreadId() {
-    return this.threadId;
-  }
-
   public StateLiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }
@@ -88,9 +82,14 @@ public class CurrentCourseRepository {
    * Loading all messages from the database.
    */
   private void loadMessages() {
-    String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
+    ThreadModel threadObj = Validation.checkStateLiveData(this.thread, TAG);
+    if (threadObj == null) {
+      messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+      return;
+    }
+    String threadKey = threadObj.getKey();
     if (threadKey == null) {
-      Log.e(TAG, "threadKey is null.");
+      messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
 
@@ -103,7 +102,6 @@ public class CurrentCourseRepository {
           MessageModel model = snapshot.getValue(MessageModel.class);
 
           if (model == null) {
-            Log.e(TAG, "model is null");
             messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
             return;
           }
@@ -116,7 +114,7 @@ public class CurrentCourseRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.d(TAG, "onCancelled: " + error.getMessage());
+        messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       }
     });
   }
@@ -125,14 +123,16 @@ public class CurrentCourseRepository {
    * Load the data of the current thread from the database.
    */
   private void loadThread() {
-    String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
+    ThreadModel threadObj = Validation.checkStateLiveData(this.thread, TAG);
+    if (threadObj == null) {
+      return;
+    }
+    String threadKey = threadObj.getKey();
     if (threadKey == null) {
-      Log.e(TAG, "threadKey is null.");
       return;
     }
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
       return;
     }
     this.databaseReference.child(Config.CHILD_THREADS).child(meetingObj.getKey()).child(threadKey)
@@ -142,7 +142,6 @@ public class CurrentCourseRepository {
                 ThreadModel threadModel = snapshot.getValue(ThreadModel.class);
 
                 if (threadModel == null) {
-                  Log.e(TAG, "threadModel is null");
                   return;
                 }
 
@@ -174,9 +173,14 @@ public class CurrentCourseRepository {
    * @param message data of the message
    */
   public void sendMessage(MessageModel message) {
-    String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
+    ThreadModel threadObj = Validation.checkStateLiveData(this.thread, TAG);
+    if (threadObj == null) {
+      this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
+      return;
+    }
+    String threadKey = threadObj.getKey();
     if (threadKey == null) {
-      Log.e(TAG, "threadKey is null.");
+      this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
 
@@ -191,7 +195,6 @@ public class CurrentCourseRepository {
     String messageId = this.databaseReference.getRoot().push().getKey();
 
     if (messageId == null) {
-      Log.e(TAG, "messageId is null");
       this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
@@ -204,24 +207,25 @@ public class CurrentCourseRepository {
               updateAnswerCount();
               message.setKey(messageId);
             }).addOnFailureListener(e ->
-              Log.e(TAG, "Nachricht konnte nicht versent werden: " + e.getMessage()
-              ));
+            this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO));
   }
 
   /**
    * Increases the count of answers in a thread.
    */
   private void updateAnswerCount() {
-    String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
+    ThreadModel threadObj = Validation.checkStateLiveData(this.thread, TAG);
+    if (threadObj == null) {
+      return;
+    }
+    String threadKey = threadObj.getKey();
     if (threadKey == null) {
-      Log.e(TAG, "threadKey is null.");
       this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
 
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "threadKey is null.");
       this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
       return;
     }
@@ -235,9 +239,18 @@ public class CurrentCourseRepository {
   }
 
 
-  //TODO combine with setThreadId
+  /**
+   * Sets the id of the new entered thread.
+   */
   public void setThread(ThreadModel threadModel) {
-    this.thread.postCreate(threadModel);
+    if (threadModel == null) {
+      return;
+    }
+    if (threadModel.getKey() != null) {
+      this.thread.postUpdate(threadModel);
+      this.loadThread();
+      this.loadMessages();
+    }
   }
 
 
@@ -254,24 +267,8 @@ public class CurrentCourseRepository {
     this.userId.postCreate(uid);
   }
 
-  public void setMeetingId(MeetingsModel meeting) {
+  public void setMeeting(MeetingsModel meeting) {
     this.meeting.postCreate(meeting);
-  }
-
-  /**
-   * Sets the id of the new entered thread.
-   */
-  public void setThreadId(String threadId) {
-    String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
-    if (threadId == null) {
-      return;
-    }
-    if (threadKey == null
-            || !threadKey.equals(threadId)) {
-      this.threadId.postUpdate(threadId);
-      this.loadThread();
-      this.loadMessages();
-    }
   }
 
   /**
@@ -282,7 +279,6 @@ public class CurrentCourseRepository {
   private Task<DataSnapshot> getLikeStatusMessage(String id) {
     String userKey = Validation.checkStateLiveData(this.userId, TAG);
     if (userKey == null) {
-      Log.e(TAG, "userKey is null.");
       return null;
     }
 
@@ -322,6 +318,9 @@ public class CurrentCourseRepository {
    */
   private void getLikeStatusThread(ThreadModel threadModel) {
     Task<DataSnapshot> task = getLikeStatusMessage(threadModel.getKey());
+    if (task == null) {
+      return;
+    }
     task.addOnSuccessListener(dataSnapshot -> {
       if (!task.getResult().exists()) {
         threadModel.setLikeStatus(LikeStatus.NEUTRAL);
@@ -378,13 +377,16 @@ public class CurrentCourseRepository {
   public void handleLikeEvent(String messageId, int deltaCount, LikeStatus status) {
     String userKey = Validation.checkStateLiveData(this.userId, TAG);
     if (userKey == null) {
-      Log.e(TAG, "userKey is null.");
       return;
     }
 
-    String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
+    ThreadModel threadObj = Validation.checkStateLiveData(this.thread, TAG);
+    if (threadObj == null) {
+      return;
+    }
+
+    String threadKey = threadObj.getKey();
     if (threadKey == null) {
-      Log.e(TAG, "threadKey is null.");
       return;
     }
 
@@ -413,13 +415,11 @@ public class CurrentCourseRepository {
   public void handleLikeEventThread(String threadId, int deltaCount, LikeStatus status) {
     String userKey = Validation.checkStateLiveData(this.userId, TAG);
     if (userKey == null) {
-      Log.e(TAG, "userKey is null.");
       return;
     }
 
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
       return;
     }
 
@@ -446,25 +446,21 @@ public class CurrentCourseRepository {
   public void solved(String messageId) {
     ThreadModel threadObj = Validation.checkStateLiveData(this.thread, TAG);
     if (threadObj == null) {
-      Log.e(TAG, "threadObj is null.");
       return;
     }
 
     String userKey = Validation.checkStateLiveData(this.userId, TAG);
     if (userKey == null) {
-      Log.e(TAG, "userKey is null.");
       return;
     }
 
-    String threadKey = Validation.checkStateLiveData(this.threadId, TAG);
+    String threadKey = threadObj.getKey();
     if (threadKey == null) {
-      Log.e(TAG, "threadKey is null.");
       return;
     }
 
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
       return;
     }
 
@@ -478,8 +474,9 @@ public class CurrentCourseRepository {
               .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                  boolean topAnswer = snapshot.getValue(Boolean.class);
-                  if (topAnswer && threadAnswered) {
+                  Boolean topAnswer = snapshot.getValue(Boolean.class);
+
+                  if (Boolean.TRUE.equals(topAnswer) && threadAnswered) {
                     //Thread is answered and the message is marked as answer
                     databaseReference.child(Config.CHILD_MESSAGES)
                             .child(threadKey)
@@ -491,11 +488,7 @@ public class CurrentCourseRepository {
                             .child(threadKey)
                             .child(Config.CHILD_ANSWERED)
                             .setValue(Boolean.FALSE);
-                  } else if (!topAnswer && threadAnswered) {
-                    //Thread is answered and the message is not marked as answer
-                    Log.d(TAG, "onDataChange: " + "an message is already marked");
-
-                  } else if (!topAnswer) {
+                  }  else if (Boolean.FALSE.equals(topAnswer)) {
                     //Thread is not  answered and the message is not marked as answer
                     databaseReference.child(Config.CHILD_MESSAGES)
                             .child(threadKey)
@@ -512,50 +505,80 @@ public class CurrentCourseRepository {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                  Log.e(TAG, "solved failed: " + error.getMessage());
+                  thread.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.REPO);
                 }
               });
     }
   }
 
-  /** TODO. */
-  public void deleteThreadText(ThreadModel threadModel) {
+  /**
+   * Deletes the message of the current thread.
+   */
+  public void deleteThreadText() {
+    ThreadModel threadObj = Validation.checkStateLiveData(this.thread, TAG);
+    if (threadObj == null) {
+      return;
+    }
 
-    Log.d("Hier", "msg: Key of thread: " + threadModel.key);
+    String threadKey = threadObj.getKey();
+    if (threadKey == null) {
+      return;
+    }
+
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      return;
+    }
+
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      return;
+    }
+
     DatabaseReference databaseRefDelThread =
             this.databaseReference.child(Config.CHILD_THREADS)
-            .child(meeting.getValue().getData().getKey())
-            .child(threadId.getValue().getData());
+            .child(meetingKey)
+            .child(threadKey);
 
     databaseRefDelThread
-            .child("isTextDeleted")
-            .setValue(true);
+            .child(Config.CHILD_TEXT_DELETED)
+            .setValue(Boolean.TRUE);
 
     databaseRefDelThread
-            .child("text")
-            .setValue("");
+            .child(Config.CHILD_TEXT)
+            .setValue(Config.OPTION_EMPTY);
 
   }
 
-  /** TODO. */
+  /**
+   * Deletes the text of an answer for the current thread.
+   *
+   * @param messageModel data of the chosen method
+   */
   public void deleteAnswerText(MessageModel messageModel) {
+    ThreadModel threadObj = Validation.checkStateLiveData(this.thread, TAG);
+    if (threadObj == null) {
+      return;
+    }
 
-    Log.d("Hier", "msg: Key of thread: " + messageModel.getKey());
+    String threadKey = threadObj.getKey();
+    if (threadKey == null) {
+      return;
+    }
+
     DatabaseReference databaseRefDelThread =
             this.databaseReference.child(Config.CHILD_MESSAGES)
-                    .child(threadId.getValue().getData())
+                    .child(threadKey)
                     .child(messageModel.getKey());
 
     databaseRefDelThread
-            .child("text")
-            .setValue("");
+            .child(Config.CHILD_TEXT)
+            .setValue(Config.OPTION_EMPTY);
 
     databaseRefDelThread
-            .child("isTextDeleted")
-            .setValue(true);
+            .child(Config.CHILD_TEXT_DELETED)
+            .setValue(Boolean.TRUE);
 
   }
-
-
 
 }

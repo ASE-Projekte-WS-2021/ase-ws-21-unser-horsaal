@@ -23,6 +23,7 @@ import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +40,7 @@ public class VerificationFragment extends Fragment {
   private ProfileViewModel profileViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
   private CourseHistoryViewModel courseHistoryViewModel;
+  private LiveChatViewModel liveChatViewModel;
   private Handler handler;
   private Runnable runnable;
   private DeepLinkMode deepLinkMode;
@@ -93,11 +95,14 @@ public class VerificationFragment extends Fragment {
             .get(CourseHistoryViewModel.class);
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
+    this.liveChatViewModel = new ViewModelProvider(requireActivity())
+            .get(LiveChatViewModel.class);
     this.loginViewModel.init();
     this.coursesViewModel.init();
     this.profileViewModel.init();
     this.courseHistoryViewModel.init();
     this.currentCourseViewModel.init();
+    this.liveChatViewModel.init();
     this.loginViewModel.getEmailSentLiveData().observe(getViewLifecycleOwner(),
             this::emailSentCallback);
     this.loginViewModel.getUserLiveData()
@@ -143,6 +148,7 @@ public class VerificationFragment extends Fragment {
     this.profileViewModel.setUserId();
     this.courseHistoryViewModel.setUserId();
     this.currentCourseViewModel.setUserId();
+    this.liveChatViewModel.setUserId();
   }
 
   private void connectBinding() {

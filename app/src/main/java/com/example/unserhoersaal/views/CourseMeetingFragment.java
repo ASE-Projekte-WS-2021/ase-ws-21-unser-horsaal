@@ -17,6 +17,7 @@ import com.example.unserhoersaal.databinding.FragmentCourseMeetingBinding;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
+import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.example.unserhoersaal.viewmodel.PollViewModel;
 import com.example.unserhoersaal.viewmodel.QuestionsViewModel;
@@ -35,6 +36,7 @@ public class CourseMeetingFragment extends Fragment {
   private QuestionsViewModel questionsViewModel;
   private PollViewModel pollViewModel;
   private LiveChatViewModel liveChatViewModel;
+  private CurrentCourseViewModel currentCourseViewModel;
   private NavController navController;
 
   public CourseMeetingFragment() {
@@ -77,10 +79,13 @@ public class CourseMeetingFragment extends Fragment {
             .get(PollViewModel.class);
     this.liveChatViewModel = new ViewModelProvider(requireActivity())
             .get(LiveChatViewModel.class);
+    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
     this.courseMeetingViewModel.init();
     this.questionsViewModel.init();
     this.pollViewModel.init();
     this.liveChatViewModel.init();
+    currentCourseViewModel.init();
     this.courseMeetingViewModel.getMeeting().observe(getViewLifecycleOwner(),
             this::setMeetingForTabs);
   }
@@ -89,6 +94,7 @@ public class CourseMeetingFragment extends Fragment {
     this.questionsViewModel.setMeeting(meetingStateData.getData());
     this.pollViewModel.setMeeting(meetingStateData.getData());
     this.liveChatViewModel.setMeeting(meetingStateData.getData());
+    this.currentCourseViewModel.setMeeting(meetingStateData.getData());
   }
 
   private void connectAdapter() {

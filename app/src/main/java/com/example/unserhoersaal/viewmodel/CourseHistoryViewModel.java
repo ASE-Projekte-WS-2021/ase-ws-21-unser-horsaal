@@ -199,7 +199,6 @@ public class CourseHistoryViewModel extends ViewModel {
   private void passInputToRepo(MeetingsModel meetingsModel, CalendarModel calendarModel) {
     meetingsModel.setEventTime(TimeUtil.parseEventTime(calendarModel));
     meetingsModel.setEventEndTime(TimeUtil.parseEventEndTime(meetingsModel, calendarModel));
-    meetingsModel.setMeetingDate(TimeUtil.parseMeetingDate(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
 
     this.meetingModelInputState.postComplete();

@@ -16,6 +16,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseMeetingBinding;
 import com.example.unserhoersaal.model.MeetingsModel;
+import com.example.unserhoersaal.utils.Format;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
@@ -103,8 +104,8 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
 
     this.binding.createCourseMeetingDatePicker
-            .setText(courseHistoryViewModel.meetingModelInputState
-            .getValue().getData().getMeetingDate());
+            .setText(Config.DATE_FORMAT.format(courseHistoryViewModel.meetingModelInputState
+            .getValue().getData().getEventTime()));
     this.binding.createCourseMeetingTimePicker
             .setText(courseHistoryViewModel.getTimeInputForDisplay());
   }

@@ -15,7 +15,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.LiveChatAdapter;
 import com.example.unserhoersaal.databinding.FragmentLiveChatBinding;
@@ -35,8 +38,7 @@ public class LiveChatFragment extends Fragment {
 
   private FragmentLiveChatBinding binding;
   private LiveChatViewModel liveChatViewModel;
-  private NavController navController;
-  public LiveChatAdapter liveChatAdapter;
+  private LiveChatAdapter liveChatAdapter;
   private int messageSize;
   private FastScrollRecyclerView recyclerView;
 
@@ -73,12 +75,17 @@ public class LiveChatFragment extends Fragment {
     this.liveChatViewModel = new ViewModelProvider(requireActivity())
             .get(LiveChatViewModel.class);
     this.liveChatViewModel.init();
-    this.liveChatViewModel.getSldLiveChatMessages()
+    this.liveChatViewModel.getLiveChatMessages()
             .observe(getViewLifecycleOwner(), this::messageLiveDataCallback);
   }
 
   @SuppressLint("NotifyDataSetChanged")
   private void messageLiveDataCallback(StateData<List<LiveChatMessageModel>> listStateData) {
+
+    if (listStateData == null) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+      return;
+    }
     this.resetBinding();
     KeyboardUtil.hideKeyboard(getActivity());
 
@@ -86,7 +93,6 @@ public class LiveChatFragment extends Fragment {
       messageSize = listStateData.getData().size();
     }
     this.liveChatAdapter.notifyDataSetChanged();
-    Log.d(TAG, "in messagelist callback: " + messageSize);
 
     //recyclerView.scrollToPosition(messageSize - 1);
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
@@ -103,14 +109,13 @@ public class LiveChatFragment extends Fragment {
 
   private void connectAdapter() {
     this.liveChatAdapter =
-            new LiveChatAdapter(this.liveChatViewModel.getSldLiveChatMessages().getValue().getData(),
+            new LiveChatAdapter(this.liveChatViewModel.getLiveChatMessages().getValue().getData(),
                     this.liveChatViewModel);
     this.liveChatAdapter.registerAdapterDataObserver(
             new RecyclerView.AdapterDataObserver() {
               @Override
               public void onChanged() {
                 super.onChanged();
-                Log.d(TAG, "in messagelist callback: " + messageSize);
                 recyclerView.scrollToPosition(messageSize - 1);
               }
             }

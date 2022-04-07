@@ -94,7 +94,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/meetingCardDateImage"
                 app:layout_constraintTop_toTopOf="@id/meetingCardDateImage"
-                tools:text="@{model.meetingDate}"/>
+                tools:text="@{Format.getFormatedDate(meetingCardDate, model.eventTime)}"/>
 
             <ImageView
                 android:id="@+id/meetingCardEditMeetingImage"

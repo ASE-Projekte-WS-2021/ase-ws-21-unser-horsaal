@@ -27,6 +27,7 @@ import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.example.unserhoersaal.viewmodel.LoginViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +45,7 @@ public class LoginFragment extends Fragment {
   private ProfileViewModel profileViewModel;
   private CourseHistoryViewModel courseHistoryViewModel;
   private CurrentCourseViewModel currentCourseViewModel;
+  private LiveChatViewModel liveChatViewModel;
   private NavController navController;
   private FragmentLoginBinding binding;
   private DeepLinkMode deepLinkMode;
@@ -114,11 +116,14 @@ public class LoginFragment extends Fragment {
             .get(CourseHistoryViewModel.class);
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
+    this.liveChatViewModel = new ViewModelProvider(requireActivity())
+            .get(LiveChatViewModel.class);
     this.loginViewModel.init();
     this.coursesViewModel.init();
     this.profileViewModel.init();
     this.courseHistoryViewModel.init();
     this.currentCourseViewModel.init();
+    this.liveChatViewModel.init();
     this.loginViewModel
             .getUserLiveData()
             .observe(getViewLifecycleOwner(), this::userLiveDataCallback);
@@ -158,6 +163,7 @@ public class LoginFragment extends Fragment {
     this.profileViewModel.setUserId();
     this.courseHistoryViewModel.setUserId();
     this.currentCourseViewModel.setUserId();
+    this.liveChatViewModel.setUserId();
   }
 
   private void connectBinding() {

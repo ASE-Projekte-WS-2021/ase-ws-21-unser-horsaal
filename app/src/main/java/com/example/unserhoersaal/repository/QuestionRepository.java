@@ -98,7 +98,6 @@ public class QuestionRepository {
 
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
       this.meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
       return;
     }
@@ -143,7 +142,6 @@ public class QuestionRepository {
 
     MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
     if (meetingObj == null) {
-      Log.e(TAG, "meetingObj is null.");
       this.threadModelMutableLiveData.postError(
               new Error(Config.COURSE_MEETING_THREAD_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -242,7 +240,10 @@ public class QuestionRepository {
   }
 
   private Task<DataSnapshot> getLikeStatusThread(String id) {
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return null;
+    }
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
     return this.databaseReference.child(Config.CHILD_USER_LIKE).child(uid).child(id).get();
   }
 

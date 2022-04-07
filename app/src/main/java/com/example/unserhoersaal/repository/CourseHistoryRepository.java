@@ -113,7 +113,6 @@ public class CourseHistoryRepository {
   public void loadMeetings() {
     CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
     if (courseObj == null) {
-      Log.e(TAG, "courseObj is null.");
       return;
     }
 
@@ -123,7 +122,6 @@ public class CourseHistoryRepository {
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
         meetingsModelList.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           MeetingsModel model = snapshot.getValue(MeetingsModel.class);
@@ -143,7 +141,6 @@ public class CourseHistoryRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "Course History Listener Failure");
         meetings.postError(
                 new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       }
@@ -165,7 +162,6 @@ public class CourseHistoryRepository {
 
     CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
     if (courseObj == null) {
-      Log.e(TAG, "userModel is null.");
       this.meetingsModelMutableLiveData.postError(
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -178,7 +174,6 @@ public class CourseHistoryRepository {
     String meetingId = this.databaseReference.getRoot().push().getKey();
 
     if (meetingId == null) {
-      Log.e(TAG, "meeting id is null");
       this.meetingsModelMutableLiveData.postError(
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -226,7 +221,6 @@ public class CourseHistoryRepository {
 
     CourseModel courseObj = Validation.checkStateLiveData(this.course, TAG);
     if (courseObj == null) {
-      Log.e(TAG, "userModel is null.");
       this.meetingsModelMutableLiveData.postError(
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -235,13 +229,13 @@ public class CourseHistoryRepository {
     String meetingId = meetingsModel.getKey();
 
     if (meetingId == null) {
-      Log.e(TAG, "meeting id is null");
       this.meetingsModelMutableLiveData.postError(
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
 
-    //TODO: key nicht mitspeichern
+    //reset meeting key thus it is not saved twice in the database
+    meetingsModel.setKey(null);
     this.databaseReference
             .child(Config.CHILD_MEETINGS)
             .child(courseObj.getKey())
@@ -255,7 +249,15 @@ public class CourseHistoryRepository {
             });
   }
 
+  /**
+   * Gets the user id of the current firebase user.
+   *
+   * @return id of the current user
+   */
   public String getUid() {
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return null;
+    }
     return firebaseAuth.getCurrentUser().getUid();
   }
 }

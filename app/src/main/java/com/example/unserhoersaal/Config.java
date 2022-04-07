@@ -118,6 +118,8 @@ public class Config {
   public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
   public static final String CHILD_DESCRIPTION = "description";
   public static final String CHILD_TITLE = "title";
+  public static final String CHILD_TEXT = "text";
+  public static final String CHILD_TEXT_DELETED = "isTextDeleted";
 
   /**=======================.
    * Shared Preferences Keys
@@ -254,6 +256,8 @@ public class Config {
           "Email zur Passwortzurücksetzung versandt.";
   public static final String AUTH_PASSWORD_RESET_MAIL_NOT_SENT =
           "Die Email zur Passwortzurücksetzung konnte nicht versandt werden!";
+  public static final String AUTH_ACCOUNT_DELETE_FAIL =
+          "Der Account konnte nicht gelöscht werden!";
 
   public static final String COURSES_COURSE_CREATION_FAILURE =
           "Der Kurs konnte nicht erstellt werden!";
@@ -282,9 +286,11 @@ public class Config {
   public static final String NO_PICUTRE_SELECTED = "Es wurde kein Bild selektiert!";
 
   public static final String POLL_CREATION_FAILURE = "Die Umfrage konnte nicht erstellt werden!";
-  public static final String POLLS_FAILED_TO_LOAD = "Polls konnten nicht geladen werden!";
+  public static final String POLLS_FAILED_TO_LOAD = "Die Umfragen konnten nicht geladen werden!";
   public static final String POLL_ID_NULL = "PollId is null.";
   public static final String POLL_MODEL_NULL = "pollModel is null.";
+
+  public static final String LIVE_CHAT_FAILED_TO_LOAD = "Der Chat konnte nicht geladen werden!";
 
   public static final String MEETING_OBJECT_NULL = "meetingObj is null.";
 

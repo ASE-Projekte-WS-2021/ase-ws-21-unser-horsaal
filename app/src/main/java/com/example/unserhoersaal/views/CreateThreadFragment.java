@@ -71,7 +71,7 @@ public class CreateThreadFragment extends Fragment {
       }
       if (threadModel.getData() != null) {
         KeyboardUtil.hideKeyboard(getActivity());
-        this.currentCourseViewModel.setThreadId(threadModel.getData().getKey());
+        this.currentCourseViewModel.setThread(threadModel.getData());
         this.navController.navigate(R.id.action_createThreadFragment_to_courseThreadFragment);
       }
     });

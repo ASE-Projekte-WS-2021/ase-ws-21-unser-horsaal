@@ -68,7 +68,6 @@ public class CreateCourseRepository {
     String courseId = this.databaseReference.getRoot().push().getKey();
 
     if (courseId == null) {
-      Log.e(TAG, "courseid is null");
       this.courseModelMutableLiveData.postError(
               new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -79,11 +78,8 @@ public class CreateCourseRepository {
               courseModel.setKey(courseId);
               addUserToCourse(courseModel, uid);
             })
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
+            .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                    new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO));
   }
 
 
@@ -103,7 +99,6 @@ public class CreateCourseRepository {
     String courseId = courseModel.getKey();
 
     if (courseId == null) {
-      Log.e(TAG, "courseid is null");
       this.courseModelMutableLiveData.postError(
               new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -118,11 +113,8 @@ public class CreateCourseRepository {
               courseModelMutableLiveData.postUpdate(courseModel);
               Log.d(TAG, courseModel.getKey());
             })
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht bearbeited werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
+            .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                    new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO));
   }
 
 
@@ -132,7 +124,6 @@ public class CreateCourseRepository {
    * @param course course the user is added
    * @param user id of the added user
    */
-
   private void addUserToCourse(CourseModel course, String user) {
     this.databaseReference
             .child(Config.CHILD_USER_COURSES)
@@ -144,25 +135,18 @@ public class CreateCourseRepository {
                             .child(course.getKey())
                             .child(user)
                             .setValue(Boolean.TRUE)
-                            .addOnSuccessListener(unused1 -> {
-                              this.databaseReference.child(Config.CHILD_COURSES)
-                                      .child(course.getKey())
-                                      .child(Config.CHILD_MEMBER_COUNT)
-                                      .setValue(ServerValue.increment(1))
-                                      .addOnSuccessListener(unused2 -> addMapping(course))
-                                      .addOnFailureListener(e -> {
-                                        courseModelMutableLiveData.postError(
-                                                new Error(Config.COURSES_COURSE_CREATION_FAILURE),
-                                                ErrorTag.REPO);
-                                      });
-                            })
-                            .addOnFailureListener(e -> {
-                              Log.e(TAG, "User konnte dem Kurs nicht hinzugefügt werden: "
-                                      + e.getMessage());
-                              courseModelMutableLiveData.postError(
-                                      new Error(Config.COURSES_COURSE_CREATION_FAILURE),
-                                      ErrorTag.REPO);
-                            }));
+                            .addOnSuccessListener(unused1 -> this.databaseReference
+                                    .child(Config.CHILD_COURSES)
+                                    .child(course.getKey())
+                                    .child(Config.CHILD_MEMBER_COUNT)
+                                    .setValue(ServerValue.increment(1))
+                                    .addOnSuccessListener(unused2 -> addMapping(course))
+                                    .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                                    new Error(Config.COURSES_COURSE_CREATION_FAILURE),
+                                    ErrorTag.REPO))
+                            .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                                    new Error(Config.COURSES_COURSE_CREATION_FAILURE),
+                                    ErrorTag.REPO))));
   }
 
   /**
@@ -179,11 +163,8 @@ public class CreateCourseRepository {
             .setValue(course.getKey())
             .addOnSuccessListener(unused ->
                     courseModelMutableLiveData.postUpdate(course))
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Das Mapping konnte nicht erstellt werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
+            .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                    new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO));
   }
 
 }

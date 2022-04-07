@@ -12,7 +12,6 @@ public class MeetingsModel {
   private Long eventEndTime;
   private String title;
   private String key;
-  private String meetingDate;
   private String meetingKey;
 
   public MeetingsModel() {
@@ -73,14 +72,6 @@ public class MeetingsModel {
 
   public void setKey(String key) {
     this.key = key;
-  }
-
-  public String getMeetingDate() {
-    return this.meetingDate;
-  }
-
-  public void setMeetingDate(String meetingDate) {
-    this.meetingDate = meetingDate;
   }
 
   public void setMeetingKey(String meetingKey) { this.meetingKey = meetingKey; }

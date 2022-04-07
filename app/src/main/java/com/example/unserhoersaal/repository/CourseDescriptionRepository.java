@@ -7,13 +7,14 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
-import com.google.android.gms.tasks.Task;
+import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 /**
@@ -28,7 +29,7 @@ public class CourseDescriptionRepository {
   private static CourseDescriptionRepository instance;
   private String creatorId;
   private final StateLiveData<String> courseId = new StateLiveData<>();
-  private final StateLiveData<CourseModel> courseModel = new StateLiveData<>();
+  private final StateLiveData<CourseModel> course = new StateLiveData<>();
 
 
   /**
@@ -37,7 +38,7 @@ public class CourseDescriptionRepository {
   public CourseDescriptionRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
-    this.courseModel.postCreate(new CourseModel());
+    this.course.postCreate(new CourseModel());
     this.courseId.postCreate(null);
   }
 
@@ -57,39 +58,43 @@ public class CourseDescriptionRepository {
     return this.courseId;
   }
 
-  public StateLiveData<CourseModel> getCourseModel() {
-    return this.courseModel;
+  public StateLiveData<CourseModel> getCourse() {
+    return this.course;
   }
 
   /**
    * Loads the description of a course.
    */
-  public void loadDescription() {
-    this.courseModel.postLoading();
+  private void loadDescription() {
+    this.course.postLoading();
 
+    String courseKey = Validation.checkStateLiveData(this.courseId, TAG);
+    if (courseKey == null) {
+      course.postError(
+              new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
 
     Query query = this.databaseReference.child(Config.CHILD_COURSES)
-            .child(this.courseId.getValue().getData());
+            .child(courseKey);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         CourseModel model = snapshot.getValue(CourseModel.class);
 
         if (model == null) {
-          Log.e(TAG, "model is null");
-          courseModel.postError(
+          course.postError(
                   new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
           return;
         }
 
         model.setKey(snapshot.getKey());
-        getAuthorData(model);
+        getAuthor(model);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "setCourseId task failed.");
-        courseModel.postError(
+        course.postError(
                 new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
       }
     });
@@ -112,30 +117,33 @@ public class CourseDescriptionRepository {
     }
   }
 
-  /**
-   * Load the name and profile picture of the course creator.
-   *
-   * @param course course data with the courseId to load the creator data
-   */
-  private void getAuthorData(CourseModel course) {
-    Task<DataSnapshot> task = this.databaseReference
-            .child(Config.CHILD_USER)
-            .child(course.getCreatorId())
-            .get();
 
-    task.addOnSuccessListener(dataSnapshot -> {
-      if (dataSnapshot.exists()) {
-        course.setCreatorName(dataSnapshot.getValue(UserModel.class).getDisplayName());
-        course.setPhotoUrl(dataSnapshot.getValue(UserModel.class).getPhotoUrl());
-      } else {
-        course.setCreatorName(Config.UNKNOWN_USER);
-      }
-      this.courseModel.postUpdate(course);
-    }).addOnFailureListener(e -> {
-      Log.e(TAG, e.getMessage());
-      this.courseModel.postError(
-              new Error(Config.COURSE_DESCRIPTION_COULD_NOT_LOAD_USER), ErrorTag.REPO);
-    });
+  /**
+  * Load the picture and name of the course creator.
+  *
+  * @param courseModel data of the course for loading the author
+  */
+  private void getAuthor(CourseModel courseModel) {
+    this.databaseReference.child(Config.CHILD_USER).child(courseModel.getCreatorId())
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel author = snapshot.getValue(UserModel.class);
+                if (author == null) {
+                  courseModel.setCreatorName(Config.UNKNOWN_USER);
+                } else {
+                  courseModel.setCreatorName(author.getDisplayName());
+                  courseModel.setPhotoUrl(author.getPhotoUrl());
+                }
+                course.postCreate(courseModel);
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                course.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
   }
 
   /**
@@ -144,12 +152,11 @@ public class CourseDescriptionRepository {
    * @param id id of the course
    */
   public void unregisterFromCourse(String id) {
-    this.courseModel.postLoading();
+    this.course.postLoading();
 
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
-      this.courseModel.postError(
-              new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
+      this.course.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
       return;
     }
 
@@ -164,19 +171,27 @@ public class CourseDescriptionRepository {
                             .child(id)
                             .child(uid)
                             .removeValue()
-                            .addOnSuccessListener(unused1 ->
-                                    courseModel.postUpdate(null))
-                            .addOnFailureListener(e -> {
-                              Log.e(TAG, "Could not unregister User from course");
-                              this.courseModel.postError(
-                                      new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED),
-                                      ErrorTag.REPO);
+                            .addOnSuccessListener(unused1 -> {
+                              this.decreaseMemberCount(id);
+                              course.postUpdate(null);
                             })
-            ).addOnFailureListener(e -> {
-              Log.e(TAG, "Could not unregister User from course");
-              this.courseModel.postError(
-                      new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO);
-            });
+                            .addOnFailureListener(e -> this.course.postError(
+                                    new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED),
+                                    ErrorTag.REPO))
+            ).addOnFailureListener(e -> this.course.postError(
+                    new Error(Config.COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED), ErrorTag.REPO));
+  }
+
+  /**
+   * Decrease the number of course member after a user designed from a course.
+   *
+   * @param courseId id of the course that the user left
+   */
+  private void decreaseMemberCount(String courseId) {
+    this.databaseReference.child(Config.CHILD_COURSES)
+            .child(courseId)
+            .child(Config.CHILD_MEMBER_COUNT)
+            .setValue(ServerValue.increment(-1));
   }
 
   public String getUid() {
