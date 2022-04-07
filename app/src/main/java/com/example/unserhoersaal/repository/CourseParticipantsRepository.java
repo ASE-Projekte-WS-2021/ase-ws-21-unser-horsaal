@@ -149,6 +149,11 @@ public class CourseParticipantsRepository {
                 if (user != null) {
                   user.setKey(snapshot.getKey());
                   updateUserList(user, userList);
+                } else {
+                  user = new UserModel();
+                  user.setKey(userid);
+                  user.setDisplayName(Config.UNKNOWN_USER);
+                  updateUserList(user, userList);
                 }
               }
 

@@ -195,7 +195,7 @@ public class Config {
   public static final String AUTH_LOGOUT_SUCCESS = "";
   public static final String AUTH_LOGOUT_FAIL = "";
   public static final String LISTENER_FAILED_TO_RESOLVE = "Listener failed to reslove";
-  public static final String UNKNOWN_USER = "<gelöschter Nutzer";
+  public static final String UNKNOWN_USER = "<gelöschter Nutzer>";
 
   /**=======================.
    * Error Messages For User
