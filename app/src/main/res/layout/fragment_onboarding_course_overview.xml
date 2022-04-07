@@ -40,7 +40,7 @@
 
                 <ImageView
                     android:id="@+id/onboardingCourseOverviewFragmentImage"
-                    android:src="@drawable/onboarding_courses_overview"
+                    android:src="@drawable/kurse_fertig"
                     android:layout_below="@+id/onboardingCourseOverviewFragmentText2"
                     android:layout_width="400dp"
                     android:layout_height="400dp"
