@@ -95,7 +95,7 @@ public class EnterCourseViewModel extends ViewModel {
     if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
-    this.enteredCourse.postLoading();
+    this.courseModelStateLiveData.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelStateLiveData, TAG);
     if (courseModel == null) {
@@ -104,14 +104,14 @@ public class EnterCourseViewModel extends ViewModel {
     }
 
     if (Validation.emptyString(courseModel.getCodeMapping())) {
-      this.enteredCourse.postError(
+      this.courseModelStateLiveData.postError(
               new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
     } else if (!Validation.stringHasPattern(
             courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.enteredCourse.postError(
+      this.courseModelStateLiveData.postError(
               new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
     } else {
-      this.enteredCourse.postComplete();
+      this.courseModelStateLiveData.postComplete();
       this.enterCourseRepository.isUserInCourse(courseModel);
     }
   }

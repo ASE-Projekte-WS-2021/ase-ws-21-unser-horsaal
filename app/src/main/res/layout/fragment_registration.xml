@@ -53,7 +53,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="32dp"
                     app:endIconMode="clear_text"
                     app:counterEnabled="true"
                     app:counterMaxLength="@{Config.USERNAME_LENGTH_MAX}"
@@ -77,10 +77,8 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     app:endIconMode="clear_text"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@{Config.EMAIL_LENGTH_MAX}"
                     app:errorEnabled="true"
                     app:setError="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? vm.userInputState.error.message : null}"
                     android:hint="@string/registration_fragment_user_email_hint"
@@ -102,7 +100,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:hint="@string/registration_fragment_password_hint"
                     app:counterEnabled="true"
                     app:counterMaxLength="@{Config.PASSWORD_LENGTH_MAX}"
@@ -135,7 +133,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/createCourseFragmentButtonWrapper"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -175,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="center"
-                    android:layout_marginTop="32dp">
+                    android:layout_marginTop="16dp">
 
                     <TextView
                         android:id="@+id/registrationFragmentAccountAvailableTextView"

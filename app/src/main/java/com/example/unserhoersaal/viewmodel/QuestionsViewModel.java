@@ -155,7 +155,7 @@ public class QuestionsViewModel extends ViewModel {
       return;
     }
 
-    if (threadModel.getText() == null) {
+    if (Validation.emptyString(threadModel.getText())) {
       this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
     } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
       this.threadModelInputState.postError(

@@ -78,7 +78,7 @@ public class DateTimePicker {
     if (meetingsModel != null && meetingsModel.getEventTime() != null) {
       calendar.setTimeInMillis(meetingsModel.getEventTime());
     }
-    int hour = calendar.get(Calendar.HOUR);
+    int hour = calendar.get(Calendar.HOUR_OF_DAY);
     int minute = calendar.get(Calendar.MINUTE);
 
     TimePickerDialog timePickerDialog = new TimePickerDialog(view.getContext(),

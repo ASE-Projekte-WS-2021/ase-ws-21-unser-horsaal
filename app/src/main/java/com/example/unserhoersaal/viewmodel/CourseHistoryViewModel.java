@@ -82,7 +82,7 @@ public class CourseHistoryViewModel extends ViewModel {
     c.setYearInput(calendar.get(Calendar.YEAR));
     c.setMonthInput(calendar.get(Calendar.MONTH));
     c.setDayOfMonthInput(calendar.get(Calendar.DAY_OF_MONTH));
-    c.setHourInput(calendar.get(Calendar.HOUR));
+    c.setHourInput(calendar.get(Calendar.HOUR_OF_DAY));
     c.setMinuteInput(calendar.get(Calendar.MINUTE));
 
     long timeDifference = meetingsModel.getEventEndTime() - meetingsModel.getEventTime();

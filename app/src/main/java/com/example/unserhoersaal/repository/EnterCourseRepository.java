@@ -145,6 +145,8 @@ public class EnterCourseRepository {
    * @param course data of the course for the check
    */
   public void isUserInCourse(CourseModel course) {
+    this.enteredCourse.postLoading();
+
     ValueEventListener eventListener = new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
