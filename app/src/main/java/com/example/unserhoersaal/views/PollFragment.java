@@ -73,6 +73,7 @@ public class PollFragment extends Fragment {
     this.pollAdapter.notifyDataSetChanged();
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
+      Log.d(TAG, "isLoading");
       this.binding.pollFragmentProgressSpinner.setVisibility(View.VISIBLE);
     } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
@@ -91,7 +92,7 @@ public class PollFragment extends Fragment {
 
   private void connectAdapter() {
     this.pollAdapter = new PollAdapter(this.pollViewModel.getPolls().getValue().getData(),
-            this.pollViewModel);
+            this.pollViewModel, getViewLifecycleOwner());
   }
 
   private void connectBinding() {

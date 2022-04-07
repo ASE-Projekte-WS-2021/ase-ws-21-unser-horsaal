@@ -1,6 +1,11 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.CheckedOptionEnum;
@@ -8,10 +13,12 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.repository.PollRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /** ViewModel for the PollFragment. */
 public class PollViewModel extends ViewModel {
@@ -29,7 +36,6 @@ public class PollViewModel extends ViewModel {
     if (this.polls != null) {
       return;
     }
-
     this.pollRepository = PollRepository.getInstance();
     this.meeting = this.pollRepository.getMeeting();
     if (this.meeting.getValue() != null) {
@@ -58,13 +64,13 @@ public class PollViewModel extends ViewModel {
   
   /** Create a new poll. */
   public void createPoll(boolean yesNoPoll) {
+    this.pollModel.postLoading();
     PollModel pollModel = Validation.checkStateLiveData(this.pollModelInputState, TAG);
     if (pollModel == null) {
       Log.e(TAG, Config.POLL_MODEL_NULL);
       this.pollModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
-    this.pollModel.postLoading();
     if (pollModel.getText() == null) {
       Log.e(TAG, Config.DATABINDING_TEXT_NULL);
       this.pollModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
@@ -103,8 +109,10 @@ public class PollViewModel extends ViewModel {
         pollModel.setOptionsText4(null);
       }
     }
-    this.pollModelInputState.postCreate(new PollModel());
+
     this.pollRepository.createNewPoll(pollModel);
+    this.pollModelInputState.postCreate(new PollModel());
+    this.pollModel.postCreate(new PollModel());
   }
 
   public StateLiveData<List<PollModel>> getPolls() {
@@ -113,6 +121,10 @@ public class PollViewModel extends ViewModel {
 
   /** Handle the selection of an option from an user.*/
   public void vote(CheckedOptionEnum checkedOption, PollModel pollModel) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
+    this.pollModel.postLoading();
     String pollId = pollModel.getKey();
     CheckedOptionEnum oldOption = pollModel.getCheckedOption();
     if (oldOption == checkedOption) {
@@ -125,6 +137,7 @@ public class PollViewModel extends ViewModel {
         this.pollRepository.vote(checkedOption, getOptionPath(checkedOption), pollId);
       }
     }
+    this.pollModel.postCreate(new PollModel());
   }
 
   private String getOptionPath(CheckedOptionEnum checkedOption) {

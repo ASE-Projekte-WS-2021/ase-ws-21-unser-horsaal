@@ -4,8 +4,14 @@
 
     <data>
         <variable
+            name="isEnabled"
+            type="Boolean" />
+        <variable
             name="model"
             type="com.example.unserhoersaal.model.PollModel" />
+        <variable
+            name="isNotLoading"
+            type="Boolean" />
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.PollViewModel" />
@@ -90,7 +96,8 @@
                     android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION1, model)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/pollItemQuestion"
-                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
+                    android:enabled="@{isEnabled}"/>
 
                 <TextView
                     android:id="@+id/pollItemOption1"
@@ -138,7 +145,8 @@
                     android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION2, model)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pollItemOption1Container"
-                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
+                    android:enabled="@{isEnabled}"/>
 
                 <TextView
                     android:id="@+id/pollItemOption2"
@@ -186,7 +194,8 @@
                     android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION3, model)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pollItemOption2Container"
-                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
+                    android:enabled="@{isEnabled}"/>
 
                 <TextView
                     android:id="@+id/pollItemOption3"
@@ -242,7 +251,8 @@
                     android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION4, model)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pollItemOption3Container"
-                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
+                    android:enabled="@{isEnabled}"/>
 
                 <TextView
                     android:id="@+id/pollItemOption4"
