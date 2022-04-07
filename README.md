@@ -53,15 +53,16 @@
 - Asabidi Ruslan (Rusi91): Funktionalitäten im Login- und Registrierungsbereich (Login, Registrierung, Nutzerfeedback, Verifikation und Passwortzurücksetzung), Sortier- und Filterfunktionalität, Formale Abgabemodalitäten (Readme, Nutzerszenarios, Video)
 
 - Bierschneider Michael (vairasza): 
-StatusLiveData
-Databinding
-Inputcheck ViewModels
-Errorhandling
-Onboarding
-DeepLink
-Editprofile
-Testdatagenerierung
+StatusLiveData,
+Databinding,
+Inputcheck ViewModels,
+Errorhandling,
+Onboarding,
+DeepLink,
+Editprofile,
+Testdatagenerierung,
 GitHub Actions
+
 - Gottschalk Philipp (myPhilie):
 
 - Höpfinger Julian (julian1198):
