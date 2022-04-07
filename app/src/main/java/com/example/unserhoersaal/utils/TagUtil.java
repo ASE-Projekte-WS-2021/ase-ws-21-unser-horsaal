@@ -15,6 +15,9 @@ public class TagUtil {
   /** JavaDoc. */
   @BindingAdapter({"threadModel", "tagEnum"})
   public static void setTag(View view, ThreadModel threadModel, TagEnum tagEnum) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     List<TagEnum> tags = threadModel.getTags();
 
     if (tagEnum != null) {

@@ -27,6 +27,9 @@ public class DateTimePicker {
   //code reference: https://github.com/codeWithCal/DatePickerTutorial/blob/master/app/src/main/java/codewithcal/au/datepickertutorial/MainActivity.java
   @BindingAdapter("datePicker")
   public static void datePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
       CalendarModel calendarModel =
               Validation.checkStateLiveData(courseHistoryViewModel.calendarModelStateLiveData, TAG);
@@ -64,6 +67,9 @@ public class DateTimePicker {
    */
   @BindingAdapter("timePicker")
   public static void timePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     TimePickerDialog.OnTimeSetListener timeSetListener = (datePicker, hour, minute) -> {
       CalendarModel calendarModel =
               Validation.checkStateLiveData(courseHistoryViewModel.calendarModelStateLiveData, TAG);

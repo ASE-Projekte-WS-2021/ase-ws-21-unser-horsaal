@@ -6,6 +6,8 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,6 +67,9 @@ public class RegistrationViewModel extends ViewModel {
 
   /** checks registration parameter before using firebase registration API. */
   public void register() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.userInputState.postLoading();
     this.passwordInputState.postLoading();
 

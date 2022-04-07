@@ -9,6 +9,8 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 import com.example.unserhoersaal.utils.DateTimePicker;
+import com.example.unserhoersaal.utils.NavUtil;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.TimeUtil;
 import com.example.unserhoersaal.utils.Validation;
@@ -152,6 +154,9 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Create a new Meeting. */
   public void createMeeting() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.meetingModelInputState.postLoading();
 
     MeetingsModel meetingsModel = Validation.checkStateLiveData(this.meetingModelInputState, TAG);

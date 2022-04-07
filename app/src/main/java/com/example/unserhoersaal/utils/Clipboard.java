@@ -21,6 +21,9 @@ public class Clipboard {
    */
   @BindingAdapter("copyCodeToClipboard")
   public static void copyCodeToClipboard(View view, String text) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     ClipboardManager clipboardManager = (ClipboardManager) view.getContext()
             .getSystemService(Context.CLIPBOARD_SERVICE);
     ClipData clipData = ClipData.newPlainText(Config.COPY_KEY_CLIPBOARD, text);

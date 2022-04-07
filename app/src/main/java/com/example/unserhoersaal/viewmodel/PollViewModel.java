@@ -65,6 +65,12 @@ public class PollViewModel extends ViewModel {
   
   /** Create a new poll. */
   public void createPoll(boolean yesNoPoll) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.pollModelInputState.postLoading();
 
     PollModel pollModel = Validation.checkStateLiveData(this.pollModelInputState, TAG);

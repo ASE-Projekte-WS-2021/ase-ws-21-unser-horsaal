@@ -10,6 +10,7 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.repository.QuestionRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
@@ -144,6 +145,9 @@ public class QuestionsViewModel extends ViewModel {
 
   /** Create a new Thread. */
   public void createThread() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.threadModelInputState.postLoading();
 
     ThreadModel threadModel = Validation.checkStateLiveData(this.threadModelInputState, TAG);
