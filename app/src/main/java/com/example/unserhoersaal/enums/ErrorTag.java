@@ -20,5 +20,6 @@ public enum ErrorTag {
   OPTION1,
   OPTION2,
   OPTION3,
-  OPTION4
+  OPTION4,
+  CODEMAPPING
 }

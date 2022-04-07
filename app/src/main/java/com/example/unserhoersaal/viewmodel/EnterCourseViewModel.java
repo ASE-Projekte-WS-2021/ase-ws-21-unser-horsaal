@@ -63,7 +63,7 @@ public class EnterCourseViewModel extends ViewModel {
   /** checks if the entered codemapping matches our policy and passes it on to the repo.
    * also removes whitespace and hyphen which are just for readability. */
   public void checkCode() {
-    this.courseModelStateLiveData.postLoading();
+    this.courseIdInputState.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseIdInputState, TAG);
     if (courseModel == null) {
@@ -72,12 +72,12 @@ public class EnterCourseViewModel extends ViewModel {
     }
 
     if (Validation.emptyString(courseModel.getCodeMapping())) {
-      this.courseModelStateLiveData.postError(
-              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
+      this.courseIdInputState.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.CODEMAPPING);
     } else if (!Validation.stringHasPattern(
             courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.courseModelStateLiveData.postError(
-              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
+      this.courseIdInputState.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.CODEMAPPING);
     } else {
       String codeMapping = courseModel.getCodeMapping();
       codeMapping = codeMapping.toUpperCase();

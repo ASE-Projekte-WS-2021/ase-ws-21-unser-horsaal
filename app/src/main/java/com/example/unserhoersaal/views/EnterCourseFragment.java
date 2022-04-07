@@ -1,6 +1,7 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,11 @@ public class EnterCourseFragment extends Fragment {
   }
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
+    Log.e(TAG, courseModelStateData.getStatus().toString());
+    if (courseModelStateData != null && courseModelStateData.getError() != null) {
+      Log.e(TAG, courseModelStateData.getError().getMessage());
+    }
+
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (courseModelStateData == null) {

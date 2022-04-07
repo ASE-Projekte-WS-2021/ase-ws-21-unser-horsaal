@@ -292,10 +292,6 @@ public class Config {
   public static final String CREATE_MEETING_TIME_WRONG = "Es wurde kein Startzeitpunkt gewählt!";
   public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Bitte Dauer in Stunden wählen!";
   public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Bitte Dauer in Minuten wählen!";
-  public static final String CREATE_MEETING_HOUR_DURATION_WRONG =
-          "Es wurde kein Dauer in Stunden gewählt!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG =
-          "Es wurde kein Dauer in Minuten gewählt!";
   public static final String CREATE_MEETING_MINUTE_DURATION_TOO_LONG
           = "Werte über 59 Minuten sind nicht möglich";
 

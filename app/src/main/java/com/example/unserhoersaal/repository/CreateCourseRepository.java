@@ -52,6 +52,8 @@ public class CreateCourseRepository {
    * @param courseModel data of the new course
    */
   public void createNewCourse(CourseModel courseModel) {
+    this.courseModelMutableLiveData.postLoading();
+
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.courseModelMutableLiveData.postError(
@@ -149,7 +151,9 @@ public class CreateCourseRepository {
                                       .setValue(ServerValue.increment(1))
                                       .addOnSuccessListener(unused2 -> addMapping(course))
                                       .addOnFailureListener(e -> {
-                                        Log.e(TAG, e.getMessage());
+                                        courseModelMutableLiveData.postError(
+                                                new Error(Config.COURSES_COURSE_CREATION_FAILURE),
+                                                ErrorTag.REPO);
                                       });
                             })
                             .addOnFailureListener(e -> {

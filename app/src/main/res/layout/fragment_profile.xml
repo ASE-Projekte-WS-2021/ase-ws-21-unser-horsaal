@@ -86,6 +86,7 @@
             <ProgressBar
                 android:id="@+id/FragmentProfileProgressBar"
                 style="?android:attr/progressBarStyle"
+                android:visibility="@{vm.profileChanged.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"

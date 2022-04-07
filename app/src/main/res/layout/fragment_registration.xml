@@ -60,8 +60,6 @@
                     app:errorEnabled="true"
                     app:setError="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.USERNAME ? vm.userInputState.error.message : null}"
                     android:hint="@string/registration_fragment_user_name"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="15"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
