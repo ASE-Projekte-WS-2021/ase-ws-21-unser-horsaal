@@ -119,7 +119,7 @@ public class CourseDescriptionRepository {
       return;
     }
     if (this.courseId.getValue() == null
-            || this.courseId.getValue().getData() == null){
+            || this.courseId.getValue().getData() == null) {
       this.courseId.postUpdate(newCourseId);
       this.loadDescription();
     } else if (!this.courseId.getValue().getData().equals(newCourseId)) {

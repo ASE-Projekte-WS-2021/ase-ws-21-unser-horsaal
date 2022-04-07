@@ -359,7 +359,7 @@ public class CurrentCourseRepository {
                     setLikeStatusThread(threadModel);
                     return;
                   }
-                  if (threadObj.getKey().equals(threadModel.getKey())){
+                  if (threadObj.getKey().equals(threadModel.getKey())) {
                     setLikeStatusThread(threadModel);
                   }
                 }

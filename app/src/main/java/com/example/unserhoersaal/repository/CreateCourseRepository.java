@@ -142,8 +142,8 @@ public class CreateCourseRepository {
                                     .setValue(ServerValue.increment(1))
                                     .addOnSuccessListener(unused2 -> addMapping(course))
                                     .addOnFailureListener(e -> courseModelMutableLiveData.postError(
-                                    new Error(Config.COURSES_COURSE_CREATION_FAILURE),
-                                    ErrorTag.REPO))
+                                            new Error(Config.COURSES_COURSE_CREATION_FAILURE),
+                                            ErrorTag.REPO))
                             .addOnFailureListener(e -> courseModelMutableLiveData.postError(
                                     new Error(Config.COURSES_COURSE_CREATION_FAILURE),
                                     ErrorTag.REPO))));

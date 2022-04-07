@@ -87,7 +87,7 @@ public class AllCoursesRepository {
       return;
     }
     uid = this.firebaseAuth.getCurrentUser().getUid();
-    if (this.userId == null ) {
+    if (this.userId == null) {
       this.allCoursesList.clear();
       this.userId = uid;
       this.loadAllCourses();

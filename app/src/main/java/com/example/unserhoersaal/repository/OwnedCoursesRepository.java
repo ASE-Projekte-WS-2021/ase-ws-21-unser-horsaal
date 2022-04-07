@@ -34,6 +34,9 @@ public class OwnedCoursesRepository {
   private final HashSet<String> joinedCourses = new HashSet<>();
   private ValueEventListener listener;
 
+  /**
+   * Constructor. Get the Firebase instances
+   */
   public OwnedCoursesRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();

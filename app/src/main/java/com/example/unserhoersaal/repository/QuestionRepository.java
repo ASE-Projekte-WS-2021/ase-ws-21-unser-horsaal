@@ -40,7 +40,7 @@ public class QuestionRepository {
   private ValueEventListener listener;
 
   /**
-   * Constructor.
+   * Constructor. Gets the Firebase instances
    */
   public QuestionRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
@@ -281,7 +281,7 @@ public class QuestionRepository {
   private void updateThreadList(ThreadModel threadModel, List<ThreadModel> threadList) {
     for (int i = 0; i < threadList.size(); i++) {
       ThreadModel model = threadList.get(i);
-      if (model.getKey().equals(threadModel.getKey())){
+      if (model.getKey().equals(threadModel.getKey())) {
         if (this.threadSet.contains(threadModel.getKey())) {
           //update
           threadList.set(i, threadModel);
@@ -300,6 +300,12 @@ public class QuestionRepository {
     }
   }
 
+  /**
+   * Get the LikeStatus of a thread.
+   *
+   * @param id id of the thread
+   * @return Task with the likeStatus
+   */
   private Task<DataSnapshot> getLikeStatusThread(String id) {
     if (this.firebaseAuth.getCurrentUser() == null) {
       return null;

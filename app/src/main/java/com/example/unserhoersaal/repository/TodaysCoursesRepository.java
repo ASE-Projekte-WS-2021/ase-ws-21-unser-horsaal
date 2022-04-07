@@ -37,12 +37,18 @@ public class TodaysCoursesRepository {
   private final HashSet<String> todaysCourses = new HashSet<>();
   private ValueEventListener listener;
 
+  /**
+   * Constructor. Gets the Firebase instances
+   */
   public TodaysCoursesRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     initListener();
   }
 
+  /**
+   * Initialize the listener for today's courses
+   */
   private void initListener() {
     this.listener = new ValueEventListener() {
       @Override
@@ -84,7 +90,7 @@ public class TodaysCoursesRepository {
       return;
     }
     uid = this.firebaseAuth.getCurrentUser().getUid();
-    if (this.userId == null){
+    if (this.userId == null) {
       this.todaysCoursesList.clear();
       this.userId = uid;
       this.loadTodaysCourses();

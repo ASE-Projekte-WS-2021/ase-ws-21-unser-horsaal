@@ -31,12 +31,18 @@ public class CourseParticipantsRepository {
   private final HashSet<String> allUsers = new HashSet<>();
   private ValueEventListener listener;
 
+  /**
+   * Constructor. Gets the Firebase instances
+   */
   public CourseParticipantsRepository() {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.users.postCreate(new ArrayList<>());
     initListener();
   }
 
+  /**
+   * Initialize the listener for the current thread and messages.
+   */
   private void initListener() {
     this.listener = new ValueEventListener() {
       @Override
@@ -155,7 +161,7 @@ public class CourseParticipantsRepository {
   }
 
   /**
-   * Update teh members when a user has changed. Joined or lef the course or edited its profile.
+   * Update the members when a user has changed. Joined or lef the course or edited its profile.
    *
    * @param userModel data of the changed member
    * @param userList all member

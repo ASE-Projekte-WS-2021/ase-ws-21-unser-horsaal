@@ -207,7 +207,7 @@ public class LiveChatRepository {
   }
 
   /**
-   * Load the picture and name of the message creator
+   * Load the picture and name of the message creator.
    *
    * @param messageModel data of the message for loading the author
    */
@@ -229,7 +229,8 @@ public class LiveChatRepository {
               @Override
               public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, error.getMessage());
-                liveChatMessages.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
+                liveChatMessages.postError(
+                        new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
               }
             });
   }

@@ -37,7 +37,7 @@ public class CourseHistoryRepository {
   private ValueEventListener listener;
 
   /**
-   * Constructor.
+   * Constructor. Get the firebase instances
    */
   public CourseHistoryRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
@@ -47,6 +47,9 @@ public class CourseHistoryRepository {
     this.initListener();
   }
 
+  /**
+   * Initialize the ValueEventListener
+   */
   private void initListener() {
     this.listener = new ValueEventListener() {
       @Override
@@ -117,7 +120,7 @@ public class CourseHistoryRepository {
             || courseObj.getKey() == null) {
       this.course.postUpdate(courseModel);
       this.loadMeetings();
-    }else if (!courseObj.getKey().equals(courseId)) {
+    } else if (!courseObj.getKey().equals(courseId)) {
       this.course.postUpdate(courseModel);
       this.loadMeetings();
       this.databaseReference
