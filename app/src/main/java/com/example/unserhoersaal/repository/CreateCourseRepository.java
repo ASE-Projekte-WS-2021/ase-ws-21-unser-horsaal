@@ -146,7 +146,7 @@ public class CreateCourseRepository {
                                     ErrorTag.REPO))
                             .addOnFailureListener(e -> courseModelMutableLiveData.postError(
                                     new Error(Config.COURSES_COURSE_CREATION_FAILURE),
-                                    ErrorTag.REPO)));
+                                    ErrorTag.REPO))));
   }
 
   /**

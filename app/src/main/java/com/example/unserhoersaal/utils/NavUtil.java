@@ -165,7 +165,7 @@ public class NavUtil {
   //reference: https://developer.android.com/guide/topics/ui/dialogs
 
   @BindingAdapter({"viewmodel"})
-  public static void deleteMessageText(View view,
+  public static Boolean deleteMessageText(View view,
                                        CurrentCourseViewModel vm) {
     String creatorId = vm.getThread().getValue().getData().getCreatorId();
     String uid = vm.getUserId().getValue().getData();

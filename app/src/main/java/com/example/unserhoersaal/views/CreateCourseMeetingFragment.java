@@ -104,8 +104,8 @@ public class CreateCourseMeetingFragment extends Fragment {
     this.binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
 
     this.binding.createCourseMeetingDatePicker
-            .setText(courseHistoryViewModel.meetingModelInputState
-            .getValue().getData().getMeetingDate());
+            .setText(Config.DATE_FORMAT.format(courseHistoryViewModel.meetingModelInputState
+            .getValue().getData().getEventTime()));
     this.binding.createCourseMeetingTimePicker
             .setText(courseHistoryViewModel.getTimeInputForDisplay());
   }
