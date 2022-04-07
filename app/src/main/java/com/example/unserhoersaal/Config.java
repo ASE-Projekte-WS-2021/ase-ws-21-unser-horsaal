@@ -1,5 +1,7 @@
 package com.example.unserhoersaal;
 
+import androidx.databinding.Bindable;
+
 import java.text.SimpleDateFormat;
 
 /** Config Class. */
@@ -7,10 +9,12 @@ public class Config {
   /**=======================.
    * User Input Lengths
    * ======================= */
-  public static final int PASSWORD_LENGTH_MIN = 8;
+  public static final int PASSWORD_LENGTH_MIN = 6;
   public static final int PASSWORD_LENGTH_MAX = 64;
   public static final int USERNAME_LENGTH_MIN = 3;
   public static final int USERNAME_LENGTH_MAX = 15;
+  public static final int EMAIL_LENGTH_MIN = 5;
+  public static final int EMAIL_LENGTH_MAX = 64;
   public static final int INSTITUTION_LENGTH_MIN = 0; //optional
   public static final int INSTITUTION_LENGTH_MAX = 75;
 
@@ -35,8 +39,16 @@ public class Config {
   public static final int MEETING_DESCRIPTION_LENGTH_MIN = 0; //optional
   public static final int MEETING_DESCRIPTION_LENGTH_MAX = 500;
 
+  public static final int THREAD_OPTIONS_LENGTH_MAX = 100;
+
+  public static final int MEETING_HOUR_DURATION_MAX = 3;
+  public static final int MEETING_MINUTE_DURATION_MAX = 2;
+
   public static final int TIME_HOUR_TO_MILLI = 3600000;
   public static final int TIME_MINUTE_TO_MILLI = 60000;
+  public static final int TIME_HOUR_PER_DAY = 24;
+  public static final int TIME_MINUTE_PER_HOUR = 60;
+  public static final int TIME_MAX_MINUTES_PER_HOUR = 59;
 
   public static final int CODE_MAPPING_LENGTH = 9;
 
@@ -51,16 +63,16 @@ public class Config {
   /**=======================.
    *  Regex Patterns
    * ======================= */
-  // reference: https://ihateregex.io/expr/username/
   public static final String REGEX_PATTERN_USERNAME =
           String.format("^[a-zA-Z0-9_-]{%s,%s}$", USERNAME_LENGTH_MIN, USERNAME_LENGTH_MAX);
-  // reference: https://ihateregex.io/expr/password/
   public static final String REGEX_PATTERN_PASSWORD =
-          String.format("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{%s,%s}$",
+          String.format("^(?=.*[0-9a-zA-Z]).{%s,%s}$",
                   PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
   public static final String REGEX_PATTERN_TITLE = ".*";
   public static final String REGEX_PATTERN_INSTITUTION = ".*";
   public static final String REGEX_PATTERN_TEXT = ".*";
+  public static final String REGEX_PATTERN_OPTIONS = String.format(".*{0,%S}",
+          THREAD_OPTIONS_LENGTH_MAX);
   public static final String REGEX_PATTERN_CODE_MAPPING =
           "^([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})$";
 
@@ -198,7 +210,7 @@ public class Config {
   public static final String DATABINDING_CODEMAPPING_NULL =
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
-          "Der Beitrittscode enthält ungültige Charaktere.";
+          "Der Beitrittscode muss aus 9 Buchstaben bestehen.";
   public static final String DATABINDING_OPTION_NULL = "Option 1 und 2 dürfen nicht leer sein";
   public static final String DATABINDING_OPTION_WRONG_PATTERN =
           "Option 1 und/oder 2 enthalten ungültige Charaktere.";
@@ -211,8 +223,7 @@ public class Config {
   public static final String AUTH_EMAIL_WRONG_PATTERN_LOGIN = "Ungültige Email-Adresse!";
   public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
   public static final String AUTH_PASSWORD_WRONG_PATTERN =
-          "Das Passwort muss aus Groß- und Kleinbuchstaben, sowie mindestens einer Zahl bestehen! "
-                  + "Zudem muss es mindestens 8 Zeichen lang sein!";
+          "Das Passwort muss aus mindestens 6 Zeichen bestehen!";
   public static final String AUTH_USERNAME_EMPTY = "Bitte gib einen Nutzernamen ein!";
   public static final String AUTH_USERNAME_WRONG_PATTERN =
           "Nutzername ist ungültig oder bereits vergeben!";
@@ -285,8 +296,10 @@ public class Config {
 
   public static final String CREATE_MEETING_DATE_WRONG = "Es wurde kein Datum gewählt!";
   public static final String CREATE_MEETING_TIME_WRONG = "Es wurde kein Startzeitpunkt gewählt!";
-  public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Es wurde kein Dauer in Stunden gewählt!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Es wurde kein Dauer in Minuten gewählt!";
+  public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Bitte Dauer in Stunden wählen!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Bitte Dauer in Minuten wählen!";
+  public static final String CREATE_MEETING_MINUTE_DURATION_TOO_LONG
+          = "Werte über 59 Minuten sind nicht möglich";
 
   /**=======================.
    *  Avatar Placeholder Ids
@@ -336,6 +349,12 @@ public class Config {
   public static final int NO_STROKE = 0;
 
   /**=======================.
+   *  Thread-Sort-Algorithm
+   * ======================= */
+  public static final String ASCENDING = "ascending";
+  public static final String DESCENDING = "descending";
+
+  /**=======================.
    *  Live-Chat
    * ======================= */
   public static final String LIVE_CHAT_MESSAGES_CHILD = "LiveChatMessages";
@@ -344,6 +363,17 @@ public class Config {
    *  Impressum
    * ======================= */
   public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
+
+  /**=======================.
+   *  NavUtil
+   * ======================= */
+
+  public static final String TEXT_PLAIN = "text/plain";
+
+   /**=======================.
+   *  Camera-Intent
+   * ======================= */
+  public static final String CAMERA_INTENT_ERROR_TOAST = "Es konnte keine Kamera App auf deinem Smartphone gefunden werden";
 
 
 }

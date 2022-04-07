@@ -24,7 +24,9 @@ import com.example.unserhoersaal.model.LiveChatMessageModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
+import com.l4digital.fastscroll.FastScrollRecyclerView;
 
+import java.security.Key;
 import java.util.List;
 
 /** Displays the chat during a meeting. */
@@ -36,9 +38,7 @@ public class LiveChatFragment extends Fragment {
   private LiveChatViewModel liveChatViewModel;
   private LiveChatAdapter liveChatAdapter;
   private int messageSize;
-  com.l4digital.fastscroll.FastScrollRecyclerView recyclerView;
-
-
+  private FastScrollRecyclerView recyclerView;
 
   public LiveChatFragment() {
     //Required empty public constructor
@@ -78,11 +78,13 @@ public class LiveChatFragment extends Fragment {
 
   @SuppressLint("NotifyDataSetChanged")
   private void messageLiveDataCallback(StateData<List<LiveChatMessageModel>> listStateData) {
+
     if (listStateData == null) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
       return;
     }
-    //Todo
-    //this.resetBinding();
+    this.resetBinding();
+    KeyboardUtil.hideKeyboard(getActivity());
 
     if (listStateData.getData() != null) {
       messageSize = listStateData.getData().size();
@@ -90,11 +92,16 @@ public class LiveChatFragment extends Fragment {
     this.liveChatAdapter.notifyDataSetChanged();
 
     //recyclerView.scrollToPosition(messageSize - 1);
-
-    if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
+    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
+      this.binding.liveChatFragmentSendButton.setEnabled(false);
+    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
       Toast.makeText(getContext(),
               listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
     }
+  }
+
+  private void resetBinding() {
+    this.binding.liveChatFragmentSendButton.setEnabled(true);
   }
 
   private void connectAdapter() {
@@ -106,7 +113,6 @@ public class LiveChatFragment extends Fragment {
               @Override
               public void onChanged() {
                 super.onChanged();
-
                 recyclerView.scrollToPosition(messageSize - 1);
               }
             }
@@ -114,15 +120,11 @@ public class LiveChatFragment extends Fragment {
   }
 
   private void connectBinding() {
-
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.liveChatViewModel);
     this.binding.setAdapter(this.liveChatAdapter);
-    recyclerView = this.binding.liveChatFragmentChatRecycler;
+    this.recyclerView = this.binding.liveChatFragmentChatRecycler;
     this.binding.setFragment(this);
-
-
-
   }
 
   public void sendMessage() {
@@ -130,20 +132,18 @@ public class LiveChatFragment extends Fragment {
     binding.liveChatFragmentInputField.getEditText().getText().clear();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   public void onClickEditText() {
     final Handler handler = new Handler(Looper.getMainLooper());
-    handler.postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        liveChatAdapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(messageSize - 1);
-      }
+    handler.postDelayed(() -> {
+      liveChatAdapter.notifyDataSetChanged();
+      recyclerView.scrollToPosition(messageSize - 1);
     }, 500);
   }
 
   @Override
-  public void onDestroy() {
-    super.onDestroy();
+  public void onPause() {
+    super.onPause();
     KeyboardUtil.hideKeyboard(getActivity());
   }
 }

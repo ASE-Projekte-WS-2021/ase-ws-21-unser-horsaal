@@ -30,14 +30,44 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModelInputState.postCreate(new CourseModel());
   }
 
+  /** create a copy from coursemodel to cut off references to live data. */
+  public void makeEditable(CourseModel courseModel) {
+    this.isEditing = true;
+
+    CourseModel c = new CourseModel();
+    c.setTitle(courseModel.getTitle());
+    c.setDescription(courseModel.getDescription());
+    c.setInstitution(courseModel.getInstitution());
+    c.setKey(courseModel.getKey());
+    c.setCreatorId(courseModel.getCreatorId());
+    c.setCodeMapping(courseModel.getCodeMapping());
+    c.setMemberCount(courseModel.getMemberCount());
+    c.setCreationTime(courseModel.getCreationTime());
+
+    this.courseModelInputState.postCreate(c);
+  }
+
+  public StateLiveData<CourseModel> getCourseModelInputState() {
+    return courseModelInputState;
+  }
+
+  public StateLiveData<CourseModel> getCourseModel() {
+    return this.courseModel;
+  }
+
   public void resetCourseModelInput() {
     this.courseModelInputState.postCreate(new CourseModel());
     this.courseModel.postCreate(null);
   }
 
+  public void setLiveDataComplete() {
+    this.courseModelInputState.postComplete();
+    this.courseModel.postComplete();
+  }
+
   /** Create a new course. */
   public void createCourse() {
-    this.courseModel.postLoading();
+    this.courseModelInputState.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
 
@@ -47,45 +77,41 @@ public class CreateCourseViewModel extends ViewModel {
       return;
     }
 
-    if (courseModel.getTitle() == null) {
-      Log.d(TAG, "title is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
-      return;
+    this.checkInput(courseModel);
+  }
+
+  private void checkInput(CourseModel courseModel) {
+    if (Validation.emptyString(courseModel.getTitle())) {
+      this.courseModelInputState.postError(
+              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
     } else if (!Validation.stringHasPattern(courseModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
-      Log.d(TAG, "title has wrong pattern.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
-      return;
-    }
-    if (courseModel.getDescription() == null) {
-      Log.d(TAG, "description is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
-      return;
+      this.courseModelInputState.postError(
+              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+    } else if (Validation.emptyString(courseModel.getDescription())) {
+      this.courseModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
     } else if (!Validation.stringHasPattern(
             courseModel.getDescription(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "description has wrong pattern.");
-      this.courseModel.postError(
+      this.courseModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
-      return;
-    }
-    if (courseModel.getInstitution() == null) {
-      Log.d(TAG, "institution is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
-      return;
+    } else if (Validation.emptyString(courseModel.getInstitution())) {
+      this.courseModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
     } else if (!Validation.stringHasPattern(
             courseModel.getInstitution(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "institution has wrong pattern.");
-      this.courseModel.postError(
+      this.courseModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.INSTITUTION);
-      return;
+    } else {
+      this.passCourseModelToRepo(courseModel);
     }
+  }
 
+  private void passCourseModelToRepo(CourseModel courseModel) {
+    this.courseModelInputState.postComplete();
     if (isEditing) {
       this.createCourseRepository.editCourse(courseModel);
-
-    }else {
+    } else {
       courseModel.setCodeMapping(this.getCodeMapping());
-
-      this.courseModelInputState.postCreate(new CourseModel());
       this.createCourseRepository.createNewCourse(courseModel);
     }
   }
@@ -107,15 +133,4 @@ public class CreateCourseViewModel extends ViewModel {
 
   public Boolean getIsEditing() { return isEditing; }
 
-  public StateLiveData<CourseModel> getCourseModel() {
-    return this.courseModel;
-  }
-
-  public void setCourseModelInputState(StateLiveData<CourseModel> courseModelInputState) {
-    this.courseModelInputState = courseModelInputState;
-  }
-
-  public StateLiveData<CourseModel> getCourseModelInputState() {
-    return courseModelInputState;
-  }
 }

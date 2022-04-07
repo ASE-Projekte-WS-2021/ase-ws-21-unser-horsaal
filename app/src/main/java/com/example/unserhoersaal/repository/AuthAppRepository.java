@@ -72,6 +72,8 @@ public class AuthAppRepository {
    * @param password Entered password from the user
    */
   public void login(String email, String password) {
+    this.userLiveData.postLoading();
+
     this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
@@ -94,6 +96,8 @@ public class AuthAppRepository {
    * @param password chosen password from the user
    */
   public void register(String username, String email, String password) {
+    this.userLiveData.postLoading();
+
     this.firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(task -> {
               if (task.isSuccessful()) {
@@ -266,7 +270,9 @@ public class AuthAppRepository {
           this.userLiveData.postUpdate(null);
         }
       });
+      //todo error
     }
+
   }
 
   /**

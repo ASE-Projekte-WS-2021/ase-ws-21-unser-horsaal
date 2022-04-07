@@ -55,62 +55,61 @@ public class EnterCourseViewModel extends ViewModel {
     this.enteredCourse.postCreate(null);
   }
 
-  /** JavaDoc for this method. */
+  public void setLiveDataComplete() {
+    this.courseModelStateLiveData.postComplete();
+    this.enteredCourse.postComplete();
+  }
+
+  /** checks if the entered codemapping matches our policy and passes it on to the repo.
+   * also removes whitespace and hyphen which are just for readability. */
   public void checkCode() {
-    this.courseModelStateLiveData.postLoading();
+    this.courseIdInputState.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseIdInputState, TAG);
     if (courseModel == null) {
-      Log.e(TAG, "courseModel is null.");
       this.courseModelStateLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
-    if (courseModel.getCodeMapping() == null) {
-      this.courseModelStateLiveData.postError(
-              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
-      Log.d(TAG, "codeMapping is null.");
-      return;
+    if (Validation.emptyString(courseModel.getCodeMapping())) {
+      this.courseIdInputState.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.CODEMAPPING);
     } else if (!Validation.stringHasPattern(
             courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.courseModelStateLiveData.postError(
-              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
-      Log.d(TAG, "codeMapping has wrong pattern.");
-      return;
+      this.courseIdInputState.postError(
+              new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.CODEMAPPING);
+    } else {
+      String codeMapping = courseModel.getCodeMapping();
+      codeMapping = codeMapping.toUpperCase();
+      codeMapping = codeMapping.replace(" ", "");
+      codeMapping = codeMapping.replace("-", "");
+
+      this.courseIdInputState.postComplete();
+      this.enterCourseRepository.checkCode(codeMapping);
     }
-
-    String codeMapping = courseModel.getCodeMapping();
-    codeMapping = codeMapping.toUpperCase();
-    codeMapping = codeMapping.replace(" ", "");
-    codeMapping = codeMapping.replace("-", "");
-
-    this.courseIdInputState.postCreate(new CourseModel());
-    this.enterCourseRepository.checkCode(codeMapping);
   }
 
-  /** JavaDoc for this method. */
+  /** Checks user input before assigning user to the course. */
   public void enterCourse() {
+    this.enteredCourse.postLoading();
+
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelStateLiveData, TAG);
     if (courseModel == null) {
-      Log.e(TAG, "courseModel is null.");
+      this.enteredCourse.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
-    if (courseModel.getCodeMapping() == null) {
-      this.courseModelStateLiveData.postError(
+    if (Validation.emptyString(courseModel.getCodeMapping())) {
+      this.enteredCourse.postError(
               new Error(Config.DATABINDING_CODEMAPPING_NULL), ErrorTag.VM);
-      Log.d(TAG, "codeMapping is null.");
-      return;
     } else if (!Validation.stringHasPattern(
             courseModel.getCodeMapping(), Config.REGEX_PATTERN_CODE_MAPPING)) {
-      this.courseModelStateLiveData.postError(
+      this.enteredCourse.postError(
               new Error(Config.DATABINDING_CODEMAPPING_WRONG_PATTERN), ErrorTag.VM);
-      Log.d(TAG, "codeMapping has wrong pattern.");
-      return;
+    } else {
+      this.enteredCourse.postComplete();
+      this.enterCourseRepository.isUserInCourse(courseModel);
     }
-
-    this.courseModelStateLiveData.postCreate(new CourseModel());
-    this.enterCourseRepository.isUserInCourse(courseModel);
   }
 
 }

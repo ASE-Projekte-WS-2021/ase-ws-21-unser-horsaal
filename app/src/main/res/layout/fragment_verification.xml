@@ -8,6 +8,10 @@
             type="com.example.unserhoersaal.viewmodel.LoginViewModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <LinearLayout
@@ -54,14 +58,25 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/verificationFragmentErrorText"
+            android:id="@+id/verificationFragmentErrorText1"
             android:layout_marginTop="20dp"
             android:layout_marginStart="54dp"
             android:layout_marginEnd="54dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/red"
-            android:visibility="gone"/>
+            android:visibility="@{vm.emailSentLiveData.status == StateData.DataStatus.ERROR ? View.VISIBLE : View.GONE}"
+            android:text="@{vm.emailSentLiveData.error.message}"/>
+
+        <TextView
+            android:id="@+id/verificationFragmentErrorText2"
+            android:layout_marginStart="54dp"
+            android:layout_marginEnd="54dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:visibility="@{vm.userLiveData.status == StateData.DataStatus.ERROR? View.VISIBLE : View.GONE}"
+            android:text="@{vm.emailSentLiveData.error.message}"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/createCourseFragmentButtonWrapper"
@@ -73,6 +88,7 @@
                 android:id="@+id/verificationFragmentResendEmailButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:enabled="@{vm.emailSentLiveData.status != StateData.DataStatus.LOADING}"
                 android:onClick="@{() -> vm.sendVerificationEmail()}"
                 android:text="@string/send_again"
                 android:layout_gravity="center"
@@ -90,7 +106,7 @@
                 android:indeterminate="true"
                 android:indeterminateTint="@color/white"
                 android:indeterminateTintMode="src_in"
-                android:visibility="gone"
+                android:visibility="@{vm.emailSentLiveData.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@+id/verificationFragmentResendEmailButton"
                 app:layout_constraintEnd_toEndOf="@+id/verificationFragmentResendEmailButton"
                 app:layout_constraintHorizontal_bias="0.975"

@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,15 +15,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.MeetingAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseHistoryBinding;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.utils.StateData;
-import com.example.unserhoersaal.viewmodel.CourseDescriptionViewModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
-import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import java.util.List;
 
 /** Fragment contains list of course-meetings.*/
@@ -34,11 +30,8 @@ public class CourseHistoryFragment extends Fragment {
 
   private FragmentCourseHistoryBinding binding;
   private CourseHistoryViewModel courseHistoryViewModel;
-  private CourseMeetingViewModel courseMeetingViewModel;
-  private CourseDescriptionViewModel courseDescriptionViewModel;
   private NavController navController;
   private MeetingAdapter meetingAdapter;
-
 
   public CourseHistoryFragment() {
     // Required empty public constructor
@@ -64,13 +57,8 @@ public class CourseHistoryFragment extends Fragment {
     this.navController = Navigation.findNavController(view);
 
     this.initViewModel();
-
     this.connectAdapter();
     this.connectBinding();
-
-    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
-            this::meetingsLiveDataCallback);
-
     this.initToolbar();
     this.setupScrolling();
   }
@@ -78,27 +66,24 @@ public class CourseHistoryFragment extends Fragment {
   private void initViewModel() {
     this.courseHistoryViewModel = new ViewModelProvider(requireActivity())
             .get(CourseHistoryViewModel.class);
-    this.courseMeetingViewModel = new ViewModelProvider(requireActivity())
-            .get(CourseMeetingViewModel.class);
-    this.courseDescriptionViewModel = new ViewModelProvider(requireActivity())
-            .get(CourseDescriptionViewModel.class);
     this.courseHistoryViewModel.init();
-    this.courseMeetingViewModel.init();
-    this.courseDescriptionViewModel.init();
+    this.courseHistoryViewModel.getMeetings().observe(getViewLifecycleOwner(),
+            this::meetingsLiveDataCallback);
 
 
   }
 
   @SuppressLint("NotifyDataSetChanged")
   private void meetingsLiveDataCallback(StateData<List<MeetingsModel>> listStateData) {
+    this.resetBindings();
+
     if (listStateData == null) {
+      Log.e(TAG, "listStateData is null");
       return;
     }
-    this.resetBindings();
-    //sort meeting by newest
+
     this.courseHistoryViewModel.sortMeetingsByNewest(listStateData.getData());
     this.meetingAdapter.notifyDataSetChanged();
-
 
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.VISIBLE);
@@ -108,15 +93,15 @@ public class CourseHistoryFragment extends Fragment {
     }
     if (listStateData.getData().size() == 0) {
       this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.VISIBLE);
-      this.binding.courseHistoryFragmentMeetingsTextView.setVisibility(View.GONE);
     } else {
-      this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
       this.binding.courseHistoryFragmentMeetingsTextView.setVisibility(View.VISIBLE);
     }
   }
 
   private void resetBindings() {
     this.binding.coursesHistoryFragmentProgressSpinner.setVisibility(View.GONE);
+    this.binding.coursesHistoryFragmentTitleTextView.setVisibility(View.GONE);
+    this.binding.courseHistoryFragmentMeetingsTextView.setVisibility(View.GONE);
   }
 
   private void connectAdapter() {
@@ -141,23 +126,18 @@ public class CourseHistoryFragment extends Fragment {
             navController.navigateUp());
   }
 
-  @Override
-  public void onResume() {
-    super.onResume();
-  }
-
   private void setupScrolling() {
-    View courseCard = this.binding.courseHistoryFragmentCourseCard;
-    this.binding.courseHistoryFragmentCoursesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-      @Override
-      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
-        if (!recyclerView.canScrollVertically(-1)){
-          courseCard.setVisibility(View.VISIBLE);
-        } else {
-          courseCard.setVisibility(View.GONE);
-        }
-      }
+    this.binding.courseHistoryFragmentCoursesRecyclerView.addOnScrollListener(
+            new RecyclerView.OnScrollListener() {
+              @Override
+              public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(-1)) {
+                  binding.courseHistoryFragmentCourseCard.setVisibility(View.VISIBLE);
+                } else {
+                  binding.courseHistoryFragmentCourseCard.setVisibility(View.GONE);
+                }
+              }
     });
   }
 

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">unser_hoersaal</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_fragment_forgot_password">Passwort vergessen</string>
     <string name="login_fragment_login_button_string">Einloggen</string>
@@ -52,8 +51,8 @@
     <string name="courses_fragment_all_tab_string">Alle</string>
     <string name="courses_fragment_created_tab_string">Erstellt</string>
     <string name="toolbar_search_string">Suchen</string>
-    <string name="courses_search_string">Suche hier nach Kursen ...</string>
-    <string name="threads_search_string">Fragen durchsuchen ...</string>
+    <string name="courses_search_string">Suche hier nach Kursen…</string>
+    <string name="threads_search_string">Fragen durchsuchen…</string>
     <string name="toolbar_filter_string">Filter</string>
     <string name="toolbar_profile_string">Profil</string>
     <string name="toolbar_logout_string">Logout</string>
@@ -65,6 +64,7 @@
     <string name="edit_profile_fragment_current_password">Aktuelles Passwort</string>
     <string name="edit_profile_fragment_new_password">Neues Passwort</string>
     <string name="edit_profile_toolbar_save">Speichern</string>
+    <string name="edit_profile_save_changes">Änderungen speichern</string>
     <string name="enter_course_fragment_or_string">Oder</string>
     <string name="enter_course_fragment_enter_via_qr_code">Via Qr-Code beitreten</string>
     <string name="enter_course_fragment_course_titel">Kurstitel</string>
@@ -93,13 +93,13 @@
     <string name="course_description_course_example_title">Kurstitel</string>
     <string name="course_description_unsubscribe_from_course">Von Kurs abmelden</string>
     <string name="participant_list_item_example_name">Beispielname1234</string>
-    <string name="profile_fragment_delete_account">Account unwiderruflich löschen</string>
+    <string name="profile_fragment_delete_account">Account löschen</string>
     <string name="profile_fragment_example_institution">Universität Regensburg</string>
     <string name="course_meeting_fragment_contributions_example">2</string>
     <string name="course_meeting_fragment_contributions_string">Beiträge</string>
     <string name="course_meeting_general_thread_heading"><![CDATA[Ankündigungen & Allgemeines]]></string>
     <string name="create_thread_send_message">Frage Senden</string>
-    <string name="create_thread_title">Frage stellen</string>
+    <string name="create_thread_title">Erstellen</string>
     <string name="create_thread_screen_question_title_hing">Frage-Titel</string>
     <string name="create_thread_screen_question_text_hint">Frage-Text</string>
     <string name="enter_course_dialog_decline">Abbrechen</string>
@@ -119,6 +119,10 @@
     <string name="dialog_password_reset_reset_button">"Passwort zurücksetzen"</string>
     <string name="dialog_password_reset_message">Du erhältst eine Mail zum Zurücksetzen des Passworts. Bitte gib die zum Account zugehörige Email an: "</string>
     <string name="dialog_password_reset_hint">Email eingeben</string>
+    <string name="dialog_impressum_title">Browser öffnen</string>
+    <string name="dialog_impressum_message">Unser Impressum ist auf unserer Webseite zu lesen. Möchtest du die Anwendung dafür verlassen?</string>
+    <string name="dialog_impressum_ok">OK</string>
+    <string name="dialog_impressum_cancel">Abbrechen</string>
     <string name="edit_profile_name_hint">Nutzername</string>
     <string name="current_course_fragment_question_title">Dies ist ein beispielhafter Titel für eine Frage</string>
     <string name="kurs_beitreten">Kurs beitreten</string>
@@ -177,11 +181,11 @@
     <string name="course_meeting_fragment_filter">Filter</string>
     <string name="course_meeting_fragment_sort">Sortierung</string>
     <string name="course_meeting_fragment_tags">Tags</string>
-    <string name="create_thread_fragment_title">Nachricht erstellen</string>
-    <string name="create_thread_fragment_tag_textview">Welcher tag beschreibt den Inhalt deiner Nachricht am besten?</string>
-    <string name="create_thread_fragment_hashtag_text">Gibt es einen Hashtag, der deine Nachricht besonders gut beschreibt? (optional)</string>
-    <string name="create_thread_fragment_pagenumber_text">Bezieht sich deine Nachricht auf eine Seite im Skript? (optional)</string>
-    <string name="create_thread_fragment_button_send">Nachricht senden</string>
+    <string name="create_thread_fragment_title">Frage erstellen</string>
+    <string name="create_thread_fragment_tag_textview">Welcher tag beschreibt den Inhalt deiner Frage am besten?</string>
+    <string name="create_thread_fragment_hashtag_text">Gibt es einen Hashtag, der deine Frage besonders gut beschreibt? (optional)</string>
+    <string name="create_thread_fragment_pagenumber_text">Bezieht sich deine Frage auf eine Seite im Skript? (optional)</string>
+    <string name="create_thread_fragment_button_send">Erstellen</string>
     <string name="email_was_sent">Wir haben dir noch eine Email geschickt, um dich zu verifizieren.</string>
     <string name="send_again">Erneut Senden</string>
     <string name="back_to_login">Zurück zum Login</string>
@@ -195,7 +199,7 @@
     <string name="edit_course_string">Kurs bearbeiten</string>
     <string name="edit_course_information_string">Hast du einen Fehler beim erstellen deines Kurses gemacht? Kein Problem! Bearbeite hier deine Einträge und behebe die Fehler.</string>
     <string name="edit_course_button">Kurs bearbeiten</string>
-    <string name="edit_course_meeting_toolbar_title">Meeting bearbeiten</string>
+    <string name="edit_course_meeting_toolbar_title">Sitzung bearbeiten</string>
     <string name="edit_course_meeting_subtitle">Bearbeite hier deine Meetings.</string>
     <string name="edit_course_meeting_button">Bearbeiten</string>
     <string name="dialog_delete_message_text">Möchtest du den Text deiner Nachricht wirklich löschen?</string>
@@ -216,7 +220,7 @@
     <string name="create_poll_option_3_hint">Hier Option 3 eingeben…</string>
     <string name="create_poll_option_4_hint">Hier Option 4 eingeben…</string>
     <string name="create_poll_question">Frage</string>
-    <string name="create_poll_create_button">Erstelle deine Abstimmung</string>
+    <string name="create_poll_create_button">Erstellen</string>
     <string name="no_polls_available">Aktuell keine Abstimmungen verfügbar!</string>
     <string name="onboarding_skip">Überspringen</string>
     <string name="onboarding_finish">Los geht\'s!</string>
@@ -274,5 +278,8 @@
     <string name="create_course_meeting_title">Einführung in die Angewandte…</string>
     <string name="create_course_meeting_title_text">Titel der Sitzung</string>
     <string name="coruse_description_participants">Teilnehmer:innen</string>
-
+    <string name="create_thread_enter_message">Nachricht eingeben</string>
+    <string name="create_thread_page">Seitenzahl</string>
+    <string name="create_thread_hashtag_hint">#...</string>
+    <string name="create_thread_question_hint">Kann mir bitte jemand erklären, wie…</string>
 </resources>

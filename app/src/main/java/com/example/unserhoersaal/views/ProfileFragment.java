@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -11,10 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentProfileBinding;
+import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.SelectPhotoLifeCycleObs;
+import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
+import com.google.firebase.auth.FirebaseUser;
 
 /** Profile page. */
 public class ProfileFragment extends Fragment {
@@ -62,11 +70,20 @@ public class ProfileFragment extends Fragment {
             = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
     this.profileViewModel.init();
     this.profileViewModel
-            .getUserLiveData().observe(getViewLifecycleOwner(), firebaseUser -> {
-              if (firebaseUser.getData() == null) {
-                navController.navigate(R.id.action_profileFragment_to_loginFragment);
-              }
-            });
+            .getUserLiveData().observe(getViewLifecycleOwner(), this::userLiveDataCallback);
+  }
+
+  private void userLiveDataCallback(StateData<FirebaseUser> firebaseUserStateData) {
+    if (firebaseUserStateData == null) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+    } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE) {
+      navController.navigate(R.id.action_profileFragment_to_loginFragment);
+    }
   }
 
   private void connectBinding() {

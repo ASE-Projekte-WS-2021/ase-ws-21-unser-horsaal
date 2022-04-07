@@ -28,7 +28,6 @@ public class CoursesFragment extends Fragment {
   private static final String TAG = "CoursesFragment";
 
   private ViewPagerAdapter viewPagerAdapter;
-
   private FragmentCoursesBinding binding;
   private CoursesViewModel coursesViewModel;
   private TodaysCoursesViewModel todaysCoursesViewModel;

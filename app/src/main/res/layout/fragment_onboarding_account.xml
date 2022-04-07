@@ -6,6 +6,12 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <RelativeLayout
@@ -57,12 +63,14 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15dp"
                     android:layout_below="@+id/onboardingAccountFragmentText1"
+                    app:endIconMode="clear_text"
                     android:hint="@string/registration_fragment_user_email_hint"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/onboardingAccountFragmentUserNameEditText"
                         android:text="@={vm.userInputState.data.email}"
+                        android:inputType="textEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
@@ -70,7 +78,8 @@
 
                     <TextView
                         android:id="@+id/onboardingAccountFragmentUserErrorText"
-                        android:visibility="gone"
+                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.userInputState.error.message}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -102,7 +111,8 @@
 
                     <TextView
                         android:id="@+id/onboardingAccountFragmentPasswordErrorText"
-                        android:visibility="gone"
+                        android:visibility="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? View.VISIBLE : View.GONE}"
+                        android:text="@{vm.passwordInputState.error.message}"
                         android:textColor="@color/red"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

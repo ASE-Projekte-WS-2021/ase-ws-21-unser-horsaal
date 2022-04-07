@@ -11,9 +11,12 @@
             name="selectPhotoLifeCycleObs"
             type="com.example.unserhoersaal.utils.SelectPhotoLifeCycleObs"/>
         <import type="com.example.unserhoersaal.utils.ImageAdapter"/>
-        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,18 +70,29 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/selectPhotoButton"
+                style="@style/wideBlueButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:onClick="@{(view) -> selectPhotoLifeCycleObs.selectImage()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.63"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0"
-                app:srcCompat="@drawable/ic_baseline_camera_alt_24"
-                style="@style/wideBlueButton"
-                android:onClick="@{(view) -> selectPhotoLifeCycleObs.selectImage()}"/>
+                app:srcCompat="@drawable/ic_baseline_camera_alt_24" />
+
+            <ProgressBar
+                android:id="@+id/FragmentProfileProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:visibility="@{vm.profileChanged.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -222,8 +236,7 @@
                 android:id="@+id/profileFragmentPasswordTableRow"
                 android:background="@drawable/rounded_bottom_ripple"
                 android:padding="8dp"
-                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_profileFragment_to_editProfilePasswordFragment)}"
-                >
+                android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_profileFragment_to_editProfilePasswordFragment)}">
 
                 <ImageView
                     android:id="@+id/profileFragmentPasswordIcon"
@@ -255,24 +268,43 @@
 
             </TableRow>
 
-            <TableRow
-                android:id="@+id/profileFragmentDeleteAccountTableRow"
-                android:background="@drawable/rounded_corners_ripple"
-                android:padding="8dp"
-                android:layout_marginTop="8dp"
-                android:onClick="@{(view) -> NavUtil.deleteAccountDialog(view, vm)}">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/profileFragmentButtonWrapper"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/courseDescriptionFragmentUnsubscribeTextView"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/profileFragmentButton"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
-                    android:layout_span="4"
+                    android:enabled="@{vm.userLiveData.status != StateData.DataStatus.LOADING}"
+                    android:onClick="@{(view) -> NavUtil.deleteAccountDialog(view, vm)}"
+                    android:layout_gravity="center"
                     android:text="@string/profile_fragment_delete_account"
-                    android:textAlignment="center"
-                    android:textColor="@color/red"
-                    android:textStyle="bold" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/wideRedButton"/>
 
-            </TableRow>
+                <ProgressBar
+                    android:id="@+id/profileFragmentProgressSpinner"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:elevation="8dp"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/white"
+                    android:indeterminateTintMode="src_in"
+                    android:visibility="@{vm.userLiveData.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/profileFragmentButton"
+                    app:layout_constraintEnd_toEndOf="@+id/profileFragmentButton"
+                    app:layout_constraintHorizontal_bias="0.975"
+                    app:layout_constraintStart_toStartOf="@+id/profileFragmentButton"
+                    app:layout_constraintTop_toTopOf="@+id/profileFragmentButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </TableLayout>
               

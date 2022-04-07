@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -27,11 +30,17 @@ import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
+import com.google.zxing.WriterException;
+
+import java.io.IOException;
 
 /** Class for Navigation. */
 public class NavUtil {
+
+  private static final String TAG = "NavUtil";
 
   @BindingAdapter("navigate")
   public static void navigate(View view, int navAction) {
@@ -154,10 +163,10 @@ public class NavUtil {
 
   /** Shows Confirmation Dialog when User deletes a Thread Message. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
+
   @BindingAdapter({"viewmodel"})
   public static void deleteMessageText(View view,
                                        CurrentCourseViewModel vm) {
-
     String creatorId = vm.getThread().getValue().getData().getCreatorId();
     String uid = vm.getUserId().getValue().getData();
 
@@ -177,12 +186,13 @@ public class NavUtil {
       dialog.show();
 
     }
+    return false;
   }
 
   /** Shows Confirmation Dialog when User deletes a Thread Message. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter({"viewmodel", "model"})
-  public static boolean deleteAnswerText(View view,
+  public static Boolean deleteAnswerText(View view,
                                        CurrentCourseViewModel vm,
                                        MessageModel model) {
 
@@ -218,10 +228,7 @@ public class NavUtil {
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
                     .get(CreateCourseViewModel.class);
     createCourseViewModel.init();
-    StateLiveData<CourseModel> courseModelStateLiveData = new StateLiveData<>();
-    courseModelStateLiveData.postCreate(model);
-    createCourseViewModel.setCourseModelInputState(courseModelStateLiveData);
-    createCourseViewModel.setIsEditing(true);
+    createCourseViewModel.makeEditable(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseDescriptionFragment_to_createCourseFragment);
@@ -233,22 +240,12 @@ public class NavUtil {
     if (model == null) {
       return;
     }
+
     CourseHistoryViewModel courseHistoryViewModel =
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
                     .get(CourseHistoryViewModel.class);
     courseHistoryViewModel.init();
-    StateLiveData<MeetingsModel> meetingsModelStateLiveData = new StateLiveData<>();
-    meetingsModelStateLiveData.postCreate(model);
-    courseHistoryViewModel.setMeetingModelInputState(meetingsModelStateLiveData);
-    courseHistoryViewModel.setIsEditing(true);
-
-    MeetingsModel meetingsModel = meetingsModelStateLiveData.getValue().getData();
-    //TODO anpassen an meeting changes
-    /*courseHistoryViewModel.setTimeInputForDisplay(meetingsModel
-            .getHourInput(), meetingsModel.getMinuteInput());
-    courseHistoryViewModel.setEndTimeInputForDisplay(meetingsModel
-            .getHourEndInput(), meetingsModel.getMinuteEndInput());*/
-
+    courseHistoryViewModel.makeEditable(model);
 
     NavController navController = Navigation.findNavController(view);
     navController.navigate(R.id.action_courseHistoryFragment_to_createCourseMeetingFragment);
@@ -268,9 +265,65 @@ public class NavUtil {
 
   @BindingAdapter("openBrowser")
   public static void openBrowser(View view, String destination) {
-    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
-    view.getContext().startActivity(i);
+    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+    builder.setMessage(R.string.dialog_impressum_message)
+            .setTitle(R.string.dialog_impressum_title)
+            .setPositiveButton(R.string.dialog_impressum_ok,
+                    (dialog, which) -> {
+                      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
+                      view.getContext().startActivity(i);
+                      dialog.dismiss();
+                    })
+            .setNegativeButton(R.string.dialog_impressum_cancel,
+                    (dialog, which) -> dialog.dismiss());
+
+    AlertDialog dialog = builder.create();
+    dialog.show();
+  }
+
+
+  @BindingAdapter("openMessengers")
+  public static void shareLinkViaMessenger(View view, String codeMapping) {
+    String deepLink = Config.DEEP_LINK_URL + codeMapping;
+    Context context = view.getContext();
+    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+    intent.setType(Config.TEXT_PLAIN);
+    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, deepLink);
+    intent.putExtra(android.content.Intent.EXTRA_TEXT, deepLink);
+    context.startActivity(Intent.createChooser(intent, deepLink));
+  }
+
+  /** Opens Camera App. */
+  @BindingAdapter("navigateToCameraApp")
+  public static void openCameraApp(View view, EnterCourseViewModel vm) {
+
+      Intent camera_intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
+      Context context = view.getContext();
+    try {
+      context.startActivity(camera_intent);
+    }
+    catch (android.content.ActivityNotFoundException ex) {
+      Toast.makeText(context,Config.CAMERA_INTENT_ERROR_TOAST, Toast.LENGTH_LONG).show();
+    }
+
 
   }
+
+  /** Opens Camera App. */
+  @BindingAdapter("navigateToCameraApp")
+  public static void shareCourseCode(View view, CourseDescriptionViewModel vm) {
+
+    Intent camera_intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
+    Context context = view.getContext();
+    try {
+      context.startActivity(camera_intent);
+    }
+    catch (android.content.ActivityNotFoundException ex) {
+      Toast.makeText(context,Config.CAMERA_INTENT_ERROR_TOAST, Toast.LENGTH_LONG).show();
+    }
+
+
+  }
+
 
 }

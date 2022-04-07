@@ -37,7 +37,6 @@ public class OnBoardingCourseOverviewFragment extends Fragment {
     this.connectBinding();
   }
 
-
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
   }

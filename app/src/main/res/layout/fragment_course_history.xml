@@ -99,7 +99,6 @@
                     android:text="@{vm.course.data.title}"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -134,6 +133,7 @@
             android:text="@string/course_history_meetings_textview"
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/courseHistoryFragmentCourseCard"
             style="@style/headerTextView"/>

@@ -107,6 +107,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_new"
                         android:onClick="@{() -> FilterSortUtil.removeSort(questionChipNewest, questionChipNewestActivated, vm, SortEnum.NEWEST)}"/>
 
@@ -115,6 +117,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_most_likes"
                         android:onClick="@{() -> FilterSortUtil.removeSort(questionChipMostLiked, questionChipMostLikedActivated, vm, SortEnum.MOST_LIKES)}"/>
 
@@ -123,6 +127,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_most_comments"
                         android:onClick="@{() -> FilterSortUtil.removeSort(questionChipMostCommented, questionChipMostCommentedActivated, vm, SortEnum.MOST_COMMENTED)}"/>
 
@@ -131,6 +137,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_solved"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipAnswered, questionChipAnsweredActivated, vm, FilterEnum.SOLVED)}"/>
 
@@ -139,6 +147,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_unsolved"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipUnanswered, questionChipUnansweredActivated, vm, FilterEnum.UNSOLVED)}"/>
 
@@ -148,6 +158,8 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:text="@string/course_meeting_fragment_chip_page_number"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         app:chipIcon="@drawable/ic_baseline_arrow_drop_up_24"
                         android:onClick="@{() -> FilterSortUtil.removeSort(questionChipPageCountUp, questionChipPageCountUpActivated, vm, SortEnum.PAGE_COUNT_UP)}"/>
 
@@ -156,6 +168,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_page_number"
                         app:chipIcon="@drawable/ic_baseline_arrow_drop_down_24"
                         android:onClick="@{() -> FilterSortUtil.removeSort(questionChipPageCountDown, questionChipPageCountDownActivated, vm, SortEnum.PAGE_COUNT_DOWN)}"/>
@@ -165,6 +179,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_own"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOwn, questionChipOwnActivated, vm, FilterEnum.OWN)}"/>
 
@@ -173,6 +189,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_course_creator"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipCreator, questionChipCreatorActivated, vm, FilterEnum.CREATOR)}"/>
 
@@ -181,6 +199,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_lecture_period"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipLecturePeriod, questionChipLecturePeriodActivated, vm, FilterEnum.LECTURE_PERIOD)}"/>
 
@@ -189,6 +209,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_subject"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipSubjectMatter, questionChipSubjectMatterActivated, vm, FilterEnum.SUBJECT_MATTER)}"/>
 
@@ -197,6 +219,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_organizational"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOrganisation, questionChipOrganisationActivated, vm, FilterEnum.ORGANISATION)}"/>
 
@@ -205,6 +229,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_mistake"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipMistake, questionChipMistakeActivated, vm, FilterEnum.MISTAKE)}"/>
 
@@ -213,6 +239,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_exam"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipExamination, questionChipExaminationActivated, vm, FilterEnum.EXAMINATION)}"/>
 
@@ -221,6 +249,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:backgroundTint="@color/call_to_action_orange"
+                        android:textColor="@color/white"
                         android:text="@string/course_meeting_fragment_chip_other"
                         android:onClick="@{() -> FilterSortUtil.removeFilter(questionChipOther, questionChipOtherActivated, vm, FilterEnum.OTHER)}"/>
 
@@ -477,7 +507,8 @@
             android:src="@drawable/ic_baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            style="@style/fabStyle"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

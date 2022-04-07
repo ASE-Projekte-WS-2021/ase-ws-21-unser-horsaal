@@ -7,9 +7,13 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.EnterCourseViewModel" />
-        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
         <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
     </data>
 
@@ -174,11 +178,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:elevation="2dp"
             app:endIconMode="clear_text"
             app:hintEnabled="false"
-            app:counterEnabled="true"
-            app:counterMaxLength="9"
+            app:errorEnabled="true"
+            app:setError="@{vm.courseIdInputState.status == StateData.DataStatus.ERROR  &amp;&amp; vm.courseIdInputState.errorTag == ErrorTag.CODEMAPPING ? vm.courseIdInputState.error.message : null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentEnterCodeHeader">
@@ -191,38 +194,38 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:background="@drawable/rounded_corners"
-                android:maxLength="9"
                 android:hint="@string/enter_course_code_filler"
                 android:paddingTop="12dp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/enterCourseFragmentPasswordErrorText"
-            android:visibility="gone"
+            android:id="@+id/enterCourseFragmentGeneralErrorMessage"
+            android:visibility="visible"
+            android:text="@{vm.course.status == StateData.DataStatus.ERROR &amp;&amp; (vm.course.errorTag == ErrorTag.REPO || vm.course.errorTag == ErrorTag.VM) ? vm.course.error.message : null}"
             android:textColor="@color/red"
-            android:background="@color/app_background"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toStartOf="@id/enterCourseFragmentCourseNumberEditField"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentCourseNumberEditField"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/enterCourseFragmentButtonWrapper"
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentPasswordErrorText">
+            app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentGeneralErrorMessage">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/enterCourseFragmentEnterButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="@{vm.course.status != StateData.DataStatus.LOADING}"
                 android:onClick="@{() -> vm.checkCode()}"
                 android:text="@string/enter_course_fragment_button_string"
                 style="@style/wideOrangeButton"
@@ -239,7 +242,7 @@
                 android:indeterminate="true"
                 android:indeterminateTint="@color/white"
                 android:indeterminateTintMode="src_in"
-                android:visibility="gone"
+                android:visibility="@{vm.course.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@+id/enterCourseFragmentEnterButton"
                 app:layout_constraintEnd_toEndOf="@+id/enterCourseFragmentEnterButton"
                 app:layout_constraintHorizontal_bias="0.975"
@@ -256,7 +259,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentButtonWrapper"/>
+            app:layout_constraintTop_toBottomOf="@id/enterCourseFragmentButtonWrapper"
+            android:onClick="@{(view) -> NavUtil.openCameraApp(view, vm)}" />
 
         <TextView
             android:layout_width="wrap_content"

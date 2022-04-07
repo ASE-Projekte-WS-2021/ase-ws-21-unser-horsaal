@@ -90,7 +90,6 @@ public class CourseDescriptionFragment extends Fragment {
     this.binding.setVm(this.courseDescriptionViewModel);
   }
 
-
   private void initToolbar() {
     this.binding.courseDescriptionFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
@@ -100,7 +99,5 @@ public class CourseDescriptionFragment extends Fragment {
     this.binding.setIsCreator(courseDescriptionViewModel.isCreator());
 
   }
-
-
 
 }

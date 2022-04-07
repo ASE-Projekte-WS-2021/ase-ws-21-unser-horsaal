@@ -40,7 +40,8 @@ public class LiveChatViewModel extends ViewModel {
 
   /** Send a new message in a thread. */
   public void sendMessage() {
-    sldMessageModelInputState.postLoading();
+    this.sldMessageModelInputState.postLoading();
+
     LiveChatMessageModel liveChatMessageModel = Validation.checkStateLiveData(this.sldMessageModelInputState, TAG);
     if (liveChatMessageModel.getText() == null ) {
       this.sldMessageModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);

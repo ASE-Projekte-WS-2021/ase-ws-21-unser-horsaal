@@ -10,7 +10,6 @@ public class CourseMeetingViewModel extends ViewModel {
 
   private static final String TAG = "CourseMeetingViewModel";
 
-
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
 
   /** Initialise the ViewModel. */
@@ -39,4 +38,5 @@ public class CourseMeetingViewModel extends ViewModel {
         return null;
     }
   }
+
 }
