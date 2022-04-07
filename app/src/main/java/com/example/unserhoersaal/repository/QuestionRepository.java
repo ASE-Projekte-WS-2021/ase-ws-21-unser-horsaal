@@ -159,7 +159,7 @@ public class QuestionRepository {
   /**
    * Update the list of all threads in the meeting.
    *
-   * @param dataSnapshot snapshot with meetings
+   * @param dataSnapshot snapshot with threads
    */
   private void updateThreadSet(DataSnapshot dataSnapshot) {
     HashSet<String> threadIds = new HashSet<>();
