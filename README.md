@@ -50,9 +50,9 @@
 ##### Zuständigkeitsbereiche:
 *Jeder Mitglied war aufgrund von Pair Programming an verschiedenen Bereichen der Anwendung beteiligt. Jedoch hatte auch jeder Bereiche an denen derjenige verstärkt beteiligt war. Diese sind:*
 
-- Asabidi Ruslan (Rusi91): Funktionalitäten im Login- und Registrierungsbereich (Login, Registrierung, Nutzerfeedback, Verifikation und Passwortzurücksetzung), Sortier- und Filterfunktionalität, Formale Abgabemodalitäten (Readme, Nutzerszenarios, Video)
+- **Asabidi Ruslan (Rusi91):** Funktionalitäten im Login- und Registrierungsbereich (Login, Registrierung, Nutzerfeedback, Verifikation und Passwortzurücksetzung), Sortier- und Filterfunktionalität, Formale Abgabemodalitäten (Readme, Nutzerszenarios, Video)
 
-- Bierschneider Michael (vairasza): 
+- **Bierschneider Michael (vairasza)**: 
 StatusLiveData,
 Databinding,
 Inputcheck ViewModels,
@@ -63,11 +63,11 @@ Editprofile,
 Testdatagenerierung,
 GitHub Actions
 
-- Gottschalk Philipp (myPhilie):
+- **Gottschalk Philipp (myPhilie)**:
 
-- Höpfinger Julian (julian1198):
+- **Höpfinger Julian (julian1198)**:
 
-- Rolny Laurin (Kroellinger):
+- **Rolny Laurin (Kroellinger)**:
 
 
 ## Entwicklerteam:
