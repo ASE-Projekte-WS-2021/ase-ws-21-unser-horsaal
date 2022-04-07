@@ -87,11 +87,11 @@ public class LoginFragment extends Fragment {
   }
 
   private void initOnboarding() {
-    //SharedPreferences sharedPreferences = getActivity()
-            //.getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
-    //if (!sharedPreferences.getBoolean(Config.SHARED_PREF_ONBOARDING_KEY, false)) {
+    SharedPreferences sharedPreferences = getActivity()
+            .getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
+    if (!sharedPreferences.getBoolean(Config.SHARED_PREF_ONBOARDING_KEY, false)) {
       this.navController.navigate(R.id.action_loginFragment_to_onboardingFragment);
-    //}
+    }
   }
 
   private void initDeepLinkMode() {
