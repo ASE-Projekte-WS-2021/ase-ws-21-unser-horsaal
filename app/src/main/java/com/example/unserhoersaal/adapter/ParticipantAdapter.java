@@ -10,10 +10,10 @@ import com.example.unserhoersaal.databinding.ParticipantListItemBinding;
 import com.example.unserhoersaal.model.UserModel;
 import java.util.List;
 
-/** Adapter for Participants View in Description Fragment. */
+/**
+ * Adapter for Participants View in Description Fragment.
+ */
 public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.ViewHolder> {
-
-  private static final String TAG = "ParticipantAdapter";
 
   private List<UserModel> localDataSet;
 
@@ -47,7 +47,6 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
   public class ViewHolder extends RecyclerView.ViewHolder {
     private final ParticipantListItemBinding binding;
 
-    /** Constructor. */
     public ViewHolder(ParticipantListItemBinding binding) {
       super(binding.getRoot());
       this.binding = binding;

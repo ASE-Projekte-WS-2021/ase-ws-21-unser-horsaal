@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.adapter.ChatAdapter;
+import com.example.unserhoersaal.adapter.ThreadMessagesAdapter;
 import com.example.unserhoersaal.databinding.FragmentCourseThreadBinding;
 import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.utils.StateData;
@@ -27,7 +27,7 @@ public class CourseThreadFragment extends Fragment {
   private static final String TAG = "CourseThreadFragment";
   private NavController navController;
   private FragmentCourseThreadBinding binding;
-  private ChatAdapter chatAdapter;
+  private ThreadMessagesAdapter chatAdapter;
   private CurrentCourseViewModel currentCourseViewModel;
 
   public CourseThreadFragment() {
@@ -87,7 +87,7 @@ public class CourseThreadFragment extends Fragment {
 
   private void connectAdapter() {
     this.chatAdapter =
-            new ChatAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
+            new ThreadMessagesAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
                     this.currentCourseViewModel);
   }
 

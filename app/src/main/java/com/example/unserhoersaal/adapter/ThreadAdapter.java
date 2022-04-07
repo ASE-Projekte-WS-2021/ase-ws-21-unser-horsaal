@@ -14,12 +14,13 @@ import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.utils.QueryBuilder;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.l4digital.fastscroll.FastScroller;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Adapter for the RecyclerView inCourseMeetingRepository. */
+/**
+ * Adapter for the RecyclerView inCourseMeetingRepository.
+ */
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder>
         implements FastScroller.SectionIndexer {
 
@@ -30,7 +31,11 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
   private final CurrentCourseViewModel currentCourseViewModel;
   private ThreadModel visibleItem;
 
-  /** JavaDoc. */
+  /** Constructor of ThreadAdapter.
+   *
+   * @param  dataSet  includes the Data of all Questions.
+   * @param  currentCourseViewModel is the ViewModel of the CourseThreadFragment.
+   */
   public ThreadAdapter(List<ThreadModel> dataSet, CurrentCourseViewModel currentCourseViewModel) {
     this.originalLocalDataSet = dataSet;
     this.filteredLocalDataSet = dataSet;
@@ -63,8 +68,10 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     return this.filteredLocalDataSet.size();
   }
 
-  /** Filters local data set according to the user query and model properties
-   * added to the query builder. */
+  /**
+   * Filters local data set according to the user query and model properties
+   * added to the query builder.
+   */
   //code reference: https://stackoverflow.com/a/17960339/13620136
   public Filter getFilter() {
     return new Filter() {
@@ -107,7 +114,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     };
   }
 
-  /**Source: https://stackoverflow.com/questions/24989218/get-visible-items-in-recyclerview.*/
+  //code reference: https://stackoverflow.com/questions/24989218/get-visible-items-in-recyclerview.*/
   @Override
   public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
     super.onAttachedToRecyclerView(recyclerView);
@@ -140,17 +147,22 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
   }
 
 
-  /** Viewholder for an thread item. */
+  /** Viewholder for an thread item.
+   *  Here the ViewHolder is filled with data.
+   */
   public class ViewHolder extends RecyclerView.ViewHolder {
     private final ThreadCardBinding binding;
 
-    /** Constructor. */
     public ViewHolder(ThreadCardBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }
 
-    /** adds viewmodel and binding to each recyleview item. */
+    /** Adds viewmodel and binding to each recyleview item.
+     *
+     * @param model Model of one Thread Question.
+     * @param currentCourseViewModel Viewmodel of CourseThreadFragment.
+     */
     public void connect(ThreadModel model, CurrentCourseViewModel currentCourseViewModel) {
       this.binding.setModel(model);
       this.binding.setVm(currentCourseViewModel);
