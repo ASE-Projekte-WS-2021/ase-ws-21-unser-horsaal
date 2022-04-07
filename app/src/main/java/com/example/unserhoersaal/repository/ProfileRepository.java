@@ -33,6 +33,7 @@ public class ProfileRepository {
   private final StateLiveData<UserModel> user = new StateLiveData<>();
   private final StateLiveData<Boolean> profileChanged = new StateLiveData<>();
   private String userId;
+  private ValueEventListener listener;
 
   /**
    * Constructor.
@@ -42,6 +43,28 @@ public class ProfileRepository {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.storageReference = FirebaseStorage.getInstance().getReference();
     this.profileChanged.postCreate(Boolean.FALSE);
+    initListener();
+  }
+
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        UserModel userModel = snapshot.getValue(UserModel.class);
+
+        if (userModel == null) {
+          user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+          return;
+        }
+        userModel.setKey(snapshot.getKey());
+        user.postUpdate(userModel);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
+      }
+    };
   }
 
   /**
@@ -73,7 +96,11 @@ public class ProfileRepository {
       return;
     }
     uid = this.firebaseAuth.getCurrentUser().getUid();
-    if (this.userId == null || !this.userId.equals(uid)) {
+    if (this.userId == null) {
+      this.userId = uid;
+      this.loadUser();
+    } else if (!this.userId.equals(uid)) {
+      this.databaseReference.child(Config.CHILD_USER).child(this.userId);
       this.userId = uid;
       this.loadUser();
     }
@@ -94,24 +121,7 @@ public class ProfileRepository {
     String id = this.firebaseAuth.getCurrentUser().getUid();
 
     Query query = this.databaseReference.child(Config.CHILD_USER).child(id);
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        UserModel userModel = snapshot.getValue(UserModel.class);
-
-        if (userModel == null) {
-          user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
-          return;
-        }
-        userModel.setKey(snapshot.getKey());
-        user.postUpdate(userModel);
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        user.postError(new Error(Config.PROFILE_FAILED_TO_LOAD_USER), ErrorTag.REPO);
-      }
-    });
+    query.addValueEventListener(this.listener);
   }
 
   /**

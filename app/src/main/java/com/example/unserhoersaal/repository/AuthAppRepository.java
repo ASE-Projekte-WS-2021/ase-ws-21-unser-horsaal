@@ -217,7 +217,9 @@ public class AuthAppRepository {
     this.databaseReference.child(Config.CHILD_USER)
             .child(uid)
             .removeValue()
-            .addOnSuccessListener(unused -> removeCourses(uid));
+            //todo delete
+            //.addOnSuccessListener(unused -> removeCourses(uid));
+            .addOnSuccessListener(unused -> deleteUser());
   }
 
   /**
@@ -268,9 +270,10 @@ public class AuthAppRepository {
       user.delete().addOnCompleteListener(task -> {
         if (task.isSuccessful()) {
           this.userLiveData.postUpdate(null);
+        } else {
+          this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL), ErrorTag.REPO);
         }
       });
-      //todo error
     }
 
   }

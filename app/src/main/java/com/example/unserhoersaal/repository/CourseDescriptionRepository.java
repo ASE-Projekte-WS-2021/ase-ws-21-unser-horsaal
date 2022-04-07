@@ -30,16 +30,45 @@ public class CourseDescriptionRepository {
   private String creatorId;
   private final StateLiveData<String> courseId = new StateLiveData<>();
   private final StateLiveData<CourseModel> course = new StateLiveData<>();
+  private ValueEventListener listener;
 
 
   /**
-   * Constructor.
+   * Constructor. Get Firebase instances and init the listener.
    */
   public CourseDescriptionRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.course.postCreate(new CourseModel());
     this.courseId.postCreate(null);
+    initListener();
+  }
+
+  /**
+   * Initialize the ValueEventListener.
+   */
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        CourseModel model = snapshot.getValue(CourseModel.class);
+
+        if (model == null) {
+          course.postError(
+                  new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
+          return;
+        }
+
+        model.setKey(snapshot.getKey());
+        getAuthor(model);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        course.postError(
+                new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
+      }
+    };
   }
 
   /**
@@ -77,27 +106,7 @@ public class CourseDescriptionRepository {
 
     Query query = this.databaseReference.child(Config.CHILD_COURSES)
             .child(courseKey);
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        CourseModel model = snapshot.getValue(CourseModel.class);
-
-        if (model == null) {
-          course.postError(
-                  new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
-          return;
-        }
-
-        model.setKey(snapshot.getKey());
-        getAuthor(model);
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        course.postError(
-                new Error(Config.COURSE_DESCRIPTION_SETCOURSEID_FAILED), ErrorTag.REPO);
-      }
-    });
+    query.addValueEventListener(this.listener);
   }
 
   /**
@@ -110,8 +119,12 @@ public class CourseDescriptionRepository {
       return;
     }
     if (this.courseId.getValue() == null
-            || this.courseId.getValue().getData() == null
-            || !this.courseId.getValue().getData().equals(newCourseId)) {
+            || this.courseId.getValue().getData() == null){
+      this.courseId.postUpdate(newCourseId);
+      this.loadDescription();
+    } else if (!this.courseId.getValue().getData().equals(newCourseId)) {
+      this.databaseReference.child(Config.CHILD_COURSES)
+              .child(this.courseId.getValue().getData()).removeEventListener(this.listener);
       this.courseId.postUpdate(newCourseId);
       this.loadDescription();
     }
@@ -135,7 +148,10 @@ public class CourseDescriptionRepository {
                   courseModel.setCreatorName(author.getDisplayName());
                   courseModel.setPhotoUrl(author.getPhotoUrl());
                 }
-                course.postCreate(courseModel);
+                String courseKey = Validation.checkStateLiveData(courseId, TAG);
+                if (courseModel.getKey().equals(courseKey)) {
+                  course.postCreate(courseModel);
+                }
               }
 
               @Override

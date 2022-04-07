@@ -72,7 +72,7 @@ public class QuestionRepository {
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.e(TAG, Config.THREADS_FAILED_TO_LOAD);
-        meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+        threads.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     };
   }

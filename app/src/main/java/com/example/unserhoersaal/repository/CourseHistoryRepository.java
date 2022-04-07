@@ -34,6 +34,7 @@ public class CourseHistoryRepository {
   private final StateLiveData<CourseModel> course = new StateLiveData<>();
   private final StateLiveData<MeetingsModel> meetingsModelMutableLiveData = new StateLiveData<>();
   private final StateLiveData<String> userId = new StateLiveData<>();
+  private ValueEventListener listener;
 
   /**
    * Constructor.
@@ -43,6 +44,33 @@ public class CourseHistoryRepository {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.course.postCreate(new CourseModel());
     this.meetingsModelMutableLiveData.postCreate(new MeetingsModel());
+    this.initListener();
+  }
+
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        meetingsModelList.clear();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          MeetingsModel model = snapshot.getValue(MeetingsModel.class);
+
+          if (model == null) {
+            continue;
+          }
+
+          model.setKey(snapshot.getKey());
+          meetingsModelList.add(model);
+        }
+        meetings.postUpdate(meetingsModelList);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        meetings.postError(
+                new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
+      }
+    };
   }
 
   /**
@@ -86,10 +114,15 @@ public class CourseHistoryRepository {
       return;
     }
     if (courseObj == null
-            || courseObj.getKey() == null
-            || !courseObj.getKey().equals(courseId)) {
+            || courseObj.getKey() == null) {
       this.course.postUpdate(courseModel);
       this.loadMeetings();
+    }else if (!courseObj.getKey().equals(courseId)) {
+      this.course.postUpdate(courseModel);
+      this.loadMeetings();
+      this.databaseReference
+              .child(Config.CHILD_MEETINGS)
+              .child(courseObj.getKey()).removeEventListener(this.listener);
     }
   }
 
@@ -119,32 +152,7 @@ public class CourseHistoryRepository {
     Query query = this.databaseReference
             .child(Config.CHILD_MEETINGS)
             .child(courseObj.getKey());
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        meetingsModelList.clear();
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          MeetingsModel model = snapshot.getValue(MeetingsModel.class);
-
-          if (model == null) {
-            Log.e(TAG, Config.COURSE_HISTORY_MEETING_CREATION_FAILURE);
-            meetings.postError(
-                    new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
-            return;
-          }
-
-          model.setKey(snapshot.getKey());
-          meetingsModelList.add(model);
-        }
-        meetings.postUpdate(meetingsModelList);
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        meetings.postError(
-                new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
-      }
-    });
+    query.addValueEventListener(this.listener);
   }
 
   /**

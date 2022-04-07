@@ -67,6 +67,7 @@ public class LiveChatRepository {
           model.setKey(snapshot.getKey());
           getAuthor(model);
         }
+        liveChatMessages.postComplete();
       }
 
       @Override

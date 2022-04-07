@@ -351,7 +351,18 @@ public class CurrentCourseRepository {
                   threadModel.setCreatorName(author.getDisplayName());
                   threadModel.setPhotoUrl(author.getPhotoUrl());
                 }
-                setLikeStatusThread(threadModel);
+                ThreadModel threadObj = Validation.checkStateLiveData(thread, TAG);
+                if (threadObj == null) {
+                  setLikeStatusThread(threadModel);
+                } else {
+                  if (Validation.emptyString(threadObj.getKey())) {
+                    setLikeStatusThread(threadModel);
+                    return;
+                  }
+                  if (threadObj.getKey().equals(threadModel.getKey())){
+                    setLikeStatusThread(threadModel);
+                  }
+                }
               }
 
               @Override
@@ -370,7 +381,6 @@ public class CurrentCourseRepository {
   private void setLikeStatusThread(ThreadModel threadModel) {
     Task<DataSnapshot> task = this.getLikeStatus(threadModel.getKey());
     if (task == null) {
-      threadModel.setLikeStatus(LikeStatus.NEUTRAL);
       this.thread.postUpdate(threadModel);
     } else {
       task.addOnSuccessListener(runnable -> {

@@ -32,10 +32,36 @@ public class AllCoursesRepository {
   private final StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
   private String userId;
   private final HashSet<String> joinedCourses = new HashSet<>();
+  private ValueEventListener listener;
 
+  /**
+   * Constructor. Get Firebase instances and init the listener.
+   */
   public AllCoursesRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    this.initListener();
+  }
+
+  /**
+   * Initialize the ValueEventListener.
+   */
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        updateJoinedCourses(dataSnapshot);
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          loadCourse(snapshot.getKey());
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.e(TAG, error.getMessage());
+        courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      }
+    };
   }
 
   /**
@@ -61,8 +87,14 @@ public class AllCoursesRepository {
       return;
     }
     uid = this.firebaseAuth.getCurrentUser().getUid();
-    if (this.userId == null || !this.userId.equals(uid)) {
+    if (this.userId == null ) {
       this.allCoursesList.clear();
+      this.userId = uid;
+      this.loadAllCourses();
+    } else if (!this.userId.equals(uid)) {
+      this.allCoursesList.clear();
+      this.databaseReference.child(Config.CHILD_USER_COURSES).child(this.userId)
+              .removeEventListener(this.listener);
       this.userId = uid;
       this.loadAllCourses();
     }
@@ -89,21 +121,7 @@ public class AllCoursesRepository {
     String id = this.firebaseAuth.getCurrentUser().getUid();
 
     Query query = this.databaseReference.child(Config.CHILD_USER_COURSES).child(id);
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        updateJoinedCourses(dataSnapshot);
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          loadCourse(snapshot.getKey());
-        }
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, error.getMessage());
-        courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
-      }
-    });
+    query.addValueEventListener(this.listener);
   }
 
   /**

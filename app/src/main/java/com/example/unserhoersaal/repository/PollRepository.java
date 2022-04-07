@@ -69,6 +69,7 @@ public class PollRepository {
           model.setKey(dataSnapshot.getKey());
           getAuthor(model);
         }
+        polls.postComplete();
       }
 
       @Override
