@@ -54,13 +54,19 @@ public class ProfileViewModel extends ViewModel {
     return this.profileChanged;
   }
 
+  /** reset statelivedata for user input. */
   public void resetProfileInput() {
     this.userInputState.postCreate(new UserModel());
   }
 
-  /** JavaDoc for this method. */
+  /** reset statelivedata for password input. */
   public void resetPasswordInput() {
     this.passwordInputState.postCreate(new PasswordModel());
+  }
+
+  public void setLiveDataComplete() {
+    this.userLiveData.postComplete();
+    this.profileChanged.postComplete();
   }
 
   public void logout() {
@@ -71,7 +77,7 @@ public class ProfileViewModel extends ViewModel {
     this.authAppRepository.deleteAccount();
   }
 
-  /** JavaDoc for this method. */
+  /** checks user input before editing name with firebase API. */
   public void changeDisplayName() {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
@@ -82,21 +88,16 @@ public class ProfileViewModel extends ViewModel {
     String displayName = userModel.getDisplayName();
 
     if (Validation.emptyString(displayName)) {
-      Log.d(TAG, "displayName is null.");
       this.profileChanged.postError(new Error(Config.AUTH_USERNAME_EMPTY), ErrorTag.USERNAME);
-      return;
     } else if (!Validation.stringHasPattern(displayName, Config.REGEX_PATTERN_USERNAME)) {
-      Log.d(TAG, "displayName has wrong pattern.");
       this.profileChanged.postError(
               new Error(Config.AUTH_USERNAME_WRONG_PATTERN), ErrorTag.USERNAME);
-      return;
+    } else {
+      this.profileRepository.changeDisplayName(displayName);
     }
-
-    this.userInputState.postCreate(new UserModel());
-    this.profileRepository.changeDisplayName(displayName);
   }
 
-  /** JavaDoc for this method. */
+  /** checks user input before editing name with firebase API. */
   public void changeInstitution() {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
@@ -107,21 +108,16 @@ public class ProfileViewModel extends ViewModel {
     String institution = userModel.getInstitution();
 
     if (Validation.emptyString(institution)) {
-      Log.d(TAG, "institution is null.");
       this.profileChanged.postError(new Error(Config.AUTH_INSTITUTION_EMPTY), ErrorTag.INSTITUTION);
-      return;
     } else if (!Validation.stringHasPattern(institution, Config.REGEX_PATTERN_INSTITUTION)) {
-      Log.d(TAG, "institution has wrong pattern.");
       this.profileChanged.postError(
               new Error(Config.AUTH_INSTITUTION_WRONG_PATTERN), ErrorTag.INSTITUTION);
-      return;
+    } else {
+      this.profileRepository.changeInstitution(institution);
     }
-
-    this.userInputState.postCreate(new UserModel());
-    this.profileRepository.changeInstitution(institution);
   }
 
-  /** JavaDoc for this method. */
+  /** checks user input before editing name with firebase API. */
   public void changePassword() {
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (passwordModel == null) {
@@ -133,35 +129,28 @@ public class ProfileViewModel extends ViewModel {
     String newPassword = passwordModel.getNewPassword();
 
     if (Validation.emptyString(oldPassword)) {
-      Log.d(TAG, "oldPassword is null.");
       this.profileChanged.postError(
               new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
-      return;
     } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, "oldPassword has wrong pattern.");
       this.profileChanged.postError(
               new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
-      return;
-    }
-
-    if (Validation.emptyString(newPassword)) {
-      Log.d(TAG, "newPassword is null.");
+    } else if (Validation.emptyString(newPassword)) {
       this.profileChanged.postError(new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.NEW_PASSWORD);
-      return;
-    } else if (!Validation.stringHasPattern(oldPassword, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, "newPassword has wrong pattern.");
+    } else if (!Validation.stringHasPattern(newPassword, Config.REGEX_PATTERN_PASSWORD)) {
       this.profileChanged.postError(
               new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.NEW_PASSWORD);
-      return;
+    } else {
+      this.profileRepository.changePassword(oldPassword, newPassword);
     }
-
-    this.passwordInputState.postCreate(new PasswordModel());
-    this.profileRepository.changePassword(oldPassword, newPassword);
   }
 
-  /** JavaDoc for this method. */
+  /** transfer uri to repo to change profile picture. */
   public void uploadImageToFireStore(Uri uri) {
     this.profileRepository.uploadImageToFirebase(uri);
+  }
+
+  public void setUserId() {
+    this.profileRepository.setUserId();
   }
 
 }

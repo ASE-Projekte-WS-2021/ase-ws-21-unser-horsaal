@@ -10,10 +10,14 @@
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
         <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
         <import type="com.example.unserhoersaal.utils.TagUtil"/>
         <import type="com.example.unserhoersaal.enums.TagEnum"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,6 +61,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:hintEnabled="false"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@{Config.MESSAGE_TEXT_LENGTH_MAX}"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.threadModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.threadModelInputState.errorTag == ErrorTag.TEXT ? vm.threadModelInputState.error.message : null}"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -65,8 +74,8 @@
                         android:layout_height="wrap_content"
                         android:singleLine="false"
                         android:background="@drawable/rounded_corners"
-                        android:maxLength="500"
-                        android:hint="Nachricht eingeben"
+                        android:maxLength="@{Config.MESSAGE_TEXT_LENGTH_MAX}"
+                        android:hint="@string/create_thread_enter_message"
                         android:text="@={vm.threadModelInputState.data.text}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -134,6 +143,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/course_meeting_fragment_chip_other"
                         android:onClick="@{(view) -> TagUtil.setTag(view, vm.threadModelInputState.data, TagEnum.OTHER)}"
+                        app:checkedIconTint="@color/white"
                         app:chipBackgroundColor="@color/black"
                         style="@style/createThreadChipStyle"/>
 
@@ -177,6 +187,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="30"
                     app:hintEnabled="false"
                     android:visibility="gone"
                     style="@style/inputField">
@@ -188,7 +201,7 @@
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners"
                         android:maxLength="500"
-                        android:hint="#..."
+                        android:hint="@string/create_thread_hashtag_hint"
                         android:text="@={vm.threadModelInputState.data.hashtag}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -242,24 +255,63 @@
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners"
                         android:maxLength="500"
-                        android:hint="Seitenzahl"
+                        android:hint="@string/create_thread_page"
                         android:inputType="numberSigned"
                         android:text="@={vm.threadModelInputState.data.pageNumber}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/createThreadFragmentButton"
-                    android:onClick="@{() -> vm.createThread()}"
+                <TextView
+                    android:id="@+id/createThreadFragmentGeneralErrorMessage"
+                    android:visibility="visible"
+                    android:text="@{vm.threadModel.status == StateData.DataStatus.ERROR ? vm.threadModel.error.message : null}"
+                    android:textColor="@color/red"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/createThreadFragmentButtonWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/create_thread_fragment_button_send"
-                    app:backgroundTint="@color/call_to_action_orange"
-                    style="@style/wideOrangeButton"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentTextField">
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/createThreadFragmentButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{vm.threadModel.status != StateData.DataStatus.LOADING}"
+                        android:onClick="@{() -> vm.createThread()}"
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp"
+                        android:text="@string/create_thread_fragment_button_send"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        style="@style/wideOrangeButton"/>
+
+                    <ProgressBar
+                        android:id="@+id/createThreadFragmentButtonSpinner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/white"
+                        android:indeterminateTintMode="src_in"
+                        android:visibility="@{vm.threadModel.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintBottom_toBottomOf="@+id/createThreadFragmentButton"
+                        app:layout_constraintEnd_toEndOf="@+id/createThreadFragmentButton"
+                        app:layout_constraintHorizontal_bias="0.975"
+                        app:layout_constraintStart_toStartOf="@+id/createThreadFragmentButton"
+                        app:layout_constraintTop_toTopOf="@+id/createThreadFragmentButton" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
+          
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

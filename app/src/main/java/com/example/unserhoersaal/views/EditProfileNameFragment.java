@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -12,9 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentEditProfileNameBindingImpl;
-import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
@@ -62,28 +65,16 @@ public class EditProfileNameFragment extends Fragment {
   }
 
   private void profileChangedCallback(StateData<Boolean> booleanStateData) {
-    this.resetBindings();
+    KeyboardUtil.hideKeyboard(getActivity());
+
+    if (booleanStateData == null) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+      return;
+    }
 
     if (booleanStateData.getStatus() == StateData.DataStatus.UPDATE) {
-      navController.navigate(R.id.action_editProfileNameFragment_to_profileFragment);
-    } else if (booleanStateData.getStatus() == StateData.DataStatus.ERROR) {
-      if (booleanStateData.getErrorTag() == ErrorTag.USERNAME) {
-        this.binding.editProfileUserNameErrorText.setText(booleanStateData.getError().getMessage());
-        this.binding.editProfileUserNameErrorText.setVisibility(View.VISIBLE);
-      } else {
-        this.binding.editProfileUserNameGeneralErrorText.setText(
-                booleanStateData.getError().getMessage());
-        this.binding.editProfileUserNameGeneralErrorText.setVisibility(View.VISIBLE);
-      }
-    } else if (booleanStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.editProfileUserNameFragmentProgressSpinner.setVisibility(View.VISIBLE);
+      this.navController.navigate(R.id.action_editProfileNameFragment_to_profileFragment);
     }
-  }
-
-  private void resetBindings() {
-    this.binding.editProfileUserNameGeneralErrorText.setVisibility(View.GONE);
-    this.binding.editProfileUserNameErrorText.setVisibility(View.GONE);
-    this.binding.editProfileUserNameFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
   private void connectBinding() {
@@ -102,6 +93,7 @@ public class EditProfileNameFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.profileViewModel.resetProfileInput();
+    this.profileViewModel.setLiveDataComplete();
   }
 
 }

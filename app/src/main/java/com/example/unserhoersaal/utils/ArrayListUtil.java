@@ -1,5 +1,6 @@
 package com.example.unserhoersaal.utils;
 
+
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.enums.SortEnum;
@@ -13,12 +14,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Utility class for the sorting and filter options for model lists.
+ * Used to sort and filter meetings, threads and answers by various parameters.
+ */
 public class ArrayListUtil {
 
-  /**
-   * Utility class for the sorting and filter options for model lists.
-   * Used to sort and filter meetings, threads and answers by various parameters.
-   */
+  private static final String TAG = "ArrayListUtil";
 
   /** Sorting options for ThreadModel lists. */
   public void sortThreadList(List<ThreadModel> threadsModelList, SortEnum sortingOption) {
@@ -38,6 +40,8 @@ public class ArrayListUtil {
         break;
       case PAGE_COUNT_DOWN:
         sortThreadListByPageNumber(threadsModelList, Config.DESCENDING);
+        break;
+      default:
         break;
     }
   }
@@ -87,61 +91,41 @@ public class ArrayListUtil {
       case RESET:
         refreshList(threadsModelList, outFilteredThreads);
         break;
+      default:
+        break;
     }
   }
 
   /** Sort answers by likes. */
   public void sortAnswersByLikes(List<MessageModel> messageModelList) {
-    messageModelList.sort(new Comparator<MessageModel>() {
-      @Override
-      public int compare(MessageModel messageModel, MessageModel t1) {
-        return t1.getLikes() - messageModel.getLikes();
-      }
-    });
+    messageModelList.sort((messageModel, t1) -> t1.getLikes() - messageModel.getLikes());
   }
-
 
   /** Sort meetings by event time. */
   public void sortMeetingListByEventTime(List<MeetingsModel> meetingsModelList) {
-    meetingsModelList.sort(new Comparator<MeetingsModel>() {
-      @Override
-      public int compare(MeetingsModel meetingsModel, MeetingsModel t1) {
-        return t1.getEventTime().compareTo(meetingsModel.getEventTime());
-      }
-    });
+    meetingsModelList.sort((meetingsModel, t1) ->
+            t1.getEventTime().compareTo(meetingsModel.getEventTime()));
   }
 
-  /** Sort threads by creation time -descending */
+  /** Sort threads by creation time - descending. */
   private void sortThreadListByEventTimeDesc(List<ThreadModel> threadsModelList) {
-    threadsModelList.sort(new Comparator<ThreadModel>() {
-      @Override
-      public int compare(ThreadModel threadModel, ThreadModel t1) {
-        if (threadModel.getCreationTime() == null || t1.getCreationTime() == null) {
-          return 0;
-        }
-        return t1.getCreationTime().compareTo(threadModel.getCreationTime());
+    threadsModelList.sort((threadModel, t1) -> {
+      if (threadModel.getCreationTime() == null || t1.getCreationTime() == null) {
+        return 0;
       }
+      return t1.getCreationTime().compareTo(threadModel.getCreationTime());
     });
   }
 
-  /** Sort threads by likes -descending */
+  /** Sort threads by likes - descending. */
   private void sortThreadListByLikesDesc(List<ThreadModel> threadsModelList) {
-    threadsModelList.sort(new Comparator<ThreadModel>() {
-      @Override
-      public int compare(ThreadModel threadModel, ThreadModel t1) {
-        return t1.getLikes() - threadModel.getLikes();
-      }
-    });
+    threadsModelList.sort((threadModel, t1) -> t1.getLikes() - threadModel.getLikes());
   }
 
-  /** Sort threads by comments/answers -descending */
+  /** Sort threads by comments/answers -descending. */
   private void sortThreadListByAnswersDesc(List<ThreadModel> threadsModelList) {
-    threadsModelList.sort(new Comparator<ThreadModel>() {
-      @Override
-      public int compare(ThreadModel threadModel, ThreadModel t1) {
-        return t1.getAnswersCount() - threadModel.getAnswersCount();
-      }
-    });
+    threadsModelList.sort((threadModel, t1) ->
+            t1.getAnswersCount() - threadModel.getAnswersCount());
   }
 
   /** Sort threads by the page number. */
@@ -190,13 +174,15 @@ public class ArrayListUtil {
 
     List<ThreadModel> filteredList = new ArrayList<>();
     List<ThreadModel> outFilteredList = new ArrayList<>();
-      for (int i = 0; i < threadsModelList.size(); i++) {
-        if (threadsModelList.get(i).getAnswered() == answered) {
-          filteredList.add(threadsModelList.get(i));
-        } else {
-          outFilteredList.add(threadsModelList.get(i));
-        }
+
+    for (int i = 0; i < threadsModelList.size(); i++) {
+      if (threadsModelList.get(i).getAnswered() == answered) {
+        filteredList.add(threadsModelList.get(i));
+      } else {
+        outFilteredList.add(threadsModelList.get(i));
       }
+    }
+
     threadsModelList.clear();
     threadsModelList.addAll(filteredList);
 
@@ -204,10 +190,10 @@ public class ArrayListUtil {
   }
 
   /** Filter threads and just show threads created by the course provider. */
-  private void filterThreadListByCourseProvider(List<ThreadModel> threadsModelList,
-                                                MeetingsModel currentMeeting,
-                                                StateLiveData<List<ThreadModel>> outFilteredThreads)
-  {
+  private void filterThreadListByCourseProvider(
+          List<ThreadModel> threadsModelList,
+          MeetingsModel currentMeeting,
+          StateLiveData<List<ThreadModel>> outFilteredThreads) {
     List<ThreadModel> filteredList = new ArrayList<>();
     List<ThreadModel> outFilteredList = new ArrayList<>();
     for (int i = 0; i < threadsModelList.size(); i++) {
@@ -263,15 +249,15 @@ public class ArrayListUtil {
   }
 
   /** Filter threads by lecture period. */
-  private void filterThreadListByLecturePeriod(List<ThreadModel> threadsModelList,
-                                               MeetingsModel currentMeeting,
-                                               StateLiveData<List<ThreadModel>> outFilteredThreads)
-  {
+  private void filterThreadListByLecturePeriod(
+          List<ThreadModel> threadsModelList,
+          MeetingsModel currentMeeting,
+          StateLiveData<List<ThreadModel>> outFilteredThreads) {
     List<ThreadModel> filteredList = new ArrayList<>();
     List<ThreadModel> outFilteredList = new ArrayList<>();
     for (int i = 0; i < threadsModelList.size(); i++) {
-      if (threadsModelList.get(i).getCreationTime() >= currentMeeting.getEventTime() &&
-      threadsModelList.get(i).getCreationTime() <= currentMeeting.getEventEndTime()) {
+      if (threadsModelList.get(i).getCreationTime() >= currentMeeting.getEventTime()
+              && threadsModelList.get(i).getCreationTime() <= currentMeeting.getEventEndTime()) {
         filteredList.add(threadsModelList.get(i));
       } else {
         outFilteredList.add(threadsModelList.get(i));
@@ -283,7 +269,7 @@ public class ArrayListUtil {
     refillAndRemoveDuplicatesFromList(outFilteredThreads, outFilteredList);
   }
 
-  /** Reset filter/show all threads */
+  /** Reset filter/show all threads. */
   private void resetThreadList(List<ThreadModel> threadsModelList,
                                StateLiveData<List<ThreadModel>> outFilteredThreads,
                                ArrayList<FilterEnum> enumArray, MeetingsModel currentMeeting,
@@ -342,4 +328,5 @@ public class ArrayListUtil {
       outFilteredThreads.postUpdate(outFilteredList);
     }
   }
+
 }

@@ -9,22 +9,20 @@ import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
-import com.example.unserhoersaal.repository.CourseMeetingRepository;
+import com.example.unserhoersaal.repository.QuestionRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /** ViewModel for the QuestionsFragment. */
 public class QuestionsViewModel extends ViewModel {
 
   private static final String TAG = "QuestionsViewModel";
 
-  private CourseMeetingRepository courseMeetingRepository;
+  private QuestionRepository questionRepository;
   private AuthAppRepository authAppRepository;
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<List<ThreadModel>> threads;
@@ -42,14 +40,14 @@ public class QuestionsViewModel extends ViewModel {
       return;
     }
 
-    this.courseMeetingRepository = CourseMeetingRepository.getInstance();
+    this.questionRepository = QuestionRepository.getInstance();
     this.authAppRepository = AuthAppRepository.getInstance();
-    this.meeting = this.courseMeetingRepository.getMeeting();
+    this.meeting = this.questionRepository.getMeeting();
     this.threadModelMutableLiveData =
-            this.courseMeetingRepository.getThreadModelMutableLiveData();
+            this.questionRepository.getThreadModelMutableLiveData();
 
     if (this.meeting.getValue() != null) {
-      this.threads = this.courseMeetingRepository.getThreads();
+      this.threads = this.questionRepository.getThreads();
     }
     this.threadModelInputState.postCreate(new ThreadModel());
 
@@ -95,6 +93,7 @@ public class QuestionsViewModel extends ViewModel {
     this.sortEnum.postUpdate(sortEnum);
   }
 
+  /** JavaDoc. */
   public void setFilterEnum(FilterEnum filterEnum) {
     if (!enumArray.contains(filterEnum)) {
       this.enumArray.add(filterEnum);
@@ -105,6 +104,7 @@ public class QuestionsViewModel extends ViewModel {
     }
   }
 
+  /** JavaDoc. */
   public void resetFilters() {
     this.enumArray.clear();
     this.filterEnum.postUpdate(FilterEnum.NONE);
@@ -132,30 +132,33 @@ public class QuestionsViewModel extends ViewModel {
     this.threadModelMutableLiveData.postCreate(null);
   }
 
+  public void setLiveDataComplete() {
+    this.threadModelMutableLiveData.postComplete();
+    this.threadModelInputState.postComplete();
+  }
+
   public void setMeeting(MeetingsModel meeting) {
-    this.courseMeetingRepository.setMeeting(meeting);
+    this.questionRepository.setMeeting(meeting);
   }
 
   /** Create a new Thread. */
   public void createThread() {
+    this.threadModelInputState.postLoading();
+
     ThreadModel threadModel = Validation.checkStateLiveData(this.threadModelInputState, TAG);
     if (threadModel == null) {
-      Log.e(TAG, "threadModel is null.");
+      this.threadModelInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     if (threadModel.getText() == null) {
-      Log.d(TAG, "text is null.");
       this.threadModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-      return;
     } else if (!Validation.stringHasPattern(threadModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "text wrong pattern.");
       this.threadModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
-      return;
+    } else {
+      this.threadModelInputState.postComplete();
+      this.questionRepository.createThread(threadModel);
     }
-
-    this.threadModelInputState.postCreate(new ThreadModel());
-    this.courseMeetingRepository.createThread(threadModel);
   }
 }

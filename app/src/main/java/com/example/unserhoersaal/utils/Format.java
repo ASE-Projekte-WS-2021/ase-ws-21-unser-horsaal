@@ -2,14 +2,16 @@ package com.example.unserhoersaal.utils;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.enums.LikeStatus;
+import com.example.unserhoersaal.model.CalendarModel;
 import com.google.android.material.card.MaterialCardView;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -111,5 +113,42 @@ public class Format {
             .insert(Config.READABILITY_ITEM_POSITION_2, Config.CODE_MAPPING_READABILITY_ITEM)
             .insert(Config.READABILITY_ITEM_POSITION_1, Config.CODE_MAPPING_READABILITY_ITEM)
             .toString();
+  }
+
+  @BindingAdapter("app:formatStartDate")
+  public static void formatStartDate(TextView view, CalendarModel calendarModel) {
+    if (calendarModel.getYearInput() != -1
+            && calendarModel.getMonthInput() != -1
+            && calendarModel.getDayOfMonthInput() != -1) {
+      int year = calendarModel.getYearInput();
+      int month = calendarModel.getMonthInput();
+      int day = calendarModel.getDayOfMonthInput();
+
+      String dayAsString = day < 10 ? "0" + day : String.valueOf(day);
+      month++;
+      String monthAsString = month < 10 ? "0" + month : String.valueOf(month);
+
+      String time = dayAsString + "." + monthAsString + "." + year;
+      view.setText(time);
+    } else {
+      view.setText(R.string.current_date_placeholder);
+    }
+  }
+
+  @BindingAdapter("app:formatStartTime")
+  public static void formatStartTime(TextView view, CalendarModel calendarModel) {
+    if (calendarModel.getHourInput() != -1
+            && calendarModel.getMinuteInput() != -1) {
+      int hour = calendarModel.getHourInput();
+      int minute = calendarModel.getMinuteInput();
+
+      String hourAsString = hour < 10 ? "0" + hour : String.valueOf(hour);
+      String minuteAsString = minute < 10 ? "0" + minute : String.valueOf(minute);
+
+      String time = hourAsString + ":" + minuteAsString;
+      view.setText(time);
+    } else {
+      view.setText(R.string.current_time_placeholder);
+    }
   }
 }

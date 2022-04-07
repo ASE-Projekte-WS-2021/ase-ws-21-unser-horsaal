@@ -17,6 +17,7 @@
         <import type="com.example.unserhoersaal.utils.Format"/>
         <import type="android.view.View"/>
         <import type="com.example.unserhoersaal.enums.TagEnum"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
     </data>
 
     <LinearLayout
@@ -44,51 +45,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{vm.meeting.data.title}"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_marginEnd="8dp"
                     style="@style/toolbarTitleStyle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </com.google.android.material.appbar.MaterialToolbar>
-
-            <TextView
-                android:id="@+id/currentCourseFragmentSubtitle"
-                style="@style/toolbarSubtitleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{vm.thread.data.title}"
-                android:background="@color/app_blue"
-                android:padding="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar" />
-
-            <LinearLayout
-                android:id="@+id/currentCourseFragmentLinearLayoutEnterNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/current_course_textview_enter_number"
-                    android:gravity="center|end"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/courseKeyTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center|start"
-                    tools:text="123456789" />
-
-            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -97,7 +62,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/courseThreadFragmentSendMessageContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentSubtitle">
+                app:layout_constraintTop_toBottomOf="@id/currentCourseFragmentToolbar">
 
                 <LinearLayout
                     android:id="@+id/currentCourseFragmentContainer"
@@ -107,12 +72,14 @@
 
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/currentCourseFragmentMaterialCardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:minHeight="100dp"
                         app:cardCornerRadius="8dp"
-                        setBorder="@{vm.thread.data.answered}">
+                        setBorder="@{vm.thread.data.answered}"
+                        android:onLongClick="@{(view) -> NavUtil.deleteMessageText(view, vm, vm.thread.data)}">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -124,42 +91,41 @@
                                 android:id="@+id/courseThreadMessageVoteContainer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent">
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <ImageView
                                     android:id="@+id/courseThreadMessageUpvote"
-                                    android:onClick="@{(view) -> vm.likeThread(vm.thread.data)}"
                                     setLikeStatus="@{vm.thread.data.likeStatus}"
+                                    android:onClick="@{(view) -> vm.likeThread(vm.thread.data)}"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     android:layout_marginTop="8dp"
                                     android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintBottom_toTopOf="@id/courseThreadMessageLikes"
-                                    />
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"/>
 
                                 <TextView
                                     android:id="@+id/courseThreadMessageLikes"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{Integer.toString(vm.thread.data.likes)}"
-                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent" />
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
                                 <ImageView
                                     android:id="@+id/courseThreadMessageDownvote"
-                                    android:onClick="@{(view) -> vm.dislikeThread(vm.thread.data)}"
                                     setDisLikeStatus="@{vm.thread.data.likeStatus}"
+                                    android:onClick="@{(view) -> vm.dislikeThread(vm.thread.data)}"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
                                     android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                                    app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@id/courseThreadMessageLikes" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -171,65 +137,65 @@
                                 android:orientation="horizontal"
                                 android:layout_marginEnd="8dp"
                                 android:visibility="@{vm.thread.data.tags == null ? View.GONE : View.VISIBLE}"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageHashtagOne"
                                 app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
-                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageHashtagOne">
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <com.google.android.material.chip.Chip
                                     android:id="@+id/courseThreadMessageSubjectMatter"
+                                    style="@style/threadChipStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/course_meeting_fragment_chip_subject"
                                     android:visibility="@{vm.thread.data.tags.contains(TagEnum.SUBJECT_MATTER) ? View.VISIBLE : View.GONE}"
-                                    app:chipBackgroundColor="@color/orange"
-                                    style="@style/threadChipStyle" />
+                                    app:chipBackgroundColor="@color/orange" />
 
                                 <com.google.android.material.chip.Chip
                                     android:id="@+id/courseThreadMessageMistake"
+                                    style="@style/threadChipStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/course_meeting_fragment_chip_mistake"
                                     android:visibility="@{vm.thread.data.tags.contains(TagEnum.MISTAKE) ? View.VISIBLE : View.GONE}"
-                                    app:chipBackgroundColor="@color/red"
-                                    style="@style/threadChipStyle"/>
+                                    app:chipBackgroundColor="@color/red" />
 
                                 <com.google.android.material.chip.Chip
                                     android:id="@+id/courseThreadMessageExamination"
+                                    style="@style/threadChipStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/course_meeting_fragment_chip_exam"
                                     android:visibility="@{vm.thread.data.tags.contains(TagEnum.EXAMINATION) ? View.VISIBLE : View.GONE}"
-                                    app:chipBackgroundColor="@color/green"
-                                    style="@style/threadChipStyle"/>
+                                    app:chipBackgroundColor="@color/green" />
 
                                 <com.google.android.material.chip.Chip
                                     android:id="@+id/courseThreadMessageOrganisation"
+                                    style="@style/threadChipStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/course_meeting_fragment_chip_organizational"
                                     android:visibility="@{vm.thread.data.tags.contains(TagEnum.ORGANISATION) ? View.VISIBLE : View.GONE}"
-                                    app:chipBackgroundColor="@color/blue"
-                                    style="@style/threadChipStyle"/>
+                                    app:chipBackgroundColor="@color/blue" />
 
                                 <com.google.android.material.chip.Chip
                                     android:id="@+id/courseThreadMessageOther"
+                                    style="@style/threadChipStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/course_meeting_fragment_chip_other"
                                     android:visibility="@{vm.thread.data.tags.contains(TagEnum.OTHER) ? View.VISIBLE : View.GONE}"
-                                    app:chipBackgroundColor="@color/black"
-                                    style="@style/threadChipStyle"/>
+                                    app:chipBackgroundColor="@color/black" />
 
                                 <com.google.android.material.chip.Chip
                                     android:id="@+id/courseThreadMessagePageTag"
+                                    style="@style/threadChipStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{vm.thread.data.pageNumber}"
                                     android:visibility="@{vm.thread.data.pageNumber == null ? View.GONE : View.VISIBLE}"
                                     app:chipBackgroundColor="@color/orange_darker"
-                                    app:chipIcon="@drawable/ic_baseline_insert_drive_file_24"
-                                    style="@style/threadChipStyle" />
+                                    app:chipIcon="@drawable/ic_baseline_insert_drive_file_24" />
 
                                 <!--
                                 <TextView
@@ -249,10 +215,10 @@
                                 android:textSize="12sp"
                                 android:layout_marginTop="8dp"
                                 android:visibility="@{vm.thread.data.hashtag == null ? View.GONE : View.VISIBLE}"
-                                app:layout_constraintTop_toBottomOf="@id/courseThreadMessageTagContainer"
+                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageText"
                                 app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageText"/>
+                                app:layout_constraintTop_toBottomOf="@id/courseThreadMessageTagContainer" />
 
                             <TextView
                                 android:id="@+id/courseThreadMessageText"
@@ -261,21 +227,20 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="8dp"
                                 android:layout_marginBottom="16dp"
-                                android:textColor="@color/black"
-                                android:text="@{vm.thread.data.text}"
-                                app:layout_constraintTop_toBottomOf="@id/courseThreadMessageHashtagOne"
+                                android:text="@{vm.thread.data.isTextDeleted ? @string/deleted_message_text : vm.thread.data.text}"
+                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageThreadInfoContainer"
                                 app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintBottom_toTopOf="@id/courseThreadMessageThreadInfoContainer"
-                                />
+                                app:layout_constraintTop_toBottomOf="@id/courseThreadMessageHashtagOne"
+                                android:textColor="@{ vm.thread.data.isTextDeleted ?  @color/grey : @color/black}"/>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/courseThreadMessageThreadInfoContainer"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
                                 app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
+                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/courseThreadMessageText">
 
                                 <ImageView
@@ -284,7 +249,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"/>
+                                    app:layout_constraintStart_toStartOf="parent" />
 
                                 <TextView
                                     android:id="@+id/courseThreadMessageAuthor"
@@ -295,10 +260,9 @@
                                     android:textSize="12sp"
                                     android:textColor="@color/app_blue"
                                     android:text="@{vm.thread.data.creatorName}"
-                                    app:layout_constraintStart_toEndOf="@id/courseThreadMessageAuthorImage"
-                                    app:layout_constraintTop_toTopOf="@id/courseThreadMessageAuthorImage"
                                     app:layout_constraintBottom_toBottomOf="@id/courseThreadMessageAuthorImage"
-                                     />
+                                    app:layout_constraintStart_toEndOf="@id/courseThreadMessageAuthorImage"
+                                    app:layout_constraintTop_toTopOf="@id/courseThreadMessageAuthorImage" />
 
                                 <TextView
                                     android:id="@+id/courseThreadMessageTime"

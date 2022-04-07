@@ -11,6 +11,9 @@
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,23 +24,24 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:src="@drawable/app_transparent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="64dp"/>
+                    android:layout_marginTop="32dp" />
 
                 <TextView
                     android:id="@+id/loginFragmentTitleTextView"
@@ -55,38 +59,35 @@
                     android:id="@+id/loginFragmentUserEmailTextField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:hint="@string/login_fragment_user_email_hint"
                     android:layout_gravity="center"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? vm.userInputState.error.message : null}"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentUserEmailEditText"
                         android:text="@={vm.userInputState.data.email}"
+                        android:inputType="textEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners" />
 
-                    <TextView
-                        android:id="@+id/loginFragmentUserEmailErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
-
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/loginFragmentPasswordTextField"
+                    style="@style/inputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:hint="@string/login_fragment_password_hint"
-                    app:endIconMode="password_toggle"
                     android:layout_gravity="center"
-                    style="@style/inputField">
+                    app:errorEnabled="true"
+                    app:setError="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? vm.passwordInputState.error.message : null}">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/loginFragmentPasswordEditText"
@@ -95,51 +96,41 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        android:background="@drawable/rounded_corners"/>
-
-                    <TextView
-                        android:id="@+id/loginFragmentPasswordErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
+                        android:background="@drawable/rounded_corners" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/loginFragmentGeneralErrorMessage"
-                    android:visibility="gone"
+                    android:visibility="visible"
+                    android:text="@{vm.userLiveData.status == StateData.DataStatus.ERROR &amp;&amp; (vm.userLiveData.errorTag == ErrorTag.REPO || vm.userLiveData.errorTag == ErrorTag.VM) ? vm.userLiveData.error.message : null}"
                     android:textColor="@color/red"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="10dp"
                     android:layout_gravity="center" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/loginFragmentButtonWrapper"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/loginFragmentLoginButton"
+                        style="@style/wideOrangeButton"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
+                        android:enabled="@{vm.userLiveData.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{() -> vm.login()}"
-                        android:background="@drawable/app_background"
-                        android:layout_marginTop="32dp"
+
                         android:text="@string/login_fragment_login_button_string"
-                        app:backgroundTint="@null"
+                        android:layout_gravity="center"
                         app:icon="@drawable/ic_baseline_login_24"
                         app:iconGravity="textStart"
-                        android:layout_gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        style="@style/wideOrangeButton"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ProgressBar
                         android:id="@+id/loginFragmentProgressSpinner"
@@ -149,7 +140,7 @@
                         android:indeterminate="true"
                         android:indeterminateTint="@color/white"
                         android:indeterminateTintMode="src_in"
-                        android:visibility="gone"
+                        android:visibility="@{vm.userLiveData.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="@+id/loginFragmentLoginButton"
                         app:layout_constraintEnd_toEndOf="@+id/loginFragmentLoginButton"
                         app:layout_constraintHorizontal_bias="0.975"

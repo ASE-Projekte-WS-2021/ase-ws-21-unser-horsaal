@@ -7,6 +7,13 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.ProfileViewModel"/>
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,8 +44,12 @@
             android:id="@+id/editProfileInstitutionFragmentTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_profile_fragment_institution"
             android:layout_margin="8dp"
+            app:endIconMode="clear_text"
+            app:counterEnabled="true"
+            app:counterMaxLength="@{Config.INSTITUTION_LENGTH_MAX}"
+            app:errorEnabled="true"
+            app:setError="@{vm.profileChanged.status == StateData.DataStatus.ERROR &amp;&amp; vm.profileChanged.errorTag == ErrorTag.INSTITUTION ? vm.profileChanged.error.message : null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentToolbar"
@@ -47,59 +58,53 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editProfileInstitutionFragmentEditText"
                 android:text="@={vm.userInputState.data.institution}"
+                android:hint="@{vm.profileLiveData.data.institution}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:background="@drawable/rounded_corners"
-                android:maxLength="75"/>
-
-            <TextView
-                android:id="@+id/editProfileInstitutionFragmentInstitutionErrorText"
-                android:visibility="gone"
-                android:textColor="@color/red"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:background="@drawable/rounded_corners"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/editProfileInstitutionFragmentGeneralErrorText"
-            android:visibility="gone"
-            android:textColor="@color/red"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/editProfileInstitutionFragmentSaveWrapper"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="16dp"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentTextField"/>
+            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentTextField">
 
-        <ProgressBar
-            android:id="@+id/loginFragmentProgressSpinner"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="32dp"
-            android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileInstitutionFragmentTextField"
-            />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editProfileInstitutionFragmentSaveButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:enabled="@{vm.profileChanged.status != StateData.DataStatus.LOADING}"
+                android:onClick="@{(view) -> vm.changeInstitution()}"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="@string/edit_profile_save_changes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/wideOrangeButton"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/editProfileInstitutionFragmentSaveFab"
-            android:onClick="@{(view) -> vm.changeInstitution()}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/green"
-            android:src="@drawable/ic_baseline_save_24"
-            app:tint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/fabStyle"/>
+            <ProgressBar
+                android:id="@+id/editProfileInstitutionFragmentSaveSpinner"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:elevation="8dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/white"
+                android:indeterminateTintMode="src_in"
+                android:visibility="@{vm.profileChanged.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@+id/editProfileInstitutionFragmentSaveButton"
+                app:layout_constraintEnd_toEndOf="@+id/editProfileInstitutionFragmentSaveButton"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toStartOf="@+id/editProfileInstitutionFragmentSaveButton"
+                app:layout_constraintTop_toTopOf="@+id/editProfileInstitutionFragmentSaveButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,217 +1,313 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/pollItemAuthorImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_baseline_account_circle_24_black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="model"
+            type="com.example.unserhoersaal.model.PollModel" />
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.PollViewModel" />
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.utils.Format"/>
+        <import type="com.example.unserhoersaal.utils.PollUtil"/>
+        <import type="com.example.unserhoersaal.enums.CheckedOptionEnum"/>
+    </data>
 
-    <TextView
-        android:id="@+id/pollItemAuthorAndDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Author - 15:21"
-        app:layout_constraintStart_toEndOf="@id/pollItemAuthorImage"
-        app:layout_constraintBottom_toBottomOf="@id/pollItemAuthorImage"/>
-
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pollItemAuthorImage">
+        android:layout_margin="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/pollItemAuthorImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            setImage="@{model.photoUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pollItemAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.creatorName}"
+            app:layout_constraintStart_toEndOf="@id/pollItemAuthorImage"
+            app:layout_constraintBottom_toBottomOf="@id/pollItemAuthorImage" />
+
+        <TextView
+            android:id="@+id/pollItemAnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - "
+            app:layout_constraintStart_toEndOf="@id/pollItemAuthor"
+            app:layout_constraintBottom_toBottomOf="@id/pollItemAuthor" />
+
+        <TextView
+            android:id="@+id/pollItemDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{Format.getFormatedDateTime(pollItemDate, model.creationTime)}"
+            app:layout_constraintStart_toEndOf="@id/pollItemAnd"
+            app:layout_constraintBottom_toBottomOf="@id/pollItemAnd" />
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pollItemAuthorImage">
 
-            <TextView
-                android:id="@+id/pollItemQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginTop="8dp"
-                android:text="Über welches Thema soll ich heute eine Abstimmung machen?"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <RadioButton
-                android:id="@+id/pollItemOption1RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pollItemQuestion"/>
+                <TextView
+                    android:id="@+id/pollItemQuestion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_margin="8dp"
+                    android:text="@{model.text}"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/pollItemOption1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Option 1"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption1RadioButton"
-                app:layout_constraintTop_toTopOf="@id/pollItemOption1RadioButton"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption1RadioButton"/>
+                <CheckBox
+                    android:id="@+id/pollItemOption1RadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{model.checkedOption == CheckedOptionEnum.OPTION1}"
+                    android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION1, model)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pollItemQuestion"
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
 
-            <View
-                android:id="@+id/pollItemOption1ProgressBar"
-                android:layout_width="50dp"
-                android:layout_height="4dp"
-                android:background="@color/black"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption1RadioButton"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption1RadioButton"/>
+                <TextView
+                    android:id="@+id/pollItemOption1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{model.optionsText1}"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/pollItemOption1RadioButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/pollItemOption1RadioButton"
+                    app:layout_constraintTop_toTopOf="@id/pollItemOption1RadioButton" />
 
-            <TextView
-                android:id="@+id/pollItemOption1Percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10%"
-                android:layout_marginStart="8dp"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption1ProgressBar"
-                app:layout_constraintTop_toTopOf="@id/pollItemOption1ProgressBar"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption1ProgressBar"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/pollItemOption1Container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{model.checkedOption == CheckedOptionEnum.NONE || model.checkedOption == null ? View.GONE : View.VISIBLE}"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@id/pollItemOption1RadioButton"
+                    app:layout_constraintTop_toBottomOf="@id/pollItemOption1RadioButton">
 
-            <RadioButton
-                android:id="@+id/pollItemOption2RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pollItemOption1RadioButton"/>
+                    <View
+                        android:id="@+id/pollItemOption1ProgressBar"
+                        android:layout_width="50dp"
+                        android:layout_height="4dp"
+                        android:background="@color/app_blue"
+                        android:layout_gravity="center_vertical"/>
 
-            <TextView
-                android:id="@+id/pollItemOption2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Option 2"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption2RadioButton"
-                app:layout_constraintTop_toTopOf="@id/pollItemOption2RadioButton"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption2RadioButton"/>
+                    <TextView
+                        android:id="@+id/pollItemOption1Percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{PollUtil.calculatePercentage(pollItemOption1ProgressBar, model.optionsCount1, model.votesCount)}"
+                        android:layout_marginStart="8dp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center_vertical"/>
 
-            <View
-                android:id="@+id/pollItemOption2ProgressBar"
-                android:layout_width="50dp"
-                android:layout_height="4dp"
-                android:background="@color/black"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption2RadioButton"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption2RadioButton"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <TextView
-                android:id="@+id/pollItemOption2Percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10%"
-                android:layout_marginStart="8dp"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption2ProgressBar"
-                app:layout_constraintTop_toTopOf="@id/pollItemOption2ProgressBar"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption2ProgressBar"/>
+                <CheckBox
+                    android:id="@+id/pollItemOption2RadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{model.checkedOption == CheckedOptionEnum.OPTION2}"
+                    android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION2, model)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pollItemOption1Container"
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
 
-            <RadioButton
-                android:id="@+id/pollItemOption3RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pollItemOption2RadioButton"/>
+                <TextView
+                    android:id="@+id/pollItemOption2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{model.optionsText2}"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/pollItemOption2RadioButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/pollItemOption2RadioButton"
+                    app:layout_constraintTop_toTopOf="@id/pollItemOption2RadioButton" />
 
-            <TextView
-                android:id="@+id/pollItemOption3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Option 3"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption3RadioButton"
-                app:layout_constraintTop_toTopOf="@id/pollItemOption3RadioButton"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption3RadioButton"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/pollItemOption2Container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{model.checkedOption == CheckedOptionEnum.NONE || model.checkedOption == null ? View.GONE : View.VISIBLE}"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@id/pollItemOption2RadioButton"
+                    app:layout_constraintTop_toBottomOf="@id/pollItemOption2RadioButton">
 
-            <View
-                android:id="@+id/pollItemOption3ProgressBar"
-                android:layout_width="50dp"
-                android:layout_height="4dp"
-                android:background="@color/black"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption3RadioButton"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption3RadioButton"/>
+                    <View
+                        android:id="@+id/pollItemOption2ProgressBar"
+                        android:layout_width="50dp"
+                        android:layout_height="4dp"
+                        android:background="@color/app_blue"
+                        android:layout_gravity="center_vertical"/>
 
-            <TextView
-                android:id="@+id/pollItemOption3Percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10%"
-                android:layout_marginStart="8dp"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption3ProgressBar"
-                app:layout_constraintTop_toTopOf="@id/pollItemOption3ProgressBar"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption3ProgressBar"/>
+                    <TextView
+                        android:id="@+id/pollItemOption2Percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{PollUtil.calculatePercentage(pollItemOption2ProgressBar, model.optionsCount2, model.votesCount)}"
+                        android:layout_marginStart="8dp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center_vertical"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <RadioButton
-                android:id="@+id/pollItemOption4RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pollItemOption3RadioButton"/>
+                <CheckBox
+                    android:id="@+id/pollItemOption3RadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{model.optionsText3 == null ? View.GONE : View.VISIBLE}"
+                    android:checked="@{model.checkedOption == CheckedOptionEnum.OPTION3}"
+                    android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION3, model)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pollItemOption2Container"
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
 
-            <TextView
-                android:id="@+id/pollItemOption4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Option 4"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption4RadioButton"
-                app:layout_constraintTop_toTopOf="@id/pollItemOption4RadioButton"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption4RadioButton"/>
+                <TextView
+                    android:id="@+id/pollItemOption3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{model.optionsText3}"
+                    android:visibility="@{model.optionsText3 == null ? View.GONE : View.VISIBLE}"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/pollItemOption3RadioButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/pollItemOption3RadioButton"
+                    app:layout_constraintTop_toTopOf="@id/pollItemOption3RadioButton" />
 
-            <View
-                android:id="@+id/pollItemOption4ProgressBar"
-                android:layout_width="50dp"
-                android:layout_height="4dp"
-                android:background="@color/black"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption4RadioButton"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption4RadioButton"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/pollItemOption3Container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{model.checkedOption == CheckedOptionEnum.NONE || model.checkedOption == null ? View.GONE : View.VISIBLE}"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@id/pollItemOption3RadioButton"
+                    app:layout_constraintTop_toBottomOf="@id/pollItemOption3RadioButton">
 
-            <TextView
-                android:id="@+id/pollItemOption4Percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10%"
-                android:layout_marginStart="8dp"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/pollItemOption4ProgressBar"
-                app:layout_constraintTop_toTopOf="@id/pollItemOption4ProgressBar"
-                app:layout_constraintBottom_toBottomOf="@id/pollItemOption4ProgressBar"/>
+                    <View
+                        android:id="@+id/pollItemOption3ProgressBar"
+                        android:layout_width="50dp"
+                        android:layout_height="4dp"
+                        android:background="@color/app_blue"
+                        android:visibility="@{model.optionsText3 == null ? View.GONE : View.VISIBLE}"
+                        android:layout_gravity="center_vertical"
+                        app:layout_constraintStart_toEndOf="@id/pollItemOption3RadioButton"
+                        app:layout_constraintBottom_toBottomOf="@id/pollItemOption3RadioButton" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/pollItemVoteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Abstimmen"
-                android:layout_marginTop="32dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pollItemOption4RadioButton"/>
+                    <TextView
+                        android:id="@+id/pollItemOption3Percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{PollUtil.calculatePercentage(pollItemOption3ProgressBar, model.optionsCount3, model.votesCount)}"
+                        android:layout_marginStart="8dp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="@{model.optionsText3 == null ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintStart_toEndOf="@id/pollItemOption3ProgressBar"
+                        app:layout_constraintTop_toTopOf="@id/pollItemOption3ProgressBar"
+                        app:layout_constraintBottom_toBottomOf="@id/pollItemOption3ProgressBar" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="20 Teilnehmer"
-                android:layout_margin="8dp"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                <CheckBox
+                    android:id="@+id/pollItemOption4RadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{model.optionsText4 == null ? View.GONE : View.VISIBLE}"
+                    android:checked="@{model.checkedOption == CheckedOptionEnum.OPTION4}"
+                    android:onClick="@{(view) -> vm.vote(CheckedOptionEnum.OPTION4, model)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pollItemOption3Container"
+                    style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/pollItemOption4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{model.optionsText4}"
+                    android:visibility="@{model.optionsText4 == null ? View.GONE : View.VISIBLE}"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/pollItemOption4RadioButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/pollItemOption4RadioButton"
+                    app:layout_constraintTop_toTopOf="@id/pollItemOption4RadioButton" />
 
-    </androidx.cardview.widget.CardView>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/pollItemOption4Container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{model.checkedOption == CheckedOptionEnum.NONE || model.checkedOption == null ? View.GONE : View.VISIBLE}"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toEndOf="@id/pollItemOption4RadioButton"
+                    app:layout_constraintTop_toBottomOf="@id/pollItemOption4RadioButton">
+
+                    <View
+                        android:id="@+id/pollItemOption4ProgressBar"
+                        android:layout_width="50dp"
+                        android:layout_height="4dp"
+                        android:background="@color/app_blue"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="@{model.optionsText4 == null ? View.GONE : View.VISIBLE}"/>
+
+                    <TextView
+                        android:id="@+id/pollItemOption4Percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{PollUtil.calculatePercentage(pollItemOption4ProgressBar, model.optionsCount4, model.votesCount)}"
+                        android:layout_marginStart="8dp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="@{model.optionsText4 == null ? View.GONE : View.VISIBLE}"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    android:id="@+id/pollItemVotesCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teilnehmer:"
+                    android:layout_margin="8dp"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pollItemOption4Container"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{Integer.toString(model.votesCount)}"
+                    android:layout_margin="8dp"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/pollItemVotesCount" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -11,24 +11,27 @@ import androidx.lifecycle.LifecycleOwner;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 
+/** JavaDoc. */
 public class SelectPhotoLifeCycleObs implements DefaultLifecycleObserver {
 
   private static final String TAG = "SelectPhotoLifeCycleObs";
 
-  private final ActivityResultRegistry mRegistry;
+  private final ActivityResultRegistry registry;
   private final Context context;
-  private ActivityResultLauncher<String> mGetContent;
+  private ActivityResultLauncher<String> activityResultLauncher;
   private final ProfileViewModel profileViewModel;
 
+  /** JavaDoc. */
   public SelectPhotoLifeCycleObs(@NonNull ActivityResultRegistry registry,
                                  Context context, ProfileViewModel profileViewModel) {
-    this.mRegistry = registry;
+    this.registry = registry;
     this.context = context;
     this.profileViewModel = profileViewModel;
   }
 
+  /** JavaDoc. */
   public void onCreate(@NonNull LifecycleOwner owner) {
-    this.mGetContent = this.mRegistry.register("key", owner,
+    this.activityResultLauncher = this.registry.register("key", owner,
             new ActivityResultContracts.GetContent(),
             uri -> {
               if (uri == null) {
@@ -40,8 +43,7 @@ public class SelectPhotoLifeCycleObs implements DefaultLifecycleObserver {
   }
 
   public void selectImage() {
-    // Open the activity to select an image
-    this.mGetContent.launch("image/*");
+    this.activityResultLauncher.launch("image/*");
   }
 }
 

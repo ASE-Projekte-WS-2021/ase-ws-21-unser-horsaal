@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,11 +22,7 @@ import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.QuestionsViewModel;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /** Displays the questions during the Meeting. */
 public class QuestionsFragment extends Fragment {
@@ -62,6 +59,7 @@ public class QuestionsFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
+    this.initSearchView();
   }
 
   private void initViewModel() {
@@ -137,6 +135,8 @@ public class QuestionsFragment extends Fragment {
       this.binding.questionChipPageCountDownActivated.setVisibility(View.GONE);
     }
 
+    //TODO: is there a better solution to trigger the callback function for threads?
+    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel.getThreads()
             .getValue().getData());
   }
@@ -151,6 +151,9 @@ public class QuestionsFragment extends Fragment {
       this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
     }
 
+
+    //TODO: is there a better solution to trigger the callback funtion for threads?
+    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel
             .getThreads().getValue().getData());
   }
@@ -212,6 +215,23 @@ public class QuestionsFragment extends Fragment {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.questionsViewModel);
     this.binding.setAdapter(this.threadAdapter);
+  }
+
+  private void initSearchView() {
+    this.binding
+            .questionsFragmentSearchView
+            .setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+              @Override
+              public boolean onQueryTextSubmit(String query) {
+                return false;
+              }
+
+              @Override
+              public boolean onQueryTextChange(String newText) {
+                threadAdapter.getFilter().filter(newText);
+                return false;
+              }
+            });
   }
 
   @Override

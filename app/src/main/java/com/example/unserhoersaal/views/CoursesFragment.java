@@ -1,11 +1,9 @@
 package com.example.unserhoersaal.views;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -13,17 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.viewpager2.widget.ViewPager2;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.adapter.CoursesAdapter;
 import com.example.unserhoersaal.adapter.ViewPagerAdapter;
 import com.example.unserhoersaal.databinding.FragmentCoursesBinding;
-import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.utils.StateData;
+import com.example.unserhoersaal.viewmodel.AllCoursesViewModel;
 import com.example.unserhoersaal.viewmodel.CoursesViewModel;
+import com.example.unserhoersaal.viewmodel.OwnedCoursesViewModel;
+import com.example.unserhoersaal.viewmodel.TodaysCoursesViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import java.util.List;
 
 /** Courses. */
 public class CoursesFragment extends Fragment {
@@ -31,12 +28,12 @@ public class CoursesFragment extends Fragment {
   private static final String TAG = "CoursesFragment";
 
   private ViewPagerAdapter viewPagerAdapter;
-  private ViewPager2 viewPager;
-
   private FragmentCoursesBinding binding;
   private CoursesViewModel coursesViewModel;
+  private TodaysCoursesViewModel todaysCoursesViewModel;
+  private AllCoursesViewModel allCoursesViewModel;
+  private OwnedCoursesViewModel ownedCoursesViewModel;
   private NavController navController;
-  private CoursesAdapter coursesAdapter;
 
   public CoursesFragment() {
     // Required empty public constructor
@@ -58,63 +55,55 @@ public class CoursesFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    this.initViewModel();
-
-    this.viewPager = view.findViewById(R.id.coursesFragmentViewPager);
-    this.viewPagerAdapter = new ViewPagerAdapter(this);
-    this.viewPager.setAdapter(viewPagerAdapter);
-    TabLayout tabLayout = view.findViewById(R.id.coursesFragmentTabLayout);
-    new TabLayoutMediator(tabLayout, viewPager,
-            (tab, position) -> tab.setText(coursesViewModel.getTabTitle(position))
-    ).attach();
 
     this.navController = Navigation.findNavController(view);
 
+    this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
+    this.setTabs();
     this.initToolbar();
   }
 
   private void initViewModel() {
     this.coursesViewModel = new ViewModelProvider(requireActivity())
             .get(CoursesViewModel.class);
+    this.todaysCoursesViewModel = new ViewModelProvider(requireActivity())
+            .get(TodaysCoursesViewModel.class);
+    this.allCoursesViewModel = new ViewModelProvider(requireActivity())
+            .get(AllCoursesViewModel.class);
+    this.ownedCoursesViewModel = new ViewModelProvider(requireActivity())
+            .get(OwnedCoursesViewModel.class);
     this.coursesViewModel.init();
-
-    /*this.coursesViewModel.getUserCourses()
-            .observe(getViewLifecycleOwner(), this::coursesLiveDataCallback);*/
+    this.todaysCoursesViewModel.init();
+    this.allCoursesViewModel.init();
+    this.ownedCoursesViewModel.init();
+    this.coursesViewModel.getUserId().observe(getViewLifecycleOwner(), this::setCoursesForTabs);
   }
 
-  /*@SuppressLint("NotifyDataSetChanged")
-  private void coursesLiveDataCallback(StateData<List<CourseModel>> listStateData) {
-    this.resetBindings();
-    this.coursesAdapter.notifyDataSetChanged();
-
-    if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.coursesFragmentProgressSpinner.setVisibility(View.VISIBLE);
-    } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
-      Toast.makeText(getContext(),
-              listStateData.getError().getMessage(), Toast.LENGTH_SHORT).show();
-    }
-    if (listStateData.getData().size() == 0) {
-      this.binding.coursesFragmentTitleTextView.setVisibility(View.VISIBLE);
-    } else {
-      this.binding.coursesFragmentTitleTextView.setVisibility(View.GONE);
-    }
-  }*/
-
-  private void resetBindings() {
-    this.binding.coursesFragmentProgressSpinner.setVisibility(View.GONE);
+  private void setCoursesForTabs(StateData<String> userStateData) {
+    this.todaysCoursesViewModel.setUserId();
+    this.allCoursesViewModel.setUserId();
+    this.ownedCoursesViewModel.setUserId();
   }
 
   private void connectAdapter() {
-    this.coursesAdapter = new CoursesAdapter(
-            this.coursesViewModel.getUserCourses().getValue().getData());
+    this.viewPagerAdapter = new ViewPagerAdapter(this);
+    this.binding.coursesFragmentViewPager.setAdapter(this.viewPagerAdapter);
   }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.coursesViewModel);
-    this.binding.setAdapter(this.coursesAdapter);
+  }
+
+  private void setTabs() {
+    new TabLayoutMediator(this.binding.coursesFragmentTabLayout,
+            this.binding.coursesFragmentViewPager, this::designTab).attach();
+  }
+
+  private void designTab(TabLayout.Tab tab, int position) {
+    tab.setText(coursesViewModel.getTabTitle(position));
   }
 
   private void initToolbar() {

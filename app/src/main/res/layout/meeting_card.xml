@@ -7,8 +7,12 @@
         <variable
             name="model"
             type="com.example.unserhoersaal.model.MeetingsModel"/>
+        <variable
+            name="isCreator"
+            type="Boolean"/>
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.utils.Format" />
+        <import type="android.view.View"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -24,13 +28,16 @@
 
             <TextView
                 android:id="@+id/meetingCardTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="16sp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/app_blue"
+                app:layout_constraintEnd_toStartOf="@+id/meetingCardEditMeetingImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@{model.title}"/>
+                tools:text="@{model.title}" />
 
             <ImageView
                 android:id="@+id/meetingCardTimeImage"
@@ -88,6 +95,17 @@
                 app:layout_constraintBottom_toBottomOf="@id/meetingCardDateImage"
                 app:layout_constraintTop_toTopOf="@id/meetingCardDateImage"
                 tools:text="@{model.meetingDate}"/>
+
+            <ImageView
+                android:id="@+id/meetingCardEditMeetingImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_edit_24"
+                android:onClick="@{(view) -> NavUtil.navigateToMeetingEdit(view, model)}"
+                android:visibility="@{isCreator ? View.VISIBLE : View.GONE}"
+                app:tint="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,12 +4,17 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
+import com.example.unserhoersaal.model.CalendarModel;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.CourseHistoryRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
+import com.example.unserhoersaal.utils.DateTimePicker;
+import com.example.unserhoersaal.utils.NavUtil;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.TimeUtil;
 import com.example.unserhoersaal.utils.Validation;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,12 +29,15 @@ public class CourseHistoryViewModel extends ViewModel {
   private StateLiveData<List<MeetingsModel>> meetings;
   private StateLiveData<MeetingsModel> meetingsModelMutableLiveData;
   public StateLiveData<MeetingsModel> meetingModelInputState = new StateLiveData<>();
+  public StateLiveData<CalendarModel> calendarModelStateLiveData = new StateLiveData<>();
   public StateLiveData<String> userId;
   private ArrayListUtil arrayListUtil;
+  private Boolean isEditing = false;
+  private String timeInputForDisplay;
+  private String endTimeInputForDisplay;
 
   /** Initialise the ViewModel. */
   public void init() {
-    Log.d(TAG, "init: ");
     if (this.meetings != null) {
       return;
     }
@@ -45,23 +53,72 @@ public class CourseHistoryViewModel extends ViewModel {
       this.meetings = this.courseHistoryRepository.getMeetings();
     }
     this.meetingModelInputState.postCreate(new MeetingsModel());
+    this.calendarModelStateLiveData.postCreate(new CalendarModel());
     this.arrayListUtil = new ArrayListUtil();
+  }
+
+  public void makeEditable(MeetingsModel meetingsModel) {
+    this.isEditing = true;
+
+    MeetingsModel m = new MeetingsModel();
+    m.setKey(meetingsModel.getKey());
+    m.setTitle(meetingsModel.getTitle());
+    m.setEventTime(meetingsModel.getEventTime());
+    m.setEventEndTime(meetingsModel.getEventEndTime());
+
+    CalendarModel c = this.getTimeInputs(m);
+
+    this.meetingModelInputState.postCreate(m);
+    this.calendarModelStateLiveData.postCreate(c);
+  }
+
+  /** Converts start and end timestamps to year, month, day, hour, minute and duration for edit. */
+  private CalendarModel getTimeInputs(MeetingsModel meetingsModel) {
+    CalendarModel c = new CalendarModel();
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(meetingsModel.getEventTime());
+
+    c.setYearInput(calendar.get(Calendar.YEAR));
+    c.setMonthInput(calendar.get(Calendar.MONTH));
+    c.setDayOfMonthInput(calendar.get(Calendar.DAY_OF_MONTH));
+    c.setHourInput(calendar.get(Calendar.HOUR));
+    c.setMinuteInput(calendar.get(Calendar.MINUTE));
+
+    long timeDifference = meetingsModel.getEventEndTime() - meetingsModel.getEventTime();
+    c.setHourDuration(String.valueOf(timeDifference
+                / Config.TIME_HOUR_TO_MILLI % Config.TIME_HOUR_PER_DAY));
+    c.setMinuteDuration(String.valueOf(timeDifference
+                / Config.TIME_MINUTE_TO_MILLI % Config.TIME_MINUTE_PER_HOUR));
+
+    return c;
   }
 
   public void resetMeetingData() {
     this.meetingModelInputState.postCreate(new MeetingsModel());
+    this.calendarModelStateLiveData.postCreate(new CalendarModel());
     this.meetingsModelMutableLiveData.postCreate(new MeetingsModel());
+  }
+
+  public void setLiveDataComplete() {
+    this.meetingModelInputState.postComplete();
+    this.calendarModelStateLiveData.postComplete();
+    this.meetingsModelMutableLiveData.postComplete();
   }
 
   public StateLiveData<List<MeetingsModel>> getMeetings() {
     return this.meetings;
   }
 
+  public StateLiveData<CalendarModel> getCalendarModelStateLiveData() {
+    return this.calendarModelStateLiveData;
+  }
+
   /** Sort the meetings list.
+   *
    * @param meetingsModelList list of meetingmodels to filter
    */
   public void sortMeetingsByNewest(List<MeetingsModel> meetingsModelList) {
-   this.arrayListUtil.sortMeetingListByEventTime(meetingsModelList);
+    this.arrayListUtil.sortMeetingListByEventTime(meetingsModelList);
   }
 
   public StateLiveData<CourseModel> getCourse() {
@@ -72,77 +129,126 @@ public class CourseHistoryViewModel extends ViewModel {
     return this.meetingsModelMutableLiveData;
   }
 
-  public StateLiveData<String> getUser() {return this.userId;}
+  public StateLiveData<String> getUserId() {
+    return this.userId;
+  }
+
+  public void setUserId() {
+    this.courseHistoryRepository.setUserId();
+  }
 
   public void setCourse(CourseModel course) {
-    Log.d(TAG, course.getKey());
     this.courseHistoryRepository.setCourse(course);
   }
 
   /** Create a new Meeting. */
   public void createMeeting() {
-    this.meetingsModelMutableLiveData.postLoading();
+    this.meetingModelInputState.postLoading();
 
     MeetingsModel meetingsModel = Validation.checkStateLiveData(this.meetingModelInputState, TAG);
     if (meetingsModel == null) {
-      Log.e(TAG, "meetingsModel is null.");
       this.meetingsModelMutableLiveData.postError(
               new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
-    if (meetingsModel.getTitle() == null) {
-      Log.d(TAG, "title is null.");
+    CalendarModel calendarModel = Validation
+            .checkStateLiveData(this.calendarModelStateLiveData, TAG);
+    if (calendarModel == null) {
       this.meetingsModelMutableLiveData.postError(
-              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
-      return;
-    } else if (!Validation.stringHasPattern(meetingsModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
-      Log.d(TAG, "title wrong pattern.");
-      this.meetingsModelMutableLiveData.postError(
-              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+              new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
-    //TODO: handle error if all values are 0
-    //TODO: handle empty fields
-    //TODO: handle end time for start time
-    //TODO: Use only eventTime and eventEndTime; remove meetingDate and ...Input
 
-    meetingsModel.setEventTime(this.parseEventTime(meetingsModel));
-    meetingsModel.setEventEndTime(this.parseEventEndTime(meetingsModel));
-    meetingsModel.setMeetingDate(this.parseMeetingDate(meetingsModel));
+    this.checkMeetingInput(meetingsModel, calendarModel);
+  }
+
+  private void checkMeetingInput(MeetingsModel meetingsModel, CalendarModel calendarModel) {
+    if (Validation.emptyString(meetingsModel.getTitle())) {
+      this.meetingModelInputState.postError(
+              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
+    } else if (!Validation.stringHasPattern(meetingsModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
+      this.meetingModelInputState.postError(
+              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+    } else if (calendarModel.getYearInput() == -1
+            || calendarModel.getMonthInput() == -1
+            || calendarModel.getDayOfMonthInput() == -1) {
+      this.meetingModelInputState.postError(
+              new Error(Config.CREATE_MEETING_DATE_WRONG), ErrorTag.TIME_PICKER_DATE);
+    } else if (calendarModel.getHourInput() == -1 || calendarModel.getMinuteInput() == -1) {
+      this.meetingModelInputState.postError(
+              new Error(Config.CREATE_MEETING_TIME_WRONG), ErrorTag.TIME_PICKER_TIME);
+
+    } else if (Validation.emptyString(calendarModel.getHourDuration())) {
+      this.meetingModelInputState.postError(
+              new Error(Config.CREATE_MEETING_HOUR_DURATION_WRONG),
+              ErrorTag.TIME_PICKER_HOUR_DURATION);
+    } else if (Validation.emptyString(calendarModel.getMinuteDuration())) {
+      this.meetingModelInputState.postError(
+              new Error(Config.CREATE_MEETING_MINUTE_DURATION_WRONG),
+              ErrorTag.TIME_PICKER_MINUTE_DURATION);
+    } else if (calendarModel.getMinuteInput() > Config.TIME_MAX_MINUTES_PER_HOUR) {
+      this.meetingModelInputState.postError(
+              new Error(Config.CREATE_MEETING_MINUTE_DURATION_TOO_LONG),
+              ErrorTag.TIME_PICKER_MINUTE_DURATION);
+    } else {
+      this.passInputToRepo(meetingsModel, calendarModel);
+    }
+  }
+
+  private void passInputToRepo(MeetingsModel meetingsModel, CalendarModel calendarModel) {
+    meetingsModel.setEventTime(TimeUtil.parseEventTime(calendarModel));
+    meetingsModel.setEventEndTime(TimeUtil.parseEventEndTime(meetingsModel, calendarModel));
+    meetingsModel.setMeetingDate(TimeUtil.parseMeetingDate(meetingsModel));
     meetingsModel.setCreationTime(new Date().getTime());
 
-    this.meetingModelInputState.postCreate(new MeetingsModel());
-    this.courseHistoryRepository.createMeeting(meetingsModel);
+    this.meetingModelInputState.postComplete();
+    this.calendarModelStateLiveData.postComplete();
+
+    if (this.isEditing) {
+      this.courseHistoryRepository.editMeeting(meetingsModel);
+    } else {
+      this.courseHistoryRepository.createMeeting(meetingsModel);
+    }
   }
 
-  private String parseMeetingDate(MeetingsModel meetingsModel) {
-    Long eventTime = meetingsModel.getEventTime();
-
-    return Config.DATE_FORMAT.format(eventTime);
+  public String  getCreatorId() {
+    return courseHistoryRepository.
+            getCourse().getValue().getData().getCreatorId();
   }
 
-  /** convert the input from date and time picker to unix timestamp. */
-  private long parseEventTime(MeetingsModel meetingsModel) {
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.YEAR, meetingsModel.getYearInput());
-    calendar.set(Calendar.MONTH, meetingsModel.getMonthInput());
-    calendar.set(Calendar.DAY_OF_MONTH, meetingsModel.getDayOfMonthInput());
-    calendar.set(Calendar.HOUR_OF_DAY, meetingsModel.getHourInput());
-    calendar.set(Calendar.MINUTE, meetingsModel.getMinuteInput());
-
-    return calendar.getTimeInMillis();
+  public void setTimeInputForDisplay(int hour, int minute) {
+    String timeInputForDisplay = DateTimePicker.formatTime(hour, minute);
+    this.timeInputForDisplay = timeInputForDisplay;
   }
 
-  private long parseEventEndTime(MeetingsModel meetingsModel) {
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.YEAR, meetingsModel.getYearInput());
-    calendar.set(Calendar.MONTH, meetingsModel.getMonthInput());
-    calendar.set(Calendar.DAY_OF_MONTH, meetingsModel.getDayOfMonthInput());
-    calendar.set(Calendar.HOUR_OF_DAY, meetingsModel.getHourEndInput());
-    calendar.set(Calendar.MINUTE, meetingsModel.getMinuteEndInput());
+  public void setEndTimeInputForDisplay(int hour, int minute) {
+    String endTimeInputForDisplay = DateTimePicker.formatTime(hour, minute);
+    this.endTimeInputForDisplay = endTimeInputForDisplay;
+  }
 
-    return calendar.getTimeInMillis();
+  public String getTimeInputForDisplay() {
+    return timeInputForDisplay;
+  }
+
+  public String getEndTimeInputForDisplay() {
+    return endTimeInputForDisplay;
+  }
+
+  public String getUid() {
+    return courseHistoryRepository.getUid();
+  }
+
+  public void setMeetingModelInputState(StateLiveData<MeetingsModel> meetingModelInputState) {
+    this.meetingModelInputState = meetingModelInputState;
+  }
+
+  public void setIsEditing(Boolean isEditing) {
+    this.isEditing = isEditing;
+  }
+
+  public Boolean getIsEditing() {
+    return isEditing;
   }
 
 }
