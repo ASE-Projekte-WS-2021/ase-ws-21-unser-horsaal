@@ -1,5 +1,10 @@
 package com.example.unserhoersaal.viewmodel;
 
+import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.CheckedOptionEnum;
@@ -7,9 +12,11 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.repository.PollRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /** ViewModel for the PollFragment. */
 public class PollViewModel extends ViewModel {
@@ -27,7 +34,6 @@ public class PollViewModel extends ViewModel {
     if (this.polls != null) {
       return;
     }
-
     this.pollRepository = PollRepository.getInstance();
     this.meeting = this.pollRepository.getMeeting();
     if (this.meeting.getValue() != null) {
@@ -72,9 +78,10 @@ public class PollViewModel extends ViewModel {
       this.pollModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
+
     if (Validation.emptyString(pollModel.getText())) {
       this.pollModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-    } else if (!Validation.stringHasPattern(pollModel.getText(), Config.REGEX_PATTERN_TEXT)) {
+    } else if (!Validation.stringHasPattern(pollModel.getText(), Config.REGEX_PATTERN_OPTIONS)) {
       this.pollModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
     } else {
@@ -84,6 +91,7 @@ public class PollViewModel extends ViewModel {
         this.handleOptionsPoll(pollModel);
       }
     }
+
   }
 
   private void handleYesNoPoll(PollModel pollModel) {
@@ -93,7 +101,10 @@ public class PollViewModel extends ViewModel {
     pollModel.setOptionsText4(null);
 
     this.pollModelInputState.postComplete();
+
     this.pollRepository.createNewPoll(pollModel);
+    this.pollModelInputState.postCreate(new PollModel());
+    this.pollModel.postCreate(new PollModel());
   }
 
   private void handleOptionsPoll(PollModel pollModel) {
@@ -127,10 +138,10 @@ public class PollViewModel extends ViewModel {
     }
     if (Validation.emptyString(pollModel.getOptionsText4())) {
       pollModel.setOptionsText4(null);
-    } else if (!Validation.stringHasPattern(pollModel.getOptionsText3(),
+    } else if (!Validation.stringHasPattern(pollModel.getOptionsText4(),
             Config.REGEX_PATTERN_OPTIONS)) {
       this.pollModelInputState
-              .postError(new Error(Config.DATABINDING_OPTION_WRONG_PATTERN), ErrorTag.OPTION2);
+              .postError(new Error(Config.DATABINDING_OPTION_WRONG_PATTERN), ErrorTag.OPTION4);
       return;
     }
     this.pollModelInputState.postComplete();
@@ -139,6 +150,10 @@ public class PollViewModel extends ViewModel {
 
   /** Handle the selection of an option from an user.*/
   public void vote(CheckedOptionEnum checkedOption, PollModel pollModel) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
+    this.pollModel.postLoading();
     String pollId = pollModel.getKey();
     CheckedOptionEnum oldOption = pollModel.getCheckedOption();
     if (oldOption == checkedOption) {
@@ -151,6 +166,7 @@ public class PollViewModel extends ViewModel {
         this.pollRepository.vote(checkedOption, getOptionPath(checkedOption), pollId);
       }
     }
+    this.pollModel.postCreate(new PollModel());
   }
 
   private String getOptionPath(CheckedOptionEnum checkedOption) {

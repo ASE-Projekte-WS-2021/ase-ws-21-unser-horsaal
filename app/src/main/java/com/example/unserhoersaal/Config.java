@@ -13,9 +13,8 @@ public class Config {
   public static final int PASSWORD_LENGTH_MAX = 64;
   public static final int USERNAME_LENGTH_MIN = 3;
   public static final int USERNAME_LENGTH_MAX = 15;
-  public static final int EMAIL_LENGTH_MIN = 5;
   public static final int EMAIL_LENGTH_MAX = 64;
-  public static final int INSTITUTION_LENGTH_MIN = 0; //optional
+  public static final int INSTITUTION_LENGTH_MIN = 0;
   public static final int INSTITUTION_LENGTH_MAX = 75;
 
   public static final int COURSE_TITLE_LENGTH_MIN = 3;
@@ -36,9 +35,8 @@ public class Config {
 
   public static final int COURSE_DESCRIPTION_LENGTH_MIN = 0; //optional
   public static final int COURSE_DESCRIPTION_LENGTH_MAX = 500;
-  public static final int MEETING_DESCRIPTION_LENGTH_MIN = 0; //optional
-  public static final int MEETING_DESCRIPTION_LENGTH_MAX = 500;
 
+  public static final int THREAD_OPTIONS_LENGTH_MIN = 1;
   public static final int THREAD_OPTIONS_LENGTH_MAX = 100;
 
   public static final int MEETING_HOUR_DURATION_MAX = 3;
@@ -55,9 +53,6 @@ public class Config {
   /**=======================.
    * User Allowed Input Characters
    * ======================= */
-  public static final String PASSWORD_ALLOWED_CHARACTERS = "";
-  public static final String USERNAME_ALLOWED_CHARACTERS = "";
-  public static final String TEXT_ALLOWED_CHARACTERS = "";
   public static final String CODE_MAPPING_ALLOWED_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   /**=======================.
@@ -68,11 +63,18 @@ public class Config {
   public static final String REGEX_PATTERN_PASSWORD =
           String.format("^(?=.*[0-9a-zA-Z]).{%s,%s}$",
                   PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
-  public static final String REGEX_PATTERN_TITLE = ".*";
-  public static final String REGEX_PATTERN_INSTITUTION = ".*";
-  public static final String REGEX_PATTERN_TEXT = ".*";
-  public static final String REGEX_PATTERN_OPTIONS = String.format(".*{0,%S}",
-          THREAD_OPTIONS_LENGTH_MAX);
+
+  public static final String REGEX_PATTERN_TITLE = String.format(".{%s,%s}",
+          COURSE_TITLE_LENGTH_MIN, COURSE_TITLE_LENGTH_MAX);
+  public static final String REGEX_PATTERN_INSTITUTION = String.format(".{%s,%s}",
+          INSTITUTION_LENGTH_MIN, INSTITUTION_LENGTH_MAX);
+  public static final String REGEX_PATTERN_TEXT = String.format(".{%s,%s}",
+          COURSE_TEXT_LENGTH_MIN, COURSE_TEXT_LENGTH_MAX);
+  public static final String REGEX_PATTERN_DESCRIPTION = String.format(".{%s,%s}",
+          COURSE_DESCRIPTION_LENGTH_MIN, COURSE_DESCRIPTION_LENGTH_MAX);
+  public static final String REGEX_PATTERN_OPTIONS = String.format(".{%s,%s}",
+          THREAD_OPTIONS_LENGTH_MIN, THREAD_OPTIONS_LENGTH_MAX);
+
   public static final String REGEX_PATTERN_CODE_MAPPING =
           "^([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})$";
 
@@ -143,7 +145,7 @@ public class Config {
   public static final int TAB_LIVE_CHAT = 0;
   public static final String TAB_LIVE_CHAT_NAME = "Live-Chat";
   public static final int TAB_POLL = 1;
-  public static final String TAB_POLL_NAME = "Abstimmungen";
+  public static final String TAB_POLL_NAME = "Voting";
   public static final int TAB_QUESTIONS = 2;
   public static final String TAB_QUESTIONS_NAME = "Fragen";
   public static final int MEETINGS_NUMBER_OF_TABS = 3;
@@ -221,7 +223,7 @@ public class Config {
   public static final String AUTH_EMAIL_EXISTS =
           "Ein Account zu dieser Email-Adresse existiert bereits!";
   public static final String AUTH_EMAIL_WRONG_PATTERN_LOGIN = "Ungültige Email-Adresse!";
-  public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Password ein!";
+  public static final String AUTH_PASSWORD_EMPTY = "Bitte gib ein Passwort ein!";
   public static final String AUTH_PASSWORD_WRONG_PATTERN =
           "Das Passwort muss aus mindestens 6 Zeichen bestehen!";
   public static final String AUTH_USERNAME_EMPTY = "Bitte gib einen Nutzernamen ein!";
@@ -251,7 +253,7 @@ public class Config {
   public static final String AUTH_VERIFICATION_EMAIL_NOT_SENT =
           "Die Verfizierungsemail konnte nicht versandt werden!";
   public static final String AUTH_VERIFICATION_TOO_MANY_REQUESTS =
-          "Von deinem Gerät wurde zu viele Anfragen registriert. Versuch es später erneut!";
+          "Von deinem Gerät wurden zu viele Anfragen registriert. Versuch es später erneut!";
   public static final String AUTH_PASSWORD_RESET_MAIL_SENT =
           "Email zur Passwortzurücksetzung versandt.";
   public static final String AUTH_PASSWORD_RESET_MAIL_NOT_SENT =

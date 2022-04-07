@@ -131,21 +131,21 @@
     <string name="unregister_from_course_message">Möchtest du dich wirklich vom Kurs abmelden?</string>
     <string name="unregister_from_course_title">Kurs verlassen</string>
     <string name="abbrechen">Abbrechen</string>
-    <string name="es_gibt_noch_keine_meetings_in_diesem_kurs">Es gibt noch keine Meetings in diesem Kurs.</string>
+    <string name="es_gibt_noch_keine_meetings_in_diesem_kurs">Es gibt noch keine Sitzungen in diesem Kurs.</string>
     <string name="enter_course_fragment_information_string">Das kannst du in einem Kurs tun:</string>
-    <string name="create_course_fragment_information_string">In einem Kurs kannst du einzelne Meetings erstellen, in denen sich Mitglieder austauschen können</string>
+    <string name="create_course_fragment_information_string">In einem Kurs kannst du einzelne Sitzungen erstellen, in denen sich Mitglieder austauschen können</string>
     <string name="no_course_found_fragment_text">Leider konnte kein entsprechender Kurs gefunden werden</string>
     <string name="no_course_found_fragment_button_back">Zurück</string>
     <string name="enter_course_detail_fragment_quit_button">Abbrechen</string>
     <string name="course_history_fragment_toolbar_title">Sitzungen</string>
-    <string name="create_course_meeting_toolbar_title">Meeting erstellen</string>
-    <string name="create_course_meeting_subtitle">Ein Meeting ist ein einmalig stattfindendes Treffen innerhalb des Kurses.</string>
-    <string name="create_course_meeting_meeting_title">Meeting-Titel</string>
+    <string name="create_course_meeting_toolbar_title">Sitzung erstellen</string>
+    <string name="create_course_meeting_subtitle">Eine Sitzung ist ein einmalig stattfindendes Treffen innerhalb des Kurses.</string>
+    <string name="create_course_meeting_meeting_title">Sitzungs-Titel</string>
     <string name="create_course_meeting_meeting_date">Datum</string>
     <string name="create_course_meeting_meeting_time">Uhrzeit</string>
     <string name="create_course_meeting_meeting_button">Erstellen</string>
     <string name="course_meeting_subtitle">Fragenübersicht</string>
-    <string name="course_meeting_toolbar_title">Meeting-Titel</string>
+    <string name="course_meeting_toolbar_title">Sitzungs-Titel</string>
     <string name="course_meeting_create_button">Erstellen</string>
     <string name="current_course_fragment_subtitle">Frage</string>
     <string name="current_course_fragment_answers_text">Antworten</string>
@@ -154,7 +154,7 @@
     <string name="edit_profile_institution">Hochschule bearbeiten</string>
     <string name="edit_profile_password">Passwort bearbeiten</string>
     <string name="course_description_fragment_description">Kursbeschreibung</string>
-    <string name="course_history_fragment_subtitle">Meetings</string>
+    <string name="course_history_fragment_subtitle">Sitzungen</string>
     <string name="keine_threads_verf_gbar">Keine Threads verfügbar!</string>
     <string name="du_hast_heute_keine_kurse">Du hast heute keine Kurse</string>
     <string name="du_hast_noch_keine_kurse_erstellt">Du hast noch keine Kurse erstellt</string>
@@ -200,7 +200,7 @@
     <string name="edit_course_information_string">Hast du einen Fehler beim erstellen deines Kurses gemacht? Kein Problem! Bearbeite hier deine Einträge und behebe die Fehler.</string>
     <string name="edit_course_button">Kurs bearbeiten</string>
     <string name="edit_course_meeting_toolbar_title">Sitzung bearbeiten</string>
-    <string name="edit_course_meeting_subtitle">Bearbeite hier deine Meetings.</string>
+    <string name="edit_course_meeting_subtitle">Bearbeite hier deine Sitzungen.</string>
     <string name="edit_course_meeting_button">Bearbeiten</string>
     <string name="dialog_delete_message_text">Möchtest du den Text deiner Nachricht wirklich löschen?</string>
     <string name="dialog_delete_message_title">Text löschen</string>
@@ -208,11 +208,11 @@
     <string name="live_chat_info">Hier kannst du dich live während der Vorlesung austauschen!</string>
     <string name="questions_info">Du hast eine Frage oder Antwort? Hier bist du richtig!</string>
     <string name="poll_info">Stimme hier ab und trage zum Meinungsbild bei!</string>
-    <string name="create_poll_toolbar_title">Abstimmung erstellen</string>
-    <string name="create_poll_info_string">Erstelle eine Abstimmung um das Meinungsbild der Teilnehmer:innen zu erhalten</string>
+    <string name="create_poll_toolbar_title">Voting erstellen</string>
+    <string name="create_poll_info_string">Erstelle ein Voting um das Meinungsbild der Teilnehmer:innen zu erhalten</string>
     <string name="create_poll_yes_no">Ja-Nein Frage</string>
     <string name="create_poll_question_hing">Darüber soll abgestimmt werden…</string>
-    <string name="create_poll_options_text">Abstimmungsmöglichkeiten</string>
+    <string name="create_poll_options_text">Voting-Möglichkeiten</string>
     <string name="create_poll_yes">Ja</string>
     <string name="create_poll_no">Nein</string>
     <string name="create_poll_option_1_hint">Hier Option 1 eingeben…</string>
@@ -221,7 +221,7 @@
     <string name="create_poll_option_4_hint">Hier Option 4 eingeben…</string>
     <string name="create_poll_question">Frage</string>
     <string name="create_poll_create_button">Erstellen</string>
-    <string name="no_polls_available">Aktuell keine Abstimmungen verfügbar!</string>
+    <string name="no_polls_available">Aktuell kein Voting verfügbar!</string>
     <string name="onboarding_skip">Überspringen</string>
     <string name="onboarding_finish">Los geht\'s!</string>
     <string name="onboarding_next">weiter</string>
@@ -251,7 +251,7 @@
     <string name="create_meeting_hour_duration">Dauer in Stunden</string>
     <string name="create_meeting_minute_duration">Dauer in Minuten</string>
     <string name="enter_course_live_chat">Live-Chat während Vorlesung</string>
-    <string name="enter_course_poll_information">Wirke an Abstimmungen mit oder erstelle sie</string>
+    <string name="enter_course_poll_information">Wirke an Votings mit oder erstelle sie</string>
     <string name="enter_course_question_answer">Fragen stellen, beantworten und bewerten</string>
     <string name="enter_course_code_header">Beitritts-Code eingeben</string>
     <string name="enter_course_code_filler">ABCDEFGHI</string>
@@ -282,4 +282,5 @@
     <string name="create_thread_page">Seitenzahl</string>
     <string name="create_thread_hashtag_hint">#...</string>
     <string name="create_thread_question_hint">Kann mir bitte jemand erklären, wie…</string>
+    <string name="course_card_meetings">Sitzungen</string>
 </resources>

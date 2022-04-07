@@ -44,8 +44,9 @@
                     android:layout_below="@+id/onboardingCourseOverviewFragmentText2"
                     android:layout_width="400dp"
                     android:layout_height="400dp"
-                    android:layout_marginVertical="40dp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="8dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"/>
 
                 <TextView
                     android:id="@+id/onboardingCourseOverviewFragmentText3"

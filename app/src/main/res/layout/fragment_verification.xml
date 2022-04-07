@@ -21,8 +21,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:src="@drawable/registration_successful"/>
@@ -36,7 +36,7 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/app_blue"
-            android:textSize="32sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
@@ -46,27 +46,30 @@
             android:layout_marginEnd="54dp"
             android:textSize="16sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAlignment="center"/>
 
         <TextView
             android:text="@string/auto_login_after_verification"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="54dp"
             android:layout_marginEnd="54dp"
             android:textSize="16sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/verificationFragmentErrorText1"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="54dp"
             android:layout_marginEnd="54dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/red"
             android:visibility="@{vm.emailSentLiveData.status == StateData.DataStatus.ERROR ? View.VISIBLE : View.GONE}"
-            android:text="@{vm.emailSentLiveData.error.message}"/>
+            android:text="@{vm.emailSentLiveData.error.message}"
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/verificationFragmentErrorText2"
@@ -76,7 +79,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/red"
             android:visibility="@{vm.userLiveData.status == StateData.DataStatus.ERROR? View.VISIBLE : View.GONE}"
-            android:text="@{vm.emailSentLiveData.error.message}"/>
+            android:text="@{vm.emailSentLiveData.error.message}"
+            android:textAlignment="center"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/createCourseFragmentButtonWrapper"
