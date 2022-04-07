@@ -34,7 +34,8 @@
 *Unter* [Nutzerszenarien](https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/wiki/Nutzerszenarien) *ist jeweils ein Nutzerszenario für die Rolle Dozent°in und die Rolle Student°in zu finden.*
 
 ## Wo finde ich eine Präsentation bzw. Einblick für die App?
-
+*Ein Video zur kann unter diesem* [Youtube Link](https://youtu.be/JE-nrhZXEC0) *aufgerufen werden.*
+*Alternativ kann es* [hier](https://drive.google.com/file/d/1ELaZCq_bpjjoxhu3178DO1u4UmSXKWHB/view?usp=sharing) *runtergeladen werden.*
 
 ## Wie installiere ich die App auf meinem Smartphone?
 1. Schritt: Im Gerät in **Einstellungen** gehen -> **Allgemein** -> **Sicherheit** -> **Unbekannte Herkunft/Quellen"** -> **aktivieren**
