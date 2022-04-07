@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -8,23 +7,25 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.MeetingCardBinding;
-import com.example.unserhoersaal.databinding.SimpleCourseMeetingBinding;
 import com.example.unserhoersaal.model.MeetingsModel;
 import java.util.List;
 
-/** Adapter for the Meetings in CourseHistoryFragment. */
+/**
+ * Adapter for the Meetings in CourseHistoryFragment.
+ */
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHolder> {
 
-  private static final String TAG = "MeetingAdapter";
+  private final List<MeetingsModel> localDataSet;
+  private final Boolean isCreator;
 
-  private List<MeetingsModel> localDataSet;
-
-  private String uid;
-  private Boolean isCreator;
-
+  /** Constructor of ThreadAdapter.
+   *
+   * @param  dataSet  includes the Data of all Meetings in the current Course.
+   * @param  uid is the ViewModel of the CourseThreadFragment.
+   * @param  creatorId is the Firebase id of the Creator of the Course
+   */
   public MeetingAdapter(List<MeetingsModel> dataSet, String uid, String creatorId) {
     this.localDataSet = dataSet;
-    this.uid = uid;
     if (uid.equals(creatorId)) {
       isCreator = true;
     } else {
@@ -58,12 +59,15 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
   public class ViewHolder extends RecyclerView.ViewHolder {
     private final MeetingCardBinding binding;
 
-    /** Constructor. */
     public ViewHolder(MeetingCardBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }
 
+    /** Connecting Data to the XML of the ViewHolder.
+     *
+     * @param  model  is Model Data.
+     */
     public void connect(MeetingsModel model) {
       this.binding.setModel(model);
       this.binding.executePendingBindings();

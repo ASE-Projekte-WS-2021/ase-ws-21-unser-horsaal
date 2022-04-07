@@ -11,20 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.unserhoersaal.R;
-import com.example.unserhoersaal.adapter.ChatAdapter;
-import com.example.unserhoersaal.model.MessageModel;
-import com.example.unserhoersaal.utils.NavUtil;
-import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.adapter.ThreadMessagesAdapter;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.google.android.material.card.MaterialCardView;
-
-import java.util.List;
 
 /** Fragment for current course.*/
 public class CurrentCourseFragment extends Fragment {
@@ -35,7 +29,7 @@ public class CurrentCourseFragment extends Fragment {
   private Button sendQuestionButton;
   private TextView courseKeyTextView;
   private RecyclerView recyclerView;
-  private ChatAdapter chatAdapter;
+  private ThreadMessagesAdapter chatAdapter;
   private CurrentCourseViewModel currentCourseViewModel;
   private MaterialCardView materialCardView;
 
@@ -90,7 +84,7 @@ public class CurrentCourseFragment extends Fragment {
   }
 
   private void initRecyclerView() {
-    this.chatAdapter = new ChatAdapter(
+    this.chatAdapter = new ThreadMessagesAdapter(
             this.currentCourseViewModel.getMessages().getValue().getData(),
             this.currentCourseViewModel);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());

@@ -1,7 +1,5 @@
 package com.example.unserhoersaal.model;
 
-import com.example.unserhoersaal.enums.LikeStatus;
-
 public class LiveChatMessageModel {
   private static final String TAG = "MessageModel";
 

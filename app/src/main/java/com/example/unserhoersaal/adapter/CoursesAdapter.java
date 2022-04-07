@@ -14,10 +14,10 @@ import com.example.unserhoersaal.utils.QueryBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Coursesadapter. */
+/**
+ * Adapter for CoursesRecyclerview.
+ * */
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
-
-  private static final String TAG = "CoursesAdapter";
 
   private final List<CourseModel> originalLocalDataSet;
   private List<CourseModel> filteredLocalDataSet;
@@ -49,8 +49,11 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
     return this.filteredLocalDataSet.size();
   }
 
+  /**
+   * Filters local data set according to the user query and model properties
+   * added to the query builder.
+   */
   //code reference: https://stackoverflow.com/a/17960339/13620136
-  /** JavaDoc. */
   public Filter getFilter() {
     return new Filter() {
       @Override
@@ -90,11 +93,12 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
     };
   }
 
-  /** Viewholder. */
+  /**
+   * ViewHolder for a meeting item.
+   */
   public static class ViewHolder extends RecyclerView.ViewHolder {
     private final CourseItemCardBinding binding;
 
-    /** Constructor. */
     public ViewHolder(CourseItemCardBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
@@ -106,5 +110,4 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
     }
 
   }
-
 }

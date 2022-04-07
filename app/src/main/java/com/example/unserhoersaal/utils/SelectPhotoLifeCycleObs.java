@@ -14,14 +14,17 @@ import com.example.unserhoersaal.viewmodel.ProfileViewModel;
 /** JavaDoc. */
 public class SelectPhotoLifeCycleObs implements DefaultLifecycleObserver {
 
-  private static final String TAG = "SelectPhotoLifeCycleObs";
-
   private final ActivityResultRegistry registry;
   private final Context context;
   private ActivityResultLauncher<String> activityResultLauncher;
   private final ProfileViewModel profileViewModel;
 
-  /** JavaDoc. */
+  /** Constructor of SelectPhotoLifeCycleObs.
+   *
+   * @param  registry The ActivityResultRegistry.
+   * @param  context The Context of the Fragment that called this Constructor.
+   * @param  profileViewModel The ProfileViewModel.
+   */
   public SelectPhotoLifeCycleObs(@NonNull ActivityResultRegistry registry,
                                  Context context, ProfileViewModel profileViewModel) {
     this.registry = registry;
@@ -29,7 +32,11 @@ public class SelectPhotoLifeCycleObs implements DefaultLifecycleObserver {
     this.profileViewModel = profileViewModel;
   }
 
-  /** JavaDoc. */
+  /** Uploads Image to Firestore after the User selected
+   * Photo in the Gallery and returns to the Fragment.
+   *
+   * @param  owner LifecycleOwner of the corresponding Fragment
+   */
   public void onCreate(@NonNull LifecycleOwner owner) {
     this.activityResultLauncher = this.registry.register("key", owner,
             new ActivityResultContracts.GetContent(),
