@@ -79,7 +79,6 @@ public class EnterCourseFragment extends Fragment {
   }
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
-    Log.e(TAG, courseModelStateData.getStatus().toString());
     if (courseModelStateData != null && courseModelStateData.getError() != null) {
       Log.e(TAG, courseModelStateData.getError().getMessage());
     }
@@ -103,7 +102,6 @@ public class EnterCourseFragment extends Fragment {
       }
     }
   }
-
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
