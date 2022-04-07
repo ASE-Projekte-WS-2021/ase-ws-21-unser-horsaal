@@ -230,6 +230,7 @@
                             android:layout_height="wrap_content"
                             app:hintEnabled="false"
                             android:layout_gravity="center"
+                            android:layout_marginEnd="8dp"
                             app:endIconMode="clear_text"
                             app:counterEnabled="true"
                             app:counterMaxLength="@{Config.MEETING_HOUR_DURATION_MAX}"
@@ -261,6 +262,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/duration_in_minutes"
+                            android:layout_marginStart="12dp"
                             style="@style/headerTextView"/>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -269,6 +271,7 @@
                             android:layout_height="wrap_content"
                             app:hintEnabled="false"
                             android:layout_gravity="center"
+                            android:layout_marginStart="8dp"
                             app:endIconMode="clear_text"
                             app:counterEnabled="true"
                             app:counterMaxLength="@{Config.MEETING_MINUTE_DURATION_MAX}"

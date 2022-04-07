@@ -124,7 +124,7 @@
                     android:hint="@string/create_poll_question_hing"
                     app:endIconMode="clear_text"
                     app:counterEnabled="true"
-                    app:counterMaxLength="@{Config.THREAD_TEXT_LENGTH_MAX}"
+                    app:counterMaxLength="@{Config.THREAD_OPTIONS_LENGTH_MAX}"
                     app:errorEnabled="true"
                     app:setError="@{vm.pollModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.pollModelInputState.errorTag == ErrorTag.TEXT ? vm.pollModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -136,10 +136,8 @@
                         android:text="@={vm.pollModelInputState.data.text}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="100"
                         android:background="@drawable/rounded_corners"
-                        android:hint="@string/create_poll_question_hing"
-                        android:paddingTop="12dp"/>
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -336,11 +334,11 @@
                         android:indeterminateTint="@color/white"
                         android:indeterminateTintMode="src_in"
                         android:visibility="@{vm.pollModel.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
-                        app:layout_constraintBottom_toBottomOf="@+id/createPollFragmentCreateButtonWrapper"
-                        app:layout_constraintEnd_toEndOf="@+id/createPollFragmentCreateButtonWrapper"
+                        app:layout_constraintBottom_toBottomOf="@+id/createPollFragmentCreateButton"
+                        app:layout_constraintEnd_toEndOf="@+id/createPollFragmentCreateButton"
                         app:layout_constraintHorizontal_bias="0.975"
-                        app:layout_constraintStart_toStartOf="@+id/createPollFragmentCreateButtonWrapper"
-                        app:layout_constraintTop_toTopOf="@+id/createPollFragmentCreateButtonWrapper" />
+                        app:layout_constraintStart_toStartOf="@+id/createPollFragmentCreateButton"
+                        app:layout_constraintTop_toTopOf="@+id/createPollFragmentCreateButton" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

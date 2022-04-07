@@ -111,4 +111,12 @@ public class ProfileFragment extends Fragment {
     getLifecycle().addObserver(selectPhotoLifeCycleObs);
   }
 
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.profileViewModel.resetProfileInput();
+    this.profileViewModel.resetPasswordInput();
+    this.profileViewModel.setLiveDataComplete();
+  }
+
 }

@@ -47,6 +47,29 @@
 ## Aufgabenverteilung und Zuständigkeitsbereiche
 *Für die einzelnen Projektschritte bzw. -phasen wurde folgende Vorgehensweise verwendet. Alle 2-3 Tage fand ein Team-Meeting statt, an dem alle Mitglieder (falls möglich) teilnahmen. Einmal pro Woche handelte es sich dabei um ein größeres Meeting, bei dem wir zum einen den aktuellen Stand des Projekts reflektierten als auch das weitere Vorgehen besprachen. Bei diesen größeren Meetings wurde in der Regel auch der branch dev (aktuellste Stand des Projekts) in den master gemerged. Die kleineren Meetings zwischendurch wurden genutzt um die einzelnen Pull-Requests bzw. Feature-Branches von uns zusammen mittels Discord-Übertragung zu reviewen und gegebenenfalls in den dev-branch zu mergen. Ein großer Teil der Implementierung wurde in Form von Pair Programming umgesetzt, wodurch in der Regel jeder für mehrere Bereiche der Anwendung verantwortlich war bzw. mitgewirkt hat. Für einen guten Überblick wurde sehr stark auf die Dokumentaion im* [Worksheet](https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/projects/2) *geachtet. Die Erstellung und Pflege von auf User Stories basierenden Issues war uns sehr wichtig. Damit konnte jeder jederzeit sehen, was gerade umgesetzt wird und welche Aufgaben noch offen stehen.*
 
+##### Zuständigkeitsbereiche:
+*Jeder Mitglied war aufgrund von Pair Programming an verschiedenen Bereichen der Anwendung beteiligt. Jedoch hatte auch jeder Bereiche an denen derjenige verstärkt beteiligt war. Diese sind:*
+
+- **Asabidi Ruslan (Rusi91):** *Funktionalitäten im Login- und Registrierungsbereich (Login, Registrierung, Nutzerfeedback, Verifikation und Passwortzurücksetzung), Sortier- und Filterfunktionalität, Formale Abgabemodalitäten (Readme, Nutzerszenarios, Video)*
+
+- **Bierschneider Michael (vairasza)**: 
+*StatusLiveData,
+Databinding,
+Inputcheck ViewModels,
+Errorhandling,
+Onboarding,
+DeepLink,
+Editprofile,
+Testdatagenerierung,
+GitHub Actions*
+
+- **Gottschalk Philipp (myPhilie)**: *Hier reinschreiben*
+
+- **Höpfinger Julian (julian1198)**: *Hier reinschreiben*
+
+- **Rolny Laurin (Kroellinger)**: *Hier reinschreiben*
+
+
 ## Entwicklerteam:
 
 - Asabidi Ruslan (Rusi91)
