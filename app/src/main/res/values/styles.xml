@@ -8,14 +8,14 @@
     </style>
 
     <style name="wideOrangeButton" parent="TextAppearance.MaterialComponents.Button">
-        <item name="cornerRadius">8dp</item>
+        <item name="cornerRadius">4dp</item>
         <item name="backgroundTint">@color/button_orange_state</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="wideRedButton" parent="TextAppearance.MaterialComponents.Button">
-        <item name="cornerRadius">8dp</item>
+        <item name="cornerRadius">4dp</item>
         <item name="backgroundTint">@color/button_red_state</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
@@ -85,7 +85,7 @@
     </style>
 
     <style name="inputField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="android:background">@drawable/rounded_corners</item>
+        <item name="android:background">@drawable/input_field_background</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="boxStrokeColor">@color/app_blue</item>

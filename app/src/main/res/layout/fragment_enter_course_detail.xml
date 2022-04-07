@@ -7,8 +7,13 @@
         <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.EnterCourseViewModel" />
-        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="com.example.unserhoersaal.Config" />
         <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
 
     </data>
 
@@ -187,18 +192,56 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/enterCourseDetailFragmentEnterButton"
-                    style="@style/wideOrangeButton"
-                    android:onClick="@{() -> vm.enterCourse()}"
+                <TextView
+                    android:id="@+id/enterCourseDetailFragmentEnterGeneralError"
+                    android:visibility="visible"
+                    android:text="@{vm.enteredCourse.status == StateData.DataStatus.ERROR ? vm.enteredCourse.error.message : null}"
+                    android:textColor="@color/red"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/enter_course_fragment_enter_button_string"
-                    android:layout_marginTop="16dp"
-                    android:layout_gravity="center"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/enterCourseDetailFragmentCard"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/enterCourseDetailFragmentCard"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/enterCourseDetailFragmentEnterWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/enterCourseDetailFragmentEnterGeneralError">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/enterCourseDetailFragmentEnterButton"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{vm.enteredCourse.status != StateData.DataStatus.LOADING}"
+                        android:onClick="@{() -> vm.enterCourse()}"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/enter_course_fragment_enter_button_string"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        style="@style/wideOrangeButton"/>
+
+                    <ProgressBar
+                        android:id="@+id/enterCourseDetailFragmentEnterSpinner"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:elevation="8dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/white"
+                        android:indeterminateTintMode="src_in"
+                        android:visibility="@{vm.enteredCourse.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintBottom_toBottomOf="@+id/enterCourseDetailFragmentEnterButton"
+                        app:layout_constraintEnd_toEndOf="@+id/enterCourseDetailFragmentEnterButton"
+                        app:layout_constraintHorizontal_bias="0.975"
+                        app:layout_constraintStart_toStartOf="@+id/enterCourseDetailFragmentEnterButton"
+                        app:layout_constraintTop_toTopOf="@+id/enterCourseDetailFragmentEnterButton" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

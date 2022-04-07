@@ -43,7 +43,6 @@ public class SelectPhotoLifeCycleObs implements DefaultLifecycleObserver {
   }
 
   public void selectImage() {
-    // Open the activity to select an image
     this.activityResultLauncher.launch("image/*");
   }
 }

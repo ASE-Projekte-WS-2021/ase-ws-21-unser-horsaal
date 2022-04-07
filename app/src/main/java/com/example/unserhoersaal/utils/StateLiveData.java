@@ -70,14 +70,16 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
     }
   }
 
-  @Deprecated
+  /** Indicates that the input data from the user meets our requirements and
+   * is passed on to the repository. data status "CREATED" is bound to success
+   * is used to reset error texts. */
   public void postComplete() {
-    setValue(new StateData<T>().complete());
+    if (this.getValue() != null) {
+      setValue(this.getValue().complete());
+    } else {
+      setValue(new StateData<T>().complete());
+    }
   }
 
-  @Deprecated
-  public void postComplete(T data) {
-    setValue(new StateData<T>(data).complete());
-  }
 
 }

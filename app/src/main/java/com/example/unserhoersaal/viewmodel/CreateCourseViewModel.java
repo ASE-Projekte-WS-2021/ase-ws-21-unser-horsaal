@@ -30,6 +30,7 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModelInputState.postCreate(new CourseModel());
   }
 
+  /** create a copy from coursemodel to cut off references to live data. */
   public void makeEditable(CourseModel courseModel) {
     this.isEditing = true;
 
@@ -59,9 +60,14 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModel.postCreate(null);
   }
 
+  public void setLiveDataComplete() {
+    this.courseModelInputState.postComplete();
+    this.courseModel.postComplete();
+  }
+
   /** Create a new course. */
   public void createCourse() {
-    this.courseModel.postLoading();
+    this.courseModelInputState.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
 
@@ -71,46 +77,41 @@ public class CreateCourseViewModel extends ViewModel {
       return;
     }
 
-    if (Validation.emptyString(courseModel.getTitle())) {
-      Log.d(TAG, "title is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
-      return;
-    } else if (!Validation.stringHasPattern(courseModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
-      Log.d(TAG, "title has wrong pattern.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
-      return;
-    }
+    this.checkInput(courseModel);
+  }
 
-    if (Validation.emptyString(courseModel.getDescription())) {
-      Log.d(TAG, "description is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
-      return;
+  private void checkInput(CourseModel courseModel) {
+    if (Validation.emptyString(courseModel.getTitle())) {
+      this.courseModelInputState.postError(
+              new Error(Config.DATABINDING_TITLE_NULL), ErrorTag.TITLE);
+    } else if (!Validation.stringHasPattern(courseModel.getTitle(), Config.REGEX_PATTERN_TITLE)) {
+      this.courseModelInputState.postError(
+              new Error(Config.DATABINDING_TITLE_WRONG_PATTERN), ErrorTag.TITLE);
+    } else if (Validation.emptyString(courseModel.getDescription())) {
+      this.courseModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
     } else if (!Validation.stringHasPattern(
             courseModel.getDescription(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "description has wrong pattern.");
-      this.courseModel.postError(
+      this.courseModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
-      return;
-    }
-
-    if (Validation.emptyString(courseModel.getInstitution())) {
-      Log.d(TAG, "institution is null.");
-      this.courseModel.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
-      return;
+    } else if (Validation.emptyString(courseModel.getInstitution())) {
+      this.courseModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.INSTITUTION);
     } else if (!Validation.stringHasPattern(
             courseModel.getInstitution(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "institution has wrong pattern.");
-      this.courseModel.postError(
+      this.courseModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.INSTITUTION);
-      return;
+    } else {
+      this.passCourseModelToRepo(courseModel);
     }
+  }
 
+  private void passCourseModelToRepo(CourseModel courseModel) {
+    this.courseModelInputState.postComplete();
     if (isEditing) {
       this.createCourseRepository.editCourse(courseModel);
     } else {
       courseModel.setCodeMapping(this.getCodeMapping());
-
-      this.courseModelInputState.postCreate(new CourseModel());
       this.createCourseRepository.createNewCourse(courseModel);
     }
   }
@@ -131,6 +132,5 @@ public class CreateCourseViewModel extends ViewModel {
   }
 
   public Boolean getIsEditing() { return isEditing; }
-
 
 }

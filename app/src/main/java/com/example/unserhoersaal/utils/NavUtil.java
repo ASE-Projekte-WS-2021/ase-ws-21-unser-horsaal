@@ -267,9 +267,20 @@ public class NavUtil {
 
   @BindingAdapter("openBrowser")
   public static void openBrowser(View view, String destination) {
-    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
-    view.getContext().startActivity(i);
+    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+    builder.setMessage(R.string.dialog_impressum_message)
+            .setTitle(R.string.dialog_impressum_title)
+            .setPositiveButton(R.string.dialog_impressum_ok,
+                    (dialog, which) -> {
+                      Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
+                      view.getContext().startActivity(i);
+                      dialog.dismiss();
+                    })
+            .setNegativeButton(R.string.dialog_impressum_cancel,
+                    (dialog, which) -> dialog.dismiss());
 
+    AlertDialog dialog = builder.create();
+    dialog.show();
   }
 
 

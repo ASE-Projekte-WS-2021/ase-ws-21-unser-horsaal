@@ -1,10 +1,11 @@
 package com.example.unserhoersaal.views;
 
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -78,41 +79,31 @@ public class EnterCourseFragment extends Fragment {
   }
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
-    this.resetBindings();
+    Log.e(TAG, courseModelStateData.getStatus().toString());
+    if (courseModelStateData != null && courseModelStateData.getError() != null) {
+      Log.e(TAG, courseModelStateData.getError().getMessage());
+    }
+
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (courseModelStateData == null) {
-      this.binding.enterCourseFragmentPasswordErrorText.setText(Config.UNSPECIFIC_ERROR);
-      this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
       return;
     }
 
-    if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.enterCourseFragmentPasswordErrorText
-              .setText(courseModelStateData.getError().getMessage());
-      this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
-    } else if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.VISIBLE);
-      this.binding.enterCourseFragmentEnterButton.setEnabled(false);
-    } else {
+    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE){
       if (courseModelStateData.getData() == null) {
+        Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
         return;
       }
       if (courseModelStateData.getData().getKey() != null) {
-        navController.navigate(
-                R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
+        this.navController.navigate(R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
       } else {
-        navController.navigate(
-                R.id.action_enterCourseFragment_to_noCourseFoundFragment);
+        this.navController.navigate(R.id.action_enterCourseFragment_to_noCourseFoundFragment);
       }
     }
   }
 
-  private void resetBindings() {
-    this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.GONE);
-    this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.GONE);
-    this.binding.enterCourseFragmentEnterButton.setEnabled(true);
-  }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
@@ -120,17 +111,16 @@ public class EnterCourseFragment extends Fragment {
   }
 
   private void setupToolbar() {
+    this.binding.enterCourseFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.enterCourseFragmentToolbar
-            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-    this.binding.enterCourseFragmentToolbar
-            .setNavigationOnClickListener(v ->
-                    this.navController.navigateUp());
+            .setNavigationOnClickListener(v -> this.navController.navigateUp());
   }
 
   @Override
   public void onPause() {
     super.onPause();
     this.enterCourseViewModel.resetEnterCourseId();
+    this.enterCourseViewModel.setLiveDataComplete();
   }
 
 }

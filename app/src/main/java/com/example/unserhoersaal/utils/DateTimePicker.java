@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.model.CalendarModel;
+import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,26 +25,23 @@ public class DateTimePicker {
       CalendarModel calendarModel =
               Validation.checkStateLiveData(courseHistoryViewModel.calendarModelStateLiveData, TAG);
       if (calendarModel == null) {
-        Log.e(TAG, "calendarModel is null");
         return;
       }
 
       calendarModel.setYearInput(year);
       calendarModel.setMonthInput(month);
       calendarModel.setDayOfMonthInput(day);
-
-      String dayAsString = day < 10 ? "0" + day : String.valueOf(day);
-      month++;
-      String monthAsString = month < 10 ? "0" + month : String.valueOf(month);
-
-      String time = dayAsString + "." + monthAsString + "." + year;
-      view.setText(time);
+      courseHistoryViewModel.calendarModelStateLiveData.postUpdate(calendarModel);
     };
-
-    Calendar cal = Calendar.getInstance();
-    int year = cal.get(Calendar.YEAR);
-    int month = cal.get(Calendar.MONTH);
-    int day = cal.get(Calendar.DAY_OF_MONTH);
+    MeetingsModel meetingsModel = Validation
+            .checkStateLiveData(courseHistoryViewModel.meetingModelInputState, TAG);
+    Calendar calendar = Calendar.getInstance();
+    if (meetingsModel != null && meetingsModel.getEventTime() != null) {
+      calendar.setTimeInMillis(meetingsModel.getEventTime());
+    }
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH);
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
 
     DatePickerDialog dialog = new DatePickerDialog(view.getContext(),
             R.style.dateTimePickerStyle,
@@ -66,15 +64,14 @@ public class DateTimePicker {
 
       calendarModel.setHourInput(hour);
       calendarModel.setMinuteInput(minute);
-
-      String hourAsString = hour < 10 ? "0" + hour : String.valueOf(hour);
-      String minuteAsString = minute < 10 ? "0" + minute : String.valueOf(minute);
-
-      String time = hourAsString + ":" + minuteAsString;
-      view.setText(time);
+      courseHistoryViewModel.calendarModelStateLiveData.postUpdate(calendarModel);
     };
-
+    MeetingsModel meetingsModel = Validation
+            .checkStateLiveData(courseHistoryViewModel.meetingModelInputState, TAG);
     Calendar calendar = Calendar.getInstance();
+    if (meetingsModel != null && meetingsModel.getEventTime() != null) {
+      calendar.setTimeInMillis(meetingsModel.getEventTime());
+    }
     int hour = calendar.get(Calendar.HOUR);
     int minute = calendar.get(Calendar.MINUTE);
 

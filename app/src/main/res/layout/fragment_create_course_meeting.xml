@@ -9,7 +9,13 @@
             type="com.example.unserhoersaal.viewmodel.CourseHistoryViewModel" />
         <import type="com.example.unserhoersaal.utils.DateTimePicker"/>
         <import type="com.example.unserhoersaal.utils.Format"/>
-        <import type="com.example.unserhoersaal.Config"/>
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+        <import type="com.example.unserhoersaal.utils.ErrorUtil"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,17 +90,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/create_course_meeting_title_text"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     style="@style/headerTextView"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/createCourseMeetingFragmentMeetingTitleTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     style="@style/inputField"
                     app:counterEnabled="true"
-                    app:counterMaxLength="100"
+                    app:counterMaxLength="@{Config.MEETING_TITLE_LENGTH_MAX}"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.meetingModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.meetingModelInputState.errorTag == ErrorTag.TITLE ? vm.meetingModelInputState.error.message : null}"
                     app:hintEnabled="false"
                     app:endIconMode="clear_text">
 
@@ -105,7 +112,6 @@
                         android:background="@drawable/rounded_corners"
                         android:singleLine="true"
                         android:text="@={vm.meetingModelInputState.data.title}"
-                        android:maxLength="100"
                         android:hint="@string/create_course_meeting_title"
                         android:paddingTop="12dp"/>
 
@@ -125,171 +131,174 @@
                     android:layout_marginTop="8dp"
                     style="@style/headerTextView"/>
 
-                <LinearLayout
-                    android:id="@+id/createCourseMeetingDatePickerWrapper"
+                <TableRow
+                    android:id="@+id/createCourseMeetingDatePickerTableRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TableRow
-                        android:id="@+id/createCourseMeetingDatePickerTableRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_corners_ripple"
-                        android:onClick="@{() -> DateTimePicker.datePicker(createCourseMeetingDatePicker, vm)}"
-                        android:padding="16dp"
-                        android:layout_marginTop ="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/createCourseMeetingFragmentMeetingTitleLinearLayout"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:layout_editor_absoluteX="0dp">
-
-                        <TextView
-                            android:id="@+id/createCourseMeetingDatePicker"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:text="@string/current_date_placeholder" />
-
-                    </TableRow>
+                    android:background="@drawable/rounded_corners_ripple"
+                    android:onClick="@{() -> DateTimePicker.datePicker(createCourseMeetingDatePicker, vm)}"
+                    android:padding="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/createCourseMeetingFragmentMeetingTitleLinearLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
-                        android:id="@+id/createCourseMeetingFragmentDatePickerErrorText"
-                        android:textColor="@color/red"
-                        android:visibility="gone"
+                        android:id="@+id/createCourseMeetingDatePicker"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        app:formatStartDate="@{vm.calendarModelStateLiveData.data}"/>
 
-                </LinearLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"/>
+
+                </TableRow>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.meetingModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.meetingModelInputState.errorTag == ErrorTag.TIME_PICKER_DATE ? vm.meetingModelInputState.error.message : null}"
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    style="@style/headerTextView"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/startzeit"
-                    android:layout_marginTop="8dp"
                     style="@style/headerTextView"/>
 
-                <LinearLayout
-                    android:id="@+id/createCourseMeetingTimePickerStartTimeWrapper"
+                <TableRow
+                    android:id="@+id/createCourseMeetingTimePickerTableRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TableRow
-                        android:id="@+id/createCourseMeetingTimePickerTableRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_corners_ripple"
-                        android:onClick="@{() -> DateTimePicker.timePicker(createCourseMeetingTimePicker, vm)}"
-                        android:padding="16dp"
-                        android:layout_marginTop ="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/createCourseMeetingDatePickerTableRow">
-
-                        <TextView
-                            android:id="@+id/createCourseMeetingTimePicker"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:text="@string/startzeit" />
-
-                    </TableRow>
+                    android:background="@drawable/rounded_corners_ripple"
+                    android:onClick="@{() -> DateTimePicker.timePicker(createCourseMeetingTimePicker, vm)}"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/createCourseMeetingDatePickerTableRow">
 
                     <TextView
-                        android:id="@+id/createCourseMeetingTimePickerStartTimeErrorText"
-                        android:textColor="@color/red"
-                        android:visibility="gone"
+                        android:id="@+id/createCourseMeetingTimePicker"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        app:formatStartTime="@{vm.calendarModelStateLiveData.data}"/>
 
-                </LinearLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"/>
+
+                </TableRow>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/duration_in_hours"
-                    android:layout_marginTop="8dp"
+                    android:text="@{vm.meetingModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.meetingModelInputState.errorTag == ErrorTag.TIME_PICKER_TIME ? vm.meetingModelInputState.error.message : null}"
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
                     style="@style/headerTextView"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/createCourseMeetingTimePickerDurationHourWrapper"
-                    android:layout_width="match_parent"
+                <TableRow
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:hintEnabled="false"
-                    android:layout_gravity="center"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="2"
-                    style="@style/inputField">
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="8dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/createCourseMeetingTimePickerDurationHourEditText"
-                        android:text="@={vm.calendarModelStateLiveData.data.hourDuration}"
-                        android:hint="@string/create_meeting_hour_duration"
-                        android:inputType="number"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:maxLength="2"
-                        android:singleLine="true"
-                        android:paddingTop="12dp"
-                        android:background="@drawable/rounded_corners" />
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/duration_in_hours"
+                            style="@style/headerTextView"/>
 
-                    <TextView
-                        android:id="@+id/createCourseMeetingTimePickerDurationHourErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/createCourseMeetingTimePickerDurationHourWrapper"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:hintEnabled="false"
+                            android:layout_gravity="center"
+                            app:endIconMode="clear_text"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="@{Config.MEETING_HOUR_DURATION_MAX}"
+                            app:errorEnabled="true"
+                            app:setError="@{vm.meetingModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.meetingModelInputState.errorTag == ErrorTag.TIME_PICKER_HOUR_DURATION ? vm.meetingModelInputState.error.message : null}"
+                            style="@style/inputField">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/createCourseMeetingTimePickerDurationHourEditText"
+                                android:text="@={vm.calendarModelStateLiveData.data.hourDuration}"
+                                android:hint="@string/create_meeting_hour_duration"
+                                android:inputType="number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLength="@{Config.MEETING_HOUR_DURATION_MAX}"
+                                android:singleLine="true"
+                                android:paddingTop="12dp"
+                                android:background="@drawable/rounded_corners" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/duration_in_minutes"
-                    android:layout_marginTop="8dp"
-                    style="@style/headerTextView"/>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/createCourseMeetingTimePickerDurationMinuteWrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:hintEnabled="false"
-                    android:layout_gravity="center"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="2"
-                    style="@style/inputField">
+                    </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/createCourseMeetingTimePickerDurationMinuteEditText"
-                        android:text="@={vm.calendarModelStateLiveData.data.minuteDuration}"
-                        android:hint="@string/create_meeting_minute_duration"
-                        android:inputType="number"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:maxLength="2"
-                        android:singleLine="true"
-                        android:paddingTop="12dp"
-                        android:background="@drawable/rounded_corners" />
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/duration_in_minutes"
+                            style="@style/headerTextView"/>
 
-                    <TextView
-                        android:id="@+id/createCourseMeetingTimePickerDurationMinuteErrorText"
-                        android:visibility="gone"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/createCourseMeetingTimePickerDurationMinuteWrapper"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:hintEnabled="false"
+                            android:layout_gravity="center"
+                            app:endIconMode="clear_text"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="@{Config.MEETING_MINUTE_DURATION_MAX}"
+                            app:errorEnabled="true"
+                            app:setError="@{vm.meetingModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.meetingModelInputState.errorTag == ErrorTag.TIME_PICKER_MINUTE_DURATION ? vm.meetingModelInputState.error.message : null}"
+                            style="@style/inputField">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/createCourseMeetingTimePickerDurationMinuteEditText"
+                                android:text="@={vm.calendarModelStateLiveData.data.minuteDuration}"
+                                android:hint="@string/create_meeting_minute_duration"
+                                android:inputType="number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLength="@{Config.MEETING_MINUTE_DURATION_MAX}"
+                                android:singleLine="true"
+                                android:paddingTop="12dp"
+                                android:background="@drawable/rounded_corners" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                </TableRow>
 
                 <TextView
                     android:id="@+id/createCourseMeetingFragmentGeneralErrorText"
-                    android:visibility="gone"
+                    android:visibility="visible"
+                    android:text="@{vm.meetingsModel.status == StateData.DataStatus.ERROR &amp;&amp; (vm.meetingsModel.errorTag == ErrorTag.REPO || vm.meetingsModel.errorTag == ErrorTag.VM) ? vm.meetingsModel.error.message : null}"
                     android:textColor="@color/red"
-                    android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -306,6 +315,7 @@
                         android:id="@+id/createCourseMeetingFragmentButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:enabled="@{vm.meetingsModel.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{(view) -> vm.createMeeting()}"
                         android:text="@string/create_course_meeting_meeting_button"
                         style="@style/wideOrangeButton"
@@ -322,7 +332,7 @@
                         android:indeterminate="true"
                         android:indeterminateTint="@color/white"
                         android:indeterminateTintMode="src_in"
-                        android:visibility="gone"
+                        android:visibility="@{vm.meetingsModel.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="@+id/createCourseMeetingFragmentButton"
                         app:layout_constraintEnd_toEndOf="@+id/createCourseMeetingFragmentButton"
                         app:layout_constraintHorizontal_bias="0.975"
