@@ -65,7 +65,11 @@ GitHub Actions*
 
 - **Gottschalk Philipp (myPhilie)**: *Hier reinschreiben*
 
-- **Höpfinger Julian (julian1198)**: *Hier reinschreiben*
+- **Höpfinger Julian (julian1198)**: 
+*Repositories, 
+MVVM,
+ViewModels,
+FireBase*
 
 - **Rolny Laurin (Kroellinger)**: *Hier reinschreiben*
 
