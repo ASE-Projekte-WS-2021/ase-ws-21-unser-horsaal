@@ -74,6 +74,7 @@ public class LiveChatAdapter extends RecyclerView.Adapter<LiveChatAdapter.ViewHo
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
           super.onScrolled(recyclerView, dx, dy);
           int visiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
+          if (visiblePosition == )
           if (visiblePosition > -1) {
             visibleItem = localDataSet.get(visiblePosition);
           }
