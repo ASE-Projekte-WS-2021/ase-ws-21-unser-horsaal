@@ -9,8 +9,6 @@ import java.util.List;
 /** ViewModel for TodayCoursesFragment. */
 public class TodaysCoursesViewModel extends ViewModel {
 
-  private static final String TAG = "TodaysCoursesViewModel";
-
   private TodaysCoursesRepository todaysCoursesRepository;
   private StateLiveData<List<CourseModel>> todaysCourses;
 

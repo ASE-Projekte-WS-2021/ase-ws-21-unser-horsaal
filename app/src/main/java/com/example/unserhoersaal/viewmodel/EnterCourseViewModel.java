@@ -1,12 +1,10 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.EnterCourseRepository;
-import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 

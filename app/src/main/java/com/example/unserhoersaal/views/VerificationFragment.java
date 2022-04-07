@@ -98,7 +98,6 @@ public class VerificationFragment extends Fragment {
     this.liveChatViewModel = new ViewModelProvider(requireActivity())
             .get(LiveChatViewModel.class);
     this.loginViewModel.init();
-    this.coursesViewModel.init();
     this.profileViewModel.init();
     this.courseHistoryViewModel.init();
     this.currentCourseViewModel.init();
