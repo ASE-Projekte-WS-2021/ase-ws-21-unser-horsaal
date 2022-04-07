@@ -137,11 +137,11 @@ public class ArrayListUtil {
           return 0;
         }
         if (order.equals(Config.ASCENDING)) {
-          return Integer.parseInt(threadModel.getPageNumber()) -
-                  Integer.parseInt(t1.getPageNumber());
+          return Integer.parseInt(threadModel.getPageNumber())
+                  - Integer.parseInt(t1.getPageNumber());
         } else {
-          return Integer.parseInt(t1.getPageNumber()) -
-                  Integer.parseInt(threadModel.getPageNumber());
+          return Integer.parseInt(t1.getPageNumber())
+                  - Integer.parseInt(threadModel.getPageNumber());
         }
       }
     });

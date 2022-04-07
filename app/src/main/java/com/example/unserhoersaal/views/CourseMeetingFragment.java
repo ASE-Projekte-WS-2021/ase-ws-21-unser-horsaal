@@ -81,7 +81,6 @@ public class CourseMeetingFragment extends Fragment {
             .get(LiveChatViewModel.class);
     this.currentCourseViewModel = new ViewModelProvider(requireActivity())
             .get(CurrentCourseViewModel.class);
-    this.courseMeetingViewModel.init();
     this.questionsViewModel.init();
     this.pollViewModel.init();
     this.liveChatViewModel.init();

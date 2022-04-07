@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
 import android.net.Uri;
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -9,11 +8,13 @@ import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
 import com.example.unserhoersaal.repository.ProfileRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
 
-/** Class Description. */
+/** ViewModel for ProfileFragment. Leads user display account
+ * information and change them except email. Also lets him delete his account.*/
 public class ProfileViewModel extends ViewModel {
 
   private static final String TAG = "ProfileViewModel";
@@ -79,9 +80,11 @@ public class ProfileViewModel extends ViewModel {
 
   /** checks user input before editing name with firebase API. */
   public void changeDisplayName() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
       return;
     }
 
@@ -99,9 +102,11 @@ public class ProfileViewModel extends ViewModel {
 
   /** checks user input before editing name with firebase API. */
   public void changeInstitution() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
       return;
     }
 
@@ -119,9 +124,11 @@ public class ProfileViewModel extends ViewModel {
 
   /** checks user input before editing name with firebase API. */
   public void changePassword() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (passwordModel == null) {
-      Log.e(TAG, "passwordModel is null.");
       return;
     }
 

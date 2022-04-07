@@ -24,6 +24,7 @@ import com.example.unserhoersaal.adapter.LiveChatAdapter;
 import com.example.unserhoersaal.databinding.FragmentLiveChatBinding;
 import com.example.unserhoersaal.model.LiveChatMessageModel;
 import com.example.unserhoersaal.utils.KeyboardUtil;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
@@ -94,7 +95,6 @@ public class LiveChatFragment extends Fragment {
     }
     this.liveChatAdapter.notifyDataSetChanged();
 
-    //recyclerView.scrollToPosition(messageSize - 1);
     if (listStateData.getStatus() == StateData.DataStatus.LOADING) {
       this.binding.liveChatFragmentSendButton.setEnabled(false);
     } else if (listStateData.getStatus() == StateData.DataStatus.ERROR) {
@@ -131,12 +131,18 @@ public class LiveChatFragment extends Fragment {
   }
 
   public void sendMessage() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     liveChatViewModel.sendMessage();
     binding.liveChatFragmentInputField.getEditText().getText().clear();
   }
 
   @SuppressLint("NotifyDataSetChanged")
   public void onClickEditText() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     final Handler handler = new Handler(Looper.getMainLooper());
     handler.postDelayed(() -> {
       liveChatAdapter.notifyDataSetChanged();

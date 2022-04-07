@@ -1,11 +1,11 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.EnterCourseRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
@@ -91,6 +91,9 @@ public class EnterCourseViewModel extends ViewModel {
 
   /** Checks user input before assigning user to the course. */
   public void enterCourse() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.courseModelStateLiveData.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelStateLiveData, TAG);

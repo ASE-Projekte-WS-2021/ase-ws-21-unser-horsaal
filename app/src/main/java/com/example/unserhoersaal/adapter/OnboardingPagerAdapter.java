@@ -11,7 +11,9 @@ import com.example.unserhoersaal.views.OnBoardingMeetingOverviewFragment;
 import com.example.unserhoersaal.views.OnBoardingUserNameFragment;
 import com.example.unserhoersaal.views.OnBoardingWelcomeFragment;
 
-/** Used in OnboardingWrapperFragment in ViewPager. */
+/**
+ * Used in OnboardingWrapperFragment in ViewPager.
+ */
 public class OnboardingPagerAdapter extends FragmentStateAdapter {
 
   public OnboardingPagerAdapter(@NonNull Fragment fragment) {

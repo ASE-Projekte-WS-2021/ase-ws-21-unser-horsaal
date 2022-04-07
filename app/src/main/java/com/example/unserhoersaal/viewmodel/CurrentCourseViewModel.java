@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -65,28 +64,23 @@ public class CurrentCourseViewModel extends ViewModel {
 
   /** Send a new message in a thread. */
   public void sendMessage() {
-    //TODO: removed loading because there is no place for it
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     MessageModel messageModel = Validation.checkStateLiveData(this.messageModelInputState, TAG);
     if (messageModel == null) {
-      Log.e(TAG, "messageModel is null.");
       this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
-    if (messageModel.getText() == null) {
-      Log.d(TAG, "title is null.");
+    if (Validation.emptyString(messageModel.getText())) {
       this.messages.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-      return;
     } else if (!Validation.stringHasPattern(messageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "title has wrong pattern.");
       this.messages.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
-      return;
-    }
-
-    messageModel.setCreationTime(System.currentTimeMillis());
-    if (!messageModel.getText().equals("")) {
-      this.messageModelInputState.postCreate(new MessageModel());
+    } else {
+      messageModel.setCreationTime(System.currentTimeMillis());
+      this.messageModelInputState.postComplete();
       this.currentCourseRepository.sendMessage(messageModel);
     }
   }
@@ -103,9 +97,12 @@ public class CurrentCourseViewModel extends ViewModel {
     this.currentCourseRepository.setUserId();
   }
 
-  /** JavaDoc for this method. */
+  /** Checks the likestatus of the message and passes it to the corresponding
+   * repo method where the likecount is updated.
+   *
+   * @param message the message where the user clicked like */
   public void like(MessageModel message) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     String messageId = message.getKey();
@@ -125,9 +122,12 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
-  /** JavaDoc for this method. */
+  /** Checks the dislikestatus of the message and passes it to the corresponding
+   * repo method where the dislikecount is updated.
+   *
+   * @param message the message where the user clicked dislike */
   public void dislike(MessageModel message) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     String messageId = message.getKey();
@@ -147,10 +147,12 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
-  //TODO do this in meetingsViewModel
-  /** JavaDoc for this method. */
+  /** Checks the likestatus of the thread and passes it to the corresponding
+   * repo method where the likecount is updated.
+   *
+   * @param threadModel the message where the user clicked like */
   public void likeThread(ThreadModel threadModel) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     String threadId  = threadModel.getKey();
@@ -170,9 +172,12 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
-  /** JavaDoc for this method. */
+  /** Checks the dislikestatus of the thread and passes it to the corresponding
+   * repo method where the dislikecount is updated.
+   *
+   * @param threadModel the message where the user clicked dislike */
   public void dislikeThread(ThreadModel threadModel) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     String threadId = threadModel.getKey();
@@ -193,6 +198,9 @@ public class CurrentCourseViewModel extends ViewModel {
   }
 
   public void solved(String messageId) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.currentCourseRepository.solved(messageId);
   }
 
@@ -203,7 +211,5 @@ public class CurrentCourseViewModel extends ViewModel {
   public void deleteAnswerText(MessageModel messageModel) {
     currentCourseRepository.deleteAnswerText(messageModel);
   }
-
-
 
 }

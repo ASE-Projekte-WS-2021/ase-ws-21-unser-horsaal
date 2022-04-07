@@ -6,6 +6,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.CreateCourseRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.Random;
@@ -30,7 +31,10 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModelInputState.postCreate(new CourseModel());
   }
 
-  /** create a copy from coursemodel to cut off references to live data. */
+  /** create a copy from coursemodel to cut off references to live data.
+   *
+   * @param courseModel makes a copy of the coursemodel
+   *                    to make it editable and not affect livedata. */
   public void makeEditable(CourseModel courseModel) {
     this.isEditing = true;
 
@@ -67,12 +71,14 @@ public class CreateCourseViewModel extends ViewModel {
 
   /** Create a new course. */
   public void createCourse() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.courseModelInputState.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
 
     if (courseModel == null) {
-      Log.e(TAG, "courseModel is null.");
       this.courseModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -131,6 +137,8 @@ public class CreateCourseViewModel extends ViewModel {
     this.isEditing = isEditing;
   }
 
-  public Boolean getIsEditing() { return isEditing; }
+  public Boolean getIsEditing() {
+    return isEditing;
+  }
 
 }

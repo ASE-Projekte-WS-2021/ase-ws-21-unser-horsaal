@@ -11,7 +11,7 @@
             type="com.example.unserhoersaal.model.ThreadModel" />
         <variable
             name="adapter"
-            type="com.example.unserhoersaal.adapter.ChatAdapter" />
+            type="com.example.unserhoersaal.adapter.ThreadMessagesAdapter" />
         <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
         <import type="com.example.unserhoersaal.R"/>
         <import type="com.example.unserhoersaal.utils.Format"/>

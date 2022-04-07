@@ -1,11 +1,8 @@
 package com.example.unserhoersaal.adapter;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
@@ -16,30 +13,32 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.PollItemBinding;
 import com.example.unserhoersaal.model.PollModel;
 import com.example.unserhoersaal.utils.StateData;
-import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.viewmodel.PollViewModel;
 import com.l4digital.fastscroll.FastScroller;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-/** Adapter for pollItems. */
+/**
+ * Adapter for pollItems.
+ */
 public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> implements
-        FastScroller.SectionIndexer{
-
-  private static final String TAG = "PollAdapter";
+        FastScroller.SectionIndexer {
 
   private final List<PollModel> localDataSet;
   private final PollViewModel pollViewModel;
-  private StateLiveData<PollModel> pollModelStateLiveData;
   public Boolean isEnabled = true;
   private PollModel visibleItem;
 
-
+  /** Constructor of ThreadAdapter.
+   *
+   * @param  localDataSet  includes the Data all Polls.
+   * @param  pollViewModel is the ViewModel of the PollFragment.
+   * @param  lifecycleOwner the LifeCycleOwner passed by the PollFragment.
+   */
   public PollAdapter(List<PollModel> localDataSet, PollViewModel pollViewModel,
                      LifecycleOwner lifecycleOwner) {
     this.localDataSet = localDataSet;
     this.pollViewModel = pollViewModel;
-    this.pollModelStateLiveData = pollViewModel.getPollModel();
     this.pollViewModel.getPollModel().observe(
             lifecycleOwner, this:: pollsLiveDataCallback);
   }
@@ -79,7 +78,7 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> im
     return this.localDataSet.size();
   }
 
-  /**Source: https://stackoverflow.com/questions/24989218/get-visible-items-in-recyclerview.*/
+  //code reference: https://stackoverflow.com/questions/24989218/get-visible-items-in-recyclerview.*/
   @Override
   public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
     super.onAttachedToRecyclerView(recyclerView);
@@ -111,7 +110,9 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> im
 
   }
 
-  /** ViewHolder for pollItmes. */
+  /**
+   * ViewHolder for pollItmes.
+   */
   public class ViewHolder extends RecyclerView.ViewHolder {
     private final PollItemBinding binding;
 
@@ -120,7 +121,9 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> im
       this.binding = binding;
     }
 
-    /** Connect the dataBinding attributes. */
+    /**
+     * Connect the dataBinding attributes.
+     */
     public void connect(PollModel model, PollViewModel pollViewModel, Boolean isEnabled) {
       this.binding.setModel(model);
       this.binding.setVm(pollViewModel);

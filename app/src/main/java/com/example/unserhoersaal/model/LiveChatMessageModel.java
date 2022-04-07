@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.model;
 
-
 /**
  * Model of a Message in the live chat of a meeting.
  */

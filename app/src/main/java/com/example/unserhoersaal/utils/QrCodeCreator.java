@@ -20,15 +20,22 @@ import com.google.zxing.WriterException;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/** JavaDoc for this class. */
+/** Class to generate a QrCode from a DeepLink. */
 public class QrCodeCreator {
 
   private static final String TAG = "QrCodeCreator";
 
-  /** JavaDoc for this method. */
+  /** Methode to create QrCode.
+   *
+   * @param  view  The Button view that was clicked.
+   * @param  courseDescriptionViewModel is the ViewModel of the CourseDescriptionFragment.
+   */
   @BindingAdapter({"codeMapping", "viewmodel"})
   public static void generateQrCode(View view, String text,
                                     CourseDescriptionViewModel courseDescriptionViewModel) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     Bitmap bitmap;
     String deepLink = Config.DEEP_LINK_URL + text;
     QRGEncoder qrgEncoder = new QRGEncoder(deepLink, null, QRGContents.Type.TEXT, Config.DIMEN);
@@ -43,7 +50,12 @@ public class QrCodeCreator {
     }
   }
 
-  /** JavaDoc. */
+  /** Constructor of ThreadAdapter.
+   *
+   * @param  bitmap  The Bitmap of the QrCode.
+   * @param  name The Filename.
+   * @param  context The Context of the Fragment that called the generateQrCode.
+   */
   public static void saveImage(Bitmap bitmap, @NonNull String name, Context context)
           throws IOException {
     ContentResolver resolver = context.getContentResolver();
@@ -60,8 +72,10 @@ public class QrCodeCreator {
     fos.close();
   }
 
-  /** JavaDoc. */
-  //TODO: andere lösung als in die gallerie zu gehen.
+  /** Constructor of ThreadAdapter.
+   *
+   * @param  context Context of the fragment that called the Methode.
+   */
   public static void galleryIntent(Context context) {
     Intent intent = new Intent();
     intent.setType(Config.TYPE_IMAGE);

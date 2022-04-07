@@ -7,6 +7,7 @@ import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
@@ -74,6 +75,9 @@ public class LoginViewModel extends ViewModel {
 
   /** checks login parameter before using firebase login API. */
   public void login() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.userInputState.postLoading();
     this.passwordInputState.postLoading();
 
@@ -117,6 +121,9 @@ public class LoginViewModel extends ViewModel {
 
   /** Send reset password email.*/
   public void sendPasswordResetMail() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.emailSentLiveData.postLoading();
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
@@ -148,6 +155,9 @@ public class LoginViewModel extends ViewModel {
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
   public void sendVerificationEmail() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.emailSentLiveData.postLoading();
     this.authAppRepository.sendVerificationEmail();
   }
@@ -157,6 +167,9 @@ public class LoginViewModel extends ViewModel {
   }
 
   public void logout() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.authAppRepository.logOut();
   }
 

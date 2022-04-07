@@ -44,6 +44,9 @@ public class NavUtil {
 
   @BindingAdapter("navigate")
   public static void navigate(View view, int navAction) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     NavController navController = Navigation.findNavController(view);
     navController.navigate(navAction);
   }
@@ -51,6 +54,9 @@ public class NavUtil {
   /** Navigates to CourseHistory. */
   @BindingAdapter("navigateToCourse")
   public static void navigateToCourse(View view, CourseModel model) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     if (model == null) {
       return;
     }
@@ -67,13 +73,15 @@ public class NavUtil {
   /** Navigates to CourseMeeting. */
   @BindingAdapter("navigateToMeeting")
   public static void navigateToMeeting(View view, MeetingsModel model) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     if (model == null) {
       return;
     }
     CourseMeetingViewModel courseMeetingViewModel =
             new ViewModelProvider((ViewModelStoreOwner) view.getContext())
             .get(CourseMeetingViewModel.class);
-    courseMeetingViewModel.init();
     courseMeetingViewModel.setMeeting(model);
     /*CurrentCourseViewModel currentCourseViewModel =
             new ViewModelProvider((ViewModelStoreOwner)
@@ -93,6 +101,9 @@ public class NavUtil {
   /** Navigates to CourseThread. */
   @BindingAdapter("navigateToThread")
   public static void navigateToThread(View view, ThreadModel model) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     if (model == null) {
       return;
     }
@@ -109,6 +120,9 @@ public class NavUtil {
   /** Navigates to CourseDescription. */
   @BindingAdapter("navigateToDescription")
   public static void navigateToDescription(View view, String courseId, String creatorId) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     if (courseId == null) {
       return;
     }
@@ -127,6 +141,9 @@ public class NavUtil {
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter("viewModel")
   public static void deleteAccountDialog(View view, ProfileViewModel viewModel) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
     builder.setMessage(R.string.dialog_delete_account_message)
             .setTitle(R.string.dialog_delete_account_title)
@@ -146,6 +163,9 @@ public class NavUtil {
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter("unregisterFromCourse")
   public static void unregisterFromCourse(View view, CourseDescriptionViewModel viewModel) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
     builder.setMessage(R.string.unregister_from_course_message)
             .setTitle(R.string.unregister_from_course_title)
@@ -167,6 +187,9 @@ public class NavUtil {
   @BindingAdapter({"viewmodel"})
   public static Boolean deleteMessageText(View view,
                                        CurrentCourseViewModel vm) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return false;
+    }
     String creatorId = vm.getThread().getValue().getData().getCreatorId();
     String uid = vm.getUserId().getValue().getData();
 
@@ -195,6 +218,9 @@ public class NavUtil {
   public static Boolean deleteAnswerText(View view,
                                        CurrentCourseViewModel vm,
                                        MessageModel model) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return false;
+    }
 
     String creatorId = model.getCreatorId();
     String uid = vm.getUserId().getValue().getData();
@@ -221,6 +247,9 @@ public class NavUtil {
   /** Navigates to CourseEdit. */
   @BindingAdapter("navigateToCourseEdit")
   public static void navigateToCourseEdit(View view, CourseModel model) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     if (model == null) {
       return;
     }
@@ -237,6 +266,9 @@ public class NavUtil {
   /** Navigates to MeetingEdit. */
   @BindingAdapter("navigateToMeetingEdit")
   public static void navigateToMeetingEdit(View view, MeetingsModel model) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     if (model == null) {
       return;
     }
@@ -256,6 +288,9 @@ public class NavUtil {
    * that it will not be displayed on the next opening of the app. */
   @BindingAdapter("skipOnboarding")
   public static void skipOnboarding(View view, int navAction) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     SharedPreferences sharedPreferences = view.getContext()
             .getSharedPreferences(Config.SHARED_PREF_KEY, Context.MODE_PRIVATE);
     sharedPreferences.edit().putBoolean(Config.SHARED_PREF_ONBOARDING_KEY, true).apply();
@@ -265,6 +300,9 @@ public class NavUtil {
 
   @BindingAdapter("openBrowser")
   public static void openBrowser(View view, String destination) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
     builder.setMessage(R.string.dialog_impressum_message)
             .setTitle(R.string.dialog_impressum_title)
@@ -284,6 +322,9 @@ public class NavUtil {
 
   @BindingAdapter("openMessengers")
   public static void shareLinkViaMessenger(View view, String codeMapping) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String deepLink = Config.DEEP_LINK_URL + codeMapping;
     Context context = view.getContext();
     Intent intent = new Intent(android.content.Intent.ACTION_SEND);
@@ -296,7 +337,9 @@ public class NavUtil {
   /** Opens Camera App. */
   @BindingAdapter("navigateToCameraApp")
   public static void openCameraApp(View view, EnterCourseViewModel vm) {
-
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
       Intent camera_intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
       Context context = view.getContext();
     try {
@@ -312,7 +355,9 @@ public class NavUtil {
   /** Opens Camera App. */
   @BindingAdapter("navigateToCameraApp")
   public static void shareCourseCode(View view, CourseDescriptionViewModel vm) {
-
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     Intent camera_intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
     Context context = view.getContext();
     try {

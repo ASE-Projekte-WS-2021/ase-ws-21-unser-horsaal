@@ -1,12 +1,12 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
@@ -67,13 +67,15 @@ public class RegistrationViewModel extends ViewModel {
 
   /** checks registration parameter before using firebase registration API. */
   public void register() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.userInputState.postLoading();
     this.passwordInputState.postLoading();
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
-      Log.e(TAG, "userModel or passwordModel is null.");
       this.userLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -82,7 +84,7 @@ public class RegistrationViewModel extends ViewModel {
     String email = userModel.getEmail();
     String password = passwordModel.getCurrentPassword();
 
-    if (this.registerCheckInput(userName, email, password)){
+    if (this.registerCheckInput(userName, email, password)) {
       this.userInputState.postComplete();
       this.passwordInputState.postComplete();
       this.authAppRepository.register(userName, email, password);
