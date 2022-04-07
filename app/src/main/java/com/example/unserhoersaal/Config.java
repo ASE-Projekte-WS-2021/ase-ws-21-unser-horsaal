@@ -63,15 +63,15 @@ public class Config {
   public static final String REGEX_PATTERN_PASSWORD =
           String.format("^(?=.*[0-9a-zA-Z]).{%s,%s}$",
                   PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
-  public static final String REGEX_PATTERN_TITLE = String.format(".*{%s,%s}",
+  public static final String REGEX_PATTERN_TITLE = String.format(".{%s,%s}",
           COURSE_TITLE_LENGTH_MIN, COURSE_TITLE_LENGTH_MAX);
-  public static final String REGEX_PATTERN_INSTITUTION = String.format(".*{%s,%s}",
+  public static final String REGEX_PATTERN_INSTITUTION = String.format(".{%s,%s}",
           INSTITUTION_LENGTH_MIN, INSTITUTION_LENGTH_MAX);
-  public static final String REGEX_PATTERN_TEXT = String.format(".*{%s,%s}",
+  public static final String REGEX_PATTERN_TEXT = String.format(".{%s,%s}",
           COURSE_TEXT_LENGTH_MIN, COURSE_TEXT_LENGTH_MAX);
-  public static final String REGEX_PATTERN_DESCRIPTION = String.format(".*{%s,%s}",
+  public static final String REGEX_PATTERN_DESCRIPTION = String.format(".{%s,%s}",
           COURSE_DESCRIPTION_LENGTH_MIN, COURSE_DESCRIPTION_LENGTH_MAX);
-  public static final String REGEX_PATTERN_OPTIONS = String.format(".*{%s,%s}",
+  public static final String REGEX_PATTERN_OPTIONS = String.format(".{%s,%s}",
           THREAD_OPTIONS_LENGTH_MIN, THREAD_OPTIONS_LENGTH_MAX);
   public static final String REGEX_PATTERN_CODE_MAPPING =
           "^([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})$";
