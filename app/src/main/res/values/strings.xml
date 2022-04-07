@@ -283,4 +283,9 @@
     <string name="create_thread_hashtag_hint">#...</string>
     <string name="create_thread_question_hint">Kann mir bitte jemand erklären, wie…</string>
     <string name="course_card_meetings">Sitzungen</string>
+    <string name="course_item_participants">Teilnehmer</string>
+    <string name="course_description_generate_qr">QR-Beitrittscode generieren</string>
+    <string name="meeting_card_hyphen">-</string>
+    <string name="poll_item_hyphen">-</string>
+    <string name="poll_item_participants">Teilnehmer:</string>
 </resources>

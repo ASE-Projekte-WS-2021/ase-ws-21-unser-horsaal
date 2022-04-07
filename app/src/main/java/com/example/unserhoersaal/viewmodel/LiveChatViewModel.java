@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.viewmodel;
 
 import androidx.lifecycle.ViewModel;
-
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.LiveChatMessageModel;
@@ -9,7 +8,6 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.repository.LiveChatRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
-
 import java.util.List;
 
 /** ViewModel for the LiveChatFragment. */
@@ -42,19 +40,22 @@ public class LiveChatViewModel extends ViewModel {
   public void sendMessage() {
     this.sldMessageModelInputState.postLoading();
 
-    LiveChatMessageModel liveChatMessageModel = Validation.checkStateLiveData(this.sldMessageModelInputState, TAG);
-    if (liveChatMessageModel.getText() == null ) {
-      this.sldMessageModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-      return;
-    } else if (!Validation.stringHasPattern(liveChatMessageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-      this.sldMessageModelInputState.postError(
-              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
+    LiveChatMessageModel liveChatMessageModel = Validation
+            .checkStateLiveData(this.sldMessageModelInputState, TAG);
+    if (liveChatMessageModel == null) {
+      this.liveChatMessages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
-    liveChatMessageModel.setCreationTime(System.currentTimeMillis());
-
-    if (!liveChatMessageModel.getText().equals("")) {
+    if (Validation.emptyString(liveChatMessageModel.getText())) {
+      this.sldMessageModelInputState
+              .postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
+    } else if (!Validation
+            .stringHasPattern(liveChatMessageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
+      this.sldMessageModelInputState.postError(
+              new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
+    } else {
+      liveChatMessageModel.setCreationTime(System.currentTimeMillis());
       this.liveChatRepository.sendMessage(liveChatMessageModel);
     }
   }
@@ -70,10 +71,6 @@ public class LiveChatViewModel extends ViewModel {
   public StateLiveData<List<LiveChatMessageModel>> getLiveChatMessages() {
     return this.liveChatMessages;
   }
-
-  /*public StateLiveData<LiveChatMessageModel> getSldMessageModelInputState() {
-    return sldMessageModelInputState;
-  }*/
 
   public void setUserId() {
     this.liveChatRepository.setUserId();
@@ -91,4 +88,5 @@ public class LiveChatViewModel extends ViewModel {
     this.sldMessageModelInputState.postComplete();
     this.meeting.postComplete();
   }
+
 }

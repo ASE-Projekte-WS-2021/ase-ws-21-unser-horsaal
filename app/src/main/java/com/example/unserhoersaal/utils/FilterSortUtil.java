@@ -10,9 +10,13 @@ import com.google.android.material.chip.Chip;
 /** UtilClass for sorting and filtering. */
 public class FilterSortUtil {
 
-  private static final String TAG = "FilterSortUtil";
-
-  /** Activate a sort. */
+  /** Activate a sort.
+   *
+   * @param view Button that got clicked.
+   * @param chipActivated The Chip that got activated.
+   * @param vm ViewModel where the Enum gets set.
+   * @param sortEnum The Enum that get setted in the ViewModel
+   */
   @BindingAdapter({"chipActivated", "courseMeetingViewModel", "sortEnum"})
   public static void sort(Chip view, Chip chipActivated, QuestionsViewModel vm,
                           SortEnum sortEnum) {
@@ -24,7 +28,11 @@ public class FilterSortUtil {
     }
   }
 
-  /** Remove a sort. */
+  /** Remove a sort.
+   *
+   * @param view View to that represents Chip that got clicked.
+   * @param vm QuestionViewModel where the activated chips are removed.
+   */
   @BindingAdapter({"chipActivated", "courseMeetingViewModel", "sortEnum"})
   public static void removeSort(Chip view, Chip chipActivated, QuestionsViewModel vm,
                                 SortEnum sortEnum) {
@@ -34,7 +42,13 @@ public class FilterSortUtil {
     vm.setSortEnum(SortEnum.NEWEST);
   }
 
-  /** Add a filter. */
+  /** Add a filter.
+   *
+   * @param view Chip that got clicked.
+   * @param chipActivated Chip that got activated.
+   * @param vm The ViewModel where the Chip related data is set.
+   * @param filterEnum Represents the FilterType that got set
+   */
   @BindingAdapter({"chipActivated", "courseMeetingViewModel", "filterEnum"})
   public static void filter(Chip view, Chip chipActivated, QuestionsViewModel vm,
                             FilterEnum filterEnum) {
@@ -46,7 +60,13 @@ public class FilterSortUtil {
     }
   }
 
-  /** Remove a filter. */
+  /** Remove a filter.
+   *
+   * @param view Chip that got clicked.
+   * @param chipActivated Chip that gets removed.
+   * @param vm The ViewModel where the Chip related data is set.
+   * @param filterEnum Represents the FilterType that got removed
+   */
   @BindingAdapter({"chipActivated", "courseMeetingViewModel", "filterEnum"})
   public static void removeFilter(Chip view, Chip chipActivated, QuestionsViewModel vm,
                                   FilterEnum filterEnum) {

@@ -7,14 +7,7 @@ import com.example.unserhoersaal.utils.StateLiveData;
 /** This class is the ViewModel for the signed up courses. */
 public class CoursesViewModel extends ViewModel {
 
-  private static final String TAG = "CoursesViewModel";
-
   private StateLiveData<String> userId = new StateLiveData<>();
-
-  /** Initializes the database access. */
-  public void init() {
-    //todo if ... != null
-  }
 
   public StateLiveData<String> getUserId() {
     return this.userId;

@@ -11,15 +11,16 @@ import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import java.util.List;
 
-/** Chatadapter. */
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
-
-  private static final String TAG = "ChatAdapter";
+/**
+ * Adapter for ThreadRecyclerview.
+ */
+public class ThreadMessagesAdapter extends RecyclerView.Adapter<ThreadMessagesAdapter.ViewHolder> {
 
   private final List<MessageModel> localDataSet;
   private final CurrentCourseViewModel currentCourseViewModel;
 
-  public ChatAdapter(List<MessageModel> dataSet, CurrentCourseViewModel currentCourseViewModel) {
+  public ThreadMessagesAdapter(List<MessageModel> dataSet,
+                               CurrentCourseViewModel currentCourseViewModel) {
     this.localDataSet = dataSet;
     this.currentCourseViewModel = currentCourseViewModel;
   }
@@ -46,24 +47,29 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     return this.localDataSet.size();
   }
 
-  /** Viewholder. */
+  /**
+   * Class to fill the ViewHolder items with Data.
+   */
   public class ViewHolder extends RecyclerView.ViewHolder {
 
     private final AnswerCardBinding binding;
 
-    /** Constructor. */
     public ViewHolder(AnswerCardBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }
 
-    /** connect updated list with adapter child. */
+    /**
+     * connect updated list with adapter child.
+     *
+     * @param messageModel Data that a Message contains
+     * @param  currentCourseViewModel The ViewModel for the
+     */
     public void connect(MessageModel messageModel, CurrentCourseViewModel currentCourseViewModel) {
       this.binding.setModel(messageModel);
       this.binding.setVm(currentCourseViewModel);
       this.binding.executePendingBindings();
     }
-
   }
 
 }

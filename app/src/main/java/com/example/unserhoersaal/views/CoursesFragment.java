@@ -74,7 +74,6 @@ public class CoursesFragment extends Fragment {
             .get(AllCoursesViewModel.class);
     this.ownedCoursesViewModel = new ViewModelProvider(requireActivity())
             .get(OwnedCoursesViewModel.class);
-    this.coursesViewModel.init();
     this.todaysCoursesViewModel.init();
     this.allCoursesViewModel.init();
     this.ownedCoursesViewModel.init();

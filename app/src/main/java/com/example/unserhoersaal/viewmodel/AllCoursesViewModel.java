@@ -6,19 +6,19 @@ import com.example.unserhoersaal.repository.AllCoursesRepository;
 import com.example.unserhoersaal.utils.StateLiveData;
 import java.util.List;
 
-/** JavaDoc. */
+/** ViewModel for AllCoursesFragment. Provides statuslivedata courses for tab "Alle".*/
 public class AllCoursesViewModel extends ViewModel {
-
-  private static final String TAG = "AllCoursesViewModel";
 
   private AllCoursesRepository allCoursesRepository;
   private StateLiveData<List<CourseModel>> allCourses;
 
-  /** Init method. */
+  /** Initialises AllCoursesFragment. Connects to statuslivedata courses from AllCoursesRepository
+   * to make them accessible in AllCoursesFragment and corresponding databinding.*/
   public void init() {
     if (this.allCourses != null) {
       return;
     }
+
     this.allCoursesRepository = AllCoursesRepository.getInstance();
     this.allCourses = this.allCoursesRepository.getAllCourses();
   }

@@ -63,7 +63,7 @@
                 android:id="@+id/meetingCardTimeSeparator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-"
+                android:text="@string/meeting_card_hyphen"
                 android:layout_marginStart="8dp"
                 app:layout_constraintStart_toEndOf="@id/meetingCardStartTime"
                 app:layout_constraintBottom_toBottomOf="@id/meetingCardStartTime" />

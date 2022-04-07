@@ -31,7 +31,10 @@ public class CreateCourseViewModel extends ViewModel {
     this.courseModelInputState.postCreate(new CourseModel());
   }
 
-  /** create a copy from coursemodel to cut off references to live data. */
+  /** create a copy from coursemodel to cut off references to live data.
+   *
+   * @param courseModel makes a copy of the coursemodel
+   *                    to make it editable and not affect livedata. */
   public void makeEditable(CourseModel courseModel) {
     this.isEditing = true;
 
@@ -76,7 +79,6 @@ public class CreateCourseViewModel extends ViewModel {
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
 
     if (courseModel == null) {
-      Log.e(TAG, "courseModel is null.");
       this.courseModel.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -135,6 +137,8 @@ public class CreateCourseViewModel extends ViewModel {
     this.isEditing = isEditing;
   }
 
-  public Boolean getIsEditing() { return isEditing; }
+  public Boolean getIsEditing() {
+    return isEditing;
+  }
 
 }

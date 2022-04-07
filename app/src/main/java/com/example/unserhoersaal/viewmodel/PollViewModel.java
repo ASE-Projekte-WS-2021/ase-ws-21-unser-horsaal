@@ -1,10 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.CheckedOptionEnum;
@@ -16,7 +11,6 @@ import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /** ViewModel for the PollFragment. */
 public class PollViewModel extends ViewModel {
@@ -97,7 +91,6 @@ public class PollViewModel extends ViewModel {
         this.handleOptionsPoll(pollModel);
       }
     }
-
   }
 
   private void handleYesNoPoll(PollModel pollModel) {
@@ -137,7 +130,7 @@ public class PollViewModel extends ViewModel {
     if (Validation.emptyString(pollModel.getOptionsText3())) {
       pollModel.setOptionsText3(null);
     } else if (!Validation.stringHasPattern(pollModel.getOptionsText3(),
-            Config.REGEX_PATTERN_OPTIONS)){
+            Config.REGEX_PATTERN_OPTIONS)) {
       this.pollModelInputState
               .postError(new Error(Config.DATABINDING_OPTION_WRONG_PATTERN), ErrorTag.OPTION3);
       return;
@@ -202,4 +195,5 @@ public class PollViewModel extends ViewModel {
       return t1.getCreationTime().compareTo(pollModel.getCreationTime());
     });
   }
+
 }
