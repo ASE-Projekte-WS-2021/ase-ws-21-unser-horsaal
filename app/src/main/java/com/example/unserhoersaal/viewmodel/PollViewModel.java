@@ -68,9 +68,6 @@ public class PollViewModel extends ViewModel {
     if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
-    if(PreventDoubleClick.checkIfDoubleClick()) {
-      return;
-    }
     this.pollModelInputState.postLoading();
 
     PollModel pollModel = Validation.checkStateLiveData(this.pollModelInputState, TAG);
@@ -149,9 +146,10 @@ public class PollViewModel extends ViewModel {
 
   /** Handle the selection of an option from an user.*/
   public void vote(CheckedOptionEnum checkedOption, PollModel pollModel) {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    //TODO really needed?
+    /*if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
-    }
+    }*/
     this.pollModel.postLoading();
     String pollId = pollModel.getKey();
     CheckedOptionEnum oldOption = pollModel.getCheckedOption();
