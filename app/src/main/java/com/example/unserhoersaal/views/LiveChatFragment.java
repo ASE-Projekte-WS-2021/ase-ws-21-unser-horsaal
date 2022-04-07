@@ -148,6 +148,8 @@ public class LiveChatFragment extends Fragment {
   public void onPause() {
     super.onPause();
     KeyboardUtil.hideKeyboard(getActivity());
+    this.liveChatViewModel.setDefaultInputState();
+    this.liveChatViewModel.setLiveDataComplete();
   }
 
   private void setupScrolling() {

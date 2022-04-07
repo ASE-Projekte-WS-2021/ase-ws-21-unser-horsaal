@@ -71,7 +71,6 @@ public class PollViewModel extends ViewModel {
   
   /** Create a new poll. */
   public void createPoll(boolean yesNoPoll) {
-    this.pollModel.postLoading();
     this.pollModelInputState.postLoading();
 
     PollModel pollModel = Validation.checkStateLiveData(this.pollModelInputState, TAG);
@@ -82,7 +81,7 @@ public class PollViewModel extends ViewModel {
 
     if (Validation.emptyString(pollModel.getText())) {
       this.pollModelInputState.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-    } else if (!Validation.stringHasPattern(pollModel.getText(), Config.REGEX_PATTERN_TEXT)) {
+    } else if (!Validation.stringHasPattern(pollModel.getText(), Config.REGEX_PATTERN_OPTIONS)) {
       this.pollModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
     } else {
@@ -139,10 +138,10 @@ public class PollViewModel extends ViewModel {
     }
     if (Validation.emptyString(pollModel.getOptionsText4())) {
       pollModel.setOptionsText4(null);
-    } else if (!Validation.stringHasPattern(pollModel.getOptionsText3(),
+    } else if (!Validation.stringHasPattern(pollModel.getOptionsText4(),
             Config.REGEX_PATTERN_OPTIONS)) {
       this.pollModelInputState
-              .postError(new Error(Config.DATABINDING_OPTION_WRONG_PATTERN), ErrorTag.OPTION2);
+              .postError(new Error(Config.DATABINDING_OPTION_WRONG_PATTERN), ErrorTag.OPTION4);
       return;
     }
     this.pollModelInputState.postComplete();

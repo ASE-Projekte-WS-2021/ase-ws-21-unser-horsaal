@@ -140,7 +140,8 @@
                     android:text="@={vm.profileLiveData.data.displayName}"
                     android:textAlignment="textEnd"
                     android:layout_marginEnd="16dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -178,13 +179,14 @@
 
                 <TextView
                     android:id="@+id/profileFragmentInstitution"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginEnd="16dp"
                     android:text="@={vm.profileLiveData.data.institution}"
                     android:textAlignment="viewEnd"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -222,13 +224,15 @@
 
                 <TextView
                     android:id="@+id/profileFragmentUserEmail"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:layout_marginEnd="16dp"
                     android:text="@{vm.profileLiveData.data.email}"
                     android:textAlignment="viewEnd"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"
+                    />
 
             </TableRow>
 

@@ -74,8 +74,7 @@
                         android:layout_height="wrap_content"
                         android:singleLine="false"
                         android:background="@drawable/rounded_corners"
-                        android:maxLength="@{Config.MESSAGE_TEXT_LENGTH_MAX}"
-                        android:hint="@string/create_thread_enter_message"
+                        android:hint="@string/create_thread_question_hint"
                         android:text="@={vm.threadModelInputState.data.text}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>

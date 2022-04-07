@@ -165,7 +165,7 @@ public class QuestionsFragment extends Fragment {
     this.binding.questionFragmentProgressSpinner.setVisibility(View.GONE);
   }
 
-  private void resetFilterChips() {
+  private void resetChips() {
     if (this.binding.questionChipAnswered.isChecked()) {
       this.binding.questionChipAnswered.setChecked(Boolean.FALSE);
       this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
@@ -205,6 +205,26 @@ public class QuestionsFragment extends Fragment {
     if (this.binding.questionChipOther.isChecked()) {
       this.binding.questionChipOther.setChecked(Boolean.FALSE);
       this.binding.questionChipOtherActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipNewest.isChecked()) {
+      this.binding.questionChipNewest.setChecked(Boolean.FALSE);
+      this.binding.questionChipNewestActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipMostLiked.isChecked()) {
+      this.binding.questionChipMostLiked.setChecked(Boolean.FALSE);
+      this.binding.questionChipMostLikedActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipMostCommented.isChecked()) {
+      this.binding.questionChipMostCommented.setChecked(Boolean.FALSE);
+      this.binding.questionChipMostCommentedActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipPageCountUp.isChecked()) {
+      this.binding.questionChipPageCountUp.setChecked(Boolean.FALSE);
+      this.binding.questionChipPageCountUpActivated.setVisibility(View.GONE);
+    }
+    if (this.binding.questionChipPageCountDown.isChecked()) {
+      this.binding.questionChipPageCountDown.setChecked(Boolean.FALSE);
+      this.binding.questionChipPageCountDownActivated.setVisibility(View.GONE);
     }
   }
 
@@ -248,7 +268,7 @@ public class QuestionsFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.questionsViewModel.resetFilters();
-    this.resetFilterChips();
+    this.resetChips();
   }
 
   private void setupScrolling() {

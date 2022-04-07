@@ -30,20 +30,20 @@
                 <ImageView
                     android:id="@+id/onboardingAccountFragmentImage"
                     android:src="@drawable/onboarding_account"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_centerHorizontal="true" />
 
                 <TextView
                     android:id="@+id/onboardingAccountFragmentHeadline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/onboardingAccountFragmentImage"
                     android:layout_marginHorizontal="40dp"
                     android:textSize="30sp"
                     android:textColor="@color/app_blue"
                     android:textStyle="bold"
-                    android:text="@string/onboarding_account_text_headline" />
+                    android:text="@string/onboarding_account_text_headline"
+                    android:layout_below="@id/onboardingAccountFragmentImage"/>
 
                 <TextView
                     android:id="@+id/onboardingAccountFragmentText1"
@@ -53,7 +53,7 @@
                     android:textSize="15sp"
                     android:text="@string/onboarding_account_text_1"
                     android:layout_below="@+id/onboardingAccountFragmentHeadline"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="16dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/onboardingAccountFragmentEmailEditField"
@@ -65,6 +65,8 @@
                     android:layout_below="@+id/onboardingAccountFragmentText1"
                     app:endIconMode="clear_text"
                     android:hint="@string/registration_fragment_user_email_hint"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? vm.userInputState.error.message : null}"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -75,15 +77,6 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners" />
-
-                    <TextView
-                        android:id="@+id/onboardingAccountFragmentUserErrorText"
-                        android:visibility="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.EMAIL ? View.VISIBLE : View.GONE}"
-                        android:text="@{vm.userInputState.error.message}"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,7 +89,11 @@
                     android:layout_marginTop="15dp"
                     android:layout_below="@+id/onboardingAccountFragmentEmailEditField"
                     android:hint="@string/registration_fragment_password_hint"
+                    app:counterMaxLength="@{Config.PASSWORD_LENGTH_MAX}"
+                    app:counterEnabled="true"
                     app:endIconMode="password_toggle"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? vm.passwordInputState.error.message : null}"
                     style="@style/inputField">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -108,15 +105,6 @@
                         android:inputType="textPassword"
                         android:singleLine="true"
                         android:background="@drawable/rounded_corners"/>
-
-                    <TextView
-                        android:id="@+id/onboardingAccountFragmentPasswordErrorText"
-                        android:visibility="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? View.VISIBLE : View.GONE}"
-                        android:text="@{vm.passwordInputState.error.message}"
-                        android:textColor="@color/red"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_background"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
