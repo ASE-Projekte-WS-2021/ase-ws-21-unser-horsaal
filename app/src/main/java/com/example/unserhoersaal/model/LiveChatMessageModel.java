@@ -1,9 +1,10 @@
 package com.example.unserhoersaal.model;
 
-import com.example.unserhoersaal.enums.LikeStatus;
 
+/**
+ * Model of a Message in the live chat of a meeting.
+ */
 public class LiveChatMessageModel {
-  private static final String TAG = "MessageModel";
 
   private Long creationTime;
   private String creatorId;
@@ -13,7 +14,9 @@ public class LiveChatMessageModel {
   private String photoUrl;
 
 
-  /**Default class constructor.**/
+  /**
+   * Default class constructor.
+   */
   public LiveChatMessageModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }

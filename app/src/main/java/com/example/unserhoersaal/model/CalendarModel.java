@@ -1,5 +1,8 @@
 package com.example.unserhoersaal.model;
 
+/**
+ * Model to save the input of the date picker.
+ */
 public class CalendarModel {
 
   private int yearInput = -1;

@@ -5,10 +5,10 @@ import com.example.unserhoersaal.enums.TagEnum;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Model for a thread. */
+/**
+ * Model for a thread.
+ */
 public class ThreadModel {
-
-  private static final String TAG = "ThreadModel";
 
   public boolean answered;
   public Long creationTime;
