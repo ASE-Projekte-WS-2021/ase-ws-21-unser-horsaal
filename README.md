@@ -50,7 +50,7 @@
 ##### Zuständigkeitsbereiche:
 *Jeder Mitglied war aufgrund von Pair Programming an verschiedenen Bereichen der Anwendung beteiligt. Jedoch hatte auch jeder Bereiche an denen derjenige verstärkt beteiligt war. Diese sind:*
 
-- Asabidi Ruslan (Rusi91): Funktionalitäten im Login- und Registrierungsbereich (Login, Registrierung, Nutzerfeedback, Verifikation und Passwortzurücksetzung), Sortier- und Filterfunktionalität, Formale Abgabemodalitäten (Readme, Nutzerszeanrios, Video)
+- Asabidi Ruslan (Rusi91): Funktionalitäten im Login- und Registrierungsbereich (Login, Registrierung, Nutzerfeedback, Verifikation und Passwortzurücksetzung), Sortier- und Filterfunktionalität, Formale Abgabemodalitäten (Readme, Nutzerszenarios, Video)
 
 - Bierschneider Michael (vairasza): 
 
