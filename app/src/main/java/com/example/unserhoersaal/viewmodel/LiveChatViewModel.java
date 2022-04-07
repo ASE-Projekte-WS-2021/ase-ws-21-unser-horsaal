@@ -83,4 +83,12 @@ public class LiveChatViewModel extends ViewModel {
     return this.userId;
   }
 
+  public void setDefaultInputState() {
+    this.sldMessageModelInputState.postCreate(new LiveChatMessageModel());
+  }
+
+  public void setLiveDataComplete() {
+    this.sldMessageModelInputState.postComplete();
+    this.meeting.postComplete();
+  }
 }

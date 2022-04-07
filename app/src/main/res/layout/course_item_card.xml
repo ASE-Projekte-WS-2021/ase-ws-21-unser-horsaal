@@ -91,7 +91,7 @@
                 android:id="@+id/courseItemCardMeetingsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Meetings"
+                android:text="@string/course_card_meetings"
                 android:layout_marginStart="8dp"
                 app:layout_constraintStart_toEndOf="@+id/courseItemCardNumberMeetings"
                 app:layout_constraintTop_toTopOf="@id/courseItemCardNumberMeetings" />
