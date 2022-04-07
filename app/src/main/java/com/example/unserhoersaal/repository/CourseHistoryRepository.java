@@ -17,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class CourseHistoryRepository {
   private final StateLiveData<CourseModel> course = new StateLiveData<>();
   private final StateLiveData<MeetingsModel> meetingsModelMutableLiveData = new StateLiveData<>();
   private final StateLiveData<String> userId = new StateLiveData<>();
+  private final HashSet<String> meetingSet = new HashSet<>();
   private ValueEventListener listener;
 
   /**
@@ -54,7 +56,7 @@ public class CourseHistoryRepository {
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        meetingsModelList.clear();
+        updateMeetingSet(dataSnapshot);
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           MeetingsModel model = snapshot.getValue(MeetingsModel.class);
 
@@ -65,7 +67,7 @@ public class CourseHistoryRepository {
           model.setKey(snapshot.getKey());
           meetingsModelList.add(model);
         }
-        meetings.postUpdate(meetingsModelList);
+        updateMeetingList(meetingsModelList);
       }
 
       @Override
@@ -74,6 +76,38 @@ public class CourseHistoryRepository {
                 new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       }
     };
+  }
+
+  /**
+   * Updates the list of all meetings after a change.
+   *
+   * @param dataSnapshot snapshot with all meetings of a course
+   */
+  private void updateMeetingSet(DataSnapshot dataSnapshot) {
+    HashSet<String> meetingIds = new HashSet<>();
+    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+      meetingIds.add(snapshot.getKey());
+    }
+    meetingSet.clear();
+    meetingSet.addAll(meetingIds);
+  }
+
+  /**
+   * Posts the new courses for the view
+   *
+   * @param meetingsModels list of meetings
+   */
+  private void updateMeetingList(List<MeetingsModel> meetingsModels) {
+    ArrayList<MeetingsModel> modelList = new ArrayList<>();
+    for (int i = 0; i < meetingsModels.size(); i++) {
+      if (meetingSet.contains(meetingsModels.get(i).getKey())) {
+        meetingSet.remove(meetingsModels.get(i).getKey());
+        modelList.add(meetingsModels.get(i));
+      }
+    }
+    this.meetingsModelList.clear();
+    this.meetingsModelList.addAll(modelList);
+    this.meetings.postUpdate(meetingsModelList);
   }
 
   /**
@@ -119,9 +153,11 @@ public class CourseHistoryRepository {
     if (courseObj == null
             || courseObj.getKey() == null) {
       this.course.postUpdate(courseModel);
+      this.meetingsModelList.clear();
       this.loadMeetings();
     } else if (!courseObj.getKey().equals(courseId)) {
       this.course.postUpdate(courseModel);
+      this.meetingsModelList.clear();
       this.loadMeetings();
       this.databaseReference
               .child(Config.CHILD_MEETINGS)
