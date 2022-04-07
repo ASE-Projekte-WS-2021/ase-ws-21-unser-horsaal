@@ -217,7 +217,7 @@
                     app:hintEnabled="false"
                     app:endIconMode="clear_text"
                     app:counterEnabled="true"
-                    app:counterMaxLength="@{Config.COURSE_TEXT_LENGTH_MAX}"
+                    app:counterMaxLength="@{Config.INSTITUTION_LENGTH_MAX}"
                     app:errorEnabled="true"
                     app:setError="@{vm.courseModelInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.courseModelInputState.errorTag == ErrorTag.INSTITUTION ? vm.courseModelInputState.error.message : null}"
                     app:layout_constraintEnd_toEndOf="parent"

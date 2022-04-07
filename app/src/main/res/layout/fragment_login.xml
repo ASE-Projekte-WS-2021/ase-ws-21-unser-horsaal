@@ -83,7 +83,7 @@
                     style="@style/inputField"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:hint="@string/login_fragment_password_hint"
                     android:layout_gravity="center"
                     app:errorEnabled="true"
@@ -111,7 +111,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/loginFragmentButtonWrapper"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -122,7 +122,6 @@
                         android:layout_height="wrap_content"
                         android:enabled="@{vm.userLiveData.status != StateData.DataStatus.LOADING}"
                         android:onClick="@{() -> vm.login()}"
-
                         android:text="@string/login_fragment_login_button_string"
                         android:layout_gravity="center"
                         app:icon="@drawable/ic_baseline_login_24"
@@ -154,7 +153,7 @@
                     android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_loginFragment_to_resetPasswordFragment)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/login_fragment_forgot_password"
                     android:textColor="@color/call_to_action_darker_orange"
                     android:textStyle="bold"
@@ -165,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:gravity="center"
-                    android:layout_marginTop="32dp">
+                    android:layout_marginTop="16dp">
 
                     <TextView
                         android:id="@+id/loginFragmentNoAccountTextView"
