@@ -217,8 +217,8 @@ public class PollRepository {
     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
       pollIds.add(snapshot.getKey());
     }
-    pollSet.clear();
-    pollSet.addAll(pollIds);
+    this.pollSet.clear();
+    this.pollSet.addAll(pollIds);
   }
 
   /**
@@ -238,7 +238,7 @@ public class PollRepository {
                   pollModel.setCreatorName(author.getDisplayName());
                   pollModel.setPhotoUrl(author.getPhotoUrl());
                 }
-                updatePollList(pollModel, pollList);
+                setPollOption(pollModel, pollList);
               }
 
               @Override
@@ -250,39 +250,54 @@ public class PollRepository {
   }
 
   /**
-   * Update all polls if a poll has changed.
+   * Loads the checked option of a user.
    *
    * @param pollModel data of the changed poll
    * @param pollModelList all polls
    */
-  private void updatePollList(PollModel pollModel, List<PollModel> pollModelList) {
+  private void setPollOption(PollModel pollModel, List<PollModel> pollModelList) {
     Task<DataSnapshot> task = this.getPollOption(pollModel.getKey());
     if (task == null) {
+      pollModel.setCheckedOption(CheckedOptionEnum.NONE);
+      updatePollList(pollModel, pollModelList);
       return;
     }
     task.addOnSuccessListener(runnable -> {
       CheckedOptionEnum option = runnable.getValue(CheckedOptionEnum.class);
+      if (option == null) {
+        option = CheckedOptionEnum.NONE;
+      }
       pollModel.setCheckedOption(option);
-      for (int i = 0; i < pollModelList.size(); i++) {
-        PollModel model = pollModelList.get(i);
-        if (model.getKey().equals(pollModel.getKey())) {
-          if (this.pollSet.contains(pollModel.getKey())) {
-            //update course
-            pollModelList.set(i, pollModel);
-          } else {
-            //remove course
-            pollModelList.remove(i);
-          }
-          this.polls.postUpdate(pollList);
-          return;
-        }
-      }
-      //add course
-      if (this.pollSet.contains(pollModel.getKey())) {
-        pollModelList.add(pollModel);
-        this.polls.postUpdate(pollList);
-      }
+      updatePollList(pollModel, pollModelList);
     });
+  }
+
+  /**
+   * Update polls if a poll has changed.
+   *
+   * @param pollModel data of the changed poll
+   * @param pollModelList all polls of the meeting
+   */
+  private void updatePollList(PollModel pollModel, List<PollModel> pollModelList) {
+    for (int i = 0; i < pollModelList.size(); i++) {
+      PollModel model = pollModelList.get(i);
+      if (model.getKey().equals(pollModel.getKey())) {
+        if (this.pollSet.contains(pollModel.getKey())) {
+          //update
+          pollModelList.set(i, pollModel);
+        } else {
+          //remove
+          pollModelList.remove(i);
+        }
+        this.polls.postUpdate(pollList);
+        return;
+      }
+    }
+    //add
+    if (this.pollSet.contains(pollModel.getKey())) {
+      pollModelList.add(pollModel);
+      this.polls.postUpdate(pollList);
+    }
   }
 
   private Task<DataSnapshot> getPollOption(String id) {
