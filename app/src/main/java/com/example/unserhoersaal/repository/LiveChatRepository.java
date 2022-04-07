@@ -149,6 +149,11 @@ public class LiveChatRepository {
     query.addValueEventListener(this.listener);
   }
 
+  /**
+   * Update the list of all livechat messages in the meeting.
+   *
+   * @param dataSnapshot snapshot with messages
+   */
   private void updateLiveChatSet(DataSnapshot dataSnapshot) {
     HashSet<String> messageIds = new HashSet<>();
     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -216,13 +221,13 @@ public class LiveChatRepository {
                   messageModel.setCreatorName(author.getDisplayName());
                   messageModel.setPhotoUrl(author.getPhotoUrl());
                 }
-                updateMesseageList(messageModel, liveChatMessageList);
+                updateMessageList(messageModel, liveChatMessageList);
               }
 
               @Override
               public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, error.getMessage());
-                liveChatMessages.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+                liveChatMessages.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
               }
             });
   }
@@ -230,11 +235,11 @@ public class LiveChatRepository {
   /**
    * Update all messages if a message has changed. 
    *
-   * @param messageModel data of the changed course
-   * @param messageList all courses
+   * @param messageModel data of the changed message
+   * @param messageList all messages
    */
-  private void updateMesseageList(LiveChatMessageModel messageModel,
-                                List<LiveChatMessageModel> messageList) {
+  private void updateMessageList(LiveChatMessageModel messageModel,
+                                 List<LiveChatMessageModel> messageList) {
     for (int i = 0; i < messageList.size(); i++) {
       LiveChatMessageModel model = messageList.get(i);
       if (model.getKey().equals(messageModel.getKey())) {
