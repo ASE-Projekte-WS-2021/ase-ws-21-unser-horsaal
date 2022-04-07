@@ -9,8 +9,6 @@ import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -38,13 +37,43 @@ public class LiveChatRepository {
   private final StateLiveData<List<LiveChatMessageModel>> liveChatMessages = new StateLiveData<>();
 
   private final StateLiveData<String> userId = new StateLiveData<>();
+  private final HashSet<String> liveChatSet = new HashSet<>();
+  private ValueEventListener listener;
 
   /**
-   * Constructor.
+   * Constructor. Initializes database instances and listener.
    */
   public LiveChatRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    initListener();
+  }
+
+  /**
+   * Initializes the listener for the current LiveChat.
+   */
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        updateLiveChatSet(dataSnapshot);
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          LiveChatMessageModel model = snapshot.getValue(LiveChatMessageModel.class);
+
+          if (model == null) {
+            continue;
+          }
+
+          model.setKey(snapshot.getKey());
+          getAuthor(model);
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        meeting.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
+      }
+    };
   }
 
   /**
@@ -73,11 +102,26 @@ public class LiveChatRepository {
     if (meeting == null || meeting.getKey() == null) {
       return;
     }
-    if (this.meeting.getValue() == null
-            || this.meeting.getValue().getData() == null
-            || this.meeting.getValue().getData().getKey() == null
-            || !this.meeting.getValue().getData().getKey().equals(meeting.getKey())) {
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
       this.meeting.postUpdate(meeting);
+      this.liveChatMessageList.clear();
+      this.loadLiveChat();
+      return;
+    }
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      this.meeting.postUpdate(meeting);
+      this.liveChatMessageList.clear();
+      this.loadLiveChat();
+    } else if (!meetingKey.equals(meeting.getKey())) {
+      this.meeting.postUpdate(meeting);
+      //reset listener if set on another meeting
+      this.databaseReference
+              .child(Config.LIVE_CHAT_MESSAGES_CHILD)
+              .child(meetingKey)
+              .removeEventListener(this.listener);
+      this.liveChatMessageList.clear();
       this.loadLiveChat();
     }
   }
@@ -102,30 +146,16 @@ public class LiveChatRepository {
     Query query = this.databaseReference
             .child(Config.LIVE_CHAT_MESSAGES_CHILD)
             .child(meetingKey);
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        List<LiveChatMessageModel> messList = new ArrayList<>();
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          LiveChatMessageModel model = snapshot.getValue(LiveChatMessageModel.class);
+    query.addValueEventListener(this.listener);
+  }
 
-          if (model == null) {
-            Log.e(TAG, Config.LIVE_CHAT_FAILED_TO_LOAD);
-            meeting.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
-            return;
-          }
-
-          model.setKey(snapshot.getKey());
-          messList.add(model);
-        }
-        getAuthor(messList);
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        meeting.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
-      }
-    });
+  private void updateLiveChatSet(DataSnapshot dataSnapshot) {
+    HashSet<String> messageIds = new HashSet<>();
+    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+      messageIds.add(snapshot.getKey());
+    }
+    liveChatSet.clear();
+    liveChatSet.addAll(messageIds);
   }
 
   /**
@@ -170,34 +200,60 @@ public class LiveChatRepository {
   }
 
   /**
-   * Get the creator data of all polls of a meeting.
+   * Load the picture and name of the message creator
    *
-   * @param mesList List of all chat messages of a meeting
+   * @param messageModel data of the message for loading the author
    */
-  private void getAuthor(List<LiveChatMessageModel> mesList) {
-    List<Task<DataSnapshot>> authorModels = new ArrayList<>();
-    for (LiveChatMessageModel message : mesList) {
-      authorModels.add(getAuthorModel(message.getCreatorId()));
-    }
-    Tasks.whenAll(authorModels).addOnSuccessListener(unused -> {
-      for (int i = 0; i < authorModels.size(); i++) {
-        UserModel model = authorModels.get(i).getResult().getValue(UserModel.class);
-        if (model == null) {
-          mesList.get(i).setCreatorName(Config.UNKNOWN_USER);
-        } else {
-          mesList.get(i).setCreatorName(model.getDisplayName());
-          mesList.get(i).setPhotoUrl(model.getPhotoUrl());
-        }
-      }
-      liveChatMessageList.clear();
-      liveChatMessageList.addAll(mesList);
-      liveChatMessages.postUpdate(liveChatMessageList);
+  private void getAuthor(LiveChatMessageModel messageModel) {
+    this.databaseReference.child(Config.CHILD_USER).child(messageModel.getCreatorId())
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel author = snapshot.getValue(UserModel.class);
+                if (author == null) {
+                  messageModel.setCreatorName(Config.UNKNOWN_USER);
+                } else {
+                  messageModel.setCreatorName(author.getDisplayName());
+                  messageModel.setPhotoUrl(author.getPhotoUrl());
+                }
+                updateMesseageList(messageModel, liveChatMessageList);
+              }
 
-    });
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                liveChatMessages.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
   }
 
-  private Task<DataSnapshot> getAuthorModel(String authorId) {
-    return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
+  /**
+   * Update all messages if a message has changed. 
+   *
+   * @param messageModel data of the changed course
+   * @param messageList all courses
+   */
+  private void updateMesseageList(LiveChatMessageModel messageModel,
+                                List<LiveChatMessageModel> messageList) {
+    for (int i = 0; i < messageList.size(); i++) {
+      LiveChatMessageModel model = messageList.get(i);
+      if (model.getKey().equals(messageModel.getKey())) {
+        if (this.liveChatSet.contains(messageModel.getKey())) {
+          //update course
+          messageList.set(i, messageModel);
+        } else {
+          //remove course
+          messageList.remove(i);
+        }
+        this.liveChatMessages.postUpdate(messageList);
+        return;
+      }
+    }
+    //add course
+    if (this.liveChatSet.contains(messageModel.getKey())) {
+      messageList.add(messageModel);
+      this.liveChatMessages.postUpdate(messageList);
+    }
   }
 
   public StateLiveData<List<LiveChatMessageModel>> getLiveChatMessages() {

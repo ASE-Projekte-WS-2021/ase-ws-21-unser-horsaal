@@ -294,7 +294,6 @@ public class PollRepository {
             .setValue(checkedOptionEnum);
   }
 
-  //TODO ifs
   /**
    * Change a user vote from one option to another.
    *
@@ -343,7 +342,6 @@ public class PollRepository {
             .setValue(checkedOption);
   }
 
-  //TODO ifs
   /**
    * Remove a vote from the user in the database.
    *
