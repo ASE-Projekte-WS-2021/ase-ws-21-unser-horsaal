@@ -226,10 +226,12 @@ public class AuthAppRepository {
       user.delete().addOnCompleteListener(task -> {
         if (task.isSuccessful()) {
           this.userLiveData.postUpdate(null);
-        } else {
-          this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL), ErrorTag.REPO);
-        }
-      });
+        } 
+      }).addOnFailureListener(e ->
+              this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL),
+                      ErrorTag.REPO));
+    } else {
+      this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL), ErrorTag.REPO);
     }
 
   }
