@@ -61,6 +61,7 @@ Onboarding
 DeepLink
 Editprofile
 Testdatagenerierung
+GitHub Actions
 - Gottschalk Philipp (myPhilie):
 
 - Höpfinger Julian (julian1198):
