@@ -8,6 +8,7 @@ import com.example.unserhoersaal.model.LiveChatMessageModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
+import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,19 +88,30 @@ public class LiveChatRepository {
   private void loadLiveChat() {
     this.liveChatMessages.postLoading();
 
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      meeting.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      meeting.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
+
     Query query = this.databaseReference
             .child(Config.LIVE_CHAT_MESSAGES_CHILD)
-            .child(this.meeting.getValue().getData().getKey());
+            .child(meetingKey);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         List<LiveChatMessageModel> messList = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           LiveChatMessageModel model = snapshot.getValue(LiveChatMessageModel.class);
-          //TODO poll to livechat
+
           if (model == null) {
-            Log.e(TAG, Config.POLLS_FAILED_TO_LOAD);
-            meeting.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
+            Log.e(TAG, Config.LIVE_CHAT_FAILED_TO_LOAD);
+            meeting.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
             return;
           }
 
@@ -111,7 +123,7 @@ public class LiveChatRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.d(TAG, "onCancelled: " + error.getMessage());
+        meeting.postError(new Error(Config.LIVE_CHAT_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
   }
@@ -120,25 +132,28 @@ public class LiveChatRepository {
    * This method saves a message in the data base.
    */
   public void sendMessage(LiveChatMessageModel liveChatMessageModel) {
-    String meetingKey = meeting.getValue().getData().getKey();
-
-    if (meetingKey == null) {
-      Log.e(TAG, "threadKey is null.");
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
       return;
     }
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      return;
+    }
+    String uid = Validation.checkStateLiveData(this.userId, TAG);
 
-    liveChatMessageModel.setCreatorId(this.userId.getValue().getData());
+    liveChatMessageModel.setCreatorId(uid);
     String messageId = this.databaseReference.getRoot().push().getKey();
+    if (messageId == null) {
+      return;
+    }
 
     this.databaseReference.child(Config.LIVE_CHAT_MESSAGES_CHILD)
             .child(meetingKey)
             .child(messageId)
             .setValue(liveChatMessageModel)
-            .addOnSuccessListener(unused -> {
-              liveChatMessageModel.setKey(messageId);
-            }).addOnFailureListener(e -> {
-              Log.e(TAG, "Nachricht konnte nicht versandt werden: " + e.getMessage());
-            });
+            .addOnSuccessListener(unused -> liveChatMessageModel.setKey(messageId))
+            .addOnFailureListener(e -> Log.e(TAG,  e.getMessage()));
   }
 
   /**

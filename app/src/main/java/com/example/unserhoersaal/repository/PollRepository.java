@@ -147,9 +147,21 @@ public class PollRepository {
   private void loadPolls() {
     this.polls.postLoading();
 
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      this.polls.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
+
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      this.polls.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
+
     Query query = databaseReference
             .child(Config.CHILD_POLL)
-            .child(this.meeting.getValue().getData().getKey());
+            .child(meetingKey);
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -170,7 +182,7 @@ public class PollRepository {
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, "onCancelled: " + error.getMessage());
+        polls.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
       }
     });
   }
@@ -229,11 +241,13 @@ public class PollRepository {
   }
 
   private Task<DataSnapshot> getPollOption(String id) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return null;
+    }
     String uid = this.firebaseAuth.getCurrentUser().getUid();
     return this.databaseReference.child(Config.CHILD_USER_POLL).child(uid).child(id).get();
   }
 
-  //TODO ifs
   /**
    * Save a vote of the user in the database.
    *
@@ -242,16 +256,30 @@ public class PollRepository {
    * @param pollId id of the voted poll
    */
   public void vote(CheckedOptionEnum checkedOptionEnum, String optionPath, String pollId) {
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      return;
+    }
+
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      return;
+    }
+
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return;
+    }
     String uid = this.firebaseAuth.getCurrentUser().getUid();
+
     //increase OptionCount
     this.databaseReference.child(Config.CHILD_POLL)
-            .child(meeting.getValue().getData().getKey())
+            .child(meetingKey)
             .child(pollId)
             .child(optionPath)
             .setValue(ServerValue.increment(1));
     //increase Count
     this.databaseReference.child(Config.CHILD_POLL)
-            .child(meeting.getValue().getData().getKey())
+            .child(meetingKey)
             .child(pollId)
             .child(Config.CHILD_VOTES_COUNT)
             .setValue(ServerValue.increment(1));
@@ -277,17 +305,30 @@ public class PollRepository {
    */
   public void changeVote(CheckedOptionEnum checkedOption, String checkedOptionPath,
                          String oldOptionPath, String pollId) {
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      return;
+    }
+
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      return;
+    }
+
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return;
+    }
     String uid = this.firebaseAuth.getCurrentUser().getUid();
 
     //increase OptionCount
     this.databaseReference.child(Config.CHILD_POLL)
-            .child(meeting.getValue().getData().getKey())
+            .child(meetingKey)
             .child(pollId)
             .child(checkedOptionPath)
             .setValue(ServerValue.increment(1));
     //decrease OptionCount
     this.databaseReference.child(Config.CHILD_POLL)
-            .child(meeting.getValue().getData().getKey())
+            .child(meetingKey)
             .child(pollId)
             .child(oldOptionPath)
             .setValue(ServerValue.increment(-1));
@@ -310,19 +351,32 @@ public class PollRepository {
    * @param optionPath database path for the removed option
    */
   public void removeVote(String optionPath, String pollId) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return;
+    }
     String uid = this.firebaseAuth.getCurrentUser().getUid();
+
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
+      return;
+    }
+
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      return;
+    }
     //remove userPoll
     this.databaseReference.child(Config.CHILD_USER_POLL).child(uid).child(pollId).removeValue();
     this.databaseReference.child(Config.CHILD_POLL_USER).child(pollId).child(uid).removeValue();
     //decreaseOptionCount
     this.databaseReference.child(Config.CHILD_POLL)
-            .child(meeting.getValue().getData().getKey())
+            .child(meetingKey)
             .child(pollId)
             .child(optionPath)
             .setValue(ServerValue.increment(-1));
     //decrease count
     this.databaseReference.child(Config.CHILD_POLL)
-            .child(meeting.getValue().getData().getKey())
+            .child(meetingKey)
             .child(pollId)
             .child(Config.CHILD_VOTES_COUNT)
             .setValue(ServerValue.increment(-1));

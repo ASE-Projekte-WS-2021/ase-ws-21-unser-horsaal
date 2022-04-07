@@ -275,9 +275,11 @@ public class Config {
   public static final String NO_PICUTRE_SELECTED = "Es wurde kein Bild selektiert!";
 
   public static final String POLL_CREATION_FAILURE = "Die Umfrage konnte nicht erstellt werden!";
-  public static final String POLLS_FAILED_TO_LOAD = "Polls konnten nicht geladen werden!";
+  public static final String POLLS_FAILED_TO_LOAD = "Die Umfragen konnten nicht geladen werden!";
   public static final String POLL_ID_NULL = "PollId is null.";
   public static final String POLL_MODEL_NULL = "pollModel is null.";
+
+  public static final String LIVE_CHAT_FAILED_TO_LOAD = "Der Chat konnte nicht geladen werden!";
 
   public static final String MEETING_OBJECT_NULL = "meetingObj is null.";
 

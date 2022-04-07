@@ -240,7 +240,10 @@ public class QuestionRepository {
   }
 
   private Task<DataSnapshot> getLikeStatusThread(String id) {
-    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      return null;
+    }
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
     return this.databaseReference.child(Config.CHILD_USER_LIKE).child(uid).child(id).get();
   }
 
