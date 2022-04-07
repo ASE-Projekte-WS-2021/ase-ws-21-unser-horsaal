@@ -343,6 +343,12 @@ public class Config {
   public static final int NO_STROKE = 0;
 
   /**=======================.
+   *  Thread-Sort-Algorithm
+   * ======================= */
+  public static final String ASCENDING = "ascending";
+  public static final String DESCENDING = "descending";
+
+  /**=======================.
    *  Live-Chat
    * ======================= */
   public static final String LIVE_CHAT_MESSAGES_CHILD = "LiveChatMessages";
