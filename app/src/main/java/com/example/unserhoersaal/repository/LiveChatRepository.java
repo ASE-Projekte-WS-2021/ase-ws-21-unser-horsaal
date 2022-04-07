@@ -147,6 +147,7 @@ public class LiveChatRepository {
             .child(Config.LIVE_CHAT_MESSAGES_CHILD)
             .child(meetingKey);
     query.addValueEventListener(this.listener);
+    this.liveChatMessages.postComplete();
   }
 
   private void updateLiveChatSet(DataSnapshot dataSnapshot) {
