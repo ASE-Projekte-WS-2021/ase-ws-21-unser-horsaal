@@ -65,6 +65,9 @@ public class CurrentCourseViewModel extends ViewModel {
 
   /** Send a new message in a thread. */
   public void sendMessage() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     //TODO: removed loading because there is no place for it
     MessageModel messageModel = Validation.checkStateLiveData(this.messageModelInputState, TAG);
     if (messageModel == null) {
@@ -193,6 +196,9 @@ public class CurrentCourseViewModel extends ViewModel {
   }
 
   public void solved(String messageId) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.currentCourseRepository.solved(messageId);
   }
 

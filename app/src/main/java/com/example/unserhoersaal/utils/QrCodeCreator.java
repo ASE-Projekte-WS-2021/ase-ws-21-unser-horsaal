@@ -29,6 +29,9 @@ public class QrCodeCreator {
   @BindingAdapter({"codeMapping", "viewmodel"})
   public static void generateQrCode(View view, String text,
                                     CourseDescriptionViewModel courseDescriptionViewModel) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     Bitmap bitmap;
     String deepLink = Config.DEEP_LINK_URL + text;
     QRGEncoder qrgEncoder = new QRGEncoder(deepLink, null, QRGContents.Type.TEXT, Config.DIMEN);

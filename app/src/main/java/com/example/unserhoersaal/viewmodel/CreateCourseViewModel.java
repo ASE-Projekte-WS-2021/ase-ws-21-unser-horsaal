@@ -6,6 +6,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.repository.CreateCourseRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.Random;
@@ -67,6 +68,9 @@ public class CreateCourseViewModel extends ViewModel {
 
   /** Create a new course. */
   public void createCourse() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.courseModelInputState.postLoading();
 
     CourseModel courseModel = Validation.checkStateLiveData(this.courseModelInputState, TAG);
