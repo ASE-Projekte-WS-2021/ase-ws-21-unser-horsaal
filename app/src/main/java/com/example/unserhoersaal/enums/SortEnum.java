@@ -1,6 +1,8 @@
 package com.example.unserhoersaal.enums;
 
-/** JavaDoc. */
+/**
+ * This enum is used to select the sort for the threads.
+ */
 public enum SortEnum {
   NEWEST,
   MOST_LIKES,

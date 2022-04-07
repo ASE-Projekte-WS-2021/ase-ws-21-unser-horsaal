@@ -1,6 +1,8 @@
 package com.example.unserhoersaal.enums;
 
-/** TODO. */
+/**
+ * This enum signals the place of an error.
+ */
 public enum ErrorTag {
   NULL,
   EMAIL,
