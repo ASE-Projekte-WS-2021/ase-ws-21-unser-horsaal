@@ -286,18 +286,4 @@ public class QuestionsFragment extends Fragment {
     });
   }
 
-  private void setupScrolling() {
-    View infoContainer = this.binding.questionsFragmentInfoContainer;
-    this.binding.questionFragmentThreadRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-      @Override
-      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
-        if (!recyclerView.canScrollVertically(-1)) {
-          infoContainer.setVisibility(View.VISIBLE);
-        } else {
-          infoContainer.setVisibility(View.GONE);
-        }
-      }
-    });
-  }
 }
