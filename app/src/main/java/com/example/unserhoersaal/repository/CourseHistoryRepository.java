@@ -288,6 +288,10 @@ public class CourseHistoryRepository {
       return;
     }
 
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
+    meetingsModel.setCreatorId(uid);
+    meetingsModel.setCreationTime(System.currentTimeMillis());
+
     //reset meeting key thus it is not saved twice in the database
     meetingsModel.setKey(null);
     this.databaseReference
