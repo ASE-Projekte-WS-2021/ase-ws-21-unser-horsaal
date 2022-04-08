@@ -74,7 +74,7 @@ public class LoginViewModel extends ViewModel {
 
   /** checks login parameter before using firebase login API. */
   public void login() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.userInputState.postLoading();
@@ -119,7 +119,7 @@ public class LoginViewModel extends ViewModel {
 
   /** Send reset password email.*/
   public void sendPasswordResetMail() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.emailSentLiveData.postLoading();
@@ -152,7 +152,7 @@ public class LoginViewModel extends ViewModel {
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
   public void sendVerificationEmail() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.emailSentLiveData.postLoading();
@@ -163,8 +163,9 @@ public class LoginViewModel extends ViewModel {
     this.authAppRepository.isUserEmailVerified();
   }
 
+  /** logs out the current user. */
   public void logout() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.authAppRepository.logOut();

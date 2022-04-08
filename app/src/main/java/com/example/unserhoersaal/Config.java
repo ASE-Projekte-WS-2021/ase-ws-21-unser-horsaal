@@ -1,7 +1,5 @@
 package com.example.unserhoersaal;
 
-import androidx.databinding.Bindable;
-
 import java.text.SimpleDateFormat;
 
 /** Config Class. */
@@ -13,27 +11,18 @@ public class Config {
   public static final int PASSWORD_LENGTH_MAX = 64;
   public static final int USERNAME_LENGTH_MIN = 3;
   public static final int USERNAME_LENGTH_MAX = 15;
-  public static final int EMAIL_LENGTH_MAX = 64;
   public static final int INSTITUTION_LENGTH_MIN = 0;
   public static final int INSTITUTION_LENGTH_MAX = 75;
 
   public static final int COURSE_TITLE_LENGTH_MIN = 3;
   public static final int COURSE_TITLE_LENGTH_MAX = 100;
-  public static final int MEETING_TITLE_LENGTH_MIN = 3;
   public static final int MEETING_TITLE_LENGTH_MAX = 100;
-  public static final int THREAD_TITLE_LENGTH_MIN = 3;
-  public static final int THREAD_TITLE_LENGTH_MAX = 100;
 
   public static final int COURSE_TEXT_LENGTH_MIN = 1;
   public static final int COURSE_TEXT_LENGTH_MAX = 500;
-  public static final int MEETING_TEXT_LENGTH_MIN = 1;
-  public static final int MEETING_TEXT_LENGTH_MAX = 500;
-  public static final int THREAD_TEXT_LENGTH_MIN = 1;
-  public static final int THREAD_TEXT_LENGTH_MAX = 500;
-  public static final int MESSAGE_TEXT_LENGTH_MIN = 1;
   public static final int MESSAGE_TEXT_LENGTH_MAX = 500;
 
-  public static final int COURSE_DESCRIPTION_LENGTH_MIN = 0; //optional
+  public static final int COURSE_DESCRIPTION_LENGTH_MIN = 0;
   public static final int COURSE_DESCRIPTION_LENGTH_MAX = 500;
 
   public static final int THREAD_OPTIONS_LENGTH_MIN = 1;
@@ -97,7 +86,6 @@ public class Config {
   public static final String CHILD_THREADS = "threads";
   public static final String CHILD_USER_COURSES = "usersCourses";
   public static final String CHILD_COURSES_USER = "coursesUsers";
-  public static final String CHILD_USER_NAME = "displayName";
   public static final String CHILD_LIKE = "likes";
   public static final String CHILD_TOP_ANSWER = "topAnswer";
   public static final String CHILD_ANSWER_COUNT = "answersCount";
@@ -117,8 +105,6 @@ public class Config {
   public static final String CHILD_OPTION_COUNT_2 = "optionsCount2";
   public static final String CHILD_OPTION_COUNT_3 = "optionsCount3";
   public static final String CHILD_OPTION_COUNT_4 = "optionsCount4";
-  public static final String CHILD_DESCRIPTION = "description";
-  public static final String CHILD_TITLE = "title";
   public static final String CHILD_TEXT = "text";
   public static final String CHILD_TEXT_DELETED = "isTextDeleted";
 
@@ -178,7 +164,6 @@ public class Config {
   /**=======================.
    * Search Hint
    * ======================= */
-  public static final String SEARCH_VIEW_HINT = "Deine Suche ...";
   public static final String TAG_SUBJECT_MATTER = "lehrstoff";
   public static final String TAG_EXAMINATION = "prüfung";
   public static final String TAG_MISTAKE = "fehler";
@@ -188,11 +173,8 @@ public class Config {
   /**=======================.
    * Internal Error Messages
    * ======================= */
-  public static final String INTERNAL_AUTH_TOO_MANY_REQUESTS = "To many requests";
   public static final String FIREBASE_USER_NULL = "Firebase User is null";
   public static final String STATE_LIVE_DATA_NULL = "Databinding Error";
-  public static final String AUTH_LOGOUT_SUCCESS = "";
-  public static final String AUTH_LOGOUT_FAIL = "";
   public static final String LISTENER_FAILED_TO_RESOLVE = "Listener failed to reslove";
   public static final String UNKNOWN_USER = "<gelöschter Nutzer>";
 
@@ -235,16 +217,10 @@ public class Config {
   public static final String AUTH_LOGIN_FAILED = "Falsche Email-Adresse oder falsches Passwort!";
   public static final String AUTH_EDIT_PASSWORD_CHANGE_FAILED =
           "Das Passwort konnte nicht geändert werden!";
-  public static final String AUTH_EDIT_PASSWORD_CHANGE_SUCCESS =
-          "Das Passwort wurde erfolgreich geändert!";
   public static final String AUTH_EDIT_USERNAME_CHANGE_FAILED =
           "Der Nutzername konnte nicht geändert werden!";
-  public static final String AUTH_EDIT_USERNAME_CHANGE_SUCCESS =
-          "Der Nutzername wurde erfolgreich geändert!";
   public static final String AUTH_EDIT_INSTITUTION_CHANGE_FAILED =
           "Die Institution konnte nicht geändert werden!";
-  public static final String AUTH_EDIT_INSTITUTION_CHANGE_SUCCESS =
-          "Die Institution wurde erfolgreich geändert!";
   public static final String AUTH_EDIT_PROFILE_PICTURE_CHANGE_FAILED =
           "Das Profilbild konnte nicht geändert werden!";
   public static final String AUTH_VERIFICATION_EMAIL_SENT =
@@ -266,30 +242,22 @@ public class Config {
           "Das Meeting konnte nicht erstellt werden!";
   public static final String COURSE_MEETING_THREAD_CREATION_FAILURE =
           "Der Thread konnte nicht erstellt werden!";
-  public static final String CURRENT_COURSE_CREATION_MESSAGE =
-          "Die Chatnachricht konnte nicht versandt werden!";
 
   public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_FAILED =
           "Das Abmelden vom Kurs war nicht erfolgreich!";
-  public static final String COURSE_DESCRIPTION_UNREGISTER_COURSE_SUCCESS =
-          "Erfolgreich vom Kurs abgemeldet!";
   public static final String COURSE_DESCRIPTION_SETCOURSEID_FAILED =
           "Der ausgewählte Kurs konnte nicht gefunden werden!";
 
-  public static final String COURSE_DESCRIPTION_COULD_NOT_LOAD_USER =
-          "Nutzer konnte nicht geladen werden!";
   public static final String PROFILE_FAILED_TO_LOAD_USER =
           "Das Nutzerprofil konnte nicht geladen werden!";
   public static final String COURSES_FAILED_TO_LOAD = "Kurse konnten nicht geladen werden!";
   public static final String THREADS_FAILED_TO_LOAD = "Threads konnten nicht geladen werden!";
-  public static final String MEETINGS_FAILED_TO_LOAD = "Meeting konnten nicht geladen werden!";
   public static final String MESSAGES_FAILED_TO_LOAD = "Nachrichten konnten nicht geladen werden!";
   public static final String NO_PICUTRE_SELECTED = "Es wurde kein Bild selektiert!";
 
   public static final String POLL_CREATION_FAILURE = "Die Umfrage konnte nicht erstellt werden!";
   public static final String POLLS_FAILED_TO_LOAD = "Die Umfragen konnten nicht geladen werden!";
   public static final String POLL_ID_NULL = "PollId is null.";
-  public static final String POLL_MODEL_NULL = "pollModel is null.";
 
   public static final String LIVE_CHAT_FAILED_TO_LOAD = "Der Chat konnte nicht geladen werden!";
 
@@ -310,7 +278,6 @@ public class Config {
    *  CodeMapping
    * ======================= */
   public static final String CODE_MAPPING_DEEP_LINK_KEY = "codeMapping";
-  public static final String COURSE_CODE_MAPPING_CLIPBOARD = "Code_Mapping_Clip_Data";
   public static final String COURSE_CODE_MAPPING_CLIPBOARD_TOAST_TEXT = "Copied!";
 
   /**=======================.
@@ -327,19 +294,16 @@ public class Config {
    * ======================= */
   public static final int VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL = 2000;
 
-  /** QrCode. */
+  /**=======================.
+   *  QR Code
+   * ======================= */
   public static final int DIMEN = 400;
-  public static final String QR_CODE = "Qr_Code";
-  public static final String QR_CODE_TOAST = "Created QR code";
   public static final String QR_CODE_FILE_NAME = "qrCodeImage";
   public static final int QR_CODE_COMPRESSION = 100;
   public static final String TYPE_PNG = "image/png";
   public static final String PATH_FOR_QR_CODE = "DCIM/";
-  public static final String NO_REPLY_PASSWORD = "ASE-2022";
-  public static final String NO_REPLY_EMAIL = "noreply.unserhoersaal@gmail.com";
   public static final String TYPE_IMAGE = "image/*";
   public static final String GALLERY_INTENT_TITLE = "Betrachte generierten Qr-Code";
-  public static final String PNG_FILE_ENDING = ".png";
 
   /**=======================.
    *  Thread-Card
@@ -361,18 +325,18 @@ public class Config {
   /**=======================.
    *  Impressum
    * ======================= */
-  public static final String GITHUB_LINK_LEGAL = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
+  public static final String GITHUB_LINK_LEGAL
+          = "https://github.com/ASE-Projekte-WS-2021/ase-ws-21-unser-horsaal/tree/master/legal/";
 
   /**=======================.
    *  NavUtil
    * ======================= */
-
   public static final String TEXT_PLAIN = "text/plain";
 
-   /**=======================.
-   *  Camera-Intent
-   * ======================= */
-  public static final String CAMERA_INTENT_ERROR_TOAST = "Es konnte keine Kamera App auf deinem Smartphone gefunden werden";
-
+  /**=======================.
+  *  Camera-Intent
+  * ======================= */
+  public static final String CAMERA_INTENT_ERROR_TOAST
+          = "Es konnte keine Kamera App auf deinem Smartphone gefunden werden";
 
 }

@@ -4,7 +4,7 @@ import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 
 /**
- * Class to display Error Messages
+ * Class to display Error Messages.
  */
 public class ErrorUtil {
 

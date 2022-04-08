@@ -65,7 +65,7 @@ public class PollViewModel extends ViewModel {
   
   /** Create a new poll. */
   public void createPoll(boolean yesNoPoll) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.pollModelInputState.postLoading();
@@ -146,7 +146,7 @@ public class PollViewModel extends ViewModel {
 
   /** Handle the selection of an option from an user.*/
   public void vote(CheckedOptionEnum checkedOption, PollModel pollModel) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.pollModel.postLoading();

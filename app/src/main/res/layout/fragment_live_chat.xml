@@ -142,7 +142,7 @@
                 android:insetLeft="0dp"
                 android:insetRight="0dp"
                 android:insetTop="0dp"
-                android:onClick="@{(view) -> fragment.sendMessage()}"
+                android:onClick="@{(view) -> vm.sendMessage()}"
                 app:cornerRadius="30dp"
                 app:icon="@drawable/ic_baseline_send_24"
                 app:layout_constraintBottom_toBottomOf="parent"

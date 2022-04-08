@@ -91,7 +91,7 @@ public class EnterCourseViewModel extends ViewModel {
 
   /** Checks user input before assigning user to the course. */
   public void enterCourse() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.courseModelStateLiveData.postLoading();

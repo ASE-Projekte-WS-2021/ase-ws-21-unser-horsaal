@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.PollAdapter;
 import com.example.unserhoersaal.databinding.FragmentPollBinding;

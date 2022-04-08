@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,11 @@ import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 /** Course-Description.*/
 public class CourseDescriptionFragment extends Fragment {
 
-  private static final String TAG = "CourseDescriptionFragment";
-
   private NavController navController;
   private CourseDescriptionViewModel courseDescriptionViewModel;
   private CourseParticipantsViewModel courseParticipantsViewModel;
   private FragmentCourseDescriptionBinding binding;
+
   public CourseDescriptionFragment() {
     // Required empty public constructor
   }
@@ -33,19 +31,6 @@ public class CourseDescriptionFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    /*ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-              @Override
-              public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                  // There are no request codes
-                  Intent data = result.getData();
-                 // doSomeOperations();
-                }
-              }
-            });
-     */
   }
 
   @Override

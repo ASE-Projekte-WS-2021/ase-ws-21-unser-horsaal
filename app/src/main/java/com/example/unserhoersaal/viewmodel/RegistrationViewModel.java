@@ -67,7 +67,7 @@ public class RegistrationViewModel extends ViewModel {
 
   /** checks registration parameter before using firebase registration API. */
   public void register() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.userInputState.postLoading();

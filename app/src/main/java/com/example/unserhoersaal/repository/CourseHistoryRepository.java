@@ -50,7 +50,7 @@ public class CourseHistoryRepository {
   }
 
   /**
-   * Initialize the ValueEventListener
+   * Initialize the ValueEventListener.
    */
   private void initListener() {
     this.listener = new ValueEventListener() {
@@ -94,7 +94,7 @@ public class CourseHistoryRepository {
   }
 
   /**
-   * Posts the new courses for the view
+   * Posts the new courses for the view.
    *
    * @param meetingsModels list of meetings
    */

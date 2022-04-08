@@ -56,6 +56,7 @@ public class LiveChatViewModel extends ViewModel {
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
     } else {
       liveChatMessageModel.setCreationTime(System.currentTimeMillis());
+      this.sldMessageModelInputState.postCreate(new LiveChatMessageModel());
       this.liveChatRepository.sendMessage(liveChatMessageModel);
     }
   }
