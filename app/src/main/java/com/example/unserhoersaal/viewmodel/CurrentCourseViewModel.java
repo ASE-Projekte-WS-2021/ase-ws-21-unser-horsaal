@@ -197,8 +197,11 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
+  /** Calls Repo Methode that marks the Answer as solved.
+   *
+   * @param messageId the Id of the Message that gets marked as solved */
   public void solved(String messageId) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.currentCourseRepository.solved(messageId);

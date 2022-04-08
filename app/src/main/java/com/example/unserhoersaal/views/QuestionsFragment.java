@@ -103,19 +103,6 @@ public class QuestionsFragment extends Fragment {
     }
   }
 
-  //TODO why here? changed to in createThread
-  private void threadLiveStateCallback(StateData<ThreadModel> threadModelStateData) {
-    this.resetBindings();
-
-    if (threadModelStateData.getData() != null) {
-      KeyboardUtil.hideKeyboard(getActivity());
-      this.currentCourseViewModel.setThread(threadModelStateData.getData());
-      this.questionsViewModel.resetThreadModelInput();
-      this.binding.questionFragmentFab.setVisibility(View.VISIBLE);
-      //this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
-    }
-  }
-
   private void sortEnumCallback(StateData<SortEnum> sortEnum) {
     if (sortEnum.getData() != SortEnum.NEWEST) {
       this.binding.questionChipNewest.setChecked(Boolean.FALSE);
@@ -138,8 +125,6 @@ public class QuestionsFragment extends Fragment {
       this.binding.questionChipPageCountDownActivated.setVisibility(View.GONE);
     }
 
-    //TODO: is there a better solution to trigger the callback function for threads?
-    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel.getThreads()
             .getValue().getData());
   }
@@ -154,9 +139,6 @@ public class QuestionsFragment extends Fragment {
       this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
     }
 
-
-    //TODO: is there a better solution to trigger the callback funtion for threads?
-    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel
             .getThreads().getValue().getData());
   }
