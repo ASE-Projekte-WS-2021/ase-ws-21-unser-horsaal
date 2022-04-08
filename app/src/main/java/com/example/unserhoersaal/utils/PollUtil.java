@@ -7,8 +7,6 @@ import com.example.unserhoersaal.Config;
 /** Utilities for the poll. */
 public class PollUtil {
 
-  private static final String TAG = "PollUtil";
-
   /** Calculate the proportion of the whole votes for one option. */
   public static String calculatePercentage(View view, int optionVotes, int pollVotes) {
     if (pollVotes == 0) {
