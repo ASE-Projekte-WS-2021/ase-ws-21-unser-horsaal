@@ -9,14 +9,12 @@ import com.example.unserhoersaal.enums.ErrorTag;
  * and Error Tags in StateData helping with handling invalid inputs and various results
  * from Firebase. DataStatus is important for the Fragments when observing LiveData: while Status
  * loading a progressbar may be displayed, while Status Error various error messages are rendered
- * into special TextViews and Status success overrides existing data resulting in rerendering e.g.
+ * into special TextViews and Status success overrides existing data resulting in re-rendering e.g.
  * the items in a RecyclerView or logging in the user. Error Tags are used to further differentiate
  * Views. postCreate is used to initiate and reset the StatusLiveData.
  * code reference: https://stackoverflow.com/a/53420462/13620136
  **/
 public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
-
-  private static final String TAG = "StateLiveData";
 
   /**
    * Initiate or reset the data instance of a model class in a StateLiveData instance. The model
@@ -31,7 +29,7 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
 
   /**
    * Use this method to set the DataStatus to loading. Loading is used to set the visibility of a
-   * progressspinner.
+   * progress spinner.
    */
   public void postLoading() {
     if (this.getValue() != null) {
@@ -58,7 +56,7 @@ public class StateLiveData<T> extends MutableLiveData<StateData<T>> {
 
   /**
    * Use this method to set the DataStatus to success. Success is used in Repositories to update new
-   * data and indicate a rerendering of data.
+   * data and indicate a re-rendering of data.
    *
    * @param updatedData model class / list of model classes
    */

@@ -74,10 +74,6 @@ public class ProfileViewModel extends ViewModel {
     this.authAppRepository.logOut();
   }
 
-  public void deleteAccount() {
-    this.authAppRepository.deleteAccount();
-  }
-
   /** checks user input before editing name with firebase API. */
   public void changeDisplayName() {
     if (PreventDoubleClick.checkIfDoubleClick()) {

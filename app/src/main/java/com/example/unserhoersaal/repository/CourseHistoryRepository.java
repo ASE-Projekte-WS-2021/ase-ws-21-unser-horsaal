@@ -50,13 +50,14 @@ public class CourseHistoryRepository {
   }
 
   /**
-   * Initialize the ValueEventListener
+   * Initialize the ValueEventListener.
    */
   private void initListener() {
     this.listener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         updateMeetingSet(dataSnapshot);
+        meetingsModelList.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           MeetingsModel model = snapshot.getValue(MeetingsModel.class);
 
@@ -66,8 +67,8 @@ public class CourseHistoryRepository {
 
           model.setKey(snapshot.getKey());
           meetingsModelList.add(model);
+          updateMeetingList(meetingsModelList, model);
         }
-        updateMeetingList(meetingsModelList);
       }
 
       @Override
@@ -93,21 +94,27 @@ public class CourseHistoryRepository {
   }
 
   /**
-   * Posts the new courses for the view
+   * Posts the new courses for the view.
    *
    * @param meetingsModels list of meetings
    */
-  private void updateMeetingList(List<MeetingsModel> meetingsModels) {
-    ArrayList<MeetingsModel> modelList = new ArrayList<>();
+  private void updateMeetingList(List<MeetingsModel> meetingsModels, MeetingsModel meetingsModel) {
     for (int i = 0; i < meetingsModels.size(); i++) {
-      if (meetingSet.contains(meetingsModels.get(i).getKey())) {
-        meetingSet.remove(meetingsModels.get(i).getKey());
-        modelList.add(meetingsModels.get(i));
+      MeetingsModel m = meetingsModels.get(i);
+      if (m.getKey().equals(meetingsModel.getKey())) {
+        if (meetingSet.contains(meetingsModel.getKey())) {
+          meetingsModels.set(i, meetingsModel);
+        } else {
+          meetingsModels.remove(i);
+        }
+        this.meetings.postUpdate(meetingsModels);
+        return;
       }
     }
-    this.meetingsModelList.clear();
-    this.meetingsModelList.addAll(modelList);
-    this.meetings.postUpdate(meetingsModelList);
+    if (this.meetingSet.contains(meetingsModel.getKey())) {
+      meetingsModels.add(meetingsModel);
+      this.meetings.postUpdate(meetingsModels);
+    }
   }
 
   /**
@@ -280,6 +287,10 @@ public class CourseHistoryRepository {
               new Error(Config.COURSE_HISTORY_MEETING_CREATION_FAILURE), ErrorTag.REPO);
       return;
     }
+
+    String uid = this.firebaseAuth.getCurrentUser().getUid();
+    meetingsModel.setCreatorId(uid);
+    meetingsModel.setCreationTime(System.currentTimeMillis());
 
     //reset meeting key thus it is not saved twice in the database
     meetingsModel.setKey(null);

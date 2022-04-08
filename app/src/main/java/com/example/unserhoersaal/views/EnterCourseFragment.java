@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +25,9 @@ import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
-  private static final String TAG = "EnterCourseFragment";
-
   private EnterCourseViewModel enterCourseViewModel;
   private NavController navController;
   private FragmentEnterCourseBinding binding;
-  private DeepLinkMode deepLinkMode;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -55,15 +51,15 @@ public class EnterCourseFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    this.deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
     this.setupToolbar();
 
-    if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+    DeepLinkMode deepLinkMode = DeepLinkMode.getInstance();
+    if (deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
       CourseModel courseModel = new CourseModel();
-      courseModel.setCodeMapping(this.deepLinkMode.getCodeMapping());
+      courseModel.setCodeMapping(deepLinkMode.getCodeMapping());
       this.enterCourseViewModel
               .courseIdInputState.postCreate(courseModel);
       this.enterCourseViewModel.checkCode();
@@ -80,7 +76,7 @@ public class EnterCourseFragment extends Fragment {
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
     if (courseModelStateData != null && courseModelStateData.getError() != null) {
-      Log.e(TAG, courseModelStateData.getError().getMessage());
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
     }
 
     KeyboardUtil.hideKeyboard(getActivity());
@@ -90,7 +86,7 @@ public class EnterCourseFragment extends Fragment {
       return;
     }
 
-    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE){
+    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       if (courseModelStateData.getData() == null) {
         Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
         return;
@@ -111,7 +107,9 @@ public class EnterCourseFragment extends Fragment {
   private void setupToolbar() {
     this.binding.enterCourseFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.enterCourseFragmentToolbar
-            .setNavigationOnClickListener(v -> this.navController.navigateUp());
+            .setNavigationOnClickListener(v ->
+                    this.navController.navigate(
+                            R.id.action_enterCourseFragment_to_coursesFragment));
   }
 
   @Override

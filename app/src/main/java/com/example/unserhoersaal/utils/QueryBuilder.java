@@ -5,7 +5,7 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.TagEnum;
 import java.util.List;
 
-/** Used in CourseFragment and QuestionFragment to query all accessable values in a thread. */
+/** Used in CourseFragment and QuestionFragment to query all accessible values in a thread. */
 public class QueryBuilder {
 
   public String userQuery;

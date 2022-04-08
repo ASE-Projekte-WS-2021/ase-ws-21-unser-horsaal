@@ -90,7 +90,7 @@ public class OnBoardingWrapperFragment extends Fragment {
       this.finishOnboarding();
       this.navController.navigate(R.id.action_onboardingFragment_to_verificationFragment);
     } else if (firebaseUserStateData.getStatus() == StateData.DataStatus.ERROR) {
-        Toast.makeText(getContext(), Config.AUTH_REGISTRATION_FAILED, Toast.LENGTH_SHORT).show();
+      Toast.makeText(getContext(), Config.AUTH_REGISTRATION_FAILED, Toast.LENGTH_SHORT).show();
     }
   }
 

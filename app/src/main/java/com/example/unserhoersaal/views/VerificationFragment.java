@@ -2,7 +2,6 @@ package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +29,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 /** holding area for registered but not yet verified users. */
 public class VerificationFragment extends Fragment {
-
-  private static final String TAG = "VerificationFragment";
 
   private FragmentVerificationBinding binding;
   private NavController navController;
@@ -161,6 +158,12 @@ public class VerificationFragment extends Fragment {
     this.loginViewModel.setDefaultInputState();
     this.handler.removeCallbacks(this.runnable);
     this.loginViewModel.setLiveDataComplete();
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    this.handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
   }
 
 }

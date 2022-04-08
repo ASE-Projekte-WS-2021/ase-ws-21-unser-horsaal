@@ -1,23 +1,17 @@
 package com.example.unserhoersaal.utils;
 
-import android.util.Log;
 import android.view.View;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.enums.TagEnum;
 import com.example.unserhoersaal.model.ThreadModel;
 import java.util.List;
 
-/** JavaDoc. */
+/** Class for setting and removing tags. */
 public class TagUtil {
 
-  private static final String TAG = "TagUtil";
-
-  /** JavaDoc. */
+  /** Sets and removes tags. */
   @BindingAdapter({"threadModel", "tagEnum"})
   public static void setTag(View view, ThreadModel threadModel, TagEnum tagEnum) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
-      return;
-    }
     List<TagEnum> tags = threadModel.getTags();
 
     if (tagEnum != null) {

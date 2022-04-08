@@ -16,8 +16,6 @@ import com.example.unserhoersaal.viewmodel.RegistrationViewModel;
 /** Used in OnboardingWrapperFragment in ViewPager. */
 public class OnBoardingUserNameFragment extends Fragment {
 
-  private static final String TAG = "OnBoardingUserNameFragment";
-
   private FragmentOnboardingUsernameBinding binding;
   private RegistrationViewModel registrationViewModel;
 

@@ -272,44 +272,6 @@
 
             </TableRow>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/profileFragmentButtonWrapper"
-                android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/profileFragmentButton"
-                    android:layout_width="350dp"
-                    android:layout_height="wrap_content"
-                    android:enabled="@{vm.userLiveData.status != StateData.DataStatus.LOADING}"
-                    android:onClick="@{(view) -> NavUtil.deleteAccountDialog(view, vm)}"
-                    android:layout_gravity="center"
-                    android:text="@string/profile_fragment_delete_account"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/wideRedButton"/>
-
-                <ProgressBar
-                    android:id="@+id/profileFragmentProgressSpinner"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:elevation="8dp"
-                    android:indeterminate="true"
-                    android:indeterminateTint="@color/white"
-                    android:indeterminateTintMode="src_in"
-                    android:visibility="@{vm.userLiveData.status == StateData.DataStatus.LOADING ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@+id/profileFragmentButton"
-                    app:layout_constraintEnd_toEndOf="@+id/profileFragmentButton"
-                    app:layout_constraintHorizontal_bias="0.975"
-                    app:layout_constraintStart_toStartOf="@+id/profileFragmentButton"
-                    app:layout_constraintTop_toTopOf="@+id/profileFragmentButton" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </TableLayout>
               
     </androidx.constraintlayout.widget.ConstraintLayout>

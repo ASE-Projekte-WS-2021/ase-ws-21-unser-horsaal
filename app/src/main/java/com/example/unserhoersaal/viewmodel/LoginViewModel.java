@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -75,7 +74,7 @@ public class LoginViewModel extends ViewModel {
 
   /** checks login parameter before using firebase login API. */
   public void login() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.userInputState.postLoading();
@@ -84,7 +83,6 @@ public class LoginViewModel extends ViewModel {
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
-      Log.e(TAG, "userModel or passwordModel is null.");
       this.userLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -121,14 +119,13 @@ public class LoginViewModel extends ViewModel {
 
   /** Send reset password email.*/
   public void sendPasswordResetMail() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.emailSentLiveData.postLoading();
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
       this.emailSentLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -155,7 +152,7 @@ public class LoginViewModel extends ViewModel {
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
   public void sendVerificationEmail() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.emailSentLiveData.postLoading();
@@ -166,8 +163,9 @@ public class LoginViewModel extends ViewModel {
     this.authAppRepository.isUserEmailVerified();
   }
 
+  /** logout user. */
   public void logout() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.authAppRepository.logOut();

@@ -86,6 +86,7 @@
                     android:layout_marginTop="16dp"
                     android:hint="@string/login_fragment_password_hint"
                     android:layout_gravity="center"
+                    app:endIconMode="password_toggle"
                     app:errorEnabled="true"
                     app:setError="@{vm.passwordInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.passwordInputState.errorTag == ErrorTag.CURRENT_PASSWORD ? vm.passwordInputState.error.message : null}">
 

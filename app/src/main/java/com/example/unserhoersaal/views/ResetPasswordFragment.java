@@ -20,8 +20,6 @@ import com.example.unserhoersaal.viewmodel.LoginViewModel;
 /** JavaDoc for this Fragment. */
 public class ResetPasswordFragment extends Fragment {
 
-  private static final String TAG = "ResetPasswordFragment";
-
   private FragmentResetPasswordBinding binding;
   private LoginViewModel loginViewModel;
 
