@@ -46,9 +46,10 @@ public class Config {
   public static final int TIME_MINUTE_TO_MILLI = 60000;
   public static final int TIME_HOUR_PER_DAY = 24;
   public static final int TIME_MINUTE_PER_HOUR = 60;
-  public static final int TIME_MAX_MINUTES_PER_HOUR = 59;
 
   public static final int CODE_MAPPING_LENGTH = 9;
+
+  public static final int DOUBLE_CLICK_WAIT = 1000;
 
   /**=======================.
    * User Allowed Input Characters
@@ -63,18 +64,16 @@ public class Config {
   public static final String REGEX_PATTERN_PASSWORD =
           String.format("^(?=.*[0-9a-zA-Z]).{%s,%s}$",
                   PASSWORD_LENGTH_MIN, PASSWORD_LENGTH_MAX);
-
   public static final String REGEX_PATTERN_TITLE = String.format(".{%s,%s}",
           COURSE_TITLE_LENGTH_MIN, COURSE_TITLE_LENGTH_MAX);
   public static final String REGEX_PATTERN_INSTITUTION = String.format(".{%s,%s}",
           INSTITUTION_LENGTH_MIN, INSTITUTION_LENGTH_MAX);
-  public static final String REGEX_PATTERN_TEXT = String.format(".{%s,%s}",
+  public static final String REGEX_PATTERN_TEXT = String.format(".{%s,%s}\\R.*",
           COURSE_TEXT_LENGTH_MIN, COURSE_TEXT_LENGTH_MAX);
-  public static final String REGEX_PATTERN_DESCRIPTION = String.format(".{%s,%s}",
+  public static final String REGEX_PATTERN_DESCRIPTION = String.format(".{%s,%s}\\R.*",
           COURSE_DESCRIPTION_LENGTH_MIN, COURSE_DESCRIPTION_LENGTH_MAX);
   public static final String REGEX_PATTERN_OPTIONS = String.format(".{%s,%s}",
           THREAD_OPTIONS_LENGTH_MIN, THREAD_OPTIONS_LENGTH_MAX);
-
   public static final String REGEX_PATTERN_CODE_MAPPING =
           "^([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})[\\s-]?([A-Z]{3}|[a-z]{3})$";
 
@@ -205,10 +204,10 @@ public class Config {
 
   public static final String DATABINDING_TITLE_NULL = "Der Titel darf nicht leer sein!";
   public static final String DATABINDING_TITLE_WRONG_PATTERN =
-          "Der Titel enthält ungültige Charaktere!"; //TODO: add characters
+          "Der Titel enthält ungültige Charaktere!";
   public static final String DATABINDING_TEXT_NULL = "Dieses Textfeld darf nicht leer sein!";
   public static final String DATABINDING_TEXT_WRONG_PATTERN =
-          "Der Titel enthält ungültige Charaktere!";
+          "Der Text enthält ungültige Charaktere!";
   public static final String DATABINDING_CODEMAPPING_NULL =
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
@@ -299,10 +298,8 @@ public class Config {
   public static final String CREATE_MEETING_DATE_WRONG = "Es wurde kein Datum gewählt!";
   public static final String CREATE_MEETING_TIME_WRONG = "Es wurde kein Startzeitpunkt gewählt!";
   public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Bitte Dauer in Stunden wählen!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG = "Bitte Dauer in Minuten wählen!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_TOO_LONG
-          = "Werte über 59 Minuten sind nicht möglich";
-
+  public static final String CREATE_MEETING_MINUTE_DURATION_WRONG
+          = "Bitte Dauer in Minuten wählen!";
   /**=======================.
    *  Avatar Placeholder Ids
    * ======================= */

@@ -146,11 +146,11 @@ public class PollViewModel extends ViewModel {
 
   /** Handle the selection of an option from an user.*/
   public void vote(CheckedOptionEnum checkedOption, PollModel pollModel) {
-    //TODO really needed?
-    /*if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
-    }*/
+    }
     this.pollModel.postLoading();
+
     String pollId = pollModel.getKey();
     CheckedOptionEnum oldOption = pollModel.getCheckedOption();
     if (oldOption == checkedOption) {

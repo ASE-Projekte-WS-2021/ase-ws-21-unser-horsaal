@@ -163,4 +163,9 @@ public class VerificationFragment extends Fragment {
     this.loginViewModel.setLiveDataComplete();
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    this.handler.postDelayed(this.runnable, Config.VERIFICATION_EMAIL_VERIFIED_CHECK_INTERVAL);
+  }
 }

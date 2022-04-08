@@ -3,12 +3,10 @@ package com.example.unserhoersaal.views;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -142,8 +140,10 @@ public class LoginFragment extends Fragment {
 
   private void navigateUser(StateData<FirebaseUser> firebaseUserStateData,
                             FirebaseUser firebaseUser) {
-    if (firebaseUser != null && (firebaseUserStateData.getStatus() == StateData.DataStatus.CREATED
-            || firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE)) {
+    if (firebaseUser != null
+            && (firebaseUserStateData.getStatus() == StateData.DataStatus.CREATED
+            || firebaseUserStateData.getStatus() == StateData.DataStatus.UPDATE
+            || firebaseUserStateData.getStatus() == StateData.DataStatus.COMPLETE)) {
       if (firebaseUser.isEmailVerified()
               && deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
         this.setUserIds(firebaseUser);

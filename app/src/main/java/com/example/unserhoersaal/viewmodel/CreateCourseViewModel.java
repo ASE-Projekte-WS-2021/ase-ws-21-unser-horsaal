@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -97,7 +96,7 @@ public class CreateCourseViewModel extends ViewModel {
       this.courseModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.DESCRIPTION);
     } else if (!Validation.stringHasPattern(
-            courseModel.getDescription(), Config.REGEX_PATTERN_TEXT)) {
+            courseModel.getDescription(), Config.REGEX_PATTERN_DESCRIPTION)) {
       this.courseModelInputState.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.DESCRIPTION);
     } else if (Validation.emptyString(courseModel.getInstitution())) {
