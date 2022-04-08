@@ -25,6 +25,7 @@
 
 **Testkurse:**
 - JFV-PXE-IJD
+- WTXLLMBFK
 
 ## Was ist das Ziel der App?
 *Während der Umschaltung auf den rein digitalen Vorlesungsbetrieb wurden Plattformen wie Zoom oder Twitch genutzt. Diese boten unter anderem durch den Chat, Reaktionsemotes und Abstimmungsfeatures wertvolle neue Interaktionsmöglichkeiten sowohl für Dozent°innen, als auch für Student°innen. Das Ziel der App ist es, einige dieser digitalen Interaktionsmöglichkeiten in den Präsenzbetrieb zu integrieren.*
