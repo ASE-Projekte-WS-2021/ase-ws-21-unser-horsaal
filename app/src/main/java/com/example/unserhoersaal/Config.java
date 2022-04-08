@@ -192,7 +192,7 @@ public class Config {
           "Der Titel enthält ungültige Charaktere!";
   public static final String DATABINDING_TEXT_NULL = "Dieses Textfeld darf nicht leer sein!";
   public static final String DATABINDING_TEXT_WRONG_PATTERN =
-          "Der Titel enthält ungültige Charaktere!";
+          "Der Text enthält ungültige Charaktere!";
   public static final String DATABINDING_CODEMAPPING_NULL =
           "Der Beitrittscode darf nicht leer sein!";
   public static final String DATABINDING_CODEMAPPING_WRONG_PATTERN =
@@ -269,8 +269,6 @@ public class Config {
   public static final String CREATE_MEETING_HOUR_DURATION_WRONG = "Bitte Dauer in Stunden wählen!";
   public static final String CREATE_MEETING_MINUTE_DURATION_WRONG
           = "Bitte Dauer in Minuten wählen!";
-  public static final String CREATE_MEETING_MINUTE_DURATION_TOO_LONG
-          = "Werte über 59 Minuten sind nicht möglich";
 
   /**=======================.
    *  Avatar Placeholder Ids

@@ -79,7 +79,7 @@ public class EnterCourseFragment extends Fragment {
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
     if (courseModelStateData != null && courseModelStateData.getError() != null) {
-      Log.e(TAG, courseModelStateData.getError().getMessage());
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
     }
 
     KeyboardUtil.hideKeyboard(getActivity());
@@ -110,7 +110,9 @@ public class EnterCourseFragment extends Fragment {
   private void setupToolbar() {
     this.binding.enterCourseFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.enterCourseFragmentToolbar
-            .setNavigationOnClickListener(v -> this.navController.navigateUp());
+            .setNavigationOnClickListener(v ->
+                    this.navController.navigate(
+                            R.id.action_enterCourseFragment_to_coursesFragment));
   }
 
   @Override
