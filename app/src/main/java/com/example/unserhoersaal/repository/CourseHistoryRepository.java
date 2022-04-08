@@ -57,6 +57,7 @@ public class CourseHistoryRepository {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         updateMeetingSet(dataSnapshot);
+        meetingsModelList.clear();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
           MeetingsModel model = snapshot.getValue(MeetingsModel.class);
 
@@ -66,8 +67,8 @@ public class CourseHistoryRepository {
 
           model.setKey(snapshot.getKey());
           meetingsModelList.add(model);
+          updateMeetingList(meetingsModelList, model);
         }
-        updateMeetingList(meetingsModelList);
       }
 
       @Override
@@ -97,17 +98,23 @@ public class CourseHistoryRepository {
    *
    * @param meetingsModels list of meetings
    */
-  private void updateMeetingList(List<MeetingsModel> meetingsModels) {
-    ArrayList<MeetingsModel> modelList = new ArrayList<>();
+  private void updateMeetingList(List<MeetingsModel> meetingsModels, MeetingsModel meetingsModel) {
     for (int i = 0; i < meetingsModels.size(); i++) {
-      if (meetingSet.contains(meetingsModels.get(i).getKey())) {
-        meetingSet.remove(meetingsModels.get(i).getKey());
-        modelList.add(meetingsModels.get(i));
+      MeetingsModel m = meetingsModels.get(i);
+      if (m.getKey().equals(meetingsModel.getKey())) {
+        if (meetingSet.contains(meetingsModel.getKey())) {
+          meetingsModels.set(i, meetingsModel);
+        } else {
+          meetingsModels.remove(i);
+        }
+        this.meetings.postUpdate(meetingsModels);
+        return;
       }
     }
-    this.meetingsModelList.clear();
-    this.meetingsModelList.addAll(modelList);
-    this.meetings.postUpdate(meetingsModelList);
+    if (this.meetingSet.contains(meetingsModel.getKey())) {
+      meetingsModels.add(meetingsModel);
+      this.meetings.postUpdate(meetingsModels);
+    }
   }
 
   /**
