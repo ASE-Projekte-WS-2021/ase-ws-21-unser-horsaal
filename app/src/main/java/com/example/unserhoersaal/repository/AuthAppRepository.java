@@ -202,41 +202,6 @@ public class AuthAppRepository {
   }
 
   /**
-   * Method to delete an user account.
-   */
-  public void deleteAccount() {
-    this.userLiveData.postLoading();
-    if (this.firebaseAuth.getCurrentUser() == null) {
-      this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL), ErrorTag.REPO);
-      return;
-    }
-    String uid = this.firebaseAuth.getCurrentUser().getUid();
-    this.databaseReference.child(Config.CHILD_USER)
-            .child(uid)
-            .removeValue()
-            .addOnSuccessListener(unused -> deleteUser());
-  }
-
-  /**
-   * Delete the user data in firebase auth.
-   */
-  private void deleteUser() {
-    FirebaseUser user = this.firebaseAuth.getCurrentUser();
-    if (user != null) {
-      user.delete().addOnCompleteListener(task -> {
-        if (task.isSuccessful()) {
-          this.userLiveData.postUpdate(null);
-        } 
-      }).addOnFailureListener(e ->
-              this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL),
-                      ErrorTag.REPO));
-    } else {
-      this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL), ErrorTag.REPO);
-    }
-
-  }
-
-  /**
    * Reloads the current FirebaseUser object so that we can see if the email was verified.
    */
   public void isUserEmailVerified() {

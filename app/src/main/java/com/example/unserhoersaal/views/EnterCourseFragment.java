@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +24,6 @@ import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
-
-  private static final String TAG = "EnterCourseFragment";
 
   private EnterCourseViewModel enterCourseViewModel;
   private NavController navController;
@@ -54,12 +51,12 @@ public class EnterCourseFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    DeepLinkMode deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
     this.setupToolbar();
 
+    DeepLinkMode deepLinkMode = DeepLinkMode.getInstance();
     if (deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
       CourseModel courseModel = new CourseModel();
       courseModel.setCodeMapping(deepLinkMode.getCodeMapping());

@@ -1,7 +1,6 @@
 package com.example.unserhoersaal.utils;
 
 import android.os.SystemClock;
-
 import com.example.unserhoersaal.Config;
 
 /**

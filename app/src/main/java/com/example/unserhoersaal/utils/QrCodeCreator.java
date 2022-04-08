@@ -33,7 +33,7 @@ public class QrCodeCreator {
   @BindingAdapter({"codeMapping", "viewmodel"})
   public static void generateQrCode(View view, String text,
                                     CourseDescriptionViewModel courseDescriptionViewModel) {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     Bitmap bitmap;
@@ -44,7 +44,6 @@ public class QrCodeCreator {
       bitmap = qrgEncoder.encodeAsBitmap();
       saveImage(bitmap, "name", view.getContext());
       galleryIntent(view.getContext());
-      //courseDescriptionViewModel.setQrCodeBitmap(bitmap);
     } catch (WriterException | IOException e) {
       Log.e(TAG, e.getMessage());
     }

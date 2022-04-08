@@ -116,28 +116,6 @@ public class NavUtil {
     navController.navigate(R.id.action_courseHistoryFragment_to_courseDescriptionFragment);
   }
 
-  /** Shows Confirmation Dialog when User clicks on delete Account in Profile. */
-  //reference: https://developer.android.com/guide/topics/ui/dialogs
-  @BindingAdapter("viewModel")
-  public static void deleteAccountDialog(View view, ProfileViewModel viewModel) {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
-      return;
-    }
-    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-    builder.setMessage(R.string.dialog_delete_account_message)
-            .setTitle(R.string.dialog_delete_account_title)
-            .setPositiveButton(R.string.dialog_delete_account_true,
-                    (dialog, which) -> {
-                      viewModel.deleteAccount();
-                      dialog.dismiss();
-                    })
-            .setNegativeButton(R.string.dialog_delete_account_false,
-                    (dialog, which) -> dialog.dismiss());
-
-    AlertDialog dialog = builder.create();
-    dialog.show();
-  }
-
   /** Shows Confirmation Dialog when User clicks on unregister from course. */
   //reference: https://developer.android.com/guide/topics/ui/dialogs
   @BindingAdapter("unregisterFromCourse")
@@ -307,11 +285,11 @@ public class NavUtil {
       return;
     }
     String deepLink = Config.DEEP_LINK_URL + codeMapping;
-    Context context = view.getContext();
     Intent intent = new Intent(android.content.Intent.ACTION_SEND);
     intent.setType(Config.TEXT_PLAIN);
     intent.putExtra(android.content.Intent.EXTRA_SUBJECT, deepLink);
     intent.putExtra(android.content.Intent.EXTRA_TEXT, deepLink);
+    Context context = view.getContext();
     context.startActivity(Intent.createChooser(intent, deepLink));
   }
 
@@ -321,10 +299,10 @@ public class NavUtil {
     if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
-    Intent camera_intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
+    Intent cameraIntent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
     Context context = view.getContext();
     try {
-      context.startActivity(camera_intent);
+      context.startActivity(cameraIntent);
     } catch (android.content.ActivityNotFoundException ex) {
       Toast.makeText(context, Config.CAMERA_INTENT_ERROR_TOAST, Toast.LENGTH_LONG).show();
     }
