@@ -1,10 +1,10 @@
 package com.example.unserhoersaal.views;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -25,12 +25,9 @@ import com.example.unserhoersaal.viewmodel.EnterCourseViewModel;
 /** Fragment for entering a course.*/
 public class EnterCourseFragment extends Fragment {
 
-  private static final String TAG = "EnterCourseFragment";
-
   private EnterCourseViewModel enterCourseViewModel;
   private NavController navController;
   private FragmentEnterCourseBinding binding;
-  private DeepLinkMode deepLinkMode;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -54,15 +51,15 @@ public class EnterCourseFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    this.deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
     this.setupToolbar();
 
-    if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+    DeepLinkMode deepLinkMode = DeepLinkMode.getInstance();
+    if (deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
       CourseModel courseModel = new CourseModel();
-      courseModel.setCodeMapping(this.deepLinkMode.getCodeMapping());
+      courseModel.setCodeMapping(deepLinkMode.getCodeMapping());
       this.enterCourseViewModel
               .courseIdInputState.postCreate(courseModel);
       this.enterCourseViewModel.checkCode();
@@ -78,42 +75,28 @@ public class EnterCourseFragment extends Fragment {
   }
 
   private void courseLiveDataCallback(StateData<CourseModel> courseModelStateData) {
-    this.resetBindings();
+    if (courseModelStateData != null && courseModelStateData.getError() != null) {
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+    }
+
     KeyboardUtil.hideKeyboard(getActivity());
 
     if (courseModelStateData == null) {
-      this.binding.enterCourseFragmentPasswordErrorText.setText(Config.UNSPECIFIC_ERROR);
-      this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
+      Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
       return;
     }
 
-    if (courseModelStateData.getStatus() == StateData.DataStatus.ERROR) {
-      this.binding.enterCourseFragmentPasswordErrorText
-              .setText(courseModelStateData.getError().getMessage());
-      this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.VISIBLE);
-    } else if (courseModelStateData.getStatus() == StateData.DataStatus.LOADING) {
-      this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.VISIBLE);
-      this.binding.enterCourseFragmentEnterButton.setEnabled(false);
-      this.binding.enterCourseFragmentEnterButton.setBackgroundColor(Color.GRAY);
-    } else {
+    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       if (courseModelStateData.getData() == null) {
+        Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
         return;
       }
       if (courseModelStateData.getData().getKey() != null) {
-        navController.navigate(
-                R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
+        this.navController.navigate(R.id.action_enterCourseFragment_to_enterCourseDetailFragment);
       } else {
-        navController.navigate(
-                R.id.action_enterCourseFragment_to_noCourseFoundFragment);
+        this.navController.navigate(R.id.action_enterCourseFragment_to_noCourseFoundFragment);
       }
     }
-  }
-
-  private void resetBindings() {
-    this.binding.enterCourseFragmentPasswordErrorText.setVisibility(View.GONE);
-    this.binding.enterCourseFragmentProgressSpinner.setVisibility(View.GONE);
-    this.binding.enterCourseFragmentEnterButton.setEnabled(true);
-    this.binding.enterCourseFragmentEnterButton.setTextAppearance(R.style.wideBlueButton);
   }
 
   private void connectBinding() {
@@ -122,8 +105,7 @@ public class EnterCourseFragment extends Fragment {
   }
 
   private void setupToolbar() {
-    this.binding.enterCourseFragmentToolbar
-            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.enterCourseFragmentToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.enterCourseFragmentToolbar
             .setNavigationOnClickListener(v ->
                     this.navController.navigate(
@@ -134,6 +116,7 @@ public class EnterCourseFragment extends Fragment {
   public void onPause() {
     super.onPause();
     this.enterCourseViewModel.resetEnterCourseId();
+    this.enterCourseViewModel.setLiveDataComplete();
   }
 
 }

@@ -1,6 +1,8 @@
 package com.example.unserhoersaal.model;
 
-/** model class for passwords for databinding and livedata. */
+/**
+ * model class for passwords for databinding and livedata.
+ */
 public class PasswordModel {
 
   private String currentPassword;

@@ -1,12 +1,12 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.PasswordModel;
 import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.repository.AuthAppRepository;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.firebase.auth.FirebaseUser;
@@ -67,14 +67,22 @@ public class LoginViewModel extends ViewModel {
     this.passwordInputState.postCreate(new PasswordModel());
   }
 
-  /** JavaDoc for this method. */
+  public void setLiveDataComplete() {
+    this.userLiveData.postComplete();
+    this.emailSentLiveData.postComplete();
+  }
+
+  /** checks login parameter before using firebase login API. */
   public void login() {
-    this.userLiveData.postLoading();
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
+    this.userInputState.postLoading();
+    this.passwordInputState.postLoading();
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);
     if (userModel == null || passwordModel == null) {
-      Log.e(TAG, "userModel or passwordModel is null.");
       this.userLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
@@ -82,96 +90,84 @@ public class LoginViewModel extends ViewModel {
     String email = userModel.getEmail();
     String password = passwordModel.getCurrentPassword();
 
-    if (Validation.emptyString(email)) {
-      Log.d(TAG, "email is null.");
-      this.userLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-      return;
-    } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, "email has wrong pattern.");
-      this.userLiveData.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
-      return;
+    if (this.loginCheckInput(email, password)) {
+      this.userInputState.postComplete();
+      this.passwordInputState.postComplete();
+      this.authAppRepository.login(email, password);
     }
-    if (Validation.emptyString(password)) {
-      Log.d(TAG, "password is null.");
-      this.userLiveData.postError(
-              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
-      return;
-    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
-      Log.d(TAG, "password has wrong pattern.");
-      this.userLiveData.postError(
-              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
-      return;
-    }
+  }
 
-    this.setDefaultInputState();
-    this.authAppRepository.login(email, password);
+  private boolean loginCheckInput(String email, String password) {
+    if (Validation.emptyString(email)) {
+      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      return false;
+    } else if (!Validation.emailHasPattern(email)) {
+      this.userInputState.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
+      return false;
+    } else if (Validation.emptyString(password)) {
+      this.passwordInputState.postError(
+              new Error(Config.AUTH_PASSWORD_EMPTY), ErrorTag.CURRENT_PASSWORD);
+      return false;
+    } else if (!Validation.stringHasPattern(password, Config.REGEX_PATTERN_PASSWORD)) {
+      this.passwordInputState.postError(
+              new Error(Config.AUTH_PASSWORD_WRONG_PATTERN), ErrorTag.CURRENT_PASSWORD);
+      return false;
+    }
+    return true;
   }
 
   /** Send reset password email.*/
   public void sendPasswordResetMail() {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.emailSentLiveData.postLoading();
 
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
     if (userModel == null) {
-      Log.e(TAG, "LoginViewModel>sendPasswordResetMail userModel is null.");
       this.emailSentLiveData.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
     String email = userModel.getEmail();
 
-    if (Validation.emptyString(email)) {
-      Log.d(TAG, "email is null.");
-      this.emailSentLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-    } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, "email has wrong pattern.");
-      this.emailSentLiveData.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
-    } else {
-
-      this.setDefaultInputState();
+    if (this.sendPasswordCheckInput(email)) {
       this.authAppRepository.sendPasswordResetMail(email);
     }
   }
 
+  private boolean sendPasswordCheckInput(String email) {
+    if (Validation.emptyString(email)) {
+      this.emailSentLiveData.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
+      return false;
+    } else if (!Validation.emailHasPattern(email)) {
+      this.emailSentLiveData.postError(
+              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.CURRENT_PASSWORD);
+      return false;
+    }
+    return true;
+  }
+
   /** Resend email verification email. Requires a logged in user! Cant send an email without
    * the user being logged in! */
-  public void resendVerificationEmail() {
-    this.userLiveData.postLoading();
-    this.authAppRepository.resendVerificationEmail();
-  }
-
-  /** Changes the password of the user. */
-  public void resetPassword() {
-    UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
-    if (userModel == null) {
-      Log.e(TAG, "userModel is null.");
-      this.userInputState.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
+  public void sendVerificationEmail() {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
-
-    String email = userModel.getEmail();
-
-    if (Validation.emptyString(email)) {
-      Log.d(TAG, "email is null.");
-      this.userInputState.postError(new Error(Config.AUTH_EMAIL_EMPTY), ErrorTag.EMAIL);
-    } else if (!Validation.emailHasPattern(email)) {
-      Log.d(TAG, "email has wrong pattern.");
-      this.userInputState.postError(
-              new Error(Config.AUTH_EMAIL_WRONG_PATTERN_LOGIN), ErrorTag.EMAIL);
-    } else {
-
-      this.setDefaultInputState();
-      this.authAppRepository.resetPassword(email);
-    }
+    this.emailSentLiveData.postLoading();
+    this.authAppRepository.sendVerificationEmail();
   }
 
-  public void reloadFirebaseUser() {
-    this.authAppRepository.reloadFirebaseUser();
+  public void isUserEmailVerified() {
+    this.authAppRepository.isUserEmailVerified();
   }
 
+  /** logout user. */
   public void logout() {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.authAppRepository.logOut();
   }
 

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.example.unserhoersaal.viewmodel.RegistrationViewModel" />
+        <import type="com.example.unserhoersaal.Config" />
+        <import type="com.example.unserhoersaal.R"/>
+        <import type="com.example.unserhoersaal.utils.NavUtil"/>
+        <import type="android.view.View"/>
+        <import type="com.example.unserhoersaal.enums.ErrorTag"/>
+        <import type="com.example.unserhoersaal.utils.StateData"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/app_background">
+
+                <ImageView
+                    android:id="@+id/onboardingWelcomeFragmentImage"
+                    android:src="@drawable/onboarding_username"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/onboardingUsernameFragmentText1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/app_blue"
+                    android:textStyle="bold"
+                    android:text="@string/onboarding_username_text_headline"
+                    android:layout_marginTop="16dp"
+                    android:layout_below="@id/onboardingWelcomeFragmentImage"/>
+
+                <TextView
+                    android:id="@+id/onboardingUsernameFragmentText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:textSize="15sp"
+                    android:text="@string/onboarding_username_text_1"
+                    android:layout_below="@+id/onboardingUsernameFragmentText1"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/onboardingUsernameFragmentText3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:textSize="15sp"
+                    android:text="@string/onboarding_username_text_2"
+                    android:layout_below="@+id/onboardingUsernameFragmentText2"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/onboardingUsernameFragmentText4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/app_blue"
+                    android:textSize="18sp"
+                    android:layout_marginTop="24dp"
+                    android:layout_below="@+id/onboardingUsernameFragmentText3"
+                    android:text="@string/onboarding_username_text_3" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/onboardingUsernameFragmentUserNameEditField"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_below="@+id/onboardingUsernameFragmentText4"
+                    app:counterMaxLength="@{Config.USERNAME_LENGTH_MAX}"
+                    app:counterEnabled="true"
+                    app:endIconMode="clear_text"
+                    android:hint="@string/registration_fragment_user_name"
+                    app:errorEnabled="true"
+                    app:setError="@{vm.userInputState.status == StateData.DataStatus.ERROR &amp;&amp; vm.userInputState.errorTag == ErrorTag.USERNAME ? vm.userInputState.error.message : null}"
+                    style="@style/inputField">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/onboardingUsernameFragmentUserNameEditText"
+                        android:text="@={vm.userInputState.data.displayName}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:background="@drawable/rounded_corners"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</layout>

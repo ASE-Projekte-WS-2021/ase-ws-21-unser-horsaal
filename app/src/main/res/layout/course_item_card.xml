@@ -33,30 +33,37 @@
 
             <TextView
                 android:id="@+id/courseItemCardTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:textColor="@color/app_blue"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/courseItemCardImage"
                 app:layout_constraintTop_toTopOf="@id/courseItemCardImage"
-                tools:text="@{model.title}"/>
+                tools:text="@{model.title}" />
 
             <TextView
                 android:id="@+id/courseItemCardCreator"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/courseItemCardTitle"
                 app:layout_constraintTop_toBottomOf="@+id/courseItemCardTitle"
-                tools:text="@{model.creatorName}"/>
+                tools:text="@{model.creatorName}" />
 
             <TextView
                 android:id="@+id/courseItemCardInstitution"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/courseItemCardTitle"
                 app:layout_constraintTop_toBottomOf="@+id/courseItemCardCreator"
-                tools:text="@{model.institution}"/>
+                tools:text="@{model.institution}" />
 
             <ImageView
                 android:id="@+id/courseItemCardMeetingsImage"
@@ -84,7 +91,7 @@
                 android:id="@+id/courseItemCardMeetingsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Meetings"
+                android:text="@string/course_card_meetings"
                 android:layout_marginStart="8dp"
                 app:layout_constraintStart_toEndOf="@+id/courseItemCardNumberMeetings"
                 app:layout_constraintTop_toTopOf="@id/courseItemCardNumberMeetings" />
@@ -112,7 +119,7 @@
                 android:id="@+id/courseItemCardParticipantsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Teilnehmer"
+                android:text="@string/course_item_participants"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/courseItemCardNumberParticipants" />
 

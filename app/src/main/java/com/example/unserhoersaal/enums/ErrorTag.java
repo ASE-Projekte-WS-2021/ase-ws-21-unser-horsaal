@@ -1,6 +1,8 @@
 package com.example.unserhoersaal.enums;
 
-/** TODO. */
+/**
+ * This enum signals the place of an error.
+ */
 public enum ErrorTag {
   NULL,
   EMAIL,
@@ -13,5 +15,13 @@ public enum ErrorTag {
   INSTITUTION,
   REPO,
   VM,
-  DATE_TIME_PICKER
+  TIME_PICKER_DATE,
+  TIME_PICKER_TIME,
+  TIME_PICKER_HOUR_DURATION,
+  TIME_PICKER_MINUTE_DURATION,
+  OPTION1,
+  OPTION2,
+  OPTION3,
+  OPTION4,
+  CODEMAPPING
 }

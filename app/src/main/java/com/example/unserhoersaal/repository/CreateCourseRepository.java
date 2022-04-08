@@ -10,16 +10,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
-/**Class creates a course and saves it in Firebase.**/
+/**
+ * Class creates a course and saves it in Firebase.
+ */
 public class CreateCourseRepository {
 
   private static final String TAG = "CourseCreationRepo";
-  private FirebaseAuth firebaseAuth;
-  private DatabaseReference databaseReference;
-  private static CreateCourseRepository instance;
-  private StateLiveData<CourseModel> courseModelMutableLiveData = new StateLiveData<>();
 
-  /** Generates an Instance of CreateCourseRepository. */
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private static CreateCourseRepository instance;
+  private final StateLiveData<CourseModel> courseModelMutableLiveData = new StateLiveData<>();
+
+  /**
+   * Generates an Instance of CreateCourseRepository according to the Singleton pattern.
+   *
+   * @return Instance of the CreateCourseRepository
+   */
   public static CreateCourseRepository getInstance() {
     if (instance == null) {
       instance = new CreateCourseRepository();
@@ -27,7 +34,9 @@ public class CreateCourseRepository {
     return instance;
   }
 
-  /**Method gets an instance of Firebase.**/
+  /**
+   * Method gets an instance of Firebase.
+   */
   public CreateCourseRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -37,8 +46,14 @@ public class CreateCourseRepository {
     return this.courseModelMutableLiveData;
   }
 
-  /**Method creates an course.**/
+  /**
+   * Method creates a new course.
+   *
+   * @param courseModel data of the new course
+   */
   public void createNewCourse(CourseModel courseModel) {
+    this.courseModelMutableLiveData.postLoading();
+
     if (this.firebaseAuth.getCurrentUser() == null) {
       Log.e(TAG, Config.FIREBASE_USER_NULL);
       this.courseModelMutableLiveData.postError(
@@ -53,7 +68,6 @@ public class CreateCourseRepository {
     String courseId = this.databaseReference.getRoot().push().getKey();
 
     if (courseId == null) {
-      Log.e(TAG, "courseid is null");
       this.courseModelMutableLiveData.postError(
               new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
       return;
@@ -64,13 +78,52 @@ public class CreateCourseRepository {
               courseModel.setKey(courseId);
               addUserToCourse(courseModel, uid);
             })
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Kurs konnte nicht erstellt werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
+            .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                    new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO));
   }
 
+
+  /**
+   * Method edits th current course.
+   *
+   * @param courseModel model with the changed course data
+   */
+  public void editCourse(CourseModel courseModel) {
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courseModelMutableLiveData.postError(
+              new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    String courseId = courseModel.getKey();
+
+    if (courseId == null) {
+      this.courseModelMutableLiveData.postError(
+              new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
+      return;
+    }
+
+    DatabaseReference courseDbRef =
+            this.databaseReference.child(Config.CHILD_COURSES).child(courseId);
+
+    courseDbRef.setValue(courseModel)
+            .addOnSuccessListener(unused -> {
+              courseModel.setKey(courseId);
+              courseModelMutableLiveData.postUpdate(courseModel);
+              Log.d(TAG, courseModel.getKey());
+            })
+            .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                    new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO));
+  }
+
+
+  /**
+   * Adds a user to a course.
+   *
+   * @param course course the user is added
+   * @param user id of the added user
+   */
   private void addUserToCourse(CourseModel course, String user) {
     this.databaseReference
             .child(Config.CHILD_USER_COURSES)
@@ -82,25 +135,25 @@ public class CreateCourseRepository {
                             .child(course.getKey())
                             .child(user)
                             .setValue(Boolean.TRUE)
-                            .addOnSuccessListener(unused1 -> {
-                               this.databaseReference.child(Config.CHILD_COURSES)
-                                      .child(course.getKey())
-                                      .child(Config.CHILD_MEMBER_COUNT)
-                                      .setValue(ServerValue.increment(1))
-                                      .addOnSuccessListener(unused2 -> addMapping(course))
-                                      .addOnFailureListener(e -> {
-                                        Log.e(TAG, e.getMessage());
-                                      });
-                            })
-                            .addOnFailureListener(e -> {
-                              Log.e(TAG, "User konnte dem Kurs nicht hinzugefügt werden: "
-                                      + e.getMessage());
-                              courseModelMutableLiveData.postError(
-                                      new Error(Config.COURSES_COURSE_CREATION_FAILURE),
-                                      ErrorTag.REPO);
-                            }));
+                            .addOnSuccessListener(unused1 -> this.databaseReference
+                                    .child(Config.CHILD_COURSES)
+                                    .child(course.getKey())
+                                    .child(Config.CHILD_MEMBER_COUNT)
+                                    .setValue(ServerValue.increment(1))
+                                    .addOnSuccessListener(unused2 -> addMapping(course))
+                                    .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                                            new Error(Config.COURSES_COURSE_CREATION_FAILURE),
+                                            ErrorTag.REPO))
+                            .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                                    new Error(Config.COURSES_COURSE_CREATION_FAILURE),
+                                    ErrorTag.REPO))));
   }
 
+  /**
+   * Saves the mapping of a course in the database.
+   *
+   * @param course data of the course including the mapping code
+   */
   private void addMapping(CourseModel course) {
     String mappingCode = course.getCodeMapping();
 
@@ -110,11 +163,8 @@ public class CreateCourseRepository {
             .setValue(course.getKey())
             .addOnSuccessListener(unused ->
                     courseModelMutableLiveData.postUpdate(course))
-            .addOnFailureListener(e -> {
-              Log.e(TAG, "Das Mapping konnte nicht erstellt werden: " + e.getMessage());
-              courseModelMutableLiveData.postError(
-                      new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO);
-            });
+            .addOnFailureListener(e -> courseModelMutableLiveData.postError(
+                    new Error(Config.COURSES_COURSE_CREATION_FAILURE), ErrorTag.REPO));
   }
 
 }

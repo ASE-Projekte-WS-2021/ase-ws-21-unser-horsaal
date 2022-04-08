@@ -1,7 +1,10 @@
 package com.example.unserhoersaal.views;
 
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -9,26 +12,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateThreadBinding;
 import com.example.unserhoersaal.utils.KeyboardUtil;
-import com.example.unserhoersaal.viewmodel.CourseMeetingViewModel;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
+import com.example.unserhoersaal.viewmodel.QuestionsViewModel;
 
 /**Create Thread.*/
 public class CreateThreadFragment extends Fragment {
 
-  private static final String TAG = "CreateThreadFragment";
-
   private FragmentCreateThreadBinding binding;
   private NavController navController;
-  private CourseMeetingViewModel courseMeetingViewModel;
-  //private CurrentCourseViewModel currentCourseViewModel;
+  private QuestionsViewModel questionsViewModel;
+  private CurrentCourseViewModel currentCourseViewModel;
 
   public CreateThreadFragment() {
     // Required empty public constructor
@@ -58,34 +55,42 @@ public class CreateThreadFragment extends Fragment {
     this.initToolbar();
   }
 
-  //TODO wait for thread creation to close fragment
   private void initViewModel() {
-    this.courseMeetingViewModel = new ViewModelProvider(requireActivity())
-            .get(CourseMeetingViewModel.class);
-    //this.currentCourseViewModel = new ViewModelProvider(requireActivity())
-    //        .get(CurrentCourseViewModel.class);
-    this.courseMeetingViewModel.init();
-    //this.currentCourseViewModel.init();
-    this.courseMeetingViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
+    this.questionsViewModel = new ViewModelProvider(requireActivity())
+            .get(QuestionsViewModel.class);
+    this.currentCourseViewModel = new ViewModelProvider(requireActivity())
+            .get(CurrentCourseViewModel.class);
+    this.questionsViewModel.init();
+    this.currentCourseViewModel.init();
+    this.questionsViewModel.getThreadModel().observe(getViewLifecycleOwner(), threadModel -> {
+      if (threadModel == null) {
+        Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
+        return;
+      }
       if (threadModel.getData() != null) {
         KeyboardUtil.hideKeyboard(getActivity());
-        //this.currentCourseViewModel.setThreadId(threadModel.getKey());
-        //this.courseMeetingViewModel.resetThreadModelInput();
-        this.navController.navigate(R.id.action_createThreadFragment_to_courseMeetingFragment);
+        this.currentCourseViewModel.setThread(threadModel.getData());
+        this.navController.navigate(R.id.action_createThreadFragment_to_courseThreadFragment);
       }
     });
   }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
-    this.binding.setVm(this.courseMeetingViewModel);
+    this.binding.setVm(this.questionsViewModel);
   }
 
   private void initToolbar() {
     this.binding.createThreadFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.createThreadFragmentToolbar
-            .setNavigationOnClickListener(v ->
-                    navController.navigate(R.id.action_createThreadFragment_to_courseMeetingFragment));
+            .setNavigationOnClickListener(v -> navController.navigateUp());
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    this.questionsViewModel.resetThreadModelInput();
+    this.questionsViewModel.setLiveDataComplete();
   }
 }

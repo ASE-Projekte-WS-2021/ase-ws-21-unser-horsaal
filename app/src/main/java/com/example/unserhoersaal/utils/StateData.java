@@ -22,16 +22,7 @@ public class StateData<T> {
   @NonNull
   private ErrorTag errorTag;
 
-  /** TODO. */
-  @Deprecated
-  public StateData(@Nullable T data) {
-    this.status = DataStatus.CREATED;
-    this.data = data;
-    this.error = null;
-    this.errorTag = ErrorTag.NULL;
-  }
-
-  /** TODO. */
+  /** Constructor which is used by postCreate in combination with this.create(T modelinstance). */
   public StateData() {
     this.status = DataStatus.CREATED;
     this.error = null;
@@ -68,10 +59,10 @@ public class StateData<T> {
     return this;
   }
 
-  /** TODO. */
-  @Deprecated
-  public StateData<T> success() {
-    this.status = DataStatus.CREATED;
+  /** Indicator for input data that pattern matching was successful and input data
+   * is passed on to the according repository. */
+  public StateData<T> complete() {
+    this.status = DataStatus.COMPLETE;
     this.error = null;
     this.errorTag = ErrorTag.NULL;
     return this;
@@ -89,11 +80,6 @@ public class StateData<T> {
     this.status = DataStatus.ERROR;
     this.error = error;
     this.errorTag = errorTag;
-    return this;
-  }
-
-  @Deprecated
-  public StateData<T> complete() {
     return this;
   }
 
@@ -117,12 +103,13 @@ public class StateData<T> {
     return errorTag;
   }
 
-  /** TODO. */
+  /** Status for StateData used in StatusLiveData. */
   public enum DataStatus {
     CREATED,
     LOADING,
     ERROR,
-    UPDATE
+    UPDATE,
+    COMPLETE
   }
 
 }

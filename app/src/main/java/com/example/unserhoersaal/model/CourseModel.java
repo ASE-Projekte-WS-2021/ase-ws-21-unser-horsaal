@@ -1,18 +1,16 @@
 package com.example.unserhoersaal.model;
 
-/** Class description. */
+/**
+ * Model for an course.
+ */
 public class CourseModel {
-
-  private static final String TAG = "CourseModel";
 
   private String codeMapping;
   private Long creationTime;
   private String creatorId;
   private String description;
-  //private String groupIcon;
   private String institution;
   private String title;
-
   private String key;
   private String creatorName;
   private String photoUrl;
@@ -23,14 +21,18 @@ public class CourseModel {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
 
-  /** Constructor. */
+  /**
+   * Constructor.
+   */
   public CourseModel(String title, String description, String institution) {
     this.title = title;
     this.description = description;
     this.institution = institution;
   }
 
-  /** Getter. */
+  /**
+   * Getter.
+   */
   public String getCodeMapping() {
     return this.codeMapping;
   }
@@ -46,10 +48,6 @@ public class CourseModel {
   public String getDescription() {
     return this.description;
   }
-
-  /*public String getGroupIcon() {
-    return this.groupIcon;
-  }*/
 
   public String getInstitution() {
     return this.institution;
@@ -79,7 +77,9 @@ public class CourseModel {
     return this.memberCount;
   }
 
-  /** Setter. */
+  /**
+   * Setter.
+   */
   public void setCodeMapping(String codeMapping) {
     this.codeMapping = codeMapping;
   }
@@ -95,10 +95,6 @@ public class CourseModel {
   public void setDescription(String description) {
     this.description = description;
   }
-
-  /*public void setGroupIcon(String groupIcon) {
-    this.groupIcon = groupIcon;
-  }*/
 
   public void setInstitution(String institution) {
     this.institution = institution;

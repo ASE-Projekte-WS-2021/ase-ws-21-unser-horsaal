@@ -7,10 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.enums.LikeStatus;
+import com.example.unserhoersaal.model.CalendarModel;
 import com.google.android.material.card.MaterialCardView;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /** Binding Aadapter Class that formats unix timestamp (milliseconds) in long datatype
@@ -39,25 +39,6 @@ public class Format {
       return "";
     }
     return Config.RECENT_FORMAT.format(new Date(time));
-  }
-
-  /** datetime formater that formats to date after 24h passed. */
-  @BindingAdapter("calculateDate")
-  public static String calculateDate(TextView view, Long timeInMillis) {
-    String date;
-    if (System.currentTimeMillis() - timeInMillis < 1000 * 3600 * 24) {
-      date = Config.RECENT_FORMAT.format(new Date(timeInMillis));
-    } else {
-      date = Config.OLD_FORMAT.format(new Date(timeInMillis));
-    }
-
-    return date;
-  }
-
-  /** sets the view to current time. */
-  @BindingAdapter("currentFormatedTime")
-  public static void currentFormatedTime(TextView textView, SimpleDateFormat format) {
-    textView.setText(format.format(new Date().getTime()));
   }
 
   /** colours the like button depending on if the user has interacted with it. */
@@ -111,5 +92,44 @@ public class Format {
             .insert(Config.READABILITY_ITEM_POSITION_2, Config.CODE_MAPPING_READABILITY_ITEM)
             .insert(Config.READABILITY_ITEM_POSITION_1, Config.CODE_MAPPING_READABILITY_ITEM)
             .toString();
+  }
+
+  /** Gets the calendarModel and Formats it to Date. */
+  @BindingAdapter("app:formatStartDate")
+  public static void formatStartDate(TextView view, CalendarModel calendarModel) {
+    if (calendarModel.getYearInput() != -1
+            && calendarModel.getMonthInput() != -1
+            && calendarModel.getDayOfMonthInput() != -1) {
+      int year = calendarModel.getYearInput();
+      int month = calendarModel.getMonthInput();
+      int day = calendarModel.getDayOfMonthInput();
+
+      String dayAsString = day < 10 ? "0" + day : String.valueOf(day);
+      month++;
+      String monthAsString = month < 10 ? "0" + month : String.valueOf(month);
+
+      String time = dayAsString + "." + monthAsString + "." + year;
+      view.setText(time);
+    } else {
+      view.setText(R.string.current_date_placeholder);
+    }
+  }
+
+  /** Format the calenderModel to startTime. */
+  @BindingAdapter("app:formatStartTime")
+  public static void formatStartTime(TextView view, CalendarModel calendarModel) {
+    if (calendarModel.getHourInput() != -1
+            && calendarModel.getMinuteInput() != -1) {
+      int hour = calendarModel.getHourInput();
+      int minute = calendarModel.getMinuteInput();
+
+      String hourAsString = hour < 10 ? "0" + hour : String.valueOf(hour);
+      String minuteAsString = minute < 10 ? "0" + minute : String.valueOf(minute);
+
+      String time = hourAsString + ":" + minuteAsString;
+      view.setText(time);
+    } else {
+      view.setText(R.string.current_time_placeholder);
+    }
   }
 }

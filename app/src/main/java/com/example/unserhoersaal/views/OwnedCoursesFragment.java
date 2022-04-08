@@ -1,9 +1,11 @@
 package com.example.unserhoersaal.views;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -17,15 +19,13 @@ import com.example.unserhoersaal.viewmodel.OwnedCoursesViewModel;
 /** Fragment for displaying the owned courses. */
 public class OwnedCoursesFragment extends Fragment {
 
-  private static final String TAG = "OwnedCoursesFragment";
-
   private OwnedCoursesViewModel ownedCoursesViewModel;
   private CoursesAdapter coursesAdapter;
   private FragmentOwnedCoursesBinding binding;
 
   @Nullable
   @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_owned_courses, container,
             false);
@@ -38,17 +38,18 @@ public class OwnedCoursesFragment extends Fragment {
     this.initViewModel();
     this.connectAdapter();
     this.connectBinding();
+    this.initSearchView();
   }
 
+  @SuppressLint("NotifyDataSetChanged")
   private void initViewModel() {
-    this.ownedCoursesViewModel = new ViewModelProvider(getActivity())
+    this.ownedCoursesViewModel = new ViewModelProvider(requireActivity())
             .get(OwnedCoursesViewModel.class);
     this.ownedCoursesViewModel.init();
-    this.ownedCoursesViewModel.loadOwnedCourses();
     this.ownedCoursesViewModel.getOwnedCourses()
             .observe(getViewLifecycleOwner(), ownedCourses -> {
               this.coursesAdapter.notifyDataSetChanged();
-              if (ownedCourses.size() == 0) {
+              if (ownedCourses.getData().size() == 0) {
                 this.binding.ownedCoursesFragmentTitleTextView.setVisibility(View.VISIBLE);
               } else {
                 this.binding.ownedCoursesFragmentTitleTextView.setVisibility(View.GONE);
@@ -58,12 +59,29 @@ public class OwnedCoursesFragment extends Fragment {
 
   private void connectAdapter() {
     this.coursesAdapter = new CoursesAdapter(
-            this.ownedCoursesViewModel.getOwnedCourses().getValue());
+            this.ownedCoursesViewModel.getOwnedCourses().getValue().getData());
   }
 
   private void connectBinding() {
     this.binding.setLifecycleOwner(getViewLifecycleOwner());
     this.binding.setVm(this.ownedCoursesViewModel);
     this.binding.setAdapter(this.coursesAdapter);
+  }
+
+  private void initSearchView() {
+    this.binding
+            .ownedCoursesFragmentSearchView
+            .setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+              @Override
+              public boolean onQueryTextSubmit(String query) {
+                return false;
+              }
+
+              @Override
+              public boolean onQueryTextChange(String newText) {
+                coursesAdapter.getFilter().filter(newText);
+                return false;
+              }
+            });
   }
 }

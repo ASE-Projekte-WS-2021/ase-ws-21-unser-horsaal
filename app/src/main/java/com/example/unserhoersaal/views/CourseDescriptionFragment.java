@@ -1,16 +1,9 @@
 package com.example.unserhoersaal.views;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -26,8 +19,6 @@ import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 /** Course-Description.*/
 public class CourseDescriptionFragment extends Fragment {
 
-  private static final String TAG = "CourseDescriptionFragment";
-
   private NavController navController;
   private CourseDescriptionViewModel courseDescriptionViewModel;
   private CourseParticipantsViewModel courseParticipantsViewModel;
@@ -40,19 +31,6 @@ public class CourseDescriptionFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    /*ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-              @Override
-              public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                  // There are no request codes
-                  Intent data = result.getData();
-                 // doSomeOperations();
-                }
-              }
-            });
-     */
   }
 
   @Override
@@ -83,12 +61,8 @@ public class CourseDescriptionFragment extends Fragment {
     this.courseParticipantsViewModel.init();
     this.courseDescriptionViewModel.getCourseModel()
             .observe(getViewLifecycleOwner(), courseModel -> {
-
-              //use to navigate the user out of the fragment
-              //course navigate back to course history
-              if (courseModel == null) {
+              if (courseModel.getData() == null) {
                 navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
-                //TODO: assert != null
               } else if (courseModel.getData().getKey() != null) {
                 courseParticipantsViewModel.setCourseId(courseModel.getData().getKey());
               }
@@ -101,15 +75,14 @@ public class CourseDescriptionFragment extends Fragment {
     this.binding.setVm(this.courseDescriptionViewModel);
   }
 
-
   private void initToolbar() {
     this.binding.courseDescriptionFragmentToolbar
             .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
     this.binding.courseDescriptionFragmentToolbar
             .setNavigationOnClickListener(v ->
-            navController.navigate(R.id.action_courseDescriptionFragment_to_courseHistoryFragment));
+             navController.navigateUp());
+    this.binding.setIsCreator(courseDescriptionViewModel.isCreator());
+
   }
-
-
 
 }

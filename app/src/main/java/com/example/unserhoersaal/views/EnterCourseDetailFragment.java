@@ -55,6 +55,7 @@ public class EnterCourseDetailFragment extends Fragment {
 
     this.initViewModel();
     this.connectBinding();
+    this.initToolbar();
   }
 
   private void initViewModel() {
@@ -86,10 +87,18 @@ public class EnterCourseDetailFragment extends Fragment {
     this.navController.navigate(R.id.action_enterCourseDetailFragment_to_courseHistoryFragment);
   }
 
+  private void initToolbar() {
+    this.binding.enterCourseDetailFragmentToolbar
+            .setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+    this.binding.enterCourseDetailFragmentToolbar
+            .setNavigationOnClickListener(v -> navController.navigateUp());
+  }
+
   @Override
   public void onPause() {
     super.onPause();
     this.enterCourseViewModel.resetEnterCourse();
+    this.enterCourseViewModel.setLiveDataComplete();
     this.deepLinkMode.setDeepLinkMode(DeepLinkEnum.DEFAULT);
   }
 

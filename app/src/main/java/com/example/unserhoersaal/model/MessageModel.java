@@ -2,10 +2,10 @@ package com.example.unserhoersaal.model;
 
 import com.example.unserhoersaal.enums.LikeStatus;
 
-/**Class represent the message model.**/
+/**
+ * Class represent the message model.
+ */
 public class MessageModel {
-
-  private static final String TAG = "MessageModel";
 
   private Long creationTime;
   private String creatorId;
@@ -16,8 +16,11 @@ public class MessageModel {
   private String creatorName;
   private LikeStatus likeStatus;
   private String photoUrl;
+  private Boolean isTextDeleted = false;
 
-  /**Default class constructor.**/
+  /**
+   * Default class constructor.
+   */
   public MessageModel() {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
@@ -93,4 +96,13 @@ public class MessageModel {
   public void setLikeStatus(LikeStatus likeStatus) {
     this.likeStatus = likeStatus;
   }
+
+  public void setIsTextDeleted(Boolean isTextDeleted) {
+    this.isTextDeleted = isTextDeleted;
+  }
+
+  public Boolean getIsTextDeleted() {
+    return this.isTextDeleted;
+  }
+
 }

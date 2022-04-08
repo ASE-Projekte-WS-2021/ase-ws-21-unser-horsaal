@@ -2,13 +2,12 @@ package com.example.unserhoersaal.repository;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import com.example.unserhoersaal.Config;
+import com.example.unserhoersaal.enums.ErrorTag;
 import com.example.unserhoersaal.model.CourseModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import com.example.unserhoersaal.model.UserModel;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.example.unserhoersaal.utils.StateLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,19 +17,61 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 
-/** Repo to load all courses with a meeting today. */
+/**
+ * Repo to load all courses with a meeting today.
+ */
 public class TodaysCoursesRepository {
 
   private static final String TAG = "TodaysCoursesRepository";
 
   private static TodaysCoursesRepository instance;
+  private final FirebaseAuth firebaseAuth;
+  private final DatabaseReference databaseReference;
+  private final ArrayList<CourseModel> todaysCoursesList = new ArrayList<>();
+  private final StateLiveData<List<CourseModel>> courses = new StateLiveData<>();
+  private String userId;
+  private final HashSet<String> joinedCourses = new HashSet<>();
+  private final HashSet<String> todaysCourses = new HashSet<>();
+  private ValueEventListener listener;
 
-  private ArrayList<CourseModel> todaysCoursesList = new ArrayList<>();
-  private MutableLiveData<List<CourseModel>> courses = new MutableLiveData<>();
+  /**
+   * Constructor. Gets the Firebase instances
+   */
+  public TodaysCoursesRepository() {
+    this.firebaseAuth = FirebaseAuth.getInstance();
+    this.databaseReference = FirebaseDatabase.getInstance().getReference();
+    initListener();
+  }
 
-  /** Get an instance of the repo. */
+  /**
+   * Initialize the listener for today's courses.
+   */
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        updateJoinedCourses(dataSnapshot);
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          checkMeetingToday(snapshot.getKey());
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.e(TAG, error.getMessage());
+        courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      }
+    };
+  }
+
+  /**
+   * Get an instance of the repo.
+   *
+   * @return Instance of the TodaysCoursesRepository
+   */
   public static TodaysCoursesRepository getInstance() {
     if (instance == null) {
       instance = new TodaysCoursesRepository();
@@ -38,37 +79,65 @@ public class TodaysCoursesRepository {
     return instance;
   }
 
-  /** Give back all courses with a meeting today. */
-  public MutableLiveData<List<CourseModel>> getTodaysCourses() {
-    if (this.todaysCoursesList.size() == 0) {
+  /**
+   * Loads the new userId if a new user has logged in.
+   */
+  public void setUserId() {
+    String uid;
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courses.postError(new Error(Config.FIREBASE_USER_NULL), ErrorTag.REPO);
+      return;
+    }
+    uid = this.firebaseAuth.getCurrentUser().getUid();
+    if (this.userId == null) {
+      this.todaysCoursesList.clear();
+      this.userId = uid;
+      this.loadTodaysCourses();
+    } else if (!this.userId.equals(uid)) {
+      this.todaysCoursesList.clear();
+      this.databaseReference.child(Config.CHILD_USER_COURSES).child(this.userId)
+              .removeEventListener(this.listener);
+      this.userId = uid;
       this.loadTodaysCourses();
     }
+  }
 
-    this.courses.setValue(todaysCoursesList);
+  public StateLiveData<List<CourseModel>> getTodaysCourses() {
+    this.courses.postCreate(todaysCoursesList);
     return this.courses;
   }
 
+  /**
+   * Load all courses with a meeting today.
+   */
+  private void loadTodaysCourses() {
+    this.courses.postLoading();
 
-  /** Load all courses with a meeting today. */
-  public void loadTodaysCourses() {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    String id = auth.getCurrentUser().getUid();
-    this.todaysCoursesList.clear();
-    this.courses.postValue(todaysCoursesList);
+    if (this.firebaseAuth.getCurrentUser() == null) {
+      Log.e(TAG, Config.FIREBASE_USER_NULL);
+      this.courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
 
-    Query query = reference.child(Config.CHILD_USER_COURSES).child(id);
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        checkMeetingToday(dataSnapshot);
-      }
+    String id = this.firebaseAuth.getCurrentUser().getUid();
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        Log.d(TAG, "onCancelled: " + error.getMessage());
-      }
-    });
+    Query query = this.databaseReference.child(Config.CHILD_USER_COURSES).child(id);
+    query.addValueEventListener(this.listener);
+  }
+
+  /**
+   * Update the list of joined courses if the user enters or leaves a course.
+   *
+   * @param dataSnapshot Snapshot with all entered courses
+   */
+  private void updateJoinedCourses(DataSnapshot dataSnapshot) {
+    HashSet<String> courseIds = new HashSet<>();
+    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+      courseIds.add(snapshot.getKey());
+    }
+    joinedCourses.clear();
+    joinedCourses.addAll(courseIds);
   }
 
   private String getDate() {
@@ -76,81 +145,127 @@ public class TodaysCoursesRepository {
     return Config.DATE_FORMAT.format(calendar.getTimeInMillis());
   }
 
-  private void checkMeetingToday(DataSnapshot dataSnapshot) {
-    List<String> courseIdList = new ArrayList<>();
-    String date = getDate();
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-      if (snapshot.getKey() != null) {
-        reference.child(Config.CHILD_MEETINGS)
-                .child(snapshot.getKey())
-                .addValueEventListener(new ValueEventListener() {
-                  @Override
-                  public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                      if (date.equals(snapshot1.getValue(MeetingsModel.class).getMeetingDate())) {
-                        courseIdList.add(snapshot.getKey());
-                      }
-                    }
-                    findCourses(courseIdList);
+  /**
+   * Check if the meetings of a course are today.
+   *
+   * @param courseId courseId of the course to check
+   */
+  private void checkMeetingToday(String courseId) {
+    this.databaseReference.child(Config.CHILD_MEETINGS)
+            .child(courseId)
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String date = getDate();
+                todaysCourses.remove(courseId);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                  MeetingsModel model = snapshot.getValue(MeetingsModel.class);
+                  if (model == null) {
+                    continue;
                   }
+                  String eventTime = Config.DATE_FORMAT.format(model.getEventTime());
+                  if (date.equals(eventTime)) {
+                    todaysCourses.add(courseId);
 
-                  @Override
-                  public void onCancelled(@NonNull DatabaseError error) {
-                    Log.e(TAG, "onCancelled: " + error.getMessage());
+                    break;
                   }
-                });
-      }
-    }
+                }
+                loadCourse(courseId);
+              }
 
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
   }
 
-  private void findCourses(List<String> courseIdList) {
-    ArrayList<Task<DataSnapshot>> taskList = new ArrayList<>();
-    ArrayList<CourseModel> authorList = new ArrayList<>();
-    for (String courseId : courseIdList) {
-      taskList.add(getCourseTask(courseId));
-    }
-    Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
-      for (Task<DataSnapshot> task : taskList) {
-        CourseModel model = task.getResult().getValue(CourseModel.class);
-        model.setKey(task.getResult().getKey());
-        authorList.add(model);
-      }
-      getAuthor(authorList);
-    });
+
+  /**
+   * Load the data of a course from the database.
+   *
+   * @param courseId id of the course
+   */
+  private void loadCourse(String courseId) {
+    this.databaseReference.child(Config.CHILD_COURSES)
+            .child(courseId)
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                CourseModel model = snapshot.getValue(CourseModel.class);
+                if (model == null) {
+                  return;
+                }
+                model.setKey(snapshot.getKey());
+                getAuthor(model);
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
   }
 
-  public Task<DataSnapshot> getCourseTask(String courseId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    return reference.child(Config.CHILD_COURSES).child(courseId).get();
+  /**
+   * Load the picture and name of the course creator.
+   *
+   * @param courseModel data of the course for loading the author
+   */
+  private void getAuthor(CourseModel courseModel) {
+    this.databaseReference.child(Config.CHILD_USER).child(courseModel.getCreatorId())
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel author = snapshot.getValue(UserModel.class);
+                if (author == null) {
+                  courseModel.setCreatorName(Config.UNKNOWN_USER);
+                } else {
+                  courseModel.setCreatorName(author.getDisplayName());
+                  courseModel.setPhotoUrl(author.getPhotoUrl());
+                }
+                updateCourseList(courseModel, todaysCoursesList);
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                courses.postError(new Error(Config.COURSES_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
   }
 
-  /** TODO. */
-  public void getAuthor(List<CourseModel> authorList) {
-    List<Task<DataSnapshot>> authorData = new ArrayList<>();
-    for (CourseModel course : authorList) {
-      authorData.add(getAuthorData(course.getCreatorId()));
-    }
-    Tasks.whenAll(authorData).addOnSuccessListener(unused -> {
-      for (int i = 0; i < authorList.size(); i++) {
-        UserModel author = authorData.get(i).getResult().getValue(UserModel.class);
-        if (author == null) {
-          authorList.get(i).setCreatorName(Config.UNKNOWN_USER);
+  /**
+   * Update today's courses when a course has changed. Add it, if the user joined a course.
+   * Remove the course if the user left it or update the course data if they changed.
+   *
+   * @param courseModel data of the changed course
+   * @param courseList all courses
+   */
+  private void updateCourseList(CourseModel courseModel, List<CourseModel> courseList) {
+    for (int i = 0; i < courseList.size(); i++) {
+      CourseModel model = courseList.get(i);
+      if (model.getKey().equals(courseModel.getKey())) {
+        if (this.joinedCourses.contains(courseModel.getKey())
+                && this.todaysCourses.contains(courseModel.getKey())) {
+          //update course
+          courseList.set(i, courseModel);
         } else {
-          authorList.get(i).setCreatorName(author.getDisplayName());
-          authorList.get(i).setPhotoUrl(author.getPhotoUrl());
+          //remove course
+          courseList.remove(i);
         }
+        this.courses.postUpdate(courseList);
+        return;
       }
-      todaysCoursesList.clear();
-      todaysCoursesList.addAll(authorList);
-      courses.postValue(todaysCoursesList);
-    });
-  }
-
-  public Task<DataSnapshot> getAuthorData(String authorId) {
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    return reference.child(Config.CHILD_USER).child(authorId).get();
+    }
+    //add course
+    if (this.joinedCourses.contains(courseModel.getKey())
+            && this.todaysCourses.contains(courseModel.getKey())) {
+      courseList.add(courseModel);
+      this.courses.postUpdate(courseList);
+    }
   }
 
 }

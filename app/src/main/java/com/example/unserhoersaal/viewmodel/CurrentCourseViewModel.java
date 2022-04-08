@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -10,6 +9,7 @@ import com.example.unserhoersaal.model.MessageModel;
 import com.example.unserhoersaal.model.ThreadModel;
 import com.example.unserhoersaal.repository.CurrentCourseRepository;
 import com.example.unserhoersaal.utils.ArrayListUtil;
+import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import java.util.List;
@@ -21,7 +21,6 @@ public class CurrentCourseViewModel extends ViewModel {
 
   private CurrentCourseRepository currentCourseRepository;
   private StateLiveData<List<MessageModel>> messages;
-  private StateLiveData<String> threadId = new StateLiveData<>();
   private StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private StateLiveData<ThreadModel> thread = new StateLiveData<>();
   private ArrayListUtil arrayListUtil = new ArrayListUtil();
@@ -34,19 +33,12 @@ public class CurrentCourseViewModel extends ViewModel {
       return;
     }
     this.currentCourseRepository = CurrentCourseRepository.getInstance();
-    this.threadId = this.currentCourseRepository.getThreadId();
     this.meeting = this.currentCourseRepository.getMeeting();
     this.thread = this.currentCourseRepository.getThread();
-    this.currentCourseRepository.setUserId();
     this.userId = this.currentCourseRepository.getUserId();
     this.messageModelInputState.postCreate(new MessageModel());
 
-    // Only load the messages if the courseId is set. Thus, the shared fragments, that do not need
-    // the messages and only set the courseId can init the CurrentCourseViewModel
-    if (this.threadId.getValue() != null) {
-      Log.d(TAG, "threadId: " + this.threadId.getValue().getData());
-      this.messages = this.currentCourseRepository.getMessages();
-    }
+    this.messages = this.currentCourseRepository.getMessages();
   }
 
   public StateLiveData<List<MessageModel>> getMessages() {
@@ -58,10 +50,6 @@ public class CurrentCourseViewModel extends ViewModel {
     this.arrayListUtil.sortAnswersByLikes(messageModelList);
   }
 
-  public StateLiveData<String> getThreadId() {
-    return this.threadId;
-  }
-
   public StateLiveData<MeetingsModel> getMeeting() {
     return this.meeting;
   }
@@ -70,43 +58,53 @@ public class CurrentCourseViewModel extends ViewModel {
     return  this.thread;
   }
 
+  public StateLiveData<String> getUserId() {
+    return this.userId;
+  }
+
   /** Send a new message in a thread. */
   public void sendMessage() {
-    //TODO: removed loading because there is no place for it
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     MessageModel messageModel = Validation.checkStateLiveData(this.messageModelInputState, TAG);
     if (messageModel == null) {
-      Log.e(TAG, "messageModel is null.");
       this.messages.postError(new Error(Config.UNSPECIFIC_ERROR), ErrorTag.VM);
       return;
     }
 
-    if (messageModel.getText() == null) {
-      Log.d(TAG, "title is null.");
+    if (Validation.emptyString(messageModel.getText())) {
       this.messages.postError(new Error(Config.DATABINDING_TEXT_NULL), ErrorTag.TEXT);
-      return;
     } else if (!Validation.stringHasPattern(messageModel.getText(), Config.REGEX_PATTERN_TEXT)) {
-      Log.d(TAG, "title has wrong pattern.");
       this.messages.postError(
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
-      return;
+    } else {
+      messageModel.setCreationTime(System.currentTimeMillis());
+      this.messageModelInputState.postCreate(new MessageModel());
+      this.currentCourseRepository.sendMessage(messageModel);
     }
-
-    messageModel.setCreationTime(System.currentTimeMillis());
-
-    this.messageModelInputState.postCreate(new MessageModel());
-    this.currentCourseRepository.sendMessage(messageModel);
   }
 
-  public void setThreadId(String threadId) {
-    this.currentCourseRepository.setThreadId(threadId);
+  public void setThread(ThreadModel threadModel) {
+    this.currentCourseRepository.setThread(threadModel);
   }
 
   public void setMeeting(MeetingsModel meeting) {
-    this.currentCourseRepository.setMeetingId(meeting);
+    this.currentCourseRepository.setMeeting(meeting);
   }
 
-  /** JavaDoc for this method. */
+  public void setUserId() {
+    this.currentCourseRepository.setUserId();
+  }
+
+  /** Checks the likestatus of the message and passes it to the corresponding
+   * repo method where the likecount is updated.
+   *
+   * @param message the message where the user clicked like */
   public void like(MessageModel message) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String messageId = message.getKey();
     LikeStatus likeStatus = message.getLikeStatus();
     switch (likeStatus) {
@@ -124,8 +122,14 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
-  /** JavaDoc for this method. */
+  /** Checks the dislikestatus of the message and passes it to the corresponding
+   * repo method where the dislikecount is updated.
+   *
+   * @param message the message where the user clicked dislike */
   public void dislike(MessageModel message) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String messageId = message.getKey();
     LikeStatus likeStatus = message.getLikeStatus();
     switch (likeStatus) {
@@ -143,9 +147,14 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
-  //TODO do this in meetingsViewModel
-  /** JavaDoc for this method. */
+  /** Checks the likestatus of the thread and passes it to the corresponding
+   * repo method where the likecount is updated.
+   *
+   * @param threadModel the message where the user clicked like */
   public void likeThread(ThreadModel threadModel) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String threadId  = threadModel.getKey();
     LikeStatus likeStatus = threadModel.getLikeStatus();
     switch (likeStatus) {
@@ -163,8 +172,14 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
-  /** JavaDoc for this method. */
+  /** Checks the dislikestatus of the thread and passes it to the corresponding
+   * repo method where the dislikecount is updated.
+   *
+   * @param threadModel the message where the user clicked dislike */
   public void dislikeThread(ThreadModel threadModel) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     String threadId = threadModel.getKey();
     LikeStatus likeStatus = threadModel.getLikeStatus();
     switch (likeStatus) {
@@ -182,8 +197,22 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
+  /** Calls Repo Methode that marks the Answer as solved.
+   *
+   * @param messageId the Id of the Message that gets marked as solved */
   public void solved(String messageId) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
     this.currentCourseRepository.solved(messageId);
+  }
+
+  public void deleteThreadText() {
+    currentCourseRepository.deleteThreadText();
+  }
+
+  public void deleteAnswerText(MessageModel messageModel) {
+    currentCourseRepository.deleteAnswerText(messageModel);
   }
 
 }

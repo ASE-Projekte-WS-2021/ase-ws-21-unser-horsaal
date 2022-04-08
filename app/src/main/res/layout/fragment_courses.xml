@@ -5,16 +5,10 @@
 
     <data>
         <variable
-            name="adapter"
-            type="com.example.unserhoersaal.adapter.CoursesAdapter" />
-        <variable
             name="vm"
             type="com.example.unserhoersaal.viewmodel.CoursesViewModel" />
         <import type="com.example.unserhoersaal.utils.NavUtil"/>
         <import type="com.example.unserhoersaal.R"/>
-        <import type="android.view.View"/>
-        <import type="com.example.unserhoersaal.utils.ViewAdapter"/>
-        <import type="com.example.unserhoersaal.utils.VisibilityAdapter"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_post_add_24"
-            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_coursesFragment_to_createCourseInformationFragment)}"
+            android:onClick="@{(view) -> NavUtil.navigate(view, R.id.action_coursesFragment_to_createCourseFragment)}"
             android:text="@string/kurs_erstellen"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
