@@ -122,14 +122,6 @@ public class LiveChatFragment extends Fragment {
     this.binding.setFragment(this);
   }
 
-  public void sendMessage() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
-      return;
-    }
-    liveChatViewModel.sendMessage();
-    binding.liveChatFragmentInputField.getEditText().getText().clear();
-  }
-
   /** Prevents an error in fastscrollbar. */
   @SuppressLint("NotifyDataSetChanged")
   public void onClickEditText() {
