@@ -22,8 +22,6 @@ import com.example.unserhoersaal.viewmodel.QuestionsViewModel;
 /**Create Thread.*/
 public class CreateThreadFragment extends Fragment {
 
-  private static final String TAG = "CreateThreadFragment";
-
   private FragmentCreateThreadBinding binding;
   private NavController navController;
   private QuestionsViewModel questionsViewModel;

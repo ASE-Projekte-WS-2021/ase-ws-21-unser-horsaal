@@ -24,7 +24,6 @@ import java.util.List;
 /**Course Thread.*/
 public class CourseThreadFragment extends Fragment {
 
-  private static final String TAG = "CourseThreadFragment";
   private NavController navController;
   private FragmentCourseThreadBinding binding;
   private ThreadMessagesAdapter chatAdapter;
@@ -87,7 +86,8 @@ public class CourseThreadFragment extends Fragment {
 
   private void connectAdapter() {
     this.chatAdapter =
-            new ThreadMessagesAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
+            new ThreadMessagesAdapter(this.currentCourseViewModel
+                    .getMessages().getValue().getData(),
                     this.currentCourseViewModel);
   }
 
@@ -105,10 +105,4 @@ public class CourseThreadFragment extends Fragment {
     this.binding.currentCourseFragmentToolbar
             .setNavigationOnClickListener(v -> navController.navigateUp());
   }
-
-  public boolean onDeleteThreadMessage(View v) {
-    //logic goes here
-    return false;
-  }
-
 }

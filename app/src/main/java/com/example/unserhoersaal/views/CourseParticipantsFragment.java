@@ -20,8 +20,6 @@ import com.example.unserhoersaal.viewmodel.CourseParticipantsViewModel;
 /** Course-Participants.*/
 public class CourseParticipantsFragment extends Fragment {
 
-  private static final String TAG = "CourseParticipantsFragment";
-
   private CourseParticipantsViewModel courseParticipantsViewModel;
   private FragmentCourseParticipantsBinding binding;
   private ParticipantAdapter participantAdapter;

@@ -19,8 +19,6 @@ import com.example.unserhoersaal.viewmodel.AllCoursesViewModel;
 /** View for all joined courses. */
 public class AllCoursesFragment extends Fragment {
 
-  private static final String TAG = "AllCoursesFragment";
-
   private AllCoursesViewModel allCoursesViewModel;
   private CoursesAdapter coursesAdapter;
   private FragmentAllCoursesBinding binding;
