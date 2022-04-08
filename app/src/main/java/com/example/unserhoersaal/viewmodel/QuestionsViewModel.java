@@ -145,7 +145,7 @@ public class QuestionsViewModel extends ViewModel {
 
   /** Create a new Thread. */
   public void createThread() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.threadModelInputState.postLoading();

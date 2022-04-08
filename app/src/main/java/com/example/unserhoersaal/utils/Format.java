@@ -2,7 +2,6 @@ package com.example.unserhoersaal.utils;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,7 +11,6 @@ import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.enums.LikeStatus;
 import com.example.unserhoersaal.model.CalendarModel;
 import com.google.android.material.card.MaterialCardView;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /** Binding Aadapter Class that formats unix timestamp (milliseconds) in long datatype
@@ -41,25 +39,6 @@ public class Format {
       return "";
     }
     return Config.RECENT_FORMAT.format(new Date(time));
-  }
-
-  /** datetime formater that formats to date after 24h passed. */
-  @BindingAdapter("calculateDate")
-  public static String calculateDate(TextView view, Long timeInMillis) {
-    String date;
-    if (System.currentTimeMillis() - timeInMillis < 1000 * 3600 * 24) {
-      date = Config.RECENT_FORMAT.format(new Date(timeInMillis));
-    } else {
-      date = Config.OLD_FORMAT.format(new Date(timeInMillis));
-    }
-
-    return date;
-  }
-
-  /** sets the view to current time. */
-  @BindingAdapter("currentFormatedTime")
-  public static void currentFormatedTime(TextView textView, SimpleDateFormat format) {
-    textView.setText(format.format(new Date().getTime()));
   }
 
   /** colours the like button depending on if the user has interacted with it. */
@@ -115,6 +94,7 @@ public class Format {
             .toString();
   }
 
+  /** Gets the calendarModel and Formats it to Date. */
   @BindingAdapter("app:formatStartDate")
   public static void formatStartDate(TextView view, CalendarModel calendarModel) {
     if (calendarModel.getYearInput() != -1
@@ -135,6 +115,7 @@ public class Format {
     }
   }
 
+  /** Format the calenderModel to startTime. */
   @BindingAdapter("app:formatStartTime")
   public static void formatStartTime(TextView view, CalendarModel calendarModel) {
     if (calendarModel.getHourInput() != -1

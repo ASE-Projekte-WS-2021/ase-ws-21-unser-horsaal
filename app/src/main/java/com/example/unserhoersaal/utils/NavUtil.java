@@ -348,8 +348,6 @@ public class NavUtil {
     catch (android.content.ActivityNotFoundException ex) {
       Toast.makeText(context,Config.CAMERA_INTENT_ERROR_TOAST, Toast.LENGTH_LONG).show();
     }
-
-
   }
 
   /** Opens Camera App. */

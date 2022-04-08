@@ -17,7 +17,6 @@ public class Validation {
     return Patterns.EMAIL_ADDRESS.matcher(email).matches();
   }
 
-  /** TODO. */
   public static boolean stringHasPattern(String text, String regex) {
     Pattern pattern = Pattern.compile(regex);
     Matcher matcher = pattern.matcher(text);
