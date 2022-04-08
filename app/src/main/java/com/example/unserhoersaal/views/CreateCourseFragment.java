@@ -22,8 +22,6 @@ import com.example.unserhoersaal.viewmodel.CreateCourseViewModel;
 /** Fragment for course creation. */
 public class CreateCourseFragment extends Fragment {
 
-  private static final String TAG = "CreateCourseFragment";
-
   private FragmentCreateCourseBinding binding;
   private CreateCourseViewModel createCourseViewModel;
   private CourseHistoryViewModel courseHistoryViewModel;

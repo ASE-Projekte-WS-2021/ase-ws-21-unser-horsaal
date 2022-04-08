@@ -16,7 +16,6 @@ import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.databinding.FragmentCreateCourseMeetingBinding;
 import com.example.unserhoersaal.model.MeetingsModel;
-import com.example.unserhoersaal.utils.Format;
 import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
@@ -82,7 +81,7 @@ public class CreateCourseMeetingFragment extends Fragment {
       return;
     }
 
-   if (meetingsModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
+    if (meetingsModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       this.navController.navigate(R.id.action_createCourseMeetingFragment_to_courseHistoryFragment);
     }
   }
@@ -100,7 +99,8 @@ public class CreateCourseMeetingFragment extends Fragment {
   }
 
   private void changeTextToEdit() {
-    this.binding.createCourseMeetingFragmentToolbarText.setText(R.string.edit_course_meeting_toolbar_title);
+    this.binding.createCourseMeetingFragmentToolbarText
+            .setText(R.string.edit_course_meeting_toolbar_title);
     this.binding.createCourseMeetingFragmentButton.setText(R.string.edit_course_meeting_button);
 
     this.binding.createCourseMeetingDatePicker
@@ -109,8 +109,10 @@ public class CreateCourseMeetingFragment extends Fragment {
   }
 
   private void changeTextToCreate() {
-    this.binding.createCourseMeetingFragmentToolbarText.setText(R.string.create_course_meeting_toolbar_title);
-    this.binding.createCourseMeetingFragmentButton.setText(R.string.create_course_meeting_meeting_button);
+    this.binding.createCourseMeetingFragmentToolbarText
+            .setText(R.string.create_course_meeting_toolbar_title);
+    this.binding.createCourseMeetingFragmentButton
+            .setText(R.string.create_course_meeting_meeting_button);
 
     this.binding.createCourseMeetingDatePicker.setText(R.string.current_date_placeholder);
     this.binding.createCourseMeetingTimePicker.setText(R.string.startzeit);
