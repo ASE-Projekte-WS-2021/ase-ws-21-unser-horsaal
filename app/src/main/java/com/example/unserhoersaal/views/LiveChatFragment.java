@@ -80,7 +80,6 @@ public class LiveChatFragment extends Fragment {
       return;
     }
     this.resetBinding();
-    KeyboardUtil.hideKeyboard(getActivity());
 
     if (listStateData.getData() != null) {
       messageSize = listStateData.getData().size();
