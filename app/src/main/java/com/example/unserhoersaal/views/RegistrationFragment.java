@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -26,8 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
  * and the navigation to the course page.
  */
 public class RegistrationFragment extends Fragment {
-
-  private static final String TAG = "RegistrationFragment";
 
   private FragmentRegistrationBinding binding;
   private RegistrationViewModel registrationViewModel;

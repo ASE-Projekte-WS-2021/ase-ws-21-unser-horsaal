@@ -19,15 +19,13 @@ import com.example.unserhoersaal.viewmodel.OwnedCoursesViewModel;
 /** Fragment for displaying the owned courses. */
 public class OwnedCoursesFragment extends Fragment {
 
-  private static final String TAG = "OwnedCoursesFragment";
-
   private OwnedCoursesViewModel ownedCoursesViewModel;
   private CoursesAdapter coursesAdapter;
   private FragmentOwnedCoursesBinding binding;
 
   @Nullable
   @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_owned_courses, container,
             false);

@@ -23,7 +23,7 @@ public class TodaysCoursesFragment extends Fragment {
   private FragmentTodaysCoursesBinding binding;
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_todays_courses, container,
             false);

@@ -13,14 +13,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentQuestionsBinding;
 import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.model.ThreadModel;
-import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.QuestionsViewModel;
@@ -28,8 +26,6 @@ import java.util.List;
 
 /** Displays the questions during the Meeting. */
 public class QuestionsFragment extends Fragment {
-
-  private static final String TAG = "QuestionFragment";
 
   private FragmentQuestionsBinding binding;
   private QuestionsViewModel questionsViewModel;
@@ -75,8 +71,6 @@ public class QuestionsFragment extends Fragment {
 
     this.questionsViewModel.getThreads().observe(getViewLifecycleOwner(),
             this::meetingsLiveStateCallback);
-    /*this.questionsViewModel.getThreadModel().observe(getViewLifecycleOwner(),
-            this::threadLiveStateCallback);*/
     this.questionsViewModel.getSortEnum().observe(getViewLifecycleOwner(),
             this::sortEnumCallback);
     this.questionsViewModel.getFilterEnum().observe(getViewLifecycleOwner(),
@@ -103,19 +97,6 @@ public class QuestionsFragment extends Fragment {
     }
   }
 
-  //TODO why here? changed to in createThread
-  private void threadLiveStateCallback(StateData<ThreadModel> threadModelStateData) {
-    this.resetBindings();
-
-    if (threadModelStateData.getData() != null) {
-      KeyboardUtil.hideKeyboard(getActivity());
-      this.currentCourseViewModel.setThread(threadModelStateData.getData());
-      this.questionsViewModel.resetThreadModelInput();
-      this.binding.questionFragmentFab.setVisibility(View.VISIBLE);
-      //this.navController.navigate(R.id.action_courseMeetingFragment_to_courseThreadFragment);
-    }
-  }
-
   private void sortEnumCallback(StateData<SortEnum> sortEnum) {
     if (sortEnum.getData() != SortEnum.NEWEST) {
       this.binding.questionChipNewest.setChecked(Boolean.FALSE);
@@ -138,8 +119,6 @@ public class QuestionsFragment extends Fragment {
       this.binding.questionChipPageCountDownActivated.setVisibility(View.GONE);
     }
 
-    //TODO: is there a better solution to trigger the callback function for threads?
-    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel.getThreads()
             .getValue().getData());
   }
@@ -154,9 +133,6 @@ public class QuestionsFragment extends Fragment {
       this.binding.questionChipAnsweredActivated.setVisibility(View.GONE);
     }
 
-
-    //TODO: is there a better solution to trigger the callback funtion for threads?
-    //TODO BETTER WAY IN XML WHILE LISTENING TO LIVEDATA
     this.questionsViewModel.getThreads().postUpdate(this.questionsViewModel
             .getThreads().getValue().getData());
   }
@@ -273,7 +249,8 @@ public class QuestionsFragment extends Fragment {
 
   private void setupScrolling() {
     View infoContainer = this.binding.questionsFragmentInfoContainer;
-    this.binding.questionFragmentThreadRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    this.binding.questionFragmentThreadRecycler.addOnScrollListener(new RecyclerView
+            .OnScrollListener() {
       @Override
       public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
