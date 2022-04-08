@@ -27,7 +27,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 /** Course-Meeting. */
 public class CourseMeetingFragment extends Fragment {
 
-  private static final String TAG = "CourseMeetingFragment";
 
   private MeetingsViewPagerAdapter meetingsViewPagerAdapter;
 

@@ -25,8 +25,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 /** Courses. */
 public class CoursesFragment extends Fragment {
 
-  private static final String TAG = "CoursesFragment";
-
   private ViewPagerAdapter viewPagerAdapter;
   private FragmentCoursesBinding binding;
   private CoursesViewModel coursesViewModel;

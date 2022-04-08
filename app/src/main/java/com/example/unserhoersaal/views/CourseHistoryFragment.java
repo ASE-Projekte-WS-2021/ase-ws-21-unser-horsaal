@@ -23,7 +23,9 @@ import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CourseHistoryViewModel;
 import java.util.List;
 
-/** Fragment contains list of course-meetings.*/
+/**
+ * Fragment contains list of course-meetings.
+ */
 public class CourseHistoryFragment extends Fragment {
 
   private static final String TAG = "CourseHistoryFragment";
@@ -45,7 +47,7 @@ public class CourseHistoryFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    this.binding =  DataBindingUtil.inflate(inflater,
+    this.binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_course_history, container, false);
     return this.binding.getRoot();
   }
@@ -129,16 +131,17 @@ public class CourseHistoryFragment extends Fragment {
   private void setupScrolling() {
     this.binding.courseHistoryFragmentCoursesRecyclerView.addOnScrollListener(
             new RecyclerView.OnScrollListener() {
-              @Override
-              public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(-1)) {
-                  binding.courseHistoryFragmentCourseCard.setVisibility(View.VISIBLE);
-                } else {
-                  binding.courseHistoryFragmentCourseCard.setVisibility(View.GONE);
-                }
-              }
-    });
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView,
+                                         int newState) {
+          super.onScrollStateChanged(recyclerView, newState);
+          if (!recyclerView.canScrollVertically(-1)) {
+            binding.courseHistoryFragmentCourseCard.setVisibility(View.VISIBLE);
+          } else {
+            binding.courseHistoryFragmentCourseCard.setVisibility(View.GONE);
+          }
+        }
+      });
   }
 
 }
