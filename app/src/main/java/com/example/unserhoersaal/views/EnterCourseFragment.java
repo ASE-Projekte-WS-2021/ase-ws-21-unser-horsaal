@@ -31,7 +31,6 @@ public class EnterCourseFragment extends Fragment {
   private EnterCourseViewModel enterCourseViewModel;
   private NavController navController;
   private FragmentEnterCourseBinding binding;
-  private DeepLinkMode deepLinkMode;
 
   public EnterCourseFragment() {
     // Required empty public constructor
@@ -55,15 +54,15 @@ public class EnterCourseFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
 
     this.navController = Navigation.findNavController(view);
-    this.deepLinkMode = DeepLinkMode.getInstance();
+    DeepLinkMode deepLinkMode = DeepLinkMode.getInstance();
 
     this.initViewModel();
     this.connectBinding();
     this.setupToolbar();
 
-    if (this.deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
+    if (deepLinkMode.getDeepLinkMode() == DeepLinkEnum.ENTER_COURSE) {
       CourseModel courseModel = new CourseModel();
-      courseModel.setCodeMapping(this.deepLinkMode.getCodeMapping());
+      courseModel.setCodeMapping(deepLinkMode.getCodeMapping());
       this.enterCourseViewModel
               .courseIdInputState.postCreate(courseModel);
       this.enterCourseViewModel.checkCode();
@@ -90,7 +89,7 @@ public class EnterCourseFragment extends Fragment {
       return;
     }
 
-    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE){
+    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
       if (courseModelStateData.getData() == null) {
         Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
         return;
