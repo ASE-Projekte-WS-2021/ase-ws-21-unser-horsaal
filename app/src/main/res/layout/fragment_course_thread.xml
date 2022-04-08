@@ -130,13 +130,15 @@
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            <LinearLayout
+                            <com.google.android.material.chip.ChipGroup
                                 android:id="@+id/courseThreadMessageTagContainer"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:layout_marginEnd="8dp"
                                 android:visibility="@{vm.thread.data.tags == null ? View.GONE : View.VISIBLE}"
+                                app:chipSpacingVertical="4dp"
+                                app:chipSpacingHorizontal="2dp"
                                 app:layout_constraintBottom_toTopOf="@id/courseThreadMessageHashtagOne"
                                 app:layout_constraintEnd_toStartOf="@id/courseThreadMessageVoteContainer"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -204,7 +206,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="#hashtag1"/>
                                 -->
-                            </LinearLayout>
+                            </com.google.android.material.chip.ChipGroup>
 
                             <TextView
                                 android:id="@+id/courseThreadMessageHashtagOne"
