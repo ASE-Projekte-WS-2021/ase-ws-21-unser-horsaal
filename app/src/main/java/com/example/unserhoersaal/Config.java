@@ -341,5 +341,8 @@ public class Config {
   public static final String CAMERA_INTENT_ERROR_TOAST
           = "Es konnte keine Kamera App auf deinem Smartphone gefunden werden";
 
-
+  /**=======================.
+   **  Doubleclick-Prevention
+   ** ======================= */
+  public static final int TIME_WAIT_DOUBLE_CLICK = 200;
 }
