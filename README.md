@@ -68,7 +68,7 @@ Editprofile,
 Testdatagenerierung,
 GitHub Actions*
 
-- **Gottschalk Philipp (myPhilie)**: *Hier reinschreiben*
+- **Gottschalk Philipp (myPhilie)**: *Erstellung der Prototypen, UI*
 
 - **Höpfinger Julian (julian1198)**: 
 *Repositories, 
