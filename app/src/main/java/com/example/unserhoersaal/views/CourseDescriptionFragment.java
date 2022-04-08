@@ -76,7 +76,7 @@ public class CourseDescriptionFragment extends Fragment {
     this.courseParticipantsViewModel.init();
     this.courseDescriptionViewModel.getCourseModel()
             .observe(getViewLifecycleOwner(), courseModel -> {
-              if (courseModel.getData() == null || courseModel.getData().getKey() == null) {
+              if (courseModel.getData() == null) {
                 navController.navigate(R.id.action_courseDescriptionFragment_to_coursesFragment);
               } else if (courseModel.getData().getKey() != null) {
                 courseParticipantsViewModel.setCourseId(courseModel.getData().getKey());

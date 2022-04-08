@@ -80,7 +80,7 @@ public class CurrentCourseViewModel extends ViewModel {
               new Error(Config.DATABINDING_TEXT_WRONG_PATTERN), ErrorTag.TEXT);
     } else {
       messageModel.setCreationTime(System.currentTimeMillis());
-      this.messageModelInputState.postComplete();
+      this.messageModelInputState.postCreate(new MessageModel());
       this.currentCourseRepository.sendMessage(messageModel);
     }
   }

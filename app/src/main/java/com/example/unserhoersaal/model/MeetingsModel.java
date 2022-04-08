@@ -1,9 +1,9 @@
 package com.example.unserhoersaal.model;
 
-/** Model for a meeting. */
+/**
+ * Model for a meeting.
+ */
 public class MeetingsModel {
-
-  private static final String TAG = "MeetingsModel";
 
   private Long creationTime;
   private String creatorId;
@@ -12,7 +12,6 @@ public class MeetingsModel {
   private Long eventEndTime;
   private String title;
   private String key;
-  private String meetingKey;
 
   public MeetingsModel() {
     //needed for Firebase
@@ -73,10 +72,6 @@ public class MeetingsModel {
   public void setKey(String key) {
     this.key = key;
   }
-
-  public void setMeetingKey(String meetingKey) { this.meetingKey = meetingKey; }
-
-  public String getMeetingKey() { return meetingKey; }
 
 }
 

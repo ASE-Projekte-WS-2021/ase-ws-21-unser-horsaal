@@ -1,9 +1,9 @@
 package com.example.unserhoersaal.model;
 
-/** Model for an user of the app. */
+/**
+ * Model for an user of the app.
+ */
 public class UserModel {
-
-  private static final String TAG = "UserModel";
 
   private String displayName;
   private String email;
@@ -15,7 +15,9 @@ public class UserModel {
     // Default constructor required for calls to DataSnapshot.getValue(UserModel.class)
   }
 
-  /** Getter. */
+  /**
+   * Getter.
+   */
   public String getDisplayName() {
     return this.displayName;
   }
@@ -36,7 +38,9 @@ public class UserModel {
     return this.key;
   }
 
-  /** Setter. */
+  /**
+   * Setter.
+   */
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
   }

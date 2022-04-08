@@ -11,7 +11,6 @@ import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +20,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -38,6 +38,8 @@ public class PollRepository {
 
   private final ArrayList<PollModel> pollList = new ArrayList<>();
   private final StateLiveData<List<PollModel>> polls = new StateLiveData<>();
+  private final HashSet<String> pollSet = new HashSet<>();
+  private ValueEventListener listener;
 
   /**
    * Constructor.
@@ -46,6 +48,35 @@ public class PollRepository {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.meeting.postCreate(new MeetingsModel());
+    initListener();
+  }
+
+  /**
+   * Initializes the listener for the current polls.
+   */
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        updatePollSet(snapshot);
+        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+          PollModel model = dataSnapshot.getValue(PollModel.class);
+
+          if (model == null) {
+            continue;
+          }
+
+          model.setKey(dataSnapshot.getKey());
+          getAuthor(model);
+        }
+        polls.postComplete();
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        polls.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
+      }
+    };
   }
 
   /**
@@ -73,11 +104,23 @@ public class PollRepository {
     if (meeting == null || meeting.getKey() == null) {
       return;
     }
-    if (this.meeting.getValue() == null
-            || this.meeting.getValue().getData() == null
-            || this.meeting.getValue().getData().getKey() == null
-            || !this.meeting.getValue().getData().getKey().equals(meeting.getKey())) {
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
       this.meeting.postUpdate(meeting);
+      this.pollList.clear();
+      this.loadPolls();
+      return;
+    }
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      this.meeting.postUpdate(meeting);
+      this.pollList.clear();
+      this.loadPolls();
+    } else if (!meetingKey.equals(meeting.getKey())) {
+      this.meeting.postUpdate(meeting);
+      this.databaseReference.child(Config.CHILD_POLL).child(meetingKey)
+              .removeEventListener(this.listener);
+      this.pollList.clear();
       this.loadPolls();
     }
   }
@@ -159,85 +202,103 @@ public class PollRepository {
       return;
     }
 
-    Query query = databaseReference
+    Query query = this.databaseReference
             .child(Config.CHILD_POLL)
             .child(meetingKey);
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        List<PollModel> pollModelList = new ArrayList<>();
-        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-          PollModel model = dataSnapshot.getValue(PollModel.class);
-          if (model == null) {
-            Log.e(TAG, Config.POLLS_FAILED_TO_LOAD);
-            meeting.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
-            return;
-          }
+    query.addValueEventListener(this.listener);
+  }
 
-          model.setKey(dataSnapshot.getKey());
-          pollModelList.add(model);
-        }
-        getAuthor(pollModelList);
-      }
+  /**
+   * Update the list of all polls in the meeting.
+   *
+   * @param dataSnapshot snapshot with polls
+   */
+  private void updatePollSet(DataSnapshot dataSnapshot) {
+    HashSet<String> pollIds = new HashSet<>();
+    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+      pollIds.add(snapshot.getKey());
+    }
+    this.pollSet.clear();
+    this.pollSet.addAll(pollIds);
+  }
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        polls.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
+  /**
+   * Load the picture and name of the poll creator.
+   *
+   * @param pollModel data of the poll
+   */
+  private void getAuthor(PollModel pollModel) {
+    this.databaseReference.child(Config.CHILD_USER).child(pollModel.getCreatorId())
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel author = snapshot.getValue(UserModel.class);
+                if (author == null) {
+                  pollModel.setCreatorName(Config.UNKNOWN_USER);
+                } else {
+                  pollModel.setCreatorName(author.getDisplayName());
+                  pollModel.setPhotoUrl(author.getPhotoUrl());
+                }
+                setPollOption(pollModel, pollList);
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                polls.postError(new Error(Config.POLLS_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
+  }
+
+  /**
+   * Loads the checked option of a user.
+   *
+   * @param pollModel data of the changed poll
+   * @param pollModelList all polls
+   */
+  private void setPollOption(PollModel pollModel, List<PollModel> pollModelList) {
+    Task<DataSnapshot> task = this.getPollOption(pollModel.getKey());
+    if (task == null) {
+      pollModel.setCheckedOption(CheckedOptionEnum.NONE);
+      updatePollList(pollModel, pollModelList);
+      return;
+    }
+    task.addOnSuccessListener(runnable -> {
+      CheckedOptionEnum option = runnable.getValue(CheckedOptionEnum.class);
+      if (option == null) {
+        option = CheckedOptionEnum.NONE;
       }
+      pollModel.setCheckedOption(option);
+      updatePollList(pollModel, pollModelList);
     });
   }
 
   /**
-   * Get the creator data of all polls of a meeting.
+   * Update polls if a poll has changed.
    *
-   * @param pollModelList list of all polls of a meeting
+   * @param pollModel data of the changed poll
+   * @param pollModelList all polls of the meeting
    */
-  private void getAuthor(List<PollModel> pollModelList) {
-    List<Task<DataSnapshot>> authors = new ArrayList<>();
-    for (PollModel poll : pollModelList) {
-      authors.add(getAuthorData(poll.getCreatorId()));
-    }
-    Tasks.whenAll(authors).addOnSuccessListener(unused -> {
-      for (int i = 0; i < pollModelList.size(); i++) {
-        UserModel author = authors.get(i).getResult().getValue(UserModel.class);
-        if (author == null) {
-          pollModelList.get(i).setCreatorName(Config.UNKNOWN_USER);
+  private void updatePollList(PollModel pollModel, List<PollModel> pollModelList) {
+    for (int i = 0; i < pollModelList.size(); i++) {
+      PollModel model = pollModelList.get(i);
+      if (model.getKey().equals(pollModel.getKey())) {
+        if (this.pollSet.contains(pollModel.getKey())) {
+          //update
+          pollModelList.set(i, pollModel);
         } else {
-          pollModelList.get(i).setCreatorName(author.getDisplayName());
-          pollModelList.get(i).setPhotoUrl(author.getPhotoUrl());
+          //remove
+          pollModelList.remove(i);
         }
+        this.polls.postUpdate(pollList);
+        return;
       }
-      getPollStatus(pollModelList);
-    });
-  }
-
-  private Task<DataSnapshot> getAuthorData(String authorId) {
-    return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
-  }
-
-  /**
-   * Loads if the users has voted in a poll and which option.
-   *
-   * @param pollModelList list of all polls of a meeting
-   */
-  private void getPollStatus(List<PollModel> pollModelList) {
-    List<Task<DataSnapshot>> taskList = new ArrayList<>();
-    for (PollModel poll : pollModelList) {
-      taskList.add(getPollOption(poll.getKey()));
     }
-    Tasks.whenAll(taskList).addOnSuccessListener(unused -> {
-      for (int i = 0; i < taskList.size(); i++) {
-        if (!taskList.get(i).getResult().exists()) {
-          pollModelList.get(i).setCheckedOption(CheckedOptionEnum.NONE);
-        } else {
-          pollModelList.get(i)
-                  .setCheckedOption(taskList.get(i).getResult().getValue(CheckedOptionEnum.class));
-        }
-      }
-      pollList.clear();
-      pollList.addAll(pollModelList);
-      polls.postUpdate(pollList);
-    });
+    //add
+    if (this.pollSet.contains(pollModel.getKey())) {
+      pollModelList.add(pollModel);
+      this.polls.postUpdate(pollList);
+    }
   }
 
   private Task<DataSnapshot> getPollOption(String id) {

@@ -172,4 +172,5 @@ public class LiveChatFragment extends Fragment {
       }
     });
   }
+
 }

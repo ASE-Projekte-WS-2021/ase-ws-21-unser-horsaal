@@ -9,11 +9,8 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import java.util.ArrayList;
-import java.util.List;
 
 // source: https://github.com/learntodroid/FirebaseAuthLoginRegisterMVVM/tree/master/app/src/main/java/com/learntodroid/firebaseauthloginregistermvvm/model [30.12.2021]
 
@@ -217,46 +214,7 @@ public class AuthAppRepository {
     this.databaseReference.child(Config.CHILD_USER)
             .child(uid)
             .removeValue()
-            .addOnSuccessListener(unused -> removeCourses(uid));
-  }
-
-  /**
-   * Delete all connections between a user and his courses.
-   *
-   * @param uid id of the user, that is removed from the courses
-   */
-  private void removeCourses(String uid) {
-    List<String> courseIdList = new ArrayList<>();
-
-    this.databaseReference.child(Config.CHILD_USER_COURSES)
-            .child(uid)
-            .get()
-            .addOnSuccessListener(dataSnapshot -> {
-              for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                courseIdList.add(snapshot.getKey());
-              }
-              this.databaseReference.child(Config.CHILD_USER_COURSES)
-                      .child(uid)
-                      .removeValue()
-                      .addOnSuccessListener(unused -> removeUserFromCourses(courseIdList, uid));
-            });
-
-  }
-
-  /**
-   * Remove the user from all courses the user is signed in.
-   *
-   * @param courseIdList list of courses to leave
-   * @param uid user, which leaves the courses
-   */
-  private void removeUserFromCourses(List<String> courseIdList, String uid) {
-    for (String courseId : courseIdList) {
-      this.databaseReference.child(Config.CHILD_COURSES_USER)
-              .child(courseId)
-              .child(uid)
-              .removeValue();
-    }
-    deleteUser();
+            .addOnSuccessListener(unused -> deleteUser());
   }
 
   /**
@@ -268,9 +226,12 @@ public class AuthAppRepository {
       user.delete().addOnCompleteListener(task -> {
         if (task.isSuccessful()) {
           this.userLiveData.postUpdate(null);
-        }
-      });
-      //todo error
+        } 
+      }).addOnFailureListener(e ->
+              this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL),
+                      ErrorTag.REPO));
+    } else {
+      this.userLiveData.postError(new Error(Config.AUTH_ACCOUNT_DELETE_FAIL), ErrorTag.REPO);
     }
 
   }

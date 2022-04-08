@@ -29,10 +29,36 @@ public class CourseParticipantsRepository {
   private final List<UserModel> userList = new ArrayList<>();
   private final StateLiveData<List<UserModel>> users = new StateLiveData<>();
   private final HashSet<String> allUsers = new HashSet<>();
+  private ValueEventListener listener;
 
+  /**
+   * Constructor. Gets the Firebase instances
+   */
   public CourseParticipantsRepository() {
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.users.postCreate(new ArrayList<>());
+    initListener();
+  }
+
+  /**
+   * Initialize the listener for the current thread and messages.
+   */
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        updateAllUsers(dataSnapshot);
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          getAuthor(snapshot.getKey());
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
+        users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
+      }
+    };
   }
 
   /**
@@ -67,21 +93,7 @@ public class CourseParticipantsRepository {
     this.databaseReference
             .child(Config.CHILD_COURSES_USER)
             .child(courseKey)
-            .addValueEventListener(new ValueEventListener() {
-              @Override
-              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                updateAllUsers(dataSnapshot);
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                  getAuthor(snapshot.getKey());
-                }
-              }
-
-              @Override
-              public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, Config.LISTENER_FAILED_TO_RESOLVE);
-                users.postError(new Error(Config.LISTENER_FAILED_TO_RESOLVE), ErrorTag.REPO);
-              }
-            });
+            .addValueEventListener(this.listener);
   }
 
   /**
@@ -108,8 +120,14 @@ public class CourseParticipantsRepository {
       return;
     }
     if (this.courseId.getValue() == null
-            || this.courseId.getValue().getData() == null
-            || !this.courseId.getValue().getData().equals(courseId)) {
+            || this.courseId.getValue().getData() == null) {
+      this.courseId.postUpdate(courseId);
+      userList.clear();
+      this.loadUsers();
+    } else if (!this.courseId.getValue().getData().equals(courseId)) {
+      this.databaseReference
+              .child(Config.CHILD_COURSES_USER)
+              .child(this.courseId.getValue().getData()).removeEventListener(this.listener);
       this.courseId.postUpdate(courseId);
       userList.clear();
       this.loadUsers();
@@ -131,6 +149,11 @@ public class CourseParticipantsRepository {
                 if (user != null) {
                   user.setKey(snapshot.getKey());
                   updateUserList(user, userList);
+                } else {
+                  user = new UserModel();
+                  user.setKey(userid);
+                  user.setDisplayName(Config.UNKNOWN_USER);
+                  updateUserList(user, userList);
                 }
               }
 
@@ -143,7 +166,7 @@ public class CourseParticipantsRepository {
   }
 
   /**
-   * Update teh members when a user has changed. Joined or lef the course or edited its profile.
+   * Update the members when a user has changed. Joined or lef the course or edited its profile.
    *
    * @param userModel data of the changed member
    * @param userList all member
@@ -153,17 +176,17 @@ public class CourseParticipantsRepository {
       UserModel model = userList.get(i);
       if (model.getKey().equals(userModel.getKey())) {
         if (this.allUsers.contains(userModel.getKey())) {
-          //update course
+          //update
           userList.set(i, userModel);
         } else {
-          //remove course
+          //remove
           userList.remove(i);
         }
         this.users.postUpdate(userList);
         return;
       }
     }
-    //add course
+    //add
     if (this.allUsers.contains(userModel.getKey())) {
       userList.add(userModel);
       this.users.postUpdate(userList);

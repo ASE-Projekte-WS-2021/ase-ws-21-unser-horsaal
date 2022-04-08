@@ -2,9 +2,10 @@ package com.example.unserhoersaal.model;
 
 import com.example.unserhoersaal.enums.CheckedOptionEnum;
 
-/** Model for a poll. */
+/**
+ * Model for a poll.
+ */
 public class PollModel {
-  private static final String TAG = "PollModel";
 
   private String key;
   private String text;

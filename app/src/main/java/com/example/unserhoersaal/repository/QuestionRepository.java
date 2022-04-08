@@ -11,7 +11,6 @@ import com.example.unserhoersaal.model.UserModel;
 import com.example.unserhoersaal.utils.StateLiveData;
 import com.example.unserhoersaal.utils.Validation;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -36,14 +36,45 @@ public class QuestionRepository {
   private final StateLiveData<List<ThreadModel>> threads = new StateLiveData<>();
   private final StateLiveData<MeetingsModel> meeting = new StateLiveData<>();
   private final StateLiveData<ThreadModel> threadModelMutableLiveData = new StateLiveData<>();
+  private final HashSet<String> threadSet = new HashSet<>();
+  private ValueEventListener listener;
 
   /**
-   * Constructor.
+   * Constructor. Gets the Firebase instances
    */
   public QuestionRepository() {
     this.firebaseAuth = FirebaseAuth.getInstance();
     this.databaseReference = FirebaseDatabase.getInstance().getReference();
     this.meeting.postCreate(new MeetingsModel());
+    initListener();
+  }
+
+  /**
+   * Initialize the listener for the current threads.
+   */
+  private void initListener() {
+    this.listener = new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        updateThreadSet(dataSnapshot);
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+          ThreadModel model = snapshot.getValue(ThreadModel.class);
+
+          if (model == null) {
+            continue;
+          }
+
+          model.setKey(snapshot.getKey());
+          getAuthor(model);
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.e(TAG, Config.THREADS_FAILED_TO_LOAD);
+        threads.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+      }
+    };
   }
 
   /**
@@ -77,15 +108,26 @@ public class QuestionRepository {
    * @param meeting data of the new meeting
    */
   public void setMeeting(MeetingsModel meeting) {
-    String meetingId = meeting.getKey();
-    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
-    if (meetingId == null) {
+    if (meeting == null || meeting.getKey() == null) {
       return;
     }
-    if (meetingObj == null
-            || meetingObj.getKey() == null
-            || !meetingObj.getKey().equals(meetingId)) {
+    MeetingsModel meetingObj = Validation.checkStateLiveData(this.meeting, TAG);
+    if (meetingObj == null) {
       this.meeting.postUpdate(meeting);
+      this.threadModelList.clear();
+      this.loadThreads();
+      return;
+    }
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      this.meeting.postUpdate(meeting);
+      this.threadModelList.clear();
+      this.loadThreads();
+    } else if (!meetingKey.equals(meeting.getKey())) {
+      this.meeting.postUpdate(meeting);
+      this.databaseReference.child(Config.CHILD_POLL).child(meetingKey)
+              .removeEventListener(this.listener);
+      this.threadModelList.clear();
       this.loadThreads();
     }
   }
@@ -102,34 +144,30 @@ public class QuestionRepository {
       return;
     }
 
+    String meetingKey = meetingObj.getKey();
+    if (meetingKey == null) {
+      this.meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+      return;
+    }
+
     Query query = this.databaseReference
             .child(Config.CHILD_THREADS)
-            .child(meetingObj.getKey());
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        List<ThreadModel> threadList = new ArrayList<>();
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-          ThreadModel model = snapshot.getValue(ThreadModel.class);
+            .child(meetingKey);
+    query.addValueEventListener(this.listener);
+  }
 
-          if (model == null) {
-            Log.e(TAG, Config.THREADS_FAILED_TO_LOAD);
-            meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
-            return;
-          }
-
-          model.setKey(snapshot.getKey());
-          threadList.add(model);
-        }
-        getAuthor(threadList);
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        Log.e(TAG, Config.THREADS_FAILED_TO_LOAD);
-        meeting.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
-      }
-    });
+  /**
+   * Update the list of all threads in the meeting.
+   *
+   * @param dataSnapshot snapshot with threads
+   */
+  private void updateThreadSet(DataSnapshot dataSnapshot) {
+    HashSet<String> threadIds = new HashSet<>();
+    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+      threadIds.add(snapshot.getKey());
+    }
+    this.threadSet.clear();
+    this.threadSet.addAll(threadIds);
   }
 
   /**
@@ -186,59 +224,88 @@ public class QuestionRepository {
   /**
    * Get the author for each thread in the provided list.
    *
-   * @param threadList list with all threads of a meeting
+   * @param threadModel list with all threads of a meeting
    */
-  private void getAuthor(List<ThreadModel> threadList) {
-    this.threads.postLoading();
+  private void getAuthor(ThreadModel threadModel) {
+    this.databaseReference.child(Config.CHILD_USER).child(threadModel.getCreatorId())
+            .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel author = snapshot.getValue(UserModel.class);
+                if (author == null) {
+                  threadModel.setCreatorName(Config.UNKNOWN_USER);
+                } else {
+                  threadModel.setCreatorName(author.getDisplayName());
+                  threadModel.setPhotoUrl(author.getPhotoUrl());
+                }
+                setLikeStatus(threadModel, threadModelList);
+              }
 
-    List<Task<DataSnapshot>> authors = new ArrayList<>();
-    for (ThreadModel thread : threadList) {
-      authors.add(getAuthorData(thread.getCreatorId()));
-    }
-    Tasks.whenAll(authors).addOnSuccessListener(unused -> {
-      for (int i = 0; i < threadList.size(); i++) {
-        UserModel author = authors.get(i).getResult().getValue(UserModel.class);
-        if (author == null) {
-          threadList.get(i).setCreatorName(Config.UNKNOWN_USER);
-        } else {
-          threadList.get(i).setCreatorName(author.getDisplayName());
-          threadList.get(i).setPhotoUrl(author.getPhotoUrl());
-        }
-      }
-      getLikeStatus(threadList);
-    });
-  }
-
-  private Task<DataSnapshot> getAuthorData(String authorId) {
-    return this.databaseReference.child(Config.CHILD_USER).child(authorId).get();
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, error.getMessage());
+                threads.postError(new Error(Config.THREADS_FAILED_TO_LOAD), ErrorTag.REPO);
+              }
+            });
   }
 
   /**
-   * Load if a user has liked/disliked or not interacted with the thread.
+   * Update all threads if a thread has changed.
    *
-   * @param threadList list of all threads of the current meeting
+   * @param threadModel data of the change thread
+   * @param threadList all threads
    */
-  private void getLikeStatus(List<ThreadModel> threadList) {
-    List<Task<DataSnapshot>> likeList = new ArrayList<>();
-    for (ThreadModel thread : threadList) {
-      likeList.add(getLikeStatusThread(thread.getKey()));
+  private void setLikeStatus(ThreadModel threadModel, List<ThreadModel> threadList) {
+    Task<DataSnapshot> task = this.getLikeStatusThread(threadModel.getKey());
+    if (task == null) {
+      threadModel.setLikeStatus(LikeStatus.NEUTRAL);
+      updateThreadList(threadModel, threadList);
+      return;
     }
-    Tasks.whenAll(likeList).addOnSuccessListener(unused -> {
-      for (int i = 0; i < likeList.size(); i++) {
-        if (!likeList.get(i).getResult().exists()) {
-          threadList.get(i).setLikeStatus(LikeStatus.NEUTRAL);
-        } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.LIKE) {
-          threadList.get(i).setLikeStatus(LikeStatus.LIKE);
-        } else if (likeList.get(i).getResult().getValue(LikeStatus.class) == LikeStatus.DISLIKE) {
-          threadList.get(i).setLikeStatus(LikeStatus.DISLIKE);
-        }
+    task.addOnSuccessListener(runnable -> {
+      LikeStatus status = runnable.getValue(LikeStatus.class);
+      if (status == null) {
+        status = LikeStatus.NEUTRAL;
       }
-      threadModelList.clear();
-      threadModelList.addAll(threadList);
-      threads.postUpdate(threadModelList);
+      threadModel.setLikeStatus(status);
+      updateThreadList(threadModel, threadList);
     });
   }
 
+  /**
+   * Update threads if a thread has changed.
+   *
+   * @param threadModel data of the changed thread
+   * @param threadList all threads of the meeting
+   */
+  private void updateThreadList(ThreadModel threadModel, List<ThreadModel> threadList) {
+    for (int i = 0; i < threadList.size(); i++) {
+      ThreadModel model = threadList.get(i);
+      if (model.getKey().equals(threadModel.getKey())) {
+        if (this.threadSet.contains(threadModel.getKey())) {
+          //update
+          threadList.set(i, threadModel);
+        } else {
+          //remove
+          threadList.remove(i);
+        }
+        this.threads.postUpdate(threadModelList);
+        return;
+      }
+    }
+    //add
+    if (this.threadSet.contains(threadModel.getKey())) {
+      threadList.add(threadModel);
+      this.threads.postUpdate(threadModelList);
+    }
+  }
+
+  /**
+   * Get the LikeStatus of a thread.
+   *
+   * @param id id of the thread
+   * @return Task with the likeStatus
+   */
   private Task<DataSnapshot> getLikeStatusThread(String id) {
     if (this.firebaseAuth.getCurrentUser() == null) {
       return null;
