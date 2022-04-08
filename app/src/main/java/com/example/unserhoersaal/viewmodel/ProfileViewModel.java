@@ -80,7 +80,7 @@ public class ProfileViewModel extends ViewModel {
 
   /** checks user input before editing name with firebase API. */
   public void changeDisplayName() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
@@ -102,7 +102,7 @@ public class ProfileViewModel extends ViewModel {
 
   /** checks user input before editing name with firebase API. */
   public void changeInstitution() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     UserModel userModel = Validation.checkStateLiveData(this.userInputState, TAG);
@@ -124,7 +124,7 @@ public class ProfileViewModel extends ViewModel {
 
   /** checks user input before editing name with firebase API. */
   public void changePassword() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     PasswordModel passwordModel = Validation.checkStateLiveData(this.passwordInputState, TAG);

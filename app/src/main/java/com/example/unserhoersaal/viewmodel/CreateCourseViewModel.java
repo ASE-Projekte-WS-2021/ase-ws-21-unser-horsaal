@@ -1,6 +1,5 @@
 package com.example.unserhoersaal.viewmodel;
 
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.enums.ErrorTag;
@@ -71,7 +70,7 @@ public class CreateCourseViewModel extends ViewModel {
 
   /** Create a new course. */
   public void createCourse() {
-    if(PreventDoubleClick.checkIfDoubleClick()) {
+    if (PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.courseModelInputState.postLoading();
