@@ -13,14 +13,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.ThreadAdapter;
 import com.example.unserhoersaal.databinding.FragmentQuestionsBinding;
 import com.example.unserhoersaal.enums.FilterEnum;
 import com.example.unserhoersaal.enums.SortEnum;
 import com.example.unserhoersaal.model.ThreadModel;
-import com.example.unserhoersaal.utils.KeyboardUtil;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.CurrentCourseViewModel;
 import com.example.unserhoersaal.viewmodel.QuestionsViewModel;
@@ -28,8 +26,6 @@ import java.util.List;
 
 /** Displays the questions during the Meeting. */
 public class QuestionsFragment extends Fragment {
-
-  private static final String TAG = "QuestionFragment";
 
   private FragmentQuestionsBinding binding;
   private QuestionsViewModel questionsViewModel;
@@ -75,8 +71,6 @@ public class QuestionsFragment extends Fragment {
 
     this.questionsViewModel.getThreads().observe(getViewLifecycleOwner(),
             this::meetingsLiveStateCallback);
-    /*this.questionsViewModel.getThreadModel().observe(getViewLifecycleOwner(),
-            this::threadLiveStateCallback);*/
     this.questionsViewModel.getSortEnum().observe(getViewLifecycleOwner(),
             this::sortEnumCallback);
     this.questionsViewModel.getFilterEnum().observe(getViewLifecycleOwner(),
@@ -255,7 +249,8 @@ public class QuestionsFragment extends Fragment {
 
   private void setupScrolling() {
     View infoContainer = this.binding.questionsFragmentInfoContainer;
-    this.binding.questionFragmentThreadRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    this.binding.questionFragmentThreadRecycler.addOnScrollListener(new RecyclerView
+            .OnScrollListener() {
       @Override
       public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
