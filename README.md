@@ -64,7 +64,6 @@ Inputcheck ViewModels,
 Errorhandling,
 Onboarding,
 DeepLink,
-Editprofile,
 Testdatagenerierung,
 GitHub Actions*
 
@@ -76,7 +75,7 @@ MVVM,
 ViewModels,
 FireBase*
 
-- **Rolny Laurin (Kroellinger)**: *Hier reinschreiben*
+- **Rolny Laurin (Kroellinger)**: *QR Code, Firebase, Editieren, Profilbild*
 
 
 ## Entwicklerteam:
