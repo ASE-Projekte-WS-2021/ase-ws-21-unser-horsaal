@@ -129,16 +129,16 @@ public class CourseHistoryFragment extends Fragment {
   private void setupScrolling() {
     this.binding.courseHistoryFragmentCoursesRecyclerView.addOnScrollListener(
             new RecyclerView.OnScrollListener() {
-          @Override
-          public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            if (!recyclerView.canScrollVertically(-1)) {
-              binding.courseHistoryFragmentCourseCard.setVisibility(View.VISIBLE);
-            } else {
-              binding.courseHistoryFragmentCourseCard.setVisibility(View.GONE);
-            }
-          }
-      });
+              @Override
+              public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(-1)) {
+                  binding.courseHistoryFragmentCourseCard.setVisibility(View.VISIBLE);
+                } else {
+                  binding.courseHistoryFragmentCourseCard.setVisibility(View.GONE);
+                }
+              }
+    });
   }
 
 }

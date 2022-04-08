@@ -47,7 +47,7 @@ public class TodaysCoursesRepository {
   }
 
   /**
-   * Initialize the listener for today's courses.
+   * Initialize the listener for today's courses
    */
   private void initListener() {
     this.listener = new ValueEventListener() {

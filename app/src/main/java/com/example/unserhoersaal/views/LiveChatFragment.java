@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.unserhoersaal.Config;
 import com.example.unserhoersaal.R;
 import com.example.unserhoersaal.adapter.LiveChatAdapter;
@@ -24,10 +28,14 @@ import com.example.unserhoersaal.utils.PreventDoubleClick;
 import com.example.unserhoersaal.utils.StateData;
 import com.example.unserhoersaal.viewmodel.LiveChatViewModel;
 import com.l4digital.fastscroll.FastScrollRecyclerView;
+
+import java.security.Key;
 import java.util.List;
 
 /** Displays the chat during a meeting. */
 public class LiveChatFragment extends Fragment {
+
+  private static final String TAG = "LiveChatFragment";
 
   private FragmentLiveChatBinding binding;
   private LiveChatViewModel liveChatViewModel;
@@ -105,12 +113,12 @@ public class LiveChatFragment extends Fragment {
                     this.liveChatViewModel);
     this.liveChatAdapter.registerAdapterDataObserver(
             new RecyclerView.AdapterDataObserver() {
-          @Override
-          public void onChanged() {
-            super.onChanged();
-            recyclerView.scrollToPosition(messageSize - 1);
-          }
-        }
+              @Override
+              public void onChanged() {
+                super.onChanged();
+                recyclerView.scrollToPosition(messageSize - 1);
+              }
+            }
     );
   }
 
@@ -122,10 +130,17 @@ public class LiveChatFragment extends Fragment {
     this.binding.setFragment(this);
   }
 
-  /** Prevents an error in fastscrollbar. */
+  public void sendMessage() {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
+      return;
+    }
+    liveChatViewModel.sendMessage();
+    binding.liveChatFragmentInputField.getEditText().getText().clear();
+  }
+
   @SuppressLint("NotifyDataSetChanged")
   public void onClickEditText() {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     final Handler handler = new Handler(Looper.getMainLooper());
@@ -145,18 +160,17 @@ public class LiveChatFragment extends Fragment {
 
   private void setupScrolling() {
     View infoContainer = this.binding.liveChatFragmentInfoContainer;
-    this.binding.liveChatFragmentChatRecycler.addOnScrollListener(
-            new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-          super.onScrollStateChanged(recyclerView, newState);
-          if (!recyclerView.canScrollVertically(-1)) {
-            infoContainer.setVisibility(View.VISIBLE);
-          } else {
-            infoContainer.setVisibility(View.GONE);
-          }
+    this.binding.liveChatFragmentChatRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        if (!recyclerView.canScrollVertically(-1)) {
+          infoContainer.setVisibility(View.VISIBLE);
+        } else {
+          infoContainer.setVisibility(View.GONE);
         }
-      });
+      }
+    });
   }
 
 }

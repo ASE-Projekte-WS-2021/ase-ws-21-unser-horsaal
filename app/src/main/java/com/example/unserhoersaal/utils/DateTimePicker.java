@@ -27,7 +27,7 @@ public class DateTimePicker {
   //code reference: https://github.com/codeWithCal/DatePickerTutorial/blob/master/app/src/main/java/codewithcal/au/datepickertutorial/MainActivity.java
   @BindingAdapter("datePicker")
   public static void datePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
@@ -67,7 +67,7 @@ public class DateTimePicker {
    */
   @BindingAdapter("timePicker")
   public static void timePicker(TextView view, CourseHistoryViewModel courseHistoryViewModel) {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     TimePickerDialog.OnTimeSetListener timeSetListener = (datePicker, hour, minute) -> {
@@ -97,6 +97,18 @@ public class DateTimePicker {
             );
     timePickerDialog.updateTime(hour, minute);
     timePickerDialog.show();
+  }
+
+  public static String formatTime(int hour, int minute) {
+    String hourString = String.valueOf(hour);
+    String minuteString = String.valueOf(minute);
+    if (hour < 10) {
+      hourString = "0" + hourString;
+    }
+    if (minute < 10) {
+      minuteString = "0" + minuteString;
+    }
+    return hourString + ":" + minuteString;
   }
 
 }

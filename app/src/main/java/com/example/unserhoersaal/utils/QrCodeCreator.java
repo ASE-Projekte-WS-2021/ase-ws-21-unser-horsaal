@@ -33,7 +33,7 @@ public class QrCodeCreator {
   @BindingAdapter({"codeMapping", "viewmodel"})
   public static void generateQrCode(View view, String text,
                                     CourseDescriptionViewModel courseDescriptionViewModel) {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     Bitmap bitmap;

@@ -5,7 +5,6 @@ import com.example.unserhoersaal.model.CalendarModel;
 import com.example.unserhoersaal.model.MeetingsModel;
 import java.util.Calendar;
 
-/** Converts time input from date and time picker to timestamp. */
 public class TimeUtil {
 
   /** convert the input from date and time picker to unix timestamp. */
@@ -20,7 +19,6 @@ public class TimeUtil {
     return calendar.getTimeInMillis();
   }
 
-  /** convert the input from date and time picker to unix timestamp and add duration for endtime. */
   public static long parseEventEndTime(MeetingsModel meetingsModel, CalendarModel calendarModel) {
     return meetingsModel.getEventTime()
             + (Long.parseLong(calendarModel.getHourDuration()) * Config.TIME_HOUR_TO_MILLI)

@@ -89,7 +89,7 @@ public class EnterCourseFragment extends Fragment {
       return;
     }
 
-    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE) {
+    if (courseModelStateData.getStatus() == StateData.DataStatus.UPDATE){
       if (courseModelStateData.getData() == null) {
         Toast.makeText(getContext(), Config.UNSPECIFIC_ERROR, Toast.LENGTH_SHORT).show();
         return;

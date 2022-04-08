@@ -35,7 +35,7 @@ public class VisibilityAdapter {
   /** Toggles Hashtag/PageNumber Editfield in Create Thread Fragment. */
   @BindingAdapter("toggleEditField")
   public static void toggleEditField(View editField, View arrow) {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     if (editField.getVisibility() == View.VISIBLE) {

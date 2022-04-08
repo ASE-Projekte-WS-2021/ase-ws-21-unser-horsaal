@@ -12,10 +12,10 @@ public class TagUtil {
 
   private static final String TAG = "TagUtil";
 
-  /** sets the tag in currentCourseFragment. */
+  /** JavaDoc. */
   @BindingAdapter({"threadModel", "tagEnum"})
   public static void setTag(View view, ThreadModel threadModel, TagEnum tagEnum) {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     List<TagEnum> tags = threadModel.getTags();

@@ -115,7 +115,6 @@ public class Format {
             .toString();
   }
 
-  /** Format the input from calendar to readable date. */
   @BindingAdapter("app:formatStartDate")
   public static void formatStartDate(TextView view, CalendarModel calendarModel) {
     if (calendarModel.getYearInput() != -1
@@ -136,7 +135,6 @@ public class Format {
     }
   }
 
-  /** Format the input from calendar to readable time. */
   @BindingAdapter("app:formatStartTime")
   public static void formatStartTime(TextView view, CalendarModel calendarModel) {
     if (calendarModel.getHourInput() != -1

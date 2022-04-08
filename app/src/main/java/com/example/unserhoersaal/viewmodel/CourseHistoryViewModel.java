@@ -154,7 +154,7 @@ public class CourseHistoryViewModel extends ViewModel {
 
   /** Create a new Meeting. */
   public void createMeeting() {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.meetingModelInputState.postLoading();

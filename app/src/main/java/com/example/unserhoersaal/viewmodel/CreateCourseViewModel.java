@@ -70,7 +70,7 @@ public class CreateCourseViewModel extends ViewModel {
 
   /** Create a new course. */
   public void createCourse() {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.courseModelInputState.postLoading();

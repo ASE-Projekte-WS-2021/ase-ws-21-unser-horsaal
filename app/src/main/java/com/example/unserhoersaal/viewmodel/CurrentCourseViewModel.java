@@ -197,12 +197,8 @@ public class CurrentCourseViewModel extends ViewModel {
     }
   }
 
-  /** Checks the dislikestatus of the thread and passes it to the corresponding
-   * repo method where the dislikecount is updated.
-   *
-   * @param messageId the message where the user clicked dislike */
   public void solved(String messageId) {
-    if (PreventDoubleClick.checkIfDoubleClick()) {
+    if(PreventDoubleClick.checkIfDoubleClick()) {
       return;
     }
     this.currentCourseRepository.solved(messageId);

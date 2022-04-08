@@ -87,8 +87,7 @@ public class CourseThreadFragment extends Fragment {
 
   private void connectAdapter() {
     this.chatAdapter =
-            new ThreadMessagesAdapter(
-                    this.currentCourseViewModel.getMessages().getValue().getData(),
+            new ThreadMessagesAdapter(this.currentCourseViewModel.getMessages().getValue().getData(),
                     this.currentCourseViewModel);
   }
 
